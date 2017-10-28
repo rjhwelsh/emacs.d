@@ -1,0 +1,12 @@
+#+TITLE: README for Emacs configuration
+#+AUTHOR: Roger J. H. Welsh
+#+email: rjhwelsh@gmail.com
+
+* What is this?
+This a blanked version of my own personal configuration for Emacs. If you would
+like to try it out, simply clone this repo into your default =~/.emacs.d/=
+directory.
+
+#+BEGIN_SRC sh
+git clone https://github.com/rjhwelsh/emacs.d ~/.emacs.d
+#+END_SRC
