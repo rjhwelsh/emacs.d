@@ -5,8 +5,18 @@
 * What is this?
 This a blanked version of my own personal configuration for Emacs. If you would
 like to try it out, simply clone this repo into your default =~/.emacs.d/=
-directory.
+directory. Please see dependencies below.
 
 #+BEGIN_SRC sh
 git clone https://github.com/rjhwelsh/emacs.d ~/.emacs.d
 #+END_SRC
+
+* Dependencies
+You will have to manually install these packages in order to be able to use my
+configuration. Please see the list below.
+
+ * [[https://github.com/hrs][Harry R. Schwartz's]] , [[https://github.com/hrs/sensible-defaults.el][sensible-defaults.el]].
+
+* Usage notes
+ * =Magit= _will fail_ if git is not installed. If you do not want to use this
+   package, you may want to comment it out in configuration.org.
