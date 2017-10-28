@@ -1051,10 +1051,8 @@ A list of common abbreviations to make typing faster.
 Contact Information. (Harry's "@" symbols didn't work, so I am using "z" instead).
 #+BEGIN_SRC emacs-lisp
   (define-abbrev-table 'global-abbrev-table
-    '(("zname" "Roger J. H. Welsh")
-      ("zemail" "rjhwelsh@gmail.com")
-      ("zgmail" "hrothgar013@gmail.com")
-      ("zproton" "rjhwelsh@protonmail.ch")
+    '(("zname" user-full-name)
+      ("zemail" user-mail-address)
       ))
 #+END_SRC
 
