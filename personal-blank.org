@@ -1,0 +1,14 @@
+* Personal Contact Information
+Personal contact information:
+#+BEGIN_SRC emacs-lisp
+	(setq user-full-name ""
+				user-mail-address ""
+				calendar-location-name ""
+				calendar-latitude 0
+				calendar-longitude 0
+	 rjh/user-postal-address ""
+			rjh/user-mobile ""
+		 rjh/user-phone ""
+	  rjh/user-fax ""
+			)
+#+END_SRC
