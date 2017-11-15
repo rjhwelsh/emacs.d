@@ -120,33 +120,15 @@ Always compile packages and use the newest available.
 
 * Configuration modules
 
-Below is a list of sub-configurations which are loaded to provide certain types
-of functionality. If you dislike or would like to stop using a particular module, simply
-comment it out.
-
-All of these use =use-package= to install packages, with the =:ensure t= option.
-If you are loading this for the first time, make sure you have an internet
-connection.
-
-I typically load an emacs server (=emacs --daemon=), and edit files using
-=emacsclient -c=. This loads a new frame for each file I edit.
-If I am already inside emacs, I will use =C-x C-f= to find a file and load it.
-
-If you are new to emacs, (like I was) my process to start off was:
- * I started off with the tutorial =C-h t=.
- * I moved on to the [[info:info][*info*]] tutorial =C-h i=. The *info* pages are super
-   helpful, and easy to navigate once you learn how.
- * Then I spent weeks crafting my configuration to get the setup I wanted,
-   typically most of this was spent on configuring org and reading info pages.
-
 Use this to set the location of the local version of my configuration repo for emacs.d.
 #+BEGIN_SRC emacs-lisp
 	 (setq rjh/local-config-repo "~/index/emacs.d" )
 #+END_SRC
 
-These are functions used to load the configuration modules.
+Below is a list of sub-configurations which are loaded to provide certain types
+of functionality. If you dislike or would like to stop using a particular module, simply
+comment it out.
 #+BEGIN_SRC emacs-lisp
-		 (setq rjh/local-config-dir (expand-file-name "config" rjh/local-config-repo ))
 		 (setq rjh/load-config-modules '(
 			"org.org"
 			"git.org"
@@ -170,6 +152,26 @@ These are functions used to load the configuration modules.
 			"undo.org"
 			"graph.org"
 		))
+#+END_SRC
+
+All of these use =use-package= to install packages, with the =:ensure t= option.
+If you are loading this for the first time, make sure you have an internet
+connection.
+
+I typically load an emacs server (=emacs --daemon=), and edit files using
+=emacsclient -c=. This loads a new frame for each file I edit.
+If I am already inside emacs, I will use =C-x C-f= to find a file and load it.
+
+If you are new to emacs, (like I was) my process to start off was:
+ * I started off with the tutorial =C-h t=.
+ * I moved on to the [[info:info][*info*]] tutorial =C-h i=. The *info* pages are super
+   helpful, and easy to navigate once you learn how.
+ * Then I spent weeks crafting my configuration to get the setup I wanted,
+   typically most of this was spent on configuring org and reading info pages.
+
+These are functions used to load the configuration modules.
+#+BEGIN_SRC emacs-lisp
+(setq rjh/local-config-dir (expand-file-name "config" rjh/local-config-repo ))
 	(defun rjh/load-config ()
 		(let (value)
 			 (dolist (module rjh/load-config-modules value)
