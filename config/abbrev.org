@@ -13,6 +13,26 @@ Always enable =abbrev-mode=:
 #+BEGIN_SRC emacs-lisp
   (setq-default abbrev-mode t)
 #+END_SRC
+* Personal Abbreviations
+ Contact Information.
+ Note the backtick on the abbreviation-table.
+ #+BEGIN_SRC emacs-lisp
+	 (define-abbrev-table 'global-abbrev-table
+			 `(("@name" ,user-full-name)
+				 ("@email" ,user-mail-address)
+				 ("@gps" ,(concat (number-to-string calendar-latitude )
+													"N,"
+												 (number-to-string calendar-longitude )
+											    "E"
+																					 ))
+				 ("@long" ,(number-to-string calendar-longitude ))
+				 ("@post" ,rjh/user-postal-address)
+				 ("@mobi" ,rjh/user-mobile )
+				 ("@ph" ,rjh/user-phone )
+				 ("@fax" ,rjh/user-fax )
+				 ))
+ #+END_SRC
+
 * Abbrev File
 Define an abbreviation file.
 #+BEGIN_SRC emacs-lisp
