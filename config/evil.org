@@ -1,0 +1,22 @@
+#+TITLE: Evil configuration
+#+AUTHOR: Roger J. H. Welsh
+#+EMAIL: rjhwelsh@gmail.com
+#+PROPERTY: header-args    :results silent
+#+STARTUP: content
+
+
+* Evil-mode
+I originally came from vim, and this helped me gain some familiarity
+with emacs before going head over heels. I eventually commented it out
+so that I could focus on improving my emacs ability.
+
+I only ever used evil, Out-Of-The-Box.
+#+BEGIN_SRC emacs-lisp
+			(use-package evil :ensure t
+			:init
+			(require 'evil)
+			(evil-mode t)
+				)
+#+END_SRC
+
+.

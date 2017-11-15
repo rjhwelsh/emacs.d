@@ -1,0 +1,9 @@
+#+TITLE: Graphs and plots in emacsn
+#+AUTHOR: Roger J. H. Welsh
+#+EMAIL: rjhwelsh@gmail.com
+
+* Packages
+#+BEGIN_SRC emacs-lisp
+		(use-package "gnuplot" :ensure t )
+		(use-package "graphviz-dot-mode" :ensure t )
+#+END_SRC

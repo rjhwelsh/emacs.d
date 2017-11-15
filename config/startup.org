@@ -1,0 +1,41 @@
+#+TITLE: Startup configuration
+#+AUTHOR: Roger J. H. Welsh
+#+EMAIL: rjhwelsh@gmail.com
+
+* File
+My initial frame opens up a file in my home-directory, every time I open a new
+frame in Emacs. This file acts as a table-of-contents, or base of operations.
+basically it is an *org-file* with a bunch of useful links to everything I might
+want to access on a daily basis. Set this to whatever file you would prefer
+below.
+#+BEGIN_SRC emacs-lisp
+(setq rjh/startup-org-file "~/startup.org")
+#+END_SRC
+N.B. This startup file is different from the =startup.org= configuration file
+(i.e. this file).
+
+* Requirements
+#+BEGIN_SRC emacs-lisp
+(require 'workgroups)
+#+END_SRC
+
+* Initial Frame
+After emacs has booted I would like it to display several items on the screen
+(by default).
+
+#+BEGIN_SRC emacs-lisp
+	(add-hook 'after-make-frame-functions
+						(lambda (&optional frame)
+							(select-frame-set-input-focus frame)
+							(org-agenda-list 1)
+							(delete-other-windows)
+							(split-window-vertically)
+							(calendar)
+							(diary-mark-entries)
+							(other-window 1)
+							(split-window-horizontally)
+							(find-file rjh/startup-org-file)
+						  (wg-switch-to-index-1)
+						)
+	)
+#+END_SRC

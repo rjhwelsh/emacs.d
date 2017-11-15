@@ -1,0 +1,725 @@
+#+TITLE: Org-mode configuration
+#+AUTHOR: Roger J. H. Welsh
+#+EMAIL: rjhwelsh@gmail.com
+#+PROPERTY: header-args    :results silent
+#+STARTUP: content
+
+* Packages
+The default org should be setup to be installed via the init.el file in your
+emacs.d directory. This ensures the latest org-mode is used, and not the default
+provided with your emacs binaries. The following example illustrates the
+Emacs-lisp commands that bootstrap org-mode, before processing the org-files as
+specified by your configuration.org.
+
+#+BEGIN_EXAMPLE
+(unless (package-installed-p 'org-plus-contrib)
+  (package-install 'org-plus-contrib))
+(require 'org)
+(org-babel-load-file "~/.emacs.d/configuration.org")
+#+END_EXAMPLE
+
+Additional packages for org-mode are specified below, which use =use-package=.
+#+BEGIN_SRC emacs-lisp
+(use-package "org-bullets" :ensure t )
+#+END_SRC
+
+The following load-path is used for org-plus-contrib packages, adjust this as
+necessary for your setup.
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'load-path "~/.emacs.d/elpa/org-plus-contrib-20171016")
+#+END_SRC
+.
+
+* Setup
+For a minimal =.emacs= for =org-mode=, see [[http://orgmode.org/worg/org-faq.html#minimal-emacs][here]].
+#+BEGIN_SRC emacs-lisp
+(require 'org-install)
+#+END_SRC
+Enable extension modules for org-mode
+ #+BEGIN_SRC emacs-lisp
+(eval-after-load 'org
+ '(org-load-modules-maybe t))
+ #+END_SRC
+
+** Application Defaults
+Default application associations.
+#+BEGIN_SRC emacs-lisp
+	(setq org-file-apps '((auto-mode . emacs)
+												("\\.x?html?\\'" . "firefox %s")
+												("\\.pdf\\'" . "evince \"%s\"")
+												("\\.pdf::\\([0-9]+\\)\\'" . "evince \"%s\" -p %1")
+												))
+#+END_SRC
+Link frame setup. Prevent windows from splitting.
+#+BEGIN_SRC emacs-lisp
+	(setq org-link-frame-setup '((file . find-file)
+														 ))
+#+END_SRC
+
+*Harry:* Exporting to HTML and opening the results triggers
+=/usr/bin/sensible-browser=, which checks the =$BROWSER= environment variable to
+choose the right browser. I'd like to always use Firefox, so:
+
+#+BEGIN_SRC emacs-lisp
+  (setenv "BROWSER" "firefox")
+#+END_SRC
+** Keybindings
+Some handy keybindings.
+#+BEGIN_SRC emacs-lisp
+  (define-key global-map "\C-cl" 'org-store-link)
+  (define-key global-map "\C-ca" 'org-agenda)
+  (define-key global-map "\C-cc" 'org-capture)
+#+END_SRC
+** Org files
+Set the org-directory.
+#+BEGIN_SRC emacs-lisp
+ (setq org-directory "~/.emacs.d/org" )
+#+END_SRC
+Some default locations.
+#+BEGIN_SRC emacs-lisp
+		(setq rjh/org-tasks (expand-file-name "tasks.org" org-directory)
+				rjh/org-journal (expand-file-name "journal.org" org-directory)
+				rjh/org-events (expand-file-name "events.org" org-directory)
+				rjh/org-habits (expand-file-name "habits.org" org-directory)
+				rjh/org-daily (expand-file-name "daily.org" org-directory)
+				rjh/org-archive (expand-file-name "zarchive.org" org-directory)
+			 rjh/org-diary diary-file  ;; I just use the default diary for my appointments
+		 )
+#+END_SRC
+* Faces
+FACES are custom settings for font, colour, background etc.
+** Time Management Faces
+ These faces are for [[*Time%20Management][Time Management]].
+ #+BEGIN_SRC emacs-lisp
+   (defface todo
+         '(
+           (((class color) (min-colors 8))
+            :background "red" :foreground "black" :weight extra-bold
+            :inherit default :height 1.0 :box ( :style released-button ) )
+          )
+         "Face for basic todo items."
+         :group 'todo-faces)
+ #+END_SRC
+ #+BEGIN_SRC emacs-lisp
+         (defface done
+               '(
+                 (((class color) (min-colors 8))
+                  :background "green" :foreground "black" :weight extra-bold
+                  :inherit default :height 1.0 :box ( :style released-button ) )
+                )
+               "Face for basic todo items."
+               :group 'todo-faces)
+ #+END_SRC
+ #+BEGIN_SRC emacs-lisp
+         (defface new
+               '(
+                 (((class color) (min-colors 8))
+                  :background "blue" :foreground "white" :weight extra-bold
+                  :inherit default :height 1.0 :box ( :style released-button ) )
+                )
+               "Face for basic todo items."
+               :group 'todo-faces)
+ #+END_SRC
+ #+BEGIN_SRC emacs-lisp
+         (defface someday
+               '(
+                 (((class color) (min-colors 8))
+                  :background "blue" :foreground "gray" :weight extra-bold
+                  :inherit default :height 1.0 :box ( :style released-button ) )
+                )
+               "Face for basic todo items."
+               :group 'todo-faces)
+ #+END_SRC
+ #+BEGIN_SRC emacs-lisp
+   (defface plan
+         '(
+           (((class color) (min-colors 8))
+            :background "yellow" :foreground "black" :weight extra-bold
+            :inherit default :height 1.0 :box ( :style released-button ) )
+          )
+         "Face for basic todo items."
+         :group 'todo-faces)
+ #+END_SRC
+ #+BEGIN_SRC emacs-lisp
+         (defface verify
+               '(
+                 (((class color) (min-colors 8))
+                  :background "orange" :foreground "black" :weight extra-bold
+                  :inherit default :height 1.0 :box ( :style released-button ) )
+                )
+               "Face for basic todo items."
+               :group 'todo-faces)
+ #+END_SRC
+ #+BEGIN_SRC emacs-lisp
+   (defface delegate
+         '(
+           (((class color) (min-colors 8))
+            :background "magenta" :foreground "black" :weight extra-bold
+            :inherit default :height 1.0 :box ( :style released-button ) )
+          )
+         "Face for basic todo items."
+         :group 'todo-faces)
+ #+END_SRC
+ #+BEGIN_SRC emacs-lisp
+         (defface wait
+               '(
+                 (((class color) (min-colors 8))
+                  :background "black" :foreground "cyan" :weight extra-bold
+                  :inherit default :height 1.0 :box ( :style released-button ) )
+                )
+               "Face for basic todo items."
+               :group 'todo-faces)
+ #+END_SRC
+ #+BEGIN_SRC emacs-lisp
+   (defface action
+         '(
+           (((class color) (min-colors 8))
+            :background "red" :foreground "black" :weight extra-bold
+            :inherit default :height 1.0 :box ( :style released-button ) )
+          )
+         "Face for basic todo items."
+         :group 'todo-faces)
+ #+END_SRC
+ #+BEGIN_SRC emacs-lisp
+         (defface context
+               '(
+                 (((class color) (min-colors 8))
+                  :background "black" :foreground "orange" :weight extra-bold
+                  :inherit default :height 1.0 :box ( :style released-button ) )
+                )
+               "Face for basic todo items."
+               :group 'todo-faces)
+ #+END_SRC
+ #+BEGIN_SRC emacs-lisp
+   (defface event
+         '(
+           (((class color) (min-colors 8))
+            :background "black" :foreground "green" :weight extra-bold
+            :inherit default :height 1.0 :box ( :style released-button ) )
+          )
+         "Face for basic todo items."
+         :group 'todo-faces)
+ #+END_SRC
+ #+BEGIN_SRC emacs-lisp
+         (defface canceled
+               '(
+                 (((class color) (min-colors 8))
+                  :background "dim gray" :foreground "gray" :weight extra-bold
+                  :inherit default :height 1.0 :box ( :style released-button ) )
+                )
+               "Face for basic todo items."
+               :group 'todo-faces)
+ #+END_SRC
+ #+BEGIN_SRC emacs-lisp
+         (defface trash
+               '(
+                 (((class color) (min-colors 8))
+                  :background "green" :foreground "dim gray" :weight extra-bold
+                  :inherit default :height 1.0 :box ( :style released-button ) )
+                )
+               "Face for basic todo items."
+               :group 'todo-faces)
+ #+END_SRC
+
+* Basic
+** Time Management
+*** habits (and repeating tasks)
+Habit tracking in agenda enabled in org-modules.
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'org-modules 'org-habit)
+(require 'org-habit)
+#+END_SRC
+.
+
+Skip displaying scheduled tasks if deadline is visible.
+#+BEGIN_SRC emacs-lisp
+(setq org-agenda-skip-scheduled-if-deadline-is-shown 'repeated-after-deadline)
+#+END_SRC
+
+Now to make a habit look closely at the following example, from
+[[info:org#Tracking%20your%20habits][info:org#Tracking your habits]].
+#+BEGIN_EXAMPLE
+  ** TODO Shave
+        SCHEDULED: <2009-10-17 Sat .+2d/4d>
+        :PROPERTIES:
+        :STYLE:    habit
+        :LAST_REPEAT: [2009-10-19 Mon 00:36]
+        :END:
+        - State "DONE"       from "TODO"       [2009-10-15 Thu]
+        - State "DONE"       from "TODO"       [2009-10-12 Mon]
+        - State "DONE"       from "TODO"       [2009-10-10 Sat]
+        - State "DONE"       from "TODO"       [2009-10-04 Sun]
+        - State "DONE"       from "TODO"       [2009-10-02 Fri]
+        - State "DONE"       from "TODO"       [2009-09-29 Tue]
+        - State "DONE"       from "TODO"       [2009-09-25 Fri]
+        - State "DONE"       from "TODO"       [2009-09-19 Sat]
+        - State "DONE"       from "TODO"       [2009-09-16 Wed]
+        - State "DONE"       from "TODO"       [2009-09-12 Sat]
+#+END_EXAMPLE
+Notice that habit requires the following:
+
+ * open-state TODO keyword
+ * :STYLE: habit in properties
+ * a SCHEDULED date; usually with a .+ style repeat. (Repeats from last DONE
+   state) ++ is appropriate for habits with time constraints. (Repeats next
+   future date). + for unusual habit that can have a backlog. (rent payments)
+   (Repeats from last START date).
+ * Minimum/maximum ranges can be specified by using the syntax. `.+2d/3d', which
+   says that you want to do the task at least every 3 days, but at most every 2
+   days.
+ * State logging for DONE must be enabled. ! etc. This enables tracking of the
+   tasks to be shown in the consistency graph.
+
+In the agenda view habits will show different colors on each day.
+ - Blue :: not done yet (on day).
+ - Green :: could have been done (on day).
+ - Yellow :: overdue the next day.
+ - Red :: overdue on that day.
+
+Configuration variables for habits.
+#+BEGIN_SRC elisp
+(setq org-habit-graph-column 50
+org-habit-preceding-days 28
+org-habit-following-days 7
+org-habit-show-habits-only-for-today t
+)
+#+END_SRC
+Press K to enable/disable habits in the agenda.
+*** 'TODO' Conf
+ For group projects, put this at the top of the project line.
+ #+BEGIN_EXAMPLE
+ #+TYP_TODO: @ROGER(r) @NAME1(1) @NAME2(2) | DONE(d)
+ #+END_EXAMPLE
+
+**** Workflow
+ Workflow states.
+	1. Regular TODO / DONE.
+	2. Getting Things Done Workflow.
+	3. Location themed tasks.
+	5. Cancelled Or Trashed.
+	6. Bug catcher.
+
+ For below; make the following notes:
+	+ Expressions may be a "sequence" or "type" ; "type" goes straight to DONE
+		after completion. Sequences rotate through all keywords.
+	+ TODO = the todo keyword
+	+ (t) = the fast key shortcut
+	+ ! means LOG timestamp when changing *TO* item.
+	+ @ means LOG timestamp with note when changing item.
+	+ /! means LOG timestamp/note when changing *FROM* item also.
+	+ org-log-into-drawer LOGS everything into a hidden drawer, so everything looks cleaner.
+ #+BEGIN_SRC emacs-lisp
+	 (setq org-todo-keywords
+			'(
+			(sequence "TODO(t!)" "|" "DONE(d!)" )
+			(sequence "NEW(n!)" "SOMEDAY(s!)"
+									"PLAN OUT(p!)" "VERIFY(v!)"
+									"DELEGATE(D@/!)" "WAITING FOR(w!)"
+									"ACTION(a!/!)" "@CONTEXT(c/!)" "EVENT(e!)"
+									"|" )
+			(type "@HOME(H)" "@WORK(W)" "@OUTSIDE(O)"
+							"@SHOP(S)" "@CAFE(F)" "@GARAGE(G)" "@BREAK(B)" "|" )
+			(type "|" "CANCELED(k@)" "TRASH(t!)" )
+			(sequence "REPORT(r!)" "BUG(b!)" "KNOWNCAUSE(K!)" "|" "FIXED(f@)" )
+			(type "@CALL(C!)" "@EMAIL(E!)" "@POST(P!)" "|" )
+	    (type "HABIT(h!)" "|")
+		)
+	 )
+	 (setq org-log-into-drawer t) ;LOGBOOK
+ #+END_SRC
+**** Priorities
+ Priorities are assigned A,B,C,D. B being the default.
+ I'm particularly inspired by the Eisenhower Matrix and Must/Should/Nice todos.
+ For reference, see the table below. Typically, one should attempt to accomplish
+ as many B's in a day as possible; while also taking regular breaks.
+ If you have nothing left todo, D's are pleasant enough.
+
+ | PRIORITY   | NOT IMPORTANT | IMPORTANT  |
+ |------------+---------------+------------|
+ | NOT URGENT | D - PLEASANT  | B - SHOULD |
+ |------------+---------------+------------|
+ | URGENT     | C - NICE      | A - MUST   |
+ |------------+---------------+------------|
+
+ So.. one way to describe my priorities, would be...
+ #+BEGIN_EXAMPLE
+ #+PRIORITIES: C A D .
+ #+END_EXAMPLE
+
+ #+BEGIN_SRC emacs-lisp
+	(setq org-default-priority 67)
+	(setq org-highest-priority 65)
+	(setq org-lowest-priority 68)
+ #+END_SRC
+**** Dependencies
+ Dependency settings.
+ This allows for task blocking/etc.
+ #+BEGIN_SRC emacs-lisp
+	(setq org-enforce-todo-dependencies t)
+	(setq org-agenda-dim-blocked-tasks t)
+	(setq org-enforce-todo-checkbox-dependencies t)
+ #+END_SRC
+**** Face Settings
+ #+BEGIN_SRC emacs-lisp
+	 (setq org-todo-keyword-faces
+				 '(("TODO" . todo)
+					 ("DONE" . done)
+					 ("NEW" . new)
+					 ("SOMEDAY" . someday )
+					 ("PLAN OUT" . plan)
+					 ("VERIFY" . verify )
+					 ("DELEGATE" . delegate )
+					 ("WAITING FOR" . wait )
+					 ("ACTION" . action )
+					 ("@CONTEXT" . context )
+					 ("EVENT" . event )
+					 ("CANCELED" . canceled )
+					 ("TRASH" . canceled )
+					 ("@HOME" . context )
+					 ("@WORK" . context )
+					 ("@SHOP" . context )
+					 ("@OUTSIDE" . context )
+					 ("@CAFE" . context )
+					 ("@GARAGE" . context )
+					("@BREAK" . context )
+					( "@CALL" . verify )
+					( "@EMAIL" . context )
+					( "@POST" . new )
+			    ( "HABIT" . verify )
+					 )
+	 )
+ #+END_SRC
+
+*** Agenda Conf
+Store the list of agenda files in ...
+#+BEGIN_SRC emacs-lisp
+  (setq org-agenda-files "~/.emacs.d/agenda-files" )
+#+END_SRC
+
+*** Diary Conf
+Calendar style. Diary entries. Diary file.
+#+BEGIN_SRC emacs-lisp
+(setq calendar-date-style "iso"
+diary-number-of-entries "1"
+diary-file "~/.emacs.d/diary" ;; --> links to org dir
+)
+;; In-case calendar is already loaded..
+(calendar-set-date-style "iso")
+
+#+END_SRC
+
+Holidays display.
+Most of them are American and I now source holidays from a google.ics.
+Remove all holiday data.
+#+BEGIN_SRC emacs-lisp
+(setq calendar-holidays nil)
+#+END_SRC
+
+Reminders
+#+BEGIN_SRC emacs-lisp
+(appt-activate)
+#+END_SRC
+
+Integrate with org-mode
+#+BEGIN_SRC emacs-lisp
+(setq org-agenda-include-diary t)
+#+END_SRC
+
+*** Clocking Working Time
+  To save the clock history across Emacs sessions, use
+#+BEGIN_SRC emacs-lisp
+     (setq org-clock-persist 'history)
+     (org-clock-persistence-insinuate)
+#+END_SRC
+
+Effort estimates and column view
+Appointment default durations and effort addition.
+Use C-c C-x C-c to access.
+#+BEGIN_SRC emacs-lisp
+	(setq org-global-properties '(("Effort_ALL". "0 0:10 0:20 0:30 1:00 2:00 3:00 4:00 6:00 8:00"))
+				org-columns-default-format '"%38ITEM(Details) %7TODO(To Do) %TAGS(Context) %PRIORITY(Pri) %5Effort(Effort){:} %6CLOCKSUM(Clock)"
+			 org-agenda-columns-add-appointments-to-effort-sum t
+		 org-agenda-default-appointment-duration 30
+	)
+#+END_SRC
+
+org-agenda-columns-add-appointments-to-effort-sum adds appointment times to
+effort sums for the day.
+*** Archival
+=C-cxs=
+Add this to your file, to adjust =org-archive-location= for a particular file.
+#+BEGIN_EXAMPLE
+#+ARCHIVE: %s_done::
+#+END_EXAMPLE
+
+The default location is set below.
+This archives items in a file called zarchive.org in the same folder.
+#+BEGIN_SRC emacs-lisp
+(setq org-archive-location "zarchive.org::* %s" )
+#+END_SRC
+
+*Note*
+ + =%s= represents the current filename.
+ + =::= is a seperator between files and headers.
+ + =file::= use this format for archiving to a specific file.
+ + =::header= use this format to archive to a specific header.
+ + =::***header= use asterisks to denote the sub-level of the header.
+ + =::datetree/= use =datetree/= to file under a date-tree.
+
+Do not mark archived tasks as done.
+#+BEGIN_SRC emacs-lisp
+(setq org-archive-mark-done nil)
+#+END_SRC
+** Capture/Refile Settings
+These are settings for capturing/refiling information.
+#+BEGIN_SRC emacs-lisp
+(setq org-default-notes-file rjh/org-tasks)
+#+END_SRC
+
+Capture templates.
+#+BEGIN_SRC emacs-lisp
+			(setq org-capture-templates
+			'(("t" "Todo" entry (file+headline rjh/org-tasks "Tasks")
+					 "* TODO %?\n\t%i\n\t%a\n\n" nil)
+				("j" "Journal" entry (file+datetree rjh/org-journal )
+					 "* %?\n\tEntered on %U\n\t%i\n\t%a\n\n" :kill-buffer )
+				("e" "Event/Appointment" entry (file+headline rjh/org-events "Events" )
+					 "* EVENT %?\n\t%^T\n\t%i\n\t%a\n\n")
+			  ("h" "Habit" entry (file+headline rjh/org-habits "Habits" )
+					 "* HABIT %?\n\tSCHEDULED: %^T\n\t:PROPERTIES:\n\t:STYLE:\thabit\n\t:END:\n\t%i\n\t%a\n\n")
+	;; Work on clocked items
+				("x" "Checklist on clock" checkitem (clock) "+ [ ] %?\n\n" :kill-buffer)
+				("T" "Table on clock" table-line (clock) :kill-buffer )
+	;; Getting Things Done quick entry
+				("b" "Bug" entry (file+headline rjh/org-tasks "Bugs")
+					 "* BUG %?\n\t%i\n\t%a\n\n" nil)
+				("n" "New" entry (file+headline rjh/org-tasks "Tasks")
+					 "* NEW %?\n\t%i\n\t%a\n\n" nil)
+				("p" "Plan" entry (file+headline rjh/org-tasks "Prepare")
+					 "* PLAN OUT %?\n\t%i\n\t%a\n\n" nil)
+				("v" "Verify" entry (file+headline rjh/org-tasks "Verify")
+					 "* VERIFY %?\n\t%i\n\t%a\n\n" nil)
+				("D" "Delegate" entry (file+headline rjh/org-tasks "Delegate")
+					 "* DELEGATE %?\n\t%i\n\t%a\n\n" nil)
+	;; Get in touch - Quick Entry
+				("C" "Call" entry (file+headline rjh/org-tasks "Contact")
+					 "* @CALL to _ about _%?\n\t%i\n\t%a\n\n" nil)
+				("E" "Email" entry (file+headline rjh/org-tasks "Contact")
+					 "* @EMAIL to _ about _%?\n\t%i\n\t%a\n\n" nil)
+				("L" "Letter" entry (file+headline rjh/org-tasks "Contact")
+					 "* @POST letter to _ about _%?\n\t%i\n\t%a\n\n" nil)
+			))
+#+END_SRC
+
+
+Refiling list.
+#+BEGIN_SRC emacs-lisp
+	;; Function to return org-buffer-files
+	(defun ixp/org-buffer-files ()
+		"Return list of opened orgmode buffer files"
+		(mapcar (function buffer-file-name)
+						(org-buffer-list 'files)))
+
+  ;; Refiling targets
+	(setq org-refile-targets
+						'((nil :maxlevel . 3 )
+							(org-agenda-files :maxlevel . 3)
+							(org-agenda-files :tag . ":ref:")
+							(org-agenda-files :todo . "ACTION")
+						(ixp/org-buffer-files :maxlevel . 1)
+						 ))
+		(setq org-outline-path-complete-in-steps t)
+		(setq org-refile-use-outline-path t)
+		(setq org-refile-allow-creating-parent-nodes 'confirm)
+
+#+END_SRC
+
+Specification is any of:
+ +  "FILE"
+ +  a cons cell (:tag . "TAG")
+ +  a cons cell (:todo . "KEYWORD")
+ +  a cons cell (:regexp . "REGEXP") ;; regexp to match headlines
+ +  a cons cell (:level . N) Any headline of level N is considered a target.
+ +  a cons cell (:maxlevel . N) Any headline with level <= N is a target.
+ +  (nil . (:level . 1)) Match all top-level headlines in the current buffer.
+ +  ("FILE" . (:level. 1)) Match all top-level headlines in FILE.
+
+The union of these sets is presented (with completion) to the user by
+org-refile. =C-cw= .
+You can set the variable =org-refile-target-verify-function= to a function to
+verify each headline found by the criteria above.
+
+** Display preferences
+
+I like to see an outline of pretty bullets instead of a list of asterisks.
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (org-bullets-mode t)))
+#+END_SRC
+
+I like seeing a little downward-pointing arrow instead of the usual ellipsis
+(=...=) that org displays when there's stuff under a header.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-ellipsis "⤵")
+#+END_SRC
+
+Use syntax highlighting in source blocks while editing.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-src-fontify-natively t)
+#+END_SRC
+
+Make TAB act as if it were issued in a buffer of the language's major mode.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-src-tab-acts-natively t)
+#+END_SRC
+
+When editing a code snippet, use the current window rather than popping open a
+new one (which shows the same information).
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-src-window-setup 'current-window)
+#+END_SRC
+
+Enable spell-checking in Org-mode.
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'org-mode-hook 'flyspell-mode)
+#+END_SRC
+
+** Exporting Html
+Checklists did not render as I would like them, I think this makes
+them far more prettier in html.
+#+BEGIN_SRC emacs-lisp
+(setq org-html-checkbox-type 'html)
+#+END_SRC
+
+** Quick Templates
+
+Org structure templates.
+#+BEGIN_SRC emacs-lisp
+	(add-to-list 'org-structure-template-alist
+							 '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC")
+						   '("py" "#+BEGIN_SRC python\n?\n#+END_SRC")
+							 )
+#+END_SRC
+
+* Contrib
+Org-contrib consists of packages as part of org-plus-contrib.
+** org-index
+Keybindings. Index File.
+Let's start off slow.
+N.B. Make sure the index-id corresponds with your actual index header.
+#+BEGIN_SRC emacs-lisp
+	(require 'org-index)
+	(setq org-index-file "~/.emacs.d/index.org"
+			  org-index-id "1c3f8ddb-f941-42d9-88fb-8093095b9b5b"
+				)
+	(global-set-key (kbd "C-c i") 'org-index)
+#+END_SRC
+Then maybe later progress to this...
+#+BEGIN_EXAMPLE emacs-lisp
+(define-prefix-command 'org-index-map)
+(global-set-key (kbd "C-c i") 'org-index-map)
+(define-key org-index-map (kbd "o") (lambda () (interactive) (org-index 'occur)))
+(define-key org-index-map (kbd "r") (lambda () (interactive) (org-index 'ref)))
+(define-key org-index-map (kbd "l") (lambda () (interactive) (org-index 'leave)))
+(define-key org-index-map (kbd "h") (lambda () (interactive) (org-index 'head)))
+(define-key org-index-map (kbd "i") (lambda () (interactive) (org-index)))
+#+END_EXAMPLE
+.
+** koma-letter-export
+Activate KOMA-Script letter exporter.
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'ox '(require 'ox-koma-letter))
+#+END_SRC
+
+You can add your own customized class, my-letter as follows.
+#+BEGIN_EXAMPLE
+(eval-after-load 'ox-koma-letter
+  '(progn
+     (add-to-list 'org-latex-classes
+                  '("my-letter"
+                    "\\documentclass\{scrlttr2\}
+     \\usepackage[english]{babel}
+     \\setkomavar{frombank}{(1234)\\,567\\,890}
+     \[DEFAULT-PACKAGES]
+     \[PACKAGES]
+     \[EXTRA]"))
+
+     (setq org-koma-letter-default-class "my-letter")))
+#+END_EXAMPLE
+For more info see [[http://orgmode.org/worg/exporters/koma-letter-export.html][here.]]
+* Harry Schwartz
+This is some org configuration I have copied straight from Harry's book.
+*** Exporting
+Allow =babel= to evaluate Emacs lisp, Ruby, dot, or Gnuplot code.
+
+#+BEGIN_SRC emacs-lisp
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (ruby . t)
+     (dot . t)
+     (gnuplot . t)))
+#+END_SRC
+
+Don't ask before evaluating code blocks.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-confirm-babel-evaluate nil)
+#+END_SRC
+
+Associate the "dot" language with the =graphviz-dot= major mode.
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'org-src-lang-modes '("dot" . graphviz-dot))
+#+END_SRC
+
+Translate regular ol' straight quotes to typographically-correct curly quotes
+when exporting.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-export-with-smart-quotes t)
+#+END_SRC
+
+***** Exporting to HTML
+
+Don't include a footer with my contact and publishing information at the bottom
+of every exported HTML document.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-html-postamble nil)
+#+END_SRC
+.
+* Bernt Hansen
+A function for skipping archiving tasks from Bernt Hansen.
+N.B. This hasn't actually been implemented anywhere yet.
+#+BEGIN_SRC emacs-lisp
+(defun bh/skip-non-archivable-tasks ()
+  "Skip trees that are not available for archiving"
+  (save-restriction
+    (widen)
+    ;; Consider only tasks with done todo headings as archivable candidates
+    (let ((next-headline (save-excursion (or (outline-next-heading) (point-max))))
+          (subtree-end (save-excursion (org-end-of-subtree t))))
+      (if (member (org-get-todo-state) org-todo-keywords-1)
+          (if (member (org-get-todo-state) org-done-keywords)
+              (let* ((daynr (string-to-int (format-time-string "%d" (current-time))))
+                     (a-month-ago (* 60 60 24 (+ daynr 1)))
+                     (last-month (format-time-string "%Y-%m-" (time-subtract (current-time) (seconds-to-time a-month-ago))))
+                     (this-month (format-time-string "%Y-%m-" (current-time)))
+                     (subtree-is-current (save-excursion
+                                           (forward-line 1)
+                                           (and (< (point) subtree-end)
+                                                (re-search-forward (concat last-month "\\|" this-month) subtree-end t)))))
+                (if subtree-is-current
+                    subtree-end ; Has a date in this month or last month, skip it
+                  nil))  ; available to archive
+            (or subtree-end (point-max)))
+        next-headline))))
+#+END_SRC

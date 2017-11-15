@@ -1,0 +1,66 @@
+#+TITLE:  Backup config
+#+AUTHOR: Roger J. H. Welsh
+#+EMAIL: rjhwelsh@gmail.com
+#+PROPERTY: header-args    :results silent
+#+STARTUP: content
+* Backup cache
+I would prefer backup to have versioned backups in a home cache though. This
+provides me with some piece of mind.
+Backup cache locations.
+#+BEGIN_SRC emacs-lisp
+	(setq
+	 rjh/emacs-backup-cache "~/.cache/emacs/save"
+	 rjh/emacs-backup-session "~/.cache/emacs/session"
+	 )
+#+END_SRC
+
+* Versioning and auto-save
+#+BEGIN_SRC emacs-lisp
+	(setq vc-make-backup-files t
+					make-backup-files t) ;; backup versioned files
+		(setq
+		 backup-by-copying t  ;; don't clobber symlinks
+		 delete-old-versions t
+		 kept-new-versions 6
+		 kept-old-versions 2
+		 version-control t
+		 backup-directory-alist `((".*" . ,rjh/emacs-backup-cache )) ; don't litter the filetree ; only make backups of files in homedir
+		 auto-save-file-name-transforms `(( ".*" ,rjh/emacs-backup-cache t)) ;
+		)
+#+END_SRC
+
+* Force backup on save
+Force a backup on EVERY save, not just the first one!
+#+BEGIN_SRC emacs-lisp
+(defun force-backup-of-buffer ()
+    ;; Make a special "per session" backup at the first save of each
+    ;; emacs session.
+    (when (not buffer-backed-up)
+      ;; Override the default parameters for per-session backups.
+      (let ((backup-directory-alist '(("" . rjh/emacs-backup-session )))
+            (kept-new-versions 3))
+        (backup-buffer)))
+    ;; Make a "per save" backup on each save.  The first save results in
+    ;; both a per-session and a per-save backup, to keep the numbering
+    ;; of per-save backups consistent.
+    (let ((buffer-backed-up nil))
+      (backup-buffer)))
+(add-hook 'before-save-hook  'force-backup-of-buffer)
+#+END_SRC
+
+* Security detail
+Unfortunately, previous configuration is also backing up and versioning files I
+would rather not have backed up and versioned; including decrypting encrypted
+files. Hopefully the following will circumvent this.
+
+#+BEGIN_SRC emacs-lisp
+(defvar backup-inhibit-file-name-regexp "\\(/dev/shm\\|.*\\.plstore\\)"
+  "Files whose full path matches this regular expression will not be backed up.")
+(defun regexp-backup-enable-predicate (filename)
+  "Disable backups for files whose name matches `backup-inhibit-file-name-regexp'.
+Also call `normal-backup-enable-predicate'."
+  (save-match-data
+    (and (not (string-match backup-inhibit-file-name-regexp filename))
+     (normal-backup-enable-predicate filename))))
+(setq backup-enable-predicate 'regexp-backup-enable-predicate)
+#+END_SRC

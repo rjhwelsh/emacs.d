@@ -1,0 +1,99 @@
+#+TITLE: Calendar configuration and packages
+#+AUTHOR: Roger J. H. Welsh
+#+EMAIL: rjhwelsh@gmail.com
+#+PROPERTY: header-args    :results silent
+#+STARTUP: content
+
+* Google Calendar / Caldav integration
+#+BEGIN_SRC emacs-lisp
+		;; Google Calendar Integration
+		;; Try using package org-caldav
+		(use-package "oauth2" :ensure t)
+		(use-package "org-caldav" :ensure t)
+#+END_SRC
+* Calfw - The pretty Calendar
+This provides a very fancy calendar, which can be used in conjunction with
+org-agendas, ics files and more. More information can be found [[https://github.com/kiwanami/emacs-calfw][here]].
+** Packages
+ Initial setup.
+ #+BEGIN_SRC emacs-lisp
+	 ;; Pretty Calendar
+	 (use-package "calfw" :ensure t )
+	 (use-package "calfw-org" :ensure t
+		:init
+		(setq cfw:org-overwrite-default-keybinding t) ;; org-mode like keybindings
+	 )
+	 (use-package "calfw-ical" :ensure t )
+	 (use-package "calfw-cal" :ensure t )
+ ;	(use-package "calfw-howm" :ensure t )
+	 (require 'calfw-cal)
+	 (require 'calfw-ical)
+	 (require 'calfw-org)
+ ;  (require 'calfw-howm)
+ #+END_SRC
+
+** Unicode
+ Setup for unicode.
+ #+BEGIN_SRC emacs-lisp
+	 ;; Unicode characters
+	 (setq cfw:fchar-junction ?╋
+				 cfw:fchar-vertical-line ?┃
+				 cfw:fchar-horizontal-line ?━
+				 cfw:fchar-left-junction ?┣
+				 cfw:fchar-right-junction ?┫
+				 cfw:fchar-top-junction ?┯
+				 cfw:fchar-top-left-corner ?┏
+				 cfw:fchar-top-right-corner ?┓
+			 cfw:render-line-breaker 'cfw:render-line-breaker-none
+			 )
+
+ #+END_SRC
+
+** Examples
+ A demonstration calendar is in the example below.
+ #+BEGIN_EXAMPLE
+ (defun my-open-calendar ()
+   (interactive)
+   (cfw:open-calendar-buffer
+		:contents-sources
+		(list
+     (cfw:org-create-source "Green")  ; orgmode source
+     (cfw:howm-create-source "Blue")  ; howm source
+     (cfw:cal-create-source "Orange") ; diary source
+     (cfw:ical-create-source "Moon" "~/moon.ics" "Gray")  ; ICS source1
+     (cfw:ical-create-source "gcal" "https://..../basic.ics" "IndianRed") ; google calendar ICS
+		)))
+ #+END_EXAMPLE
+
+ Fancy Grid settings; various examples.
+ #+BEGIN_EXAMPLE
+ ;; Default setting
+ (setq cfw:fchar-junction ?+
+       cfw:fchar-vertical-line ?|
+       cfw:fchar-horizontal-line ?-
+       cfw:fchar-left-junction ?+
+       cfw:fchar-right-junction ?+
+       cfw:fchar-top-junction ?+
+       cfw:fchar-top-left-corner ?+
+       cfw:fchar-top-right-corner ?+ )
+
+ ;; Unicode characters
+ (setq cfw:fchar-junction ?╋
+       cfw:fchar-vertical-line ?┃
+       cfw:fchar-horizontal-line ?━
+       cfw:fchar-left-junction ?┣
+       cfw:fchar-right-junction ?┫
+       cfw:fchar-top-junction ?┯
+       cfw:fchar-top-left-corner ?┏
+       cfw:fchar-top-right-corner ?┓)
+
+ ;; Another unicode chars
+ (setq cfw:fchar-junction ?╬
+       cfw:fchar-vertical-line ?║
+       cfw:fchar-horizontal-line ?═
+       cfw:fchar-left-junction ?╠
+       cfw:fchar-right-junction ?╣
+       cfw:fchar-top-junction ?╦
+       cfw:fchar-top-left-corner ?╔
+       cfw:fchar-top-right-corner ?╗)
+ #+END_EXAMPLE

@@ -1,0 +1,62 @@
+#+TITLE: Yasnippet configuration
+#+AUTHOR: Roger J. H. Welsh
+#+EMAIL: rjhwelsh@gmail.com
+#+PROPERTY: header-args    :results silent
+#+STARTUP: content
+
+=Yasnippet= is all I could ever ask for in a templating program.
+* Packages
+The following packages are used for yasnippet.
+#+BEGIN_SRC emacs-lisp
+	(use-package popup :ensure t)
+	(use-package "yasnippet" :ensure t :diminish yas-minor-mode)
+	(use-package "yasnippet-snippets" :ensure t) ;; Official snippetm by AndreaCrotti
+#+END_SRC
+* Setup
+For more details, see [[http://joaotavora.github.io/yasnippet/][documentation.]]
+Setup snippet directories.
+Add more snippet directories here.
+#+BEGIN_SRC emacs-lisp
+(require 'yasnippet)
+;;(setq yas-snippet-dirs
+;;			'("~/.emacs.d/snippets"                 ;; personal snippets
+;;		  ))
+;; This is default behaviour anyway.
+#+END_SRC
+
+Enable yasnippet globally.
+#+BEGIN_SRC emacs-lisp
+(yas-global-mode 1)
+#+END_SRC
+.
+N.B. For html tags use emmet-mode instead of yasnippet.
+
+* Pop-up menu
+This provides a pop-up selection menu for yasnippet.
+#+BEGIN_SRC emacs-lisp
+(require 'popup)
+
+;; add some shortcuts in popup menu mode
+(define-key popup-menu-keymap (kbd "M-n") 'popup-next)
+(define-key popup-menu-keymap (kbd "TAB") 'popup-next)
+(define-key popup-menu-keymap (kbd "<tab>") 'popup-next)
+(define-key popup-menu-keymap (kbd "<backtab>") 'popup-previous)
+(define-key popup-menu-keymap (kbd "M-p") 'popup-previous)
+
+(defun yas/popup-isearch-prompt (prompt choices &optional display-fn)
+  (when (featurep 'popup)
+    (popup-menu*
+     (mapcar
+      (lambda (choice)
+        (popup-make-item
+         (or (and display-fn (funcall display-fn choice))
+             choice)
+         :value choice))
+      choices)
+     :prompt prompt
+     ;; start isearch mode immediately
+     :isearch t
+     )))
+
+(setq yas/prompt-functions '(yas/popup-isearch-prompt yas/no-prompt))
+#+END_SRC

@@ -1,0 +1,8 @@
+#+TITLE: Study modules for emacs
+#+AUTHOR: Roger J. H. Welsh
+#+EMAIL: rjhwelsh@gmail.com
+* Packages
+#+BEGIN_SRC emacs-lisp
+		; flashcards
+		(use-package "pamparam" :ensure t )
+#+END_SRC

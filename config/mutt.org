@@ -1,0 +1,45 @@
+#+TITLE: Mutt integration
+#+AUTHOR: Roger J. H. Welsh
+#+EMAIL: rjhwelsh@gmail.com
+
+[[https://www.emacswiki.org/emacs/MuttInEmacs][MuttInEmacs]] assisted in creating this configuration.
+
+* Packages
+I use =message-mode= for my emails, which comes standard with emacs.
+Muttrc-mode provides some some nice syntax highlighting for the muttrc, which I like.
+#+BEGIN_SRC emacs-lisp
+	(use-package "muttrc-mode" :ensure t )
+	(require 'muttrc-mode)
+  (require 'message)
+#+END_SRC
+
+* muttrc-mode
+Muttrc-mode, for editing mutt config.
+#+BEGIN_SRC emacs-lisp
+ (add-to-list 'auto-mode-alist '("muttrc" . muttrc-mode))
+#+END_SRC
+
+You may want to use this mode for other files like the mail
+aliases file. In that case just add the following line at the start of the file.
+#+BEGIN_EXAMPLE
+ -*- mode: muttrc; -*-
+#+END_EXAMPLE
+.
+
+* Message-mode integration
+Using mutt in message mode for composing (replies, etc).
+#+BEGIN_SRC emacs-lisp
+	(add-to-list 'auto-mode-alist '(".*mutt.*-[0-9-]*" . message-mode))
+	(setq mail-header-separator "")
+	(add-hook 'message-mode-hook 'turn-on-auto-fill)
+#+END_SRC
+.
+** Keybinding
+This is not working atm.
+ #+BEGIN_SRC emacs-lisp
+	(define-key message-mode-map (kbd "C-c C-c") '(lambda ()
+			"save and exit quickly"
+			(interactive)
+			(save-buffer)
+			(server-edit)))
+ #+END_SRC

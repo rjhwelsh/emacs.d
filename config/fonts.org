@@ -1,0 +1,69 @@
+#+TITLE: Font configuration
+#+AUTHOR: Roger J. H. Welsh
+#+EMAIL: rjhwelsh@gmail.com
+#+PROPERTY: header-args    :results silent
+#+STARTUP: content
+
+Harry's partial to Inconsolata. I prefer Hermit.
+* Default fonts
+Set your preferred font settings here.
+#+BEGIN_SRC emacs-lisp
+  (setq scalable-fonts-allowed '( "iso10646-1$" ) )
+  (setq hrs/default-font "Hermit")
+  (setq hrs/default-font-size 8)
+  (setq hrs/current-font-size hrs/default-font-size)
+
+#+END_SRC
+.
+* Harry Schwartz's font commands
+The standard =text-scale-= functions just resize the text in the current buffer;
+I'd generally like to resize the text in /every/ buffer, and I usually want to
+change the size of the modeline, too (this is especially helpful when
+presenting). These functions and bindings let me resize everything all together!
+
+Note that this overrides the default font-related keybindings from
+=sensible-defaults=.
+#+BEGIN_SRC emacs-lisp
+  (setq hrs/font-change-increment 1.1)
+
+  (defun hrs/font-code ()
+    "Return a string representing the current font (like \"Inconsolata-14\")."
+    (concat hrs/default-font "-" (number-to-string hrs/current-font-size)))
+
+  (defun hrs/set-font-size ()
+    "Set the font to `hrs/default-font' at `hrs/current-font-size'.
+  Set that for the current frame, and also make it the default for
+  other, future frames."
+    (let ((font-code (hrs/font-code)))
+      (add-to-list 'default-frame-alist (cons 'font font-code))
+      (set-frame-font font-code)))
+
+  (defun hrs/reset-font-size ()
+    "Change font size back to `hrs/default-font-size'."
+    (interactive)
+    (setq hrs/current-font-size hrs/default-font-size)
+    (hrs/set-font-size))
+
+  (defun hrs/increase-font-size ()
+    "Increase current font size by a factor of `hrs/font-change-increment'."
+    (interactive)
+    (setq hrs/current-font-size
+          (ceiling (* hrs/current-font-size hrs/font-change-increment)))
+    (hrs/set-font-size))
+
+  (defun hrs/decrease-font-size ()
+    "Decrease current font size by a factor of `hrs/font-change-increment', down to a minimum size of 1."
+    (interactive)
+    (setq hrs/current-font-size
+          (max 1
+               (floor (/ hrs/current-font-size hrs/font-change-increment))))
+    (hrs/set-font-size))
+
+  (define-key global-map (kbd "C-)") 'hrs/reset-font-size)
+  (define-key global-map (kbd "C-+") 'hrs/increase-font-size)
+  (define-key global-map (kbd "C-=") 'hrs/increase-font-size)
+  (define-key global-map (kbd "C-_") 'hrs/decrease-font-size)
+  (define-key global-map (kbd "C--") 'hrs/decrease-font-size)
+
+  (hrs/reset-font-size)
+#+END_SRC

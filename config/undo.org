@@ -1,0 +1,8 @@
+#+TITLE: Undo tree configuration
+#+AUTHOR: Roger J. H. Welsh
+#+EMAIL: rjhwelsh@gmail.com
+
+* Packages
+#+BEGIN_SRC emacs-lisp
+		(use-package "undo-tree" :ensure t )
+#+END_SRC
