@@ -12,7 +12,7 @@ Muttrc-mode provides some some nice syntax highlighting for the muttrc, which I 
 	(require 'muttrc-mode)
   (require 'message)
 #+END_SRC
-
+.
 * muttrc-mode
 Muttrc-mode, for editing mutt config.
 #+BEGIN_SRC emacs-lisp
@@ -35,7 +35,7 @@ Using mutt in message mode for composing (replies, etc).
 #+END_SRC
 .
 ** Keybinding
-This is not working atm.
+.
  #+BEGIN_SRC emacs-lisp
 	(define-key message-mode-map (kbd "C-c C-c") '(lambda ()
 			"save and exit quickly"
@@ -43,3 +43,4 @@ This is not working atm.
 			(save-buffer)
 			(server-edit)))
  #+END_SRC
+.
