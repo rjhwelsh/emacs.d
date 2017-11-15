@@ -1,3 +1,11 @@
+#+TITLE: Personal configuration file
+#+AUTHOR: Roger J. H. Welsh
+#+EMAIL: rjhwelsh@gmail.com
+#+PROPERTY: header-args    :results silent
+#+STARTUP: content
+
+This file has been blanked, so that you may configure it for your own use.
+
 * Personal Contact Information
 Personal contact information:
 #+BEGIN_SRC emacs-lisp
@@ -12,3 +20,50 @@ Personal contact information:
 	  rjh/user-fax ""
 			)
 #+END_SRC
+* Calendar
+** Google Integration
+ Google calendars.
+ #+BEGIN_SRC emacs-lisp
+	 (setq org-icalendar-use-scheduled '(event-if-todo)
+			   org-icalendar-use-deadline  '(event-if-todo todo-due)
+         org-icalendar-alarm-time 40
+ )
+	 (setq org-caldav-url 'google
+						 org-caldav-calendar-id ""
+						 org-caldav-inbox nil
+						 org-icalendar-timezone "UTC"
+						 org-caldav-oauth2-client-id ""
+						 org-caldav-oauth2-client-secret ""
+						 org-caldav-files nil
+						 org-caldav-calendars '((:calendar-id "" :files ("~/.emacs.d/org/events.org")
+																								:inbox "" )
+																	 )
+			 )
+		 ;;(org-caldav-sync) ;; to sync calendars
+ #+END_SRC
+
+ I use crontab with emacs to sync periodically with google calendar.
+ Otherwise, you will have to manually run the sync command using =M-x=.
+ #+BEGIN_EXAMPLE
+ (org-caldav-sync)
+ #+END_EXAMPLE
+
+** Functions
+ More information about calfw found [[https://github.com/kiwanami/emacs-calfw][here]].
+ #+BEGIN_SRC emacs-lisp
+	 (defun my-open-calendar ()
+		 (interactive)
+		 (cfw:open-calendar-buffer
+			:contents-sources
+			(list
+			 (cfw:org-create-source "Green")  ; orgmode source
+			 (cfw:cal-create-source "Orange") ; diary source
+		   (cfw:ical-create-source "Calendar" "~/calendar.ics" "RoyalBlue" ) ; ics source
+			)))
+ #+END_SRC
+* Url-browser
+Set your default browser here.
+#+BEGIN_SRC emacs-lisp
+(setq browse-url-browser-function 'browse-url-firefox)
+#+END_SRC
+.
