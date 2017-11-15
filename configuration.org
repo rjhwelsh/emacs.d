@@ -23,6 +23,7 @@ a separate personal.org file, which is not included my repository.
 #+BEGIN_SRC emacs-lisp
 (org-babel-load-file "~/.emacs.d/personal.org")
 #+END_SRC
+.
 * Init.el Comments
 The following is commented out (as examples) , because it is required in the
 init.el file; such that the latest version of org can be loaded before this file

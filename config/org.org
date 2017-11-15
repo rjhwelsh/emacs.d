@@ -503,11 +503,11 @@ Capture templates.
 					 "* DELEGATE %?\n\t%i\n\t%a\n\n" nil)
 	;; Get in touch - Quick Entry
 				("C" "Call" entry (file+headline rjh/org-tasks "Contact")
-					 "* @CALL to _ about _%?\n\t%i\n\t%a\n\n" nil)
+					 "* @CALL to %? \n\t%i\n\t%a\n\n" nil)
 				("E" "Email" entry (file+headline rjh/org-tasks "Contact")
-					 "* @EMAIL to _ about _%?\n\t%i\n\t%a\n\n" nil)
+					 "* @EMAIL to %? \n\t%i\n\t%a\n\n" nil)
 				("L" "Letter" entry (file+headline rjh/org-tasks "Contact")
-					 "* @POST letter to _ about _%?\n\t%i\n\t%a\n\n" nil)
+					 "* @POST letter to %?\n\t%i\n\t%a\n\n" nil)
 			))
 #+END_SRC
 
