@@ -18,5 +18,5 @@ configuration. Please see the list below.
  * [[https://github.com/hrs][Harry R. Schwartz's]] , [[https://github.com/hrs/sensible-defaults.el][sensible-defaults.el]].
 
 * Usage notes
- * =Magit= _will fail_ if git is not installed. If you do not want to use this
-   package, you may want to comment it out in configuration.org.
+ * If git is not installed on your system, you may get some errors when you
+   start-up; comment out the =git= module in =configuration.org= to fix.
