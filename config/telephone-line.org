@@ -8,13 +8,12 @@ It was just too pretty.
 I saw [[https://github.com/dbordak/telephone-line][this]] on github.
 
 * Package
-
+This installs telephone-line, if it is not available.
 #+BEGIN_SRC emacs-lisp
 (use-package telephone-line
  :ensure t
 )
 #+END_SRC
-
 
 * Separators
 This uses the cubed separators, as illustrated in [[https://github.com/dbordak/telephone-line/blob/master/examples.org][examples.org]].
@@ -94,6 +93,7 @@ And then setting them on the lhs (left-hand-side).
 
 * LHS - Left hand side
 These are my settings for the left-hand side of the mode-line.
+The syntax is a list of ( =telephone-line-faces= .  (=telephone-line-segments=)).
 #+BEGIN_SRC emacs-lisp
 	(setq telephone-line-lhs
 			'(
