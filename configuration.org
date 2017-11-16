@@ -130,29 +130,30 @@ Below is a list of sub-configurations which are loaded to provide certain types
 of functionality. If you dislike or would like to stop using a particular module, simply
 comment it out.
 #+BEGIN_SRC emacs-lisp
-		 (setq rjh/load-config-modules '(
-			"org.org"
-			"git.org"
-			"calendar.org"
-			;"evil.org"
-			"backup.org"
-			"fonts.org"
-			"yasnippet.org"
-			"workgroups.org"
-			"startup.org"
-			"abbrev.org"
-			"company.org"
-			"mutt.org"
-			"crypto.org"
-			"bbdb.org"
-			"theme.org"
-			"text.org"
-			"file.org"
-			"python.org"
-			"study.org"
-			"undo.org"
-			"graph.org"
-		))
+	 (setq rjh/load-config-modules '(
+		"org.org"
+		"git.org"
+		"calendar.org"
+		;"evil.org"
+		"backup.org"
+		"fonts.org"
+		"yasnippet.org"
+		"workgroups.org"
+		"startup.org"
+		"abbrev.org"
+		"company.org"
+		"mutt.org"
+		"crypto.org"
+		"bbdb.org"
+		"theme.org"
+		"text.org"
+		"file.org"
+		"python.org"
+		"study.org"
+		"undo.org"
+		"graph.org"
+	  "telephone-line.org"
+	))
 #+END_SRC
 
 All of these use =use-package= to install packages, with the =:ensure t= option.
