@@ -70,7 +70,6 @@ git clone https://github.com/hrs/sensible-defaults.el ~/sensible-defaults.el
 cp -v ~/sensible-defaults.el/sensible-defaults.el ~/.emacs.d/sensible-defaults.el
 #+END_SRC
 
-
 * Configuration
 
 ** configuration.org
@@ -127,7 +126,20 @@ cd $LOCALREPO
 git pull
 #+END_EXAMPLE
 
-
 * Extra notes
  * If git is not installed on your system, you may get some errors when you
    start-up; comment out the =git= module in =configuration.org= to fix.
+* Further Reading
+The emacs tutorial and info pages are a useful resource.
+ =C-h t= and =C-h i= respectively.
+
+The following emacs configurations, provided inspiration, and useful content.
+			 1. [[https://github.com/hrs/dotfiles/blob/master/emacs/.emacs.d/configuration.org][Harry Schwartz's config]]
+			 2. [[https://ogbe.net/emacsconfig.html][Dennis Ogbe Emacs config]]
+			 3. [[http://doc.norang.ca/org-mode.html][Bernt Hansen comprehensive org]]
+			 4. [[http://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua's Emacs config]]
+
+And don't forget to checkout the emacs wiki.
+ - https://www.emacswiki.org/
+
+May the lisp be with you.
