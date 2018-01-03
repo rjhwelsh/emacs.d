@@ -20,6 +20,13 @@ Personal contact information:
 	  rjh/user-fax ""
 			)
 #+END_SRC
+
+* Font
+Preferred font style.
+#+BEGIN_SRC emacs-lisp
+; (setq hrs/default-font "") ; I use "Hermit", though it's not very common.
+#+END_SRC
+
 * Calendar
 ** Google Integration
  Google calendars.

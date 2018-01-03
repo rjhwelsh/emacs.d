@@ -9,7 +9,7 @@ Harry's partial to Inconsolata. I prefer Hermit.
 Set your preferred font settings here.
 #+BEGIN_SRC emacs-lisp
   (setq scalable-fonts-allowed '( "iso10646-1$" ) )
-  (setq hrs/default-font "Hermit")
+ ; (setq hrs/default-font "Hermit")
   (setq hrs/default-font-size 8)
   (setq hrs/current-font-size hrs/default-font-size)
 
