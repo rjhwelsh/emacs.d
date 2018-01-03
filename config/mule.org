@@ -1,0 +1,41 @@
+#+TITLE: Multilingual Environment Configuration
+#+AUTHOR: Roger J. H. Welsh
+#+EMAIL: rjhwelsh@gmail.com
+#+PROPERTY: header-args    :results silent
+#+STARTUP: content
+
+I have setup this according to suggestions, from the following web-page using
+emacs for typing in japanese.
+
+The following keyboard shortcuts are useful.
+ - *CTRL-\* :: Invokes input method selection / switching.
+
+* Font correction
+	Sometimes the wrong font provides simplified Chinese instead of Japanese (漢字).
+  To correct this, set the font as follows.
+#+BEGIN_SRC emacs-lisp
+(set-fontset-font (frame-parameter nil 'font)
+  'japanese-jisx0208
+  '("Sazanami Gothic" . "unicode-bmp"))
+#+END_SRC
+
+* Japanese Anthy
+
+If you are using Emacs 24 the following patch may be required to anthy.el.
+#+BEGIN_EXAMPLE
+--- src-util/anthy.el.org	2012-02-28 17:16:08.000000000 +0900
++++ src-util/anthy.el	2013-05-08 15:10:37.000000000 +0900
+@@ -892,7 +892,7 @@
+ 	 ((event-matches-key-specifier-p event 'backspace) 8)
+ 	 (t
+ 	  (char-to-int (event-to-character event)))))
+-    last-command-char))
++    last-command-event))
+#+END_EXAMPLE
+
+
+#+BEGIN_SRC emacs-lisp
+(set-language-environment "Japanese")
+(load-library "anthy")
+
+#+END_SRC
