@@ -120,12 +120,6 @@ Always compile packages and use the newest available.
 #+END_SRC
 
 * Configuration modules
-
-Use this to set the location of the local version of my configuration repo for emacs.d.
-#+BEGIN_SRC emacs-lisp
-	 (setq rjh/local-config-repo "~/emacs.d" )
-#+END_SRC
-
 Below is a list of sub-configurations which are loaded to provide certain types
 of functionality. If you dislike or would like to stop using a particular module, simply
 comment it out.

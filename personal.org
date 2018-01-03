@@ -6,6 +6,11 @@
 
 This file has been blanked, so that you may configure it for your own use.
 
+* Configuration Module Repository
+Use this to set the location of the local version of my configuration repo for emacs.d.
+#+BEGIN_SRC emacs-lisp
+	 (setq rjh/local-config-repo "~/emacs.d" )
+#+END_SRC
 * Personal Contact Information
 Personal contact information:
 #+BEGIN_SRC emacs-lisp
