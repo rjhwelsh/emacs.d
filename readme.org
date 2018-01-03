@@ -121,6 +121,13 @@ The file is mostly self-explanatory. use it to setup variables describing:
  6. Default web-browser
 
 * Updating
+To update configuration modules from my repo, use a git pull.
+#+BEGIN_EXAMPLE sh
+cd $LOCALREPO
+git pull
+#+END_EXAMPLE
+
+
 * Extra notes
  * If git is not installed on your system, you may get some errors when you
    start-up; comment out the =git= module in =configuration.org= to fix.
