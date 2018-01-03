@@ -5,7 +5,7 @@
 * What is this?
 This a blanked version of my own personal configuration for Emacs.
 
-* Installation Instructions
+* Installation
 To install the emacs.d setup, you will need to do the following.
 These instructions, assume you will clone the repo to =~/emacs.d= .
 *You can clone directly to your .emacs.d directory, but this is not recommended.*
@@ -34,17 +34,24 @@ cp -v $LOCALREPO/{init.el,configuration.org,personal.org,workgroups,agenda-files
 mkdir -vp $CONFIGDIR/{org,snippets}
 #+END_SRC
 
-Make sure that =configuration.org= in the =$CONFIGDIR= uses the correct
-loadpath; based on the location of =$LOCALREPO=. Open this in your
-second-favourite editor and fix "~/emacs.d" to be the same as your $CONFIGDIR.
+Make sure that =personal.org= in the =$CONFIGDIR= uses the correct
+loadpath; based on the location of =$LOCALREPO=.
 
-#+BEGIN_EXAMPLE file:configuration.org
-122 * Configuration modules
-123
-124
-125 #+BEGIN_SRC emacs-lisp
-126 (setq rjh/local-config-repo "~/emacs.d")
-127 #+END_SRC
+Open this in your second-favourite editor and fix "~/emacs.d" to be the same as
+your $CONFIGDIR.
+#+BEGIN_EXAMPLE file:personal.org
+* Configuration modules
+#+BEGIN_SRC emacs-lisp
+(setq rjh/local-config-repo "~/emacs.d") ; Set to $CONFIGDIR value
+#+END_SRC
+#+END_EXAMPLE
+
+You will also need to select a font.
+
+I like to use Hermit, but it is not all that common.
+
+#+BEGIN_EXAMPLE file:personal.org
+ (setq hrs/default-font "Hermit")
 #+END_EXAMPLE
 
 After setting up any additional dependencies from below, starting up emacs will
@@ -52,11 +59,12 @@ automatically download and install packages from melpa according to the default
 configuration.
 
 * Dependencies
-You will have to manually install these packages in order to be able to use my
+You will have to manually install Harry's package below in order to be able to use my
 configuration. Please see the list below.
 
  * [[https://github.com/hrs][Harry R. Schwartz's]] , [[https://github.com/hrs/sensible-defaults.el][sensible-defaults.el]].
 
+Install instructions.
 #+BEGIN_SRC sh
 git clone https://github.com/hrs/sensible-defaults.el ~/sensible-defaults.el
 cp -v ~/sensible-defaults.el/sensible-defaults.el ~/.emacs.d/sensible-defaults.el
@@ -64,35 +72,55 @@ cp -v ~/sensible-defaults.el/sensible-defaults.el ~/.emacs.d/sensible-defaults.e
 
 
 * Configuration
-The =configuration.org= in your .emacs.d (emacs config) directory, acts as the
-centre of operations for adjusting your configuration.
 
-Adding/removing config options from the =Configuraton Modules= section, will
-selectively load/not-load parts of my configuration that you like/dislike.
+** configuration.org
+ The =configuration.org= in your .emacs.d (emacs config) directory, acts as the
+ centre of operations for adjusting your configuration.
 
-Each configuration is specified as an org-file that you may load using the
-=rjh/load-config-modules= variable.
+ Adding/removing config options from the =Configuraton Modules= section, will
+ selectively load/not-load parts of my configuration that you like/dislike.
 
-For example, to only load my =org.org= and =git.org= configuration modules, simply
-change the variable to only include these in =configuration.org=.
-Lines can also be commented out using =;= , as in =; "evil.org"=.
+ Each configuration is specified as an org-file that you may load using the
+ =rjh/load-config-modules= variable.
 
-#+BEGIN_SRC emacs-lisp
-	(setq rjh/load-config-modules '(
-			"org.org"
-			"git.org"
-		 ; "evil.org"
-	))
-#+END_SRC
+ For example, to only load my =org.org= and =git.org= configuration modules, simply
+ change the variable to only include these in =configuration.org=.
+ Lines can also be commented out using =;= , as in =; "evil.org"=.
 
-You can even write your own modules, and put them in the load-path.
-If you have any =org= modules for configuration that you would like to submit,
-please submit a pull-request.
+ #+BEGIN_SRC emacs-lisp
+	 (setq rjh/load-config-modules '(
+			 "org.org"
+			 "git.org"
+			; "evil.org"
+	 ))
+ #+END_SRC
 
-The main goal of this project is to provide documented configuration, to quickly
-get a newbie to emacs up and running quickly. Modules should stand alone, and be
-set up for a particular purpose.
+ You can even write your own modules, and put them in the load-path.
+ If you have any =org= modules for configuration that you would like to submit,
+ please submit a pull-request.
 
+ The main goal of this project is to provide documented configuration, to quickly
+ get a newbie to emacs up and running quickly. Modules should stand alone, and be
+ set up for a particular purpose.
+
+** personal.org
+Use =personal.org= in your .emacs.d (emacs config) directory for all your
+personal configuration. Personal configuration, is anything you might want to
+keep private and separate from the rest of your config.
+
+I created this so that I could share the joys of my config file, without being
+loose with my own personal details. It also serves well as a config file for
+matters of personal taste (Chrome, Firefox, IE, for example).
+
+The file is mostly self-explanatory. use it to setup variables describing:
+ 1. Your name
+ 2. email address
+ 3. Calendar location
+ 4. Contact Information
+ 5. Default font
+ 6. Default web-browser
+
+* Updating
 * Extra notes
  * If git is not installed on your system, you may get some errors when you
    start-up; comment out the =git= module in =configuration.org= to fix.
