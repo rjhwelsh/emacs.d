@@ -11,6 +11,12 @@ Use this to set the location of the local version of my configuration repo for e
 #+BEGIN_SRC emacs-lisp
 	 (setq rjh/local-config-repo "~/emacs.d" )
 #+END_SRC
+
+* Font
+Preferred font style.
+#+BEGIN_SRC emacs-lisp
+ (setq hrs/default-font "Hermit") ; I use "Hermit", though it's not very common.
+#+END_SRC
 * Personal Contact Information
 Personal contact information:
 #+BEGIN_SRC emacs-lisp
@@ -24,12 +30,6 @@ Personal contact information:
 		 rjh/user-phone ""
 	  rjh/user-fax ""
 			)
-#+END_SRC
-
-* Font
-Preferred font style.
-#+BEGIN_SRC emacs-lisp
-; (setq hrs/default-font "") ; I use "Hermit", though it's not very common.
 #+END_SRC
 
 * Calendar
