@@ -4,6 +4,20 @@
 
 * What is this?
 This a blanked version of my own personal configuration for Emacs.
+* Dependencies
+** Emacs Version
+ Emacs version 24.5 or higher is required.
+** Sensible-defaults.el
+ You will have to manually install Harry's package below in order to be able to use my
+ configuration.
+
+	* [[https://github.com/hrs][Harry R. Schwartz's]] , [[https://github.com/hrs/sensible-defaults.el][sensible-defaults.el]].
+
+ Install instructions.
+ #+BEGIN_SRC sh
+ git clone https://github.com/hrs/sensible-defaults.el ~/sensible-defaults.el
+ cp -v ~/sensible-defaults.el/sensible-defaults.el ~/.emacs.d/sensible-defaults.el
+ #+END_SRC
 
 * Installation
 To install the emacs.d setup, you will need to do the following.
@@ -39,36 +53,21 @@ loadpath; based on the location of =$LOCALREPO=.
 
 Open this in your second-favourite editor and fix "~/emacs.d" to be the same as
 your $CONFIGDIR.
-#+BEGIN_EXAMPLE file:personal.org
-* Configuration modules
-#+BEGIN_SRC emacs-lisp
-(setq rjh/local-config-repo "~/emacs.d") ; Set to $CONFIGDIR value
-#+END_SRC
+#+BEGIN_EXAMPLE file:
+(setq rjh/local-config-repo "~/emacs.d") ; Set to $CONFIGDIR
 #+END_EXAMPLE
 
 You will also need to select a font.
-
 I like to use Hermit, but it is not all that common.
+Change "Hermit" to your preferred system font. (Like "DejaVuSans", or "Inconsolata")
 
 #+BEGIN_EXAMPLE file:personal.org
- (setq hrs/default-font "Hermit")
+(setq hrs/default-font "Hermit")
 #+END_EXAMPLE
 
 After setting up any additional dependencies from below, starting up emacs will
 automatically download and install packages from melpa according to the default
 configuration.
-
-* Dependencies
-You will have to manually install Harry's package below in order to be able to use my
-configuration. Please see the list below.
-
- * [[https://github.com/hrs][Harry R. Schwartz's]] , [[https://github.com/hrs/sensible-defaults.el][sensible-defaults.el]].
-
-Install instructions.
-#+BEGIN_SRC sh
-git clone https://github.com/hrs/sensible-defaults.el ~/sensible-defaults.el
-cp -v ~/sensible-defaults.el/sensible-defaults.el ~/.emacs.d/sensible-defaults.el
-#+END_SRC
 
 * Configuration
 
