@@ -24,50 +24,55 @@ To install the emacs.d setup, you will need to do the following.
 These instructions, assume you will clone the repo to =~/emacs.d= .
 *You can clone directly to your .emacs.d directory, but this is not recommended.*
 
-Set the following locations as variables; note these *will* be different on
-Windows.
-#+BEGIN_SRC sh
-export LOCALREPO=~/emacs.d
-export CONFIGDIR=~/.emacs.d
-#+END_SRC
+** basic config setup
+ Set the following locations as variables; note these *will* be different on
+ Windows.
+ #+BEGIN_SRC sh
+ export LOCALREPO=~/emacs.d
+ export CONFIGDIR=~/.emacs.d
+ #+END_SRC
 
-Clone my repository.
-#+BEGIN_SRC sh
-git clone https://github.com/rjhwelsh/emacs.d $LOCALREPO
-#+END_SRC
+ Clone my repository.
+ #+BEGIN_SRC sh
+ git clone https://github.com/rjhwelsh/emacs.d $LOCALREPO
+ #+END_SRC
 
-Create the .emacs.d config directory (if it does not exist).
-#+BEGIN_SRC sh
-mkdir -vp $CONFIGDIR
-#+END_SRC
+ Create the .emacs.d config directory (if it does not exist).
+ #+BEGIN_SRC sh
+ mkdir -vp $CONFIGDIR
+ #+END_SRC
 
-Copy over essential configuration options, and create base directories for
-(some) modules.
-#+BEGIN_SRC sh
-cp -v $LOCALREPO/{init.el,configuration.org,personal.org,workgroups,agenda-files} $CONFIGDIR
-mkdir -vp $CONFIGDIR/{org,snippets}
-#+END_SRC
+ Copy over essential configuration options, and create base directories for
+ (some) modules.
+ #+BEGIN_SRC sh
+ cp -v $LOCALREPO/{init.el,configuration.org,personal.org,workgroups,agenda-files} $CONFIGDIR
+ mkdir -vp $CONFIGDIR/{org,snippets}
+ #+END_SRC
 
-Make sure that =personal.org= in the =$CONFIGDIR= uses the correct
-loadpath; based on the location of =$LOCALREPO=.
 
-Open this in your second-favourite editor and fix "~/emacs.d" to be the same as
-your $CONFIGDIR.
-#+BEGIN_EXAMPLE file:
-(setq rjh/local-config-repo "~/emacs.d") ; Set to $CONFIGDIR
-#+END_EXAMPLE
+** personal.org - Required config
+*** rjh/load-config-repo
+	Make sure that =personal.org= in the =$CONFIGDIR= uses the correct
+	load-config-repo; i.e. the location of your =$LOCALREPO=.
 
-You will also need to select a font.
-I like to use Hermit, but it is not all that common.
-Change "Hermit" to your preferred system font. (Like "DejaVuSans", or "Inconsolata")
+	Open this in your second-favourite editor and fix "~/emacs.d" to be the same as
+	your $CONFIGDIR.
+	#+BEGIN_EXAMPLE file:
+	(setq rjh/local-config-repo "~/emacs.d") ; Set to $CONFIGDIR
+	#+END_EXAMPLE
 
-#+BEGIN_EXAMPLE file:personal.org
-(setq hrs/default-font "Hermit")
-#+END_EXAMPLE
+*** hrs/default-font
+	You will also need to select a font.
+	I like to use Hermit, but it is not all that common.
+	Change "Hermit" to your preferred system font. (Like "DejaVuSans", or "Inconsolata")
 
-After setting up any additional dependencies from below, starting up emacs will
-automatically download and install packages from melpa according to the default
-configuration.
+	#+BEGIN_EXAMPLE file:personal.org
+	(setq hrs/default-font "Hermit")
+	#+END_EXAMPLE
+
+	After setting up any additional dependencies from below, starting up emacs will
+	automatically download and install packages from melpa according to the default
+	configuration.
 
 * Configuration
 
