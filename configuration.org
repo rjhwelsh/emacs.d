@@ -147,7 +147,8 @@ comment it out.
 		"undo.org"
 		"graph.org"
 		"telephone-line.org"
-	  "mule.org"
+		"mule.org"
+	  "recent.org"
 	))
 #+END_SRC
 
