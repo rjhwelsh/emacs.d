@@ -60,19 +60,17 @@ Personal contact information:
  (org-caldav-sync)
  #+END_EXAMPLE
 
-** Functions
+** Calendar sources
  More information about calfw found [[https://github.com/kiwanami/emacs-calfw][here]].
- #+BEGIN_SRC emacs-lisp
-	 (defun my-open-calendar ()
-		 (interactive)
-		 (cfw:open-calendar-buffer
-			:contents-sources
-			(list
+ Functions in the calendar.org, use this variable as the =:content-sources= for
+ some agenda calendar views. =rjh/two-week-view= , =rjh/week-view=, etc.
+#+BEGIN_SRC emacs-lisp
+	(setq rjh/calendar-sources (list
 			 (cfw:org-create-source "Green")  ; orgmode source
 			 (cfw:cal-create-source "Orange") ; diary source
-		   (cfw:ical-create-source "Calendar" "~/calendar.ics" "RoyalBlue" ) ; ics source
-			)))
- #+END_SRC
+														)
+ )
+#+END_SRC
 * Url-browser
 Set your default browser here.
 #+BEGIN_SRC emacs-lisp

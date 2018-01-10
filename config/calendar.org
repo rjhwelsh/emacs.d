@@ -97,3 +97,33 @@ org-agendas, ics files and more. More information can be found [[https://github.
        cfw:fchar-top-left-corner ?╔
        cfw:fchar-top-right-corner ?╗)
  #+END_EXAMPLE
+
+** Calendar Views
+
+Keybinding
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x a c") 'rjh/two-week-view)
+#+END_SRC
+
+Two week agenda.
+ #+BEGIN_SRC emacs-lisp
+			(defun rjh/two-week-view ()
+				(interactive)
+				(cfw:open-calendar-buffer
+				 :contents-sources
+			   ( rjh/calendar-sources ); set this var in personal.org
+				 :view
+				 'two-weeks
+				 ))
+ #+END_SRC
+Week agenda.
+ #+BEGIN_SRC emacs-lisp
+			(defun rjh/week-view ()
+				(interactive)
+				(cfw:open-calendar-buffer
+				 :contents-sources
+			   ( rjh/calendar-sources ) ; set this var in personal.org
+				 :view
+				 'week
+				 ))
+ #+END_SRC
