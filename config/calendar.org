@@ -127,3 +127,43 @@ Week agenda.
 				 'week
 				 ))
  #+END_SRC
+
+* Emacs diary integration
+Set diary file
+#+BEGIN_SRC emacs-lisp
+(setq rjh/diary diary-file ;; I just use the default diary for my appointments )
+#+END_SRC
+
+Calendar style. Diary entries. Diary file.
+Use iso by default.
+#+BEGIN_SRC emacs-lisp
+(setq calendar-date-style 'iso
+diary-number-of-entries 1
+diary-file rjh/diary
+)
+;; In-case calendar is already loaded..
+(calendar-set-date-style 'iso)
+
+#+END_SRC
+
+Holidays display.
+Most of them are American and I now source holidays from a google.ics.
+Remove all holiday data.
+#+BEGIN_SRC emacs-lisp
+(setq calendar-holidays nil)
+#+END_SRC
+
+Reminders
+#+BEGIN_SRC emacs-lisp
+(appt-activate)
+#+END_SRC
+
+Integrate with org-mode
+#+BEGIN_SRC emacs-lisp
+(setq org-agenda-include-diary t)
+#+END_SRC
+
+Sort entries hook.
+#+BEGIN_SRC emacs-lisp
+(add-hook 'diary-list-entries-hook 'diary-sort-entries t)
+#+END_SRC

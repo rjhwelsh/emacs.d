@@ -77,14 +77,13 @@ Set the org-directory.
 #+END_SRC
 Some default locations.
 #+BEGIN_SRC emacs-lisp
-		(setq rjh/org-tasks (expand-file-name "tasks.org" org-directory)
-				rjh/org-journal (expand-file-name "journal.org" org-directory)
-				rjh/org-events (expand-file-name "events.org" org-directory)
-				rjh/org-habits (expand-file-name "habits.org" org-directory)
-				rjh/org-daily (expand-file-name "daily.org" org-directory)
-				rjh/org-archive (expand-file-name "zarchive.org" org-directory)
-			 rjh/org-diary diary-file  ;; I just use the default diary for my appointments
-		 )
+	(setq rjh/org-tasks (expand-file-name "tasks.org" org-directory)
+			rjh/org-journal (expand-file-name "journal.org" org-directory)
+			rjh/org-events (expand-file-name "events.org" org-directory)
+			rjh/org-habits (expand-file-name "habits.org" org-directory)
+			rjh/org-daily (expand-file-name "daily.org" org-directory)
+			rjh/org-archive (expand-file-name "zarchive.org" org-directory)
+	 )
 #+END_SRC
 * Faces
 FACES are custom settings for font, colour, background etc.
@@ -405,36 +404,6 @@ Sorting strategy.
     (todo   priority-down category-keep)
     (tags   priority-down category-keep)
     (search category-keep)))
-#+END_SRC
-
-
-*** Diary Conf
-Calendar style. Diary entries. Diary file.
-#+BEGIN_SRC emacs-lisp
-(setq calendar-date-style "iso"
-diary-number-of-entries "1"
-diary-file "~/.emacs.d/diary" ;; --> links to org dir
-)
-;; In-case calendar is already loaded..
-(calendar-set-date-style "iso")
-
-#+END_SRC
-
-Holidays display.
-Most of them are American and I now source holidays from a google.ics.
-Remove all holiday data.
-#+BEGIN_SRC emacs-lisp
-(setq calendar-holidays nil)
-#+END_SRC
-
-Reminders
-#+BEGIN_SRC emacs-lisp
-(appt-activate)
-#+END_SRC
-
-Integrate with org-mode
-#+BEGIN_SRC emacs-lisp
-(setq org-agenda-include-diary t)
 #+END_SRC
 
 *** Clocking Working Time
