@@ -322,7 +322,7 @@ Press K to enable/disable habits in the agenda.
 			(type "|" "CANCELED(k@)" "TRASH(t!)" )
 			(sequence "REPORT(r!)" "BUG(b!)" "KNOWNCAUSE(K!)" "|" "FIXED(f@)" )
 			(type "@CALL(C!)" "@EMAIL(E!)" "@POST(P!)" "|" )
-	    (type "HABIT(h!)" "|")
+	    (type "HABIT(h!)" "BLOCK(b)" "|")
 		)
 	 )
 	 (setq org-log-into-drawer t) ;LOGBOOK
@@ -386,6 +386,7 @@ Press K to enable/disable habits in the agenda.
 					( "@EMAIL" . context )
 					( "@POST" . new )
 			    ( "HABIT" . verify )
+			    ( "BLOCK" . delegate )
 					 )
 	 )
  #+END_SRC
