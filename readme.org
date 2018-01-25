@@ -19,6 +19,16 @@ This a blanked version of my own personal configuration for Emacs.
  cp -v ~/sensible-defaults.el/sensible-defaults.el ~/.emacs.d/sensible-defaults.el
  #+END_SRC
 
+** org-gantt.el
+The org-gantt.org module depends on org-gantt.el.
+ * [[https://github.com/swillner/org-gantt]] , [[https://github.com/swillner/org-gantt/blob/master/org-gantt.el][org-gantt.el]]
+
+Install instructions.
+#+BEGIN_SRC sh
+git clone https://github.com/swillner/org-gantt ~/org-gantt
+cp -v ~/org-gantt/org-gantt.el ~/.emacs.d/org-gantt.el
+#+END_SRC
+
 * Installation
 To install the emacs.d setup, you will need to do the following.
 These instructions, assume you will clone the repo to =~/emacs.d= .

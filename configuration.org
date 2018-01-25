@@ -126,6 +126,7 @@ comment it out.
 #+BEGIN_SRC emacs-lisp
 	 (setq rjh/load-config-modules '(
 		"org.org"
+	  "org-gantt.org"
 		"git.org"
 		"calendar.org"
 		;"evil.org"
@@ -148,7 +149,7 @@ comment it out.
 		"graph.org"
 		"telephone-line.org"
 		"mule.org"
-	  "recent.org"
+		"recent.org"
 	))
 #+END_SRC
 
