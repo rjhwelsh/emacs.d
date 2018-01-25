@@ -131,7 +131,7 @@ Week agenda.
 * Emacs diary integration
 Set diary file
 #+BEGIN_SRC emacs-lisp
-(setq rjh/diary diary-file ;; I just use the default diary for my appointments )
+(setq rjh/diary diary-file ) ;; I just use the default diary for my appointments )
 #+END_SRC
 
 Calendar style. Diary entries. Diary file.
