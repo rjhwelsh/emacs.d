@@ -5,7 +5,36 @@
 * About
 	Org-gantt uses pgfgantt to create gantt charts in pdf exports.
 	https://github.com/swillner/org-gantt
+	This package will require manual installation.
+
+* Load org-gantt
 #+BEGIN_SRC emacs-lisp
 (load-file "~/.emacs.d/org-gantt.el")
 #+END_SRC
 This depends on org-mode, so ensure org-mode is active before importing.
+
+* Latex Document Class
+I prefer to have larger sheets for big gantt planning charts.
+
+Add the following to export pdf charts.
+#+BEGIN_EXAMPLE org-header
+#+LaTeX_CLASS: chart
+#+END_EXAMPLE
+
+Adding the "chart" document class.
+#+BEGIN_SRC emacs-lisp
+	(setq org-latex-classes '())
+	(add-to-list 'org-latex-classes '("chart"
+				"\\documentclass[11pt]{article}
+\\usepackage{geometry}
+\\geometry{a3paper,landscape, margin=25mm}
+\\usepackage{multicol}"
+					("\\section{%s}" . "\\section*{%s}")
+					("\\subsection{%s}" . "\\subsection*{%s}")
+					("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+					("\\paragraph{%s}" . "\\paragraph*{%s}")
+					("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+#+END_SRC
+
+#+RESULTS:
+| chart | \documentclass[11pt]{article} |
