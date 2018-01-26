@@ -28,7 +28,9 @@ Adding the "chart" document class.
 				"\\documentclass[11pt]{article}
 \\usepackage{geometry}
 \\geometry{a3paper,landscape, margin=25mm}
-\\usepackage{multicol}"
+\\usepackage{multicol}
+\\usepackage[dvipsnames]{xcolor}
+"
 					("\\section{%s}" . "\\section*{%s}")
 					("\\subsection{%s}" . "\\subsection*{%s}")
 					("\\subsubsection{%s}" . "\\subsubsection*{%s}")
