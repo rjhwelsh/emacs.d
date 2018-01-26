@@ -21,12 +21,12 @@ This a blanked version of my own personal configuration for Emacs.
 
 ** org-gantt.el
 The org-gantt.org module depends on org-gantt.el.
- * [[https://github.com/swillner/org-gantt]] , [[https://github.com/swillner/org-gantt/blob/master/org-gantt.el][org-gantt.el]]
+ * https://github.com/HeyFlash/emacs-stuff , [[https://github.com/HeyFlash/emacs-stuff/blob/master/experiments/org-gantt.el][org-gantt.el]]
 
 Install instructions.
 #+BEGIN_SRC sh
-git clone https://github.com/swillner/org-gantt ~/org-gantt
-cp -v ~/org-gantt/org-gantt.el ~/.emacs.d/org-gantt.el
+git clone https://github.com/HeyFlash/emacs-stuff ~/emacs-stuff
+cp -v ~/emacs-stuff/experiments/org-gantt.el ~/.emacs.d/org-gantt.el
 #+END_SRC
 
 * Installation
