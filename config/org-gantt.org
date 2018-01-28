@@ -23,7 +23,6 @@ Add the following to export pdf charts.
 
 Adding the "chart" document class.
 #+BEGIN_SRC emacs-lisp
-	(setq org-latex-classes '())
 	(add-to-list 'org-latex-classes '("chart"
 				"\\documentclass[11pt]{article}
 \\usepackage{geometry}
