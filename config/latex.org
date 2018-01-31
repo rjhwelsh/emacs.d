@@ -1,0 +1,19 @@
+#+TITLE: Latex configuration
+#+AUTHOR: Roger J. H. Welsh
+#+EMAIL: rjhwelsh@gmail.com
+
+* About
+This configuration is for setting up latex for emacs.
+
+* Initialize
+
+#+BEGIN_SRC emacs-lisp
+(setq TeX-PDF-mode t)
+#+END_SRC
+
+* Default shell command
+Shell commands do not play particularly nice with my zsh setup, so instead use
+bash as the default shell-command explicitly.
+#+BEGIN_SRC emacs-lisp
+(setq shell-file-name "/bin/bash")
+#+END_SRC
