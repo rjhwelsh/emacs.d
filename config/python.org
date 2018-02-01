@@ -30,6 +30,19 @@ badly-formatted Python.
     (elpy-enable)
 #+END_SRC
 
+Interpreter setup (default). You could use Jupyter as an alternative here. ("jupyter"
+, "console --simple-prompt" )
+#+BEGIN_SRC emacs-lisp
+	(setq python-shell-interpreter "python"
+			python-shell-interpreter-args "-i")
+#+END_SRC
+
+Set up a dedicated python shell for each buffer.
+#+BEGIN_SRC emacs-lisp
+(setq elpy-dedicated-shells nil)
+#+END_SRC
+
+
 * Jedi
 [[http://jedi.readthedocs.io/en/latest/][Jedi - read the docs]].
 
@@ -46,35 +59,108 @@ Add a hook for company-jedi to python-mode.
 (add-hook 'python-mode-hook 'rjh/python-mode-hook)
 #+END_SRC
 
-* Autopep8
-	Autopep8 is a code linter for tidying up code to python pep8 standards.
-The following is a set of functions, (that may already be implemented in elpy),
-for using autopep8 to lint your code before saving.
+* Notes
 
-#+BEGIN_SRC emacs-lisp
-(defcustom python-autopep8-path (executable-find "autopep8")
-  "autopep8 executable path."
-  :group 'python
-  :type 'string)
+** Configuration and virtual environments
+ In order to use all the features of elpy, the following will provide more
+ instructions on what needs to be installed. Be aware that this uses your
+ currently selected virtual env. For more about virtual envs, [[https://realpython.com/blog/python/python-virtual-environments-a-primer/][click here]] and
+ [[https://docs.python.org/3/library/venv.html][here]].
+ #+BEGIN_EXAMPLE
+ M-x elpy-config RET
+ #+END_EXAMPLE
 
-(defun python-autopep8 ()
-  "Automatically formats Python code to conform to the PEP 8 style guide.
-$ autopep8 --in-place --aggressive <filename>"
-  (interactive)
-  (when (eq major-mode 'python-mode)
-    (shell-command
-     (format "%s --in-place --aggressive %s" python-autopep8-path
-             (shell-quote-argument (buffer-file-name))))
-    (revert-buffer t t t)))
+ Every project and virtual env get it's own RPC process, and is present in the
+ buffer lists. You can see them with.
+ #+BEGIN_EXAMPLE
+ M-x list-process
+ C-x C-b
+ #+END_EXAMPLE
 
-(define-key python-mode-map (kbd "C-c C-a") 'python-autopep8)
-#+END_SRC
+ A useful RPC process command
+	- =M-x elpy-rpc-restart= :: Close all running RPC processes and re-start them
+       on demand with current settings.
 
-This segment enables automatic code linting before saving.
-Though I prefer to lint manually, so this is just an example.
-#+BEGIN_EXAMPLE emacs-lisp
-(eval-after-load 'python
-  '(if python-autopep8-path
-       (add-hook 'before-save-hook 'python-autopep8)))
+ Elpy has full support for Python's virtual envs. Every RPC process is associated
+ with a specific virtual env and completions are done based on that environment.
+ Outside of this, elpy allows a single global virtual env which can be changed
+ whenever you like.
 
-#+END_EXAMPLE
+ Some venv commands.
+ #+BEGIN_EXAMPLE
+ M-x pyvenv-workon
+ M-x pyvenv-activate
+ M-x pyvenv-deactivate
+ #+END_EXAMPLE
+
+** Navigation
+Movement is natural emacs. Though there are some additional python-mode specific moves.
+ - =C-M-f= :: Move across a whole expression.
+ - =C-M-k= :: Delete expression after point.
+ - =C-M-d= :: Move down parentheses.
+ - =C-M-u= :: Move up parentheses.
+ - =C-up/down= :: Move up/down same indentation level.
+ - =C-left/right= :: Move left/right across indentation levels.
+ - =M-<direction>= :: Move region.
+
+** Integrated Development Environment
+*** Projects
+Elpy supports the notion of projects, a related collection of files under a
+common directory. This common directory is called project root.
+ Some keys are:
+	- =C-cf= :: elpy-find-file
+	- =C-cs= :: elpy-rgrep-symbol
+	- =M-TAB= :: elpy-company-backend
+	- =M-.= :: elpy-goto-definition; Go to the location where the identifier at
+             point is defined. Mileage may vary.
+	- =C-x 4 M-.= :: elpy-goto-definition-other-window
+	- =M-*=, =M-,= :: pop-tag-mark, go to the last place M-. was used.
+	- =C-co= :: elpy-occur-definitions, search the buffer for a list of definitions
+							of classes and functions.
+	- =M-?= :: Find references to the identifier at point.
+
+
+
+*** Shell buffer
+		- =C-cz= :: elpy-shell-switch-to-shell, Switch to a buffer with a python
+               interpreter, running one if necessary.
+		- =C-ck= :: elpy-shell-kill, Kills the current shell.
+		- =C-cK= :: elpy-shell-kill-all
+
+*** Evaluation
+Basic evaluation, shell send statement.
+		- =C-cy= :: Send ___ to python shell and keep point position.
+			- =e= :: current statement
+			- =f= :: function definition
+			- =c= :: class definition
+			- =s= :: top-level statement
+			- =g= :: group of python statements, (delimited by whitespace/newlines)
+			- =w= :: cell
+			- =r= :: region
+			- =b= :: buffer
+
+Variations on the above include.
+ - =C-cy C-= :: Send ___ to python shell and step.
+ - =C-cy S-= :: Send ___ to python shell, keep point, and switch to python shell buffer.
+ - =C-cy CS-= :: Send ___ to python shell, step and switch.
+
+*** Syntax
+ - =C-cn= :: elpy-flymake-next-error
+ - =C-cp= :: elpy-flymake-previous-error
+ - =C-cv= :: elpy-check
+
+*** Documentation
+ - =C-cd= :: elpy-doc , try and find documentation for symbol on point. Use a
+             prefix to specify manually.
+
+*** Testing
+ - =C-ct= :: elpy-test , Start a test run. This uses the currently configured
+             test runner to discover and run tests.
+ - =M-x elpy-set-test-runner= :: This changes the current test-runner.
+
+
+*** Refactoring
+		- =C-ce= :: edit all occurences of symbol at point at once.
+		- =C-cr f= :: format code using available formatter.(e.g. autopep8, yapf).
+		- =C-cr r= :: run the elpy refactoring interface for python code ( uses rope
+                package).
