@@ -489,6 +489,8 @@ Capture templates.
 					 "* @EMAIL to %? \n\t%i\n\t%a\n\n" nil)
 				("L" "Letter" entry (file+headline rjh/org-tasks "Contact")
 					 "* @POST letter to %?\n\t%i\n\t%a\n\n" nil)
+				("S" "@Shop" entry (file+headline rjh/org-tasks "Tasks")
+					 "* @SHOP %?\n\t%i\n\t%a\n\n" nil)
 			))
 #+END_SRC
 
