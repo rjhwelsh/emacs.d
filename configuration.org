@@ -149,8 +149,9 @@ comment it out.
 		"graph.org"
 		"telephone-line.org"
 		"mule.org"
-		"recent.org"
-	  "latex.org"
+		"latex.org"
+	  "java.org"
+		"recent.org" ;; Suspected fault with recent.org, not yet analysed
 	))
 #+END_SRC
 

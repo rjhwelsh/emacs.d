@@ -1,0 +1,15 @@
+#+TITLE: Java Development Environment Configuration
+#+AUTHOR: Roger J. H. Welsh
+#+EMAIL: rjhwelsh@gmail.com
+* About
+The following configures jdee for Emacs.
+* JDEE - Java Development Environment for Emacs
+#+BEGIN_SRC emacs-lisp
+(use-package "jdee" :ensure t )
+#+END_SRC
+
+* ECB - The Emacs Code Browser
+This requires CEDET, which is built-in to Emacs as of version 3.2
+#+BEGIN_SRC emacs-lisp
+(use-package "ecb" :ensure t )
+#+END_SRC
