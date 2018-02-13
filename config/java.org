@@ -16,7 +16,6 @@ Setup jdee to use the following server directory.
 #+BEGIN_SRC emacs-lisp
 (custom-set-variables
  '(jdee-server-dir "~/.emacs.d/jdee-server/target"))
- )
 #+END_SRC
 
 Use =M-x jde-mode= to invoke jdee.
