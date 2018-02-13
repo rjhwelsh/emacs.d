@@ -8,6 +8,19 @@ The following configures jdee for Emacs.
 (use-package "jdee" :ensure t )
 #+END_SRC
 
+The jdee-server should be installed on your system, if it isn't please use the
+following link to install the latest version. [[https://github.com/jdee-emacs/jdee-server][jdee-server@github]].
+Jdee-server depends on Maven-3.
+
+Setup jdee to use the following server directory.
+#+BEGIN_SRC emacs-lisp
+(custom-set-variables
+ '(jdee-server-dir "~/.emacs.d/jdee-server/target"))
+ )
+#+END_SRC
+
+Use =M-x jde-mode= to invoke jdee.
+
 * ECB - The Emacs Code Browser
 This requires CEDET, which is built-in to Emacs as of version 3.2
 #+BEGIN_SRC emacs-lisp
