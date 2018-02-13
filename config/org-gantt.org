@@ -28,7 +28,7 @@ Adding the "chart" document class.
 	  (add-to-list 'org-latex-classes '("chart"
 				  "\\documentclass[11pt]{article}
   \\usepackage{geometry}
-  \\geometry{a3paper,landscape, margin=25mm}
+  \\geometry{a3paper,portrait, margin=25mm}
   \\usepackage{multicol}
   \\usepackage[dvipsnames]{xcolor}
   "
