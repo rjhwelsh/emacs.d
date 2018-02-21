@@ -18,8 +18,8 @@ For more documentation, please see http://jdee.sourceforge.net/jdedoc/html/jde-u
 #+BEGIN_SRC emacs-lisp
 	(use-package "jdee"
 		:ensure t
-;		:config
-;	  (setq jdee-server-dir rjh/jdee-server-dir)
+		:config
+	  (setq jdee-global-classpath '(".")) ;; Use the current working directory as a classpath for java projects.
 	)
 
 #+END_SRC
