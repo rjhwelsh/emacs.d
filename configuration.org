@@ -148,7 +148,7 @@ comment it out.
 		"undo.org"
 		"graph.org"
 		"telephone-line.org"
-		"mule.org"
+;;		"mule.org"
 		"latex.org"
 	  "java.org"
 		"recent.org" ;; Suspected fault with recent.org, not yet analysed
