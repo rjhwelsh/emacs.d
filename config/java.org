@@ -5,17 +5,17 @@
 The following configures jdee for Emacs.
 * JDEE - Java Development Environment for Emacs
 #+BEGIN_SRC emacs-lisp
-(use-package "jdee" :ensure t )
+		 (use-package "jdee" :ensure t
+			 :config
+			 (setq jdee-server-dir "~/.emacs.d/jdee-server/target")
+			 )
 #+END_SRC
 
 The jdee-server should be installed on your system, if it isn't please use the
 following link to install the latest version. [[https://github.com/jdee-emacs/jdee-server][jdee-server@github]].
 Jdee-server depends on Maven-3.
 
-Setup jdee to use the following server directory.
-#+BEGIN_SRC emacs-lisp
- (setq jdee-server-dir "~/.emacs.d/jdee-server/target")
-#+END_SRC
+Setup jdee to use the following server directory, =~/.emacs.d/jdee-server/target=.
 
 Use =M-x jde-mode= to invoke jdee.
 
