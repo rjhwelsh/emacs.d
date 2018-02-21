@@ -29,6 +29,12 @@ git clone https://github.com/HeyFlash/emacs-stuff ~/emacs-stuff
 cp -v ~/emacs-stuff/experiments/org-gantt.el ~/.emacs.d/org-gantt.el
 #+END_SRC
 
+** jdee-server
+If you are looking to develop in Java using JDEE (Java Development Environment
+for Emacs), then there is a "soft" dependency for the jdee-server for some functions. 
+For more about installing this, read more [[https://github.com/jdee-emacs/jdee-server][here]].
+Jdee-server itself depends on Maven-3.
+
 * Installation
 To install the emacs.d setup, you will need to do the following.
 These instructions, assume you will clone the repo to =~/emacs.d= .
