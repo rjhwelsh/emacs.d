@@ -34,9 +34,9 @@ Open up some buffers.
 
 
 Switch to 1st workspace by default.
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_EXAMPLE emacs-lisp
 	(add-hook 'after-make-frame-functions
 						(lambda (&optional frame)
 						)
 	)
-#+END_SRC
+#+END_EXAMPLE
