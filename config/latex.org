@@ -15,8 +15,10 @@ This configuration is for setting up latex for emacs.
 Shell commands do not play particularly nice with my zsh setup, so instead use
 bash as the default shell-command explicitly.
 
-N.B. This will need to be setup for each emacs frame as well. Otherwise it will
-automatically default to your regular shell. (In my case, zsh).
+N.B. This adds a mode-hook to automatically set the shell-file-name to bash
+every time TeX-mode is used.
 #+BEGIN_SRC emacs-lisp
+(add-hook 'tex-mode-hook ( lambda ()
 (setq shell-file-name "/bin/bash")
+))
 #+END_SRC
