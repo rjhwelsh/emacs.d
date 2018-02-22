@@ -12,30 +12,13 @@ Irony is faster, and rtags is more feature-complete.
 * Dependencies
 See https://github.com/Andersbakken/rtags#tldr-quickstart for details.
 ** The rtags binaries
- Build.
+ Build the rtags binaries. The following configuration for =Rtags= will make
+ them available to emacs.
  #+BEGIN_EXAMPLE bash
- git clone --recursive https://github.com/Andersbakken/rtags.git
- cd rtags
+ git clone --recursive https://github.com/Andersbakken/rtags.git ~/.emacs.d/rtags
+ cd ~/.emacs.d/rtags
  cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .
  make
- #+END_EXAMPLE
-
- Start daemon.
- #+BEGIN_EXAMPLE bash
- ./bin/rdm &
- #+END_EXAMPLE
-
- Index project.
- #+BEGIN_EXAMPLE bash
- PROJECTDIR="."
- RTAGDIR="."
- $RTAGDIR/bin/rc -J $PROJECTDIR
- #+END_EXAMPLE
-
- Ensure that the rtags binary can be found.
- I have a symlink at =~/.emacs.d/rtags= to the required directory.
- #+BEGIN_EXAMPLE emacs-lisp
- (setq rtags-path "../bin" )
  #+END_EXAMPLE
 
 * Rtags
@@ -50,6 +33,7 @@ symbolnames etc.
 		:ensure t
 		:config
 		(progn
+		  (setq rtags-path "~/.emacs.d/rtags/bin")
 			(unless (rtags-executable-find "rc") (error "Binary rc is not installed!"))
 			(unless (rtags-executable-find "rdm") (error "Binary rdm is not installed!"))
 
