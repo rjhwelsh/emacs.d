@@ -17,7 +17,9 @@ See https://github.com/Andersbakken/rtags#tldr-quickstart for details.
  #+BEGIN_EXAMPLE bash
  git clone --recursive https://github.com/Andersbakken/rtags.git ~/.emacs.d/rtags
  cd ~/.emacs.d/rtags
- cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .
+ mkdir -vp build
+ cd build
+ cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 ..
  make
  #+END_EXAMPLE
 
@@ -33,7 +35,7 @@ symbolnames etc.
 		:ensure t
 		:config
 		(progn
-		  (setq rtags-path "~/.emacs.d/rtags/bin")
+		  (setq rtags-path "~/.emacs.d/rtags/build/bin")
 			(unless (rtags-executable-find "rc") (error "Binary rc is not installed!"))
 			(unless (rtags-executable-find "rdm") (error "Binary rdm is not installed!"))
 
