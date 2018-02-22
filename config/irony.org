@@ -15,6 +15,19 @@ See https://github.com/Sarcasm/irony-mode#installation for details.
 	 Run =M-x irony-install-server= to build the irony-server.
 	 Though this is already set in the configuration below.
 
+* Setup
+Setup is similar to rtags.org (RTag).
+See [[./rtags.org::Setup][rtags.org]] or [[https://github.com/Sarcasm/irony-mode#compilation-database][Compilation Databases]] for more details.
+
+A compilation database (compile_commands.json) is required.
+See Sarcasm's notes on the [[https://sarcasm.github.io/notes/dev/compilation-database.html][Compilation Database]] for extensive documentation on
+what this is, and why it is important.
+
+** cmake
+ #+BEGIN_EXAMPLE
+ cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .
+ #+END_EXAMPLE
+
 * Irony
 https://github.com/Sarcasm/irony-mode
 irony-mode is an Emacs minor-mode that aims at improving the editing experience
