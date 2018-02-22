@@ -11,6 +11,9 @@ Some notes.
 Irony is faster, and rtags is more feature-complete.
 * Dependencies
 See https://github.com/Sarcasm/irony-mode#installation for details.
+** irony-server
+	 Run =M-x irony-install-server= to build the irony-server.
+	 Though this is already set in the configuration below.
 
 * Irony
 https://github.com/Sarcasm/irony-mode
