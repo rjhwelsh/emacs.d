@@ -641,15 +641,22 @@ For more info see [[http://orgmode.org/worg/exporters/koma-letter-export.html][h
 * Harry Schwartz
 This is some org configuration I have copied straight from Harry's book.
 *** Exporting
-Allow =babel= to evaluate Emacs lisp, Ruby, dot, or Gnuplot code.
+Allow =babel= to evaluate
+ - C / C++,
+ - Emacs lisp,
+ - Ruby,
+ - dot, or
+ - Gnuplot code.
 
 #+BEGIN_SRC emacs-lisp
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((emacs-lisp . t)
-     (ruby . t)
-     (dot . t)
-     (gnuplot . t)))
+	(org-babel-do-load-languages
+	 'org-babel-load-languages
+	 '(
+	   (C . t)  ;; This includes support for C++
+		 (emacs-lisp . t)
+		 (ruby . t)
+		 (dot . t)
+		 (gnuplot . t)))
 #+END_SRC
 
 Don't ask before evaluating code blocks.
