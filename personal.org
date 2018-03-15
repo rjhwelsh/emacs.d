@@ -35,23 +35,26 @@ Personal contact information:
 * Calendar
 ** Google Integration
  Google calendars.
+
+Create a separate calendar for Emacs, rather than using the main google
+calendar. This makes implementation easier.
  #+BEGIN_SRC emacs-lisp
-	 (setq org-icalendar-use-scheduled '(event-if-todo)
-			   org-icalendar-use-deadline  '(event-if-todo todo-due)
-         org-icalendar-alarm-time 40
- )
-	 (setq org-caldav-url 'google
-						 org-caldav-calendar-id ""
-						 org-caldav-inbox nil
-						 org-icalendar-timezone "UTC"
-						 org-caldav-oauth2-client-id ""
-						 org-caldav-oauth2-client-secret ""
-						 org-caldav-files nil
-						 org-caldav-calendars '((:calendar-id "" :files ("~/.emacs.d/org/events.org")
-																								:inbox "" )
-																	 )
-			 )
-		 ;;(org-caldav-sync) ;; to sync calendars
+		 (setq org-icalendar-use-scheduled '(event-if-todo)
+					 org-icalendar-use-deadline  '(event-if-todo todo-due)
+					 org-icalendar-alarm-time 40
+	 )
+		 (setq org-caldav-url 'google
+							 org-caldav-calendar-id ""
+							 org-caldav-inbox nil
+							 org-icalendar-timezone "UTC"
+							 org-caldav-oauth2-client-id ""
+							 org-caldav-oauth2-client-secret ""
+							 org-caldav-files nil
+							 org-caldav-calendars '((:calendar-id "" :files ("~/.emacs.d/org/events.org")
+																									:inbox "" )
+																		 )
+				 )
+			 ;;(org-caldav-sync) ;; to sync calendars
  #+END_SRC
 
  I use crontab with emacs to sync periodically with google calendar.
