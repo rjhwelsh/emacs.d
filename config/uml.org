@@ -4,11 +4,12 @@
 
 * Packages
 #+BEGIN_SRC emacs-lisp
-(use-package "plantuml-mode" :ensure t)
-(use-package "flycheck-plantuml" :ensure t)
+	(use-package "plantuml-mode" :ensure t
+			:config
+		 (plantuml-set-output-type "svg")
+		)
+	(use-package "flycheck-plantuml" :ensure t)
 #+END_SRC
-
-#+RESULTS:
 
 * PlantUML
 PlantUML is a java program for quickly constructing uml diagrams.
