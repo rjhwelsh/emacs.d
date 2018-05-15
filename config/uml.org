@@ -17,7 +17,7 @@ https://github.com/skuro/plantuml-mode
 
 Set plantUML path.
 #+BEGIN_SRC emacs-lisp
-(setq plantuml-jar-path "/usr/bin/plantuml")
+(setq plantuml-jar-path "/usr/share/plantuml/lib/plantuml.jar")
 #+END_SRC
 
 Enable plantuml-mode for PlantUML files
