@@ -40,3 +40,9 @@ Use flycheck for syntax checking of plantuml.
   (require 'flycheck-plantuml)
   (flycheck-plantuml-setup))
 #+END_SRC
+
+** Org
+Set the jar path for org-mode. (Babel).
+#+BEGIN_SRC emacs-lisp
+(setq org-plantuml-jar-path plantuml-jar-path)
+#+END_SRC
