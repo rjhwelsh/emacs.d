@@ -695,6 +695,13 @@ Set image sizes to their natural size.
   (setq org-latex-image-default-width "")
 #+END_SRC
 
+Set org-mode images to whatever size you like.
+E.g. Using =#+ATTR_ORG: :width 100=.
+Be aware you will require imagemagick6 support for this.
+(Imagemagick7 has made some changes which are currently incompatible [2018-05-17]).
+#+BEGIN_SRC emacs-lisp
+(setq org-image-actual-width nil)
+#+END_SRC
 ***** Exporting to HTML
 
 Don't include a footer with my contact and publishing information at the bottom
