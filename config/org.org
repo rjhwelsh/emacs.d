@@ -690,6 +690,11 @@ when exporting.
   (setq org-export-with-smart-quotes t)
 #+END_SRC
 
+Set image sizes to their natural size.
+#+BEGIN_SRC emacs-lisp
+  (setq org-latex-image-default-width "")
+#+END_SRC
+
 ***** Exporting to HTML
 
 Don't include a footer with my contact and publishing information at the bottom
