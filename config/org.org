@@ -575,6 +575,16 @@ Enable spell-checking in Org-mode.
   (add-hook 'org-mode-hook 'flyspell-mode)
 #+END_SRC
 
+Re-display inline images if they are generated as a results portion of babel
+code. You will need to set =#+STARTUP: inlineimages= in order to display in-line
+images. The code below will update them when you evaluate a babel source code block.
+#+BEGIN_SRC emacs-lisp
+(add-hook 'org-babel-after-execute-hook
+          (lambda ()
+            (when org-inline-image-overlays
+              (org-redisplay-inline-images))))
+#+END_SRC
+
 ** Exporting Html
 Checklists did not render as I would like them, I think this makes
 them far more prettier in html.
