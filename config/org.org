@@ -310,19 +310,8 @@ Press K to enable/disable habits in the agenda.
  #+BEGIN_SRC emacs-lisp
 	 (setq org-todo-keywords
 			'(
-			(sequence "TODO(t!)" "|" "DONE(d!)" )
-			(sequence "NEW(n!)" "SOMEDAY(s!)"
-									"PLAN OUT(p!)" "VERIFY(v!)"
-									"DELEGATE(D@/!)" "WAITING FOR(w!)"
-									"ACTION(a!/!)"
-									"|" )
+			(sequence "TODO(t!)" "NEXT(n!)" "|" "DONE(d!)" )
 			(sequence "EVENT(e!)" )
-			(type "@CONTEXT(c/!)" "@HOME(H)" "@WORK(W)" "@OUTSIDE(O)"
-							"@SHOP(S)" "@CAFE(F)" "@GARAGE(G)" "@BREAK(B)" "|" )
-			(type "|" "CANCELED(k@)" "TRASH(t!)" )
-			(sequence "REPORT(r!)" "BUG(b!)" "KNOWNCAUSE(K!)" "|" "FIXED(f@)" )
-			(type "@CALL(C!)" "@EMAIL(E!)" "@POST(P!)" "|" )
-			(type "HABIT(h!)" "BLOCK(b)" "|")
 		)
 	 )
 	 (setq org-log-into-drawer t) ;LOGBOOK
