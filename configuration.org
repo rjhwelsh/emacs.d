@@ -147,7 +147,7 @@ comment it out.
 			"study.org"
 			"undo.org"
 			"graph.org"
-		  "uml.org"
+			"uml.org"
 			"telephone-line.org"
 	;;		"mule.org"
 			"latex.org"
@@ -155,6 +155,7 @@ comment it out.
 			"recent.org"
 			"rtags.org"
 			"irony.org"
+		  "numbers.org"
 		))
 #+END_SRC
 
