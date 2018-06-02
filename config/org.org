@@ -110,80 +110,10 @@ FACES are custom settings for font, colour, background etc.
                :group 'todo-faces)
  #+END_SRC
  #+BEGIN_SRC emacs-lisp
-         (defface new
+         (defface next
                '(
                  (((class color) (min-colors 8))
                   :background "blue" :foreground "white" :weight extra-bold
-                  :inherit default :height 1.0 :box ( :style released-button ) )
-                )
-               "Face for basic todo items."
-               :group 'todo-faces)
- #+END_SRC
- #+BEGIN_SRC emacs-lisp
-         (defface someday
-               '(
-                 (((class color) (min-colors 8))
-                  :background "blue" :foreground "gray" :weight extra-bold
-                  :inherit default :height 1.0 :box ( :style released-button ) )
-                )
-               "Face for basic todo items."
-               :group 'todo-faces)
- #+END_SRC
- #+BEGIN_SRC emacs-lisp
-   (defface plan
-         '(
-           (((class color) (min-colors 8))
-            :background "yellow" :foreground "black" :weight extra-bold
-            :inherit default :height 1.0 :box ( :style released-button ) )
-          )
-         "Face for basic todo items."
-         :group 'todo-faces)
- #+END_SRC
- #+BEGIN_SRC emacs-lisp
-         (defface verify
-               '(
-                 (((class color) (min-colors 8))
-                  :background "orange" :foreground "black" :weight extra-bold
-                  :inherit default :height 1.0 :box ( :style released-button ) )
-                )
-               "Face for basic todo items."
-               :group 'todo-faces)
- #+END_SRC
- #+BEGIN_SRC emacs-lisp
-   (defface delegate
-         '(
-           (((class color) (min-colors 8))
-            :background "magenta" :foreground "black" :weight extra-bold
-            :inherit default :height 1.0 :box ( :style released-button ) )
-          )
-         "Face for basic todo items."
-         :group 'todo-faces)
- #+END_SRC
- #+BEGIN_SRC emacs-lisp
-         (defface wait
-               '(
-                 (((class color) (min-colors 8))
-                  :background "black" :foreground "cyan" :weight extra-bold
-                  :inherit default :height 1.0 :box ( :style released-button ) )
-                )
-               "Face for basic todo items."
-               :group 'todo-faces)
- #+END_SRC
- #+BEGIN_SRC emacs-lisp
-   (defface action
-         '(
-           (((class color) (min-colors 8))
-            :background "red" :foreground "black" :weight extra-bold
-            :inherit default :height 1.0 :box ( :style released-button ) )
-          )
-         "Face for basic todo items."
-         :group 'todo-faces)
- #+END_SRC
- #+BEGIN_SRC emacs-lisp
-         (defface context
-               '(
-                 (((class color) (min-colors 8))
-                  :background "black" :foreground "orange" :weight extra-bold
                   :inherit default :height 1.0 :box ( :style released-button ) )
                 )
                "Face for basic todo items."
@@ -198,26 +128,6 @@ FACES are custom settings for font, colour, background etc.
           )
          "Face for basic todo items."
          :group 'todo-faces)
- #+END_SRC
- #+BEGIN_SRC emacs-lisp
-         (defface canceled
-               '(
-                 (((class color) (min-colors 8))
-                  :background "dim gray" :foreground "gray" :weight extra-bold
-                  :inherit default :height 1.0 :box ( :style released-button ) )
-                )
-               "Face for basic todo items."
-               :group 'todo-faces)
- #+END_SRC
- #+BEGIN_SRC emacs-lisp
-         (defface trash
-               '(
-                 (((class color) (min-colors 8))
-                  :background "green" :foreground "dim gray" :weight extra-bold
-                  :inherit default :height 1.0 :box ( :style released-button ) )
-                )
-               "Face for basic todo items."
-               :group 'todo-faces)
  #+END_SRC
 
 * Basic
@@ -318,7 +228,6 @@ Press K to enable/disable habits in the agenda.
  #+END_SRC
 
 **** Tags
-
 ***** Default Tag list
 See =org-tag-alist= for more details.
 
@@ -374,31 +283,9 @@ These tags will always be available unless =#+STARTUP: noptag= is set in the buf
  #+BEGIN_SRC emacs-lisp
 	 (setq org-todo-keyword-faces
 				 '(("TODO" . todo)
-					 ("NEXT" . new)
+					 ("NEXT" . next)
 					 ("DONE" . done)
-					 ("NEW" . new)
-					 ("SOMEDAY" . someday )
-					 ("PLAN OUT" . plan)
-					 ("VERIFY" . verify )
-					 ("DELEGATE" . delegate )
-					 ("WAITING FOR" . wait )
-					 ("ACTION" . action )
-					 ("@CONTEXT" . context )
 					 ("EVENT" . event )
-					 ("CANCELED" . canceled )
-					 ("TRASH" . canceled )
-					 ("@HOME" . context )
-					 ("@WORK" . context )
-					 ("@SHOP" . context )
-					 ("@OUTSIDE" . context )
-					 ("@CAFE" . context )
-					 ("@GARAGE" . context )
-					("@BREAK" . context )
-					( "@CALL" . verify )
-					( "@EMAIL" . context )
-					( "@POST" . new )
-			    ( "HABIT" . verify )
-			    ( "BLOCK" . delegate )
 					 )
 	 )
  #+END_SRC
