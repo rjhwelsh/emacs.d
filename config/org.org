@@ -386,7 +386,7 @@ These are settings for capturing/refiling information.
 Capture templates.
 #+BEGIN_SRC emacs-lisp
 			(setq org-capture-templates
-r			'(("t" "Todo" entry (file+headline rjh/org-tasks "Inbox")
+			'(("t" "Todo" entry (file+headline rjh/org-tasks "Inbox")
 					 "* TODO :NEW: %?\n\t%i\n\t%a\n\n" nil)
 				("j" "Journal" entry (file+datetree rjh/org-journal )
 					 "* %?\n\tEntered on %U\n\t%i\n\t%a\n\n" :kill-buffer )
