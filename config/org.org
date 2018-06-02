@@ -419,6 +419,17 @@ Sorting strategy.
     (search category-keep)))
 #+END_SRC
 
+*** Stuck Projects
+1. Match projects with the +PROJECT property, do not match completed items.
+2. Non-stuck projects are identified with a NEXT TODO keyword.
+3. Non-stuck projects are not identified with any tags.
+4. Non-stuck projects are identified if the special word IGNORE is matched
+   anywhere.
+#+BEGIN_SRC emacs-lisp
+	(setq org-stuck-projects
+			'("+PROJECT/-DONE" ("NEXT") nil "\\<IGNORE\\>"))
+#+END_SRC
+
 *** Clocking Working Time
   To save the clock history across Emacs sessions, use
 #+BEGIN_SRC emacs-lisp
