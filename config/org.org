@@ -230,7 +230,18 @@ Press K to enable/disable habits in the agenda.
 **** Tags
 ***** Default Tag list
 See =org-tag-alist= for more details.
-
+#+BEGIN_SRC emacs-lisp
+	(setq org-tag-alist '(("food" . ?e)
+												("security" . ?s)
+												("affection" . ?a)
+												("learning" . ?l)
+												("contrib" . ?p)
+												("fun" . ?f )
+												("identity" . ?i)
+												("freedom" . ?r)
+											  ("creative" . ?c)
+											))
+#+END_SRC
 ***** Persistent Tag list
 These tags will always be available unless =#+STARTUP: noptag= is set in the buffer.
 #+BEGIN_SRC emacs-lisp
