@@ -372,37 +372,18 @@ These are settings for capturing/refiling information.
 Capture templates.
 #+BEGIN_SRC emacs-lisp
 			(setq org-capture-templates
-			'(("t" "Todo" entry (file+headline rjh/org-tasks "Tasks")
-					 "* TODO %?\n\t%i\n\t%a\n\n" nil)
+			'(("t" "Todo" entry (file+headline rjh/org-tasks "Inbox")
+					 "* TODO %^g %?\n\t%i\n\t%a\n\n" nil)
 				("j" "Journal" entry (file+datetree rjh/org-journal )
 					 "* %?\n\tEntered on %U\n\t%i\n\t%a\n\n" :kill-buffer )
 				("e" "Event/Appointment" entry (file+headline rjh/org-events "Events" )
 					 "* EVENT %?\n\t%^T\n\t%i\n\t%a\n\n")
 			  ("h" "Habit" entry (file+headline rjh/org-habits "Habits" )
-					 "* HABIT %?\n\tSCHEDULED: %^T\n\t:PROPERTIES:\n\t:STYLE:\thabit\n\t:END:\n\t%i\n\t%a\n\n")
+					 "* TODO %?\n\tSCHEDULED: %^T\n\t:PROPERTIES:\n\t:STYLE:\thabit\n\t:END:\n\t%i\n\t%a\n\n")
 	;; Work on clocked items
 				("x" "Checklist on clock" checkitem (clock) "+ [ ] %?\n\n" :kill-buffer)
 				("T" "Table on clock" table-line (clock) :kill-buffer )
 	;; Getting Things Done quick entry
-				("b" "Bug" entry (file+headline rjh/org-tasks "Bugs")
-					 "* BUG %?\n\t%i\n\t%a\n\n" nil)
-				("n" "New" entry (file+headline rjh/org-tasks "Tasks")
-					 "* NEW %?\n\t%i\n\t%a\n\n" nil)
-				("p" "Plan" entry (file+headline rjh/org-tasks "Prepare")
-					 "* PLAN OUT %?\n\t%i\n\t%a\n\n" nil)
-				("v" "Verify" entry (file+headline rjh/org-tasks "Verify")
-					 "* VERIFY %?\n\t%i\n\t%a\n\n" nil)
-				("D" "Delegate" entry (file+headline rjh/org-tasks "Delegate")
-					 "* DELEGATE %?\n\t%i\n\t%a\n\n" nil)
-	;; Get in touch - Quick Entry
-				("C" "Call" entry (file+headline rjh/org-tasks "Contact")
-					 "* @CALL to %? \n\t%i\n\t%a\n\n" nil)
-				("E" "Email" entry (file+headline rjh/org-tasks "Contact")
-					 "* @EMAIL to %? \n\t%i\n\t%a\n\n" nil)
-				("L" "Letter" entry (file+headline rjh/org-tasks "Contact")
-					 "* @POST letter to %?\n\t%i\n\t%a\n\n" nil)
-				("S" "@Shop" entry (file+headline rjh/org-tasks "Tasks")
-					 "* @SHOP %?\n\t%i\n\t%a\n\n" nil)
 			))
 #+END_SRC
 
