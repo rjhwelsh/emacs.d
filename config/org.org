@@ -397,7 +397,6 @@ Capture templates.
 	;; Work on clocked items
 				("x" "Checklist on clock" checkitem (clock) "+ [ ] %?\n\n" :kill-buffer)
 				("T" "Table on clock" table-line (clock) :kill-buffer )
-	;; Getting Things Done quick entry
 			))
 #+END_SRC
 
