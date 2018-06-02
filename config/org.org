@@ -387,13 +387,13 @@ Capture templates.
 #+BEGIN_SRC emacs-lisp
 			(setq org-capture-templates
 			'(("t" "Todo" entry (file+headline rjh/org-tasks "Inbox")
-					 "* TODO :NEW: %?\n\t%i\n\t%a\n\n" nil)
+					 "* TODO %? :NEW:\n\t%i\n\t%a\n\n" nil)
 				("j" "Journal" entry (file+datetree rjh/org-journal )
 					 "* %?\n\tEntered on %U\n\t%i\n\t%a\n\n" :kill-buffer )
 				("e" "Event/Appointment" entry (file+headline rjh/org-events "Events" )
 					 "* EVENT %?\n\t%^T\n\t%i\n\t%a\n\n")
 			  ("h" "Habit" entry (file+headline rjh/org-habits "Habits" )
-					 "* TODO :HABIT: %?\n\tSCHEDULED: %^T\n\t:PROPERTIES:\n\t:STYLE:\thabit\n\t:END:\n\t%i\n\t%a\n\n")
+					 "* TODO %? :HABIT:\n\tSCHEDULED: %^T\n\t:PROPERTIES:\n\t:STYLE:\thabit\n\t:END:\n\t%i\n\t%a\n\n")
 	;; Work on clocked items
 				("x" "Checklist on clock" checkitem (clock) "+ [ ] %?\n\n" :kill-buffer)
 				("T" "Table on clock" table-line (clock) :kill-buffer )
