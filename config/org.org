@@ -609,6 +609,11 @@ images. The code below will update them when you evaluate a babel source code bl
               (org-redisplay-inline-images))))
 #+END_SRC
 
+Startup with all headlines showing. =content=
+#+BEGIN_SRC emacs-lisp
+(setq org-startup-folded 'content)
+#+END_SRC
+
 ** Exporting Html
 Checklists did not render as I would like them, I think this makes
 them far more prettier in html.
