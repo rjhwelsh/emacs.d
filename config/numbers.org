@@ -7,10 +7,9 @@ Courtesy of [[https://www.emacswiki.org/emacs/IncrementNumber][emacswiki.org]].
 
 * Keybindings
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-c +") 'my-increment-number-decimal)
-(global-set-key (kbd "C-c -") 'my-decrement-number-decimal)
+(global-set-key (kbd "C-M-+") 'my-increment-number-decimal)
+(global-set-key (kbd "C-M--") 'my-decrement-number-decimal)
 #+END_SRC
-
 * Integers
 #+BEGIN_SRC emacs-lisp
 (defun increment-number-at-point ()
