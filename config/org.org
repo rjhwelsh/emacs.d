@@ -368,12 +368,13 @@ These tags will always be available unless =#+STARTUP: noptag= is set in the buf
  #+BEGIN_SRC emacs-lisp
 	(setq org-enforce-todo-dependencies t)
 	(setq org-agenda-dim-blocked-tasks t)
-	(setq org-enforce-todo-checkbox-dependencies t)
+	(setq org-enforce-todo-checkbox-dependencies nil)
  #+END_SRC
 **** Face Settings
  #+BEGIN_SRC emacs-lisp
 	 (setq org-todo-keyword-faces
 				 '(("TODO" . todo)
+					 ("NEXT" . new)
 					 ("DONE" . done)
 					 ("NEW" . new)
 					 ("SOMEDAY" . someday )
