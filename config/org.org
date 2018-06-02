@@ -435,9 +435,10 @@ Add this to your file, to adjust =org-archive-location= for a particular file.
 #+END_EXAMPLE
 
 The default location is set below.
-This archives items in a file called zarchive.org in the same folder.
+This archives items under the heading called =* Archive= in the same file.
+
 #+BEGIN_SRC emacs-lisp
-(setq org-archive-location "zarchive.org::* %s" )
+(setq org-archive-location "::* Archive" )
 #+END_SRC
 
 *Note*
