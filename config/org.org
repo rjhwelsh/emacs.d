@@ -328,7 +328,7 @@ Press K to enable/disable habits in the agenda.
 	 (setq org-log-into-drawer t) ;LOGBOOK
  #+END_SRC
 **** Priorities
- Priorities are assigned A,B,C,D. B being the default.
+ Priorities are assigned A,B,C,D (E,F). B being the default.
  I'm particularly inspired by the Eisenhower Matrix and Must/Should/Nice todos.
  For reference, see the table below. Typically, one should attempt to accomplish
  as many B's in a day as possible; while also taking regular breaks.
@@ -343,13 +343,13 @@ Press K to enable/disable habits in the agenda.
 
  So.. one way to describe my priorities, would be...
  #+BEGIN_EXAMPLE
- #+PRIORITIES: C A D .
+ #+PRIORITIES: C A F .
  #+END_EXAMPLE
 
  #+BEGIN_SRC emacs-lisp
 	(setq org-default-priority 67)
 	(setq org-highest-priority 65)
-	(setq org-lowest-priority 68)
+	(setq org-lowest-priority 70)
  #+END_SRC
 **** Dependencies
  Dependency settings.
