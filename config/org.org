@@ -281,9 +281,9 @@ These tags will always be available unless =#+STARTUP: noptag= is set in the buf
  #+END_EXAMPLE
 
  #+BEGIN_SRC emacs-lisp
-	(setq org-default-priority 67)
-	(setq org-highest-priority 65)
-	(setq org-lowest-priority 70)
+	(setq org-default-priority ?F)
+	(setq org-highest-priority ?A)
+	(setq org-lowest-priority ?F)
  #+END_SRC
 **** Dependencies
  Dependency settings.
