@@ -131,8 +131,7 @@ FACES are custom settings for font, colour, background etc.
  #+END_SRC
 
 * Basic
-** Time Management
-*** habits (and repeating tasks)
+** habits (and repeating tasks)
 Habit tracking in agenda enabled in org-modules.
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'org-modules 'org-habit)
@@ -194,41 +193,41 @@ org-habit-show-habits-only-for-today t
 )
 #+END_SRC
 Press K to enable/disable habits in the agenda.
-*** 'TODO' Conf
- For group projects, put this at the top of the project line.
- #+BEGIN_EXAMPLE
- #+TYP_TODO: @ROGER(r) @NAME1(1) @NAME2(2) | DONE(d)
- #+END_EXAMPLE
+** 'TODO' Conf
+For group projects, put this at the top of the project line.
+#+BEGIN_EXAMPLE
+#+TYP_TODO: @ROGER(r) @NAME1(1) @NAME2(2) | DONE(d)
+#+END_EXAMPLE
 
-**** Workflow
- Workflow states.
-	1. Regular TODO / DONE.
-	2. Getting Things Done Workflow.
-	3. Location themed tasks.
-	5. Cancelled Or Trashed.
-	6. Bug catcher.
+*** Workflow
+Workflow states.
+ 1. Regular TODO / DONE.
+ 2. Getting Things Done Workflow.
+ 3. Location themed tasks.
+ 5. Cancelled Or Trashed.
+ 6. Bug catcher.
 
- For below; make the following notes:
-	+ Expressions may be a "sequence" or "type" ; "type" goes straight to DONE
-		after completion. Sequences rotate through all keywords.
-	+ TODO = the todo keyword
-	+ (t) = the fast key shortcut
-	+ ! means LOG timestamp when changing *TO* item.
-	+ @ means LOG timestamp with note when changing item.
-	+ /! means LOG timestamp/note when changing *FROM* item also.
-	+ org-log-into-drawer LOGS everything into a hidden drawer, so everything looks cleaner.
- #+BEGIN_SRC emacs-lisp
-	 (setq org-todo-keywords
-			'(
-			(sequence "TODO(t!)" "NEXT(n!)" "|" "DONE(d!)" )
-			(sequence "EVENT(e!)" )
-		)
+For below; make the following notes:
+ + Expressions may be a "sequence" or "type" ; "type" goes straight to DONE
+	 after completion. Sequences rotate through all keywords.
+ + TODO = the todo keyword
+ + (t) = the fast key shortcut
+ + ! means LOG timestamp when changing *TO* item.
+ + @ means LOG timestamp with note when changing item.
+ + /! means LOG timestamp/note when changing *FROM* item also.
+ + org-log-into-drawer LOGS everything into a hidden drawer, so everything looks cleaner.
+#+BEGIN_SRC emacs-lisp
+	(setq org-todo-keywords
+		 '(
+		 (sequence "TODO(t!)" "NEXT(n!)" "|" "DONE(d!)" )
+		 (sequence "EVENT(e!)" )
 	 )
-	 (setq org-log-into-drawer t) ;LOGBOOK
- #+END_SRC
+	)
+	(setq org-log-into-drawer t) ;LOGBOOK
+#+END_SRC
 
-**** Tags
-***** Default Tag list
+*** Tags
+**** Default Tag list
 See =org-tag-alist= for more details.
 #+BEGIN_SRC emacs-lisp
 	(setq org-tag-alist '(("food" . ?e)
@@ -242,7 +241,7 @@ See =org-tag-alist= for more details.
 											  ("creative" . ?c)
 											))
 #+END_SRC
-***** Persistent Tag list
+**** Persistent Tag list
 These tags will always be available unless =#+STARTUP: noptag= is set in the buffer.
 #+BEGIN_SRC emacs-lisp
 	(setq org-tag-persistent-alist '(
@@ -261,50 +260,50 @@ These tags will always be available unless =#+STARTUP: noptag= is set in the buf
 																 ))
 #+END_SRC
 
-**** Priorities
- Priorities are assigned A,B,C,D (E,F). B being the default.
- I'm particularly inspired by the Eisenhower Matrix and Must/Should/Nice todos.
- For reference, see the table below. Typically, one should attempt to accomplish
- as many B's in a day as possible; while also taking regular breaks.
- If you have nothing left todo, D's are pleasant enough.
+*** Priorities
+Priorities are assigned A,B,C,D (E,F). B being the default.
+I'm particularly inspired by the Eisenhower Matrix and Must/Should/Nice todos.
+For reference, see the table below. Typically, one should attempt to accomplish
+as many B's in a day as possible; while also taking regular breaks.
+If you have nothing left todo, D's are pleasant enough.
 
- | PRIORITY   | NOT IMPORTANT | IMPORTANT  |
- |------------+---------------+------------|
- | NOT URGENT | D - PLEASANT  | B - SHOULD |
- |------------+---------------+------------|
- | URGENT     | C - NICE      | A - MUST   |
- |------------+---------------+------------|
+| PRIORITY   | NOT IMPORTANT | IMPORTANT  |
+|------------+---------------+------------|
+| NOT URGENT | D - PLEASANT  | B - SHOULD |
+|------------+---------------+------------|
+| URGENT     | C - NICE      | A - MUST   |
+|------------+---------------+------------|
 
- So.. one way to describe my priorities, would be...
- #+BEGIN_EXAMPLE
- #+PRIORITIES: C A F .
- #+END_EXAMPLE
+So.. one way to describe my priorities, would be...
+#+BEGIN_EXAMPLE
+#+PRIORITIES: C A F .
+#+END_EXAMPLE
 
- #+BEGIN_SRC emacs-lisp
-	(setq org-default-priority ?F)
-	(setq org-highest-priority ?A)
-	(setq org-lowest-priority ?F)
- #+END_SRC
-**** Dependencies
- Dependency settings.
- This allows for task blocking/etc.
- #+BEGIN_SRC emacs-lisp
-	(setq org-enforce-todo-dependencies t)
-	(setq org-agenda-dim-blocked-tasks t)
-	(setq org-enforce-todo-checkbox-dependencies nil)
- #+END_SRC
-**** Face Settings
- #+BEGIN_SRC emacs-lisp
-	 (setq org-todo-keyword-faces
-				 '(("TODO" . todo)
-					 ("NEXT" . next)
-					 ("DONE" . done)
-					 ("EVENT" . event )
-					 )
-	 )
- #+END_SRC
+#+BEGIN_SRC emacs-lisp
+ (setq org-default-priority ?F)
+ (setq org-highest-priority ?A)
+ (setq org-lowest-priority ?F)
+#+END_SRC
+*** Dependencies
+Dependency settings.
+This allows for task blocking/etc.
+#+BEGIN_SRC emacs-lisp
+ (setq org-enforce-todo-dependencies t)
+ (setq org-agenda-dim-blocked-tasks t)
+ (setq org-enforce-todo-checkbox-dependencies nil)
+#+END_SRC
+*** Face Settings
+#+BEGIN_SRC emacs-lisp
+	(setq org-todo-keyword-faces
+				'(("TODO" . todo)
+					("NEXT" . next)
+					("DONE" . done)
+					("EVENT" . event )
+					)
+	)
+#+END_SRC
 
-*** Agenda Conf
+** Agenda Conf
 Store the list of agenda files in ...
 #+BEGIN_SRC emacs-lisp
   (setq org-agenda-files "~/.emacs.d/agenda-files" )
@@ -320,7 +319,7 @@ Sorting strategy.
     (search category-keep)))
 #+END_SRC
 
-*** Stuck Projects
+** Stuck Projects
 1. Match projects with the +PROJECT property, do not match completed items.
 2. Non-stuck projects are identified with a NEXT TODO keyword.
 3. Non-stuck projects are not identified with any tags.
@@ -331,7 +330,7 @@ Sorting strategy.
 			'("+PROJECT/-DONE" ("NEXT") nil "\\<IGNORE\\>"))
 #+END_SRC
 
-*** Clocking Working Time
+** Clocking Working Time
   To save the clock history across Emacs sessions, use
 #+BEGIN_SRC emacs-lisp
      (setq org-clock-persist 'history)
@@ -351,7 +350,7 @@ Use C-c C-x C-c to access.
 
 org-agenda-columns-add-appointments-to-effort-sum adds appointment times to
 effort sums for the day.
-*** Archival
+** Archival
 =C-cxs=
 Add this to your file, to adjust =org-archive-location= for a particular file.
 #+BEGIN_EXAMPLE
