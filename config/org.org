@@ -327,7 +327,7 @@ Sorting strategy.
    anywhere.
 #+BEGIN_SRC emacs-lisp
 	(setq org-stuck-projects
-			'("+PROJECT/-DONE" ("NEXT") nil "\\<IGNORE\\>"))
+			'("+PROJECT+LEVEL=1/-DONE" ("NEXT") nil "\\<IGNORE\\>"))
 #+END_SRC
 
 ** Clocking Working Time
