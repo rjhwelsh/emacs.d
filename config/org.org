@@ -321,25 +321,42 @@ Sorting strategy.
 
 Custom agenda views
 #+BEGIN_SRC emacs-lisp
-		(setq org-agenda-custom-commands
-					'(
-				 ("P" "PROJECT TASKS"
-					((tags "LEVEL=1+PROJECT")))
-					 ("N" "NEW TASKS"
-						((tags "+NEW")))
-					 ("F" "FLAGGED TASKS"
-						((tags "+FLAGGED")))
-						("V" "VERIFY TASKS"
-						 ((tags "+VERIFY")))
-						("D" "DELEGATE TASKS"
-						 ((tags "+DELEGATE")))
-						("W" "WAITING TASKS"
-						 ((tags "+WAITING")))
-						("B" "BREAKDOWN TASKS"
-						 ((tags "+BREAKDOWN")))
-						("H" "HABITUAL TASKS"
-						 ((tags "STYLE=\"habit\"|HABIT" )))
-					))
+	(setq org-agenda-custom-commands
+				'(
+					("a" "Agenda for current Week or Day"
+					 agenda ""
+									 ((org-agenda-tag-filter-preset
+										 '("-HABIT"))))
+
+					("n" "Agenda and all TODOs"
+					 ((agenda ""
+										((org-agenda-span 1)))
+						(alltodo "" )))
+
+					("P" "PROJECT TASKS"
+					 ((tags "LEVEL=1+PROJECT")))
+
+					("N" "NEW TASKS"
+					((tags "+NEW")))
+
+					("F" "FLAGGED TASKS"
+					((tags "+FLAGGED")))
+
+					("V" "VERIFY TASKS"
+					 ((tags "+VERIFY")))
+
+					("D" "DELEGATE TASKS"
+					 ((tags "+DELEGATE")))
+
+					("W" "WAITING TASKS"
+					 ((tags "+WAITING")))
+
+					("B" "BREAKDOWN TASKS"
+					 ((tags "+BREAKDOWN")))
+
+					("H" "HABITUAL TASKS"
+					 ((tags "STYLE=\"habit\"|HABIT" )))
+				))
 #+END_SRC
 
 ** Stuck Projects
