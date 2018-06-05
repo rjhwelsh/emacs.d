@@ -22,6 +22,8 @@ The following keyboard shortcuts are useful.
 * Japanese Anthy
 
 If you are using Emacs 24 the following patch may be required to anthy.el.
+If you patch this manually, make sure you remember to recompile the elc file
+with the =byte-compile-file= command.
 #+BEGIN_EXAMPLE
 --- src-util/anthy.el.org	2012-02-28 17:16:08.000000000 +0900
 +++ src-util/anthy.el	2013-05-08 15:10:37.000000000 +0900
