@@ -68,11 +68,11 @@ calendar. This makes implementation easier.
  Functions in the calendar.org, use this variable as the =:content-sources= for
  some agenda calendar views. =rjh/two-week-view= , =rjh/week-view=, etc.
 #+BEGIN_SRC emacs-lisp
-	(setq rjh/calendar-sources (list
-			 (cfw:org-create-source "Green")  ; orgmode source
-			 (cfw:cal-create-source "Orange") ; diary source
-														)
- )
+	 (setq rjh/calendar-sources (list
+				(cfw:org-create-file-source "Events" rjh/org-events "Green")  ; orgmode source
+				(cfw:cal-create-source "Orange") ; diary source
+														 )
+	)
 #+END_SRC
 * Url-browser
 Set your default browser here.
