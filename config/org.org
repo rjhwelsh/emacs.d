@@ -70,21 +70,6 @@ Some handy keybindings.
   (define-key global-map "\C-ca" 'org-agenda)
   (define-key global-map "\C-cc" 'org-capture)
 #+END_SRC
-** Org files
-Set the org-directory.
-#+BEGIN_SRC emacs-lisp
- (setq org-directory "~/.emacs.d/org" )
-#+END_SRC
-Some default locations.
-#+BEGIN_SRC emacs-lisp
-	(setq rjh/org-tasks (expand-file-name "tasks.org" org-directory)
-			rjh/org-journal (expand-file-name "journal.org" org-directory)
-			rjh/org-events (expand-file-name "events.org" org-directory)
-			rjh/org-habits (expand-file-name "habits.org" org-directory)
-			rjh/org-daily (expand-file-name "daily.org" org-directory)
-			rjh/org-archive (expand-file-name "zarchive.org" org-directory)
-	 )
-#+END_SRC
 * Faces
 FACES are custom settings for font, colour, background etc.
 ** Time Management Faces
