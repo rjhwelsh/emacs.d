@@ -149,13 +149,13 @@ comment it out.
 			"graph.org"
 			"uml.org"
 			"telephone-line.org"
-			"mule.org"
 			"latex.org"
 			"java.org"
 			"recent.org"
 			"rtags.org"
 			"irony.org"
 		  "numbers.org"
+			"mule.org"
 		))
 #+END_SRC
 
