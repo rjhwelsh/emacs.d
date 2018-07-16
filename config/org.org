@@ -591,18 +591,20 @@ Allow =babel= to evaluate
  - Ruby,
  - dot, or
  - Gnuplot code.
+ - R
 
 #+BEGIN_SRC emacs-lisp
-	(org-babel-do-load-languages
-	 'org-babel-load-languages
-		 '(
-					 (C . t)  ;; This includes support for C++
-					 (emacs-lisp . t)
-					 (ruby . t)
-					 (dot . t)
-					 (gnuplot . t)
-				   (plantuml . t)
-					 ))
+		(org-babel-do-load-languages
+		 'org-babel-load-languages
+			 '(
+						 (C . t)  ;; This includes support for C++
+						 (emacs-lisp . t)
+						 (ruby . t)
+						 (dot . t)
+						 (gnuplot . t)
+						 (plantuml . t)
+						 (R . t)
+						 ))
 #+END_SRC
 
 Don't ask before evaluating code blocks.
