@@ -30,6 +30,12 @@ necessary for your setup.
 #+END_SRC
 .
 
+Add emacs speaks statistics.
+#+BEGIN_SRC emacs-lisp
+(use-package "ess" :ensure t)
+(require 'ess-site)
+#+END_SRC
+
 * Setup
 For a minimal =.emacs= for =org-mode=, see [[http://orgmode.org/worg/org-faq.html#minimal-emacs][here]].
 #+BEGIN_SRC emacs-lisp
