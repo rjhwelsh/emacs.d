@@ -124,7 +124,6 @@ of functionality. If you dislike or would like to stop using a particular module
 comment it out.
 #+BEGIN_SRC emacs-lisp
 		 (setq rjh/load-config-modules '(
-			"undo.org"
 			"graph.org"
 			"uml.org"
 			"latex.org"
@@ -735,6 +734,22 @@ Setup file backup behaviour for Emacs.
 For more see [[file:config/backup.org][backup.org]].
 #+BEGIN_SRC emacs-lisp
 (rjh/load-config "backup.org")
+#+END_SRC
+
+* Undo tree
+By default =C-/= will undo.
+Now =C-S-/= will redo.
+=C-x u= will provide a visual undo tree which can be navigated with the arrow
+keys. Type =q= to exit.
+
+See [[http://pragmaticemacs.com/emacs/advanced-undoredo-with-undo-tree/][here]] for examples.
+#+BEGIN_SRC emacs-lisp
+	(use-package "undo-tree"
+		:ensure t
+		:init
+		(global-undo-tree-mode 1)
+		(defalias 'redo 'undo-tree-redo)
+		(global-set-key (kbd "C-S-/") 'redo))
 #+END_SRC
 
 * Startup
