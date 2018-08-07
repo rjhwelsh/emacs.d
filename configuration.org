@@ -127,7 +127,6 @@ comment it out.
 			"org.org"
 			"org-gantt.org"
 			"backup.org"
-			"yasnippet.org"
 			"workgroups.org"
 			"abbrev.org"
 			"company.org"
@@ -211,6 +210,23 @@ Emacs speaks statistics package.
 Emacs org-caldav package for calendar integration.
 #+BEGIN_SRC emacs-lisp
 	(use-package "org-caldav" :ensure t)
+#+END_SRC
+
+* Yasnippet
+Yasnippet provides a templating engine for Emacs.
+For more, see [[file:config/yasnippet.org][yasnippet.org]].
+N.B. For html tags use emmet-mode instead of yasnippet.
+#+BEGIN_SRC emacs-lisp
+	(use-package popup :ensure t)
+	(use-package "yasnippet"
+		:ensure t
+		:diminish yas-minor-mode
+		:init
+		(require 'yasnippet)
+		(yas-global-mode 1) ; enable globally
+		:config
+		(rjh/load-config "yasnippet.org"))
+	(use-package "yasnippet-snippets" :ensure t) ;; Official snippets by AndreaCrotti
 #+END_SRC
 
 * Git
