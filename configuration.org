@@ -124,7 +124,6 @@ of functionality. If you dislike or would like to stop using a particular module
 comment it out.
 #+BEGIN_SRC emacs-lisp
 		 (setq rjh/load-config-modules '(
-			"abbrev.org"
 			"company.org"
 			"crypto.org"
 			"theme.org"
@@ -640,6 +639,12 @@ A pretty message bar for Emacs.
 	 (telephone-line-mode 1)
 #+END_SRC
 
+* Abbrev
+Abbreviation configuration.
+For more see [[file:config/abbrev.org][abbrev.org]].
+#+BEGIN_SRC emacs-lisp
+(rjh/load-config "abbrev.org")
+#+END_SRC
 * Fonts
 Setup font functions, mostly courtesy of Harry Schwartz.
 For more see [[file:config/fonts.org][fonts.org]].
