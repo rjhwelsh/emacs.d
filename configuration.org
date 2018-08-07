@@ -812,6 +812,12 @@ For more details see [[file:config/numbers.org][numbers.org]]
 	(rjh/load-config "startup.org")
 #+END_SRC
 
+Keybindings
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-M-+") 'my-increment-number-decimal)
+(global-set-key (kbd "C-M--") 'my-decrement-number-decimal)
+#+END_SRC
+
 * Startup
 Start-up configuration.
 For more see [[file:config/startup.org][startup.org]].

@@ -5,11 +5,6 @@
 This configuration provides number manipulation functions for emacs.
 Courtesy of [[https://www.emacswiki.org/emacs/IncrementNumber][emacswiki.org]].
 
-* Keybindings
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-M-+") 'my-increment-number-decimal)
-(global-set-key (kbd "C-M--") 'my-decrement-number-decimal)
-#+END_SRC
 * Integers
 #+BEGIN_SRC emacs-lisp
 (defun increment-number-at-point ()
@@ -45,7 +40,6 @@ Roll negative increments around 0000 -> 9999.
   (interactive "p*")
   (my-increment-number-decimal (if arg (- arg) -1)))
 #+END_SRC
-
 
 * Hexadecimal
 #+BEGIN_SRC emacs-lisp
