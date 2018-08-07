@@ -329,6 +329,13 @@ Setup font functions, mostly courtesy of Harry Schwartz.
 (rjh/load-config "fonts.org")
 #+END_SRC
 
+* Backups
+Setup file backup behaviour for Emacs.
+For more see [[file:config/backup.org][backup.org]].
+#+BEGIN_SRC emacs-lisp
+(rjh/load-config "backup.org")
+#+END_SRC
+
 * Startup
 Start-up configuration.
 #+BEGIN_SRC emacs-lisp
