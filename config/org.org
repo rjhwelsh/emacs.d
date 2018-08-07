@@ -248,6 +248,13 @@ These tags will always be available unless =#+STARTUP: noptag= is set in the buf
 																	 (:newline)
 																	 ("HABIT" . ?H)
 																	 (:newline)
+																	 ("MOTIVATION" . ?M)
+																	 ("ACQUIRE" . ?A)
+																	 ("SIGNIFICANCE" . ?S)
+																	 ("TRIGGER" . ?T)
+																	 ("EXHIBIT" . ?E)
+																	 ("REVIEW" . ?R)
+																	 (:newline)
 																 ))
 #+END_SRC
 
