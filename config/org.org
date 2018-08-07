@@ -43,16 +43,18 @@ Enable extension modules for org-mode
 ** Application Defaults
 Default application associations.
 #+BEGIN_SRC emacs-lisp
-	(setq org-file-apps '((auto-mode . emacs)
-												("\\.x?html?\\'" . "firefox %s")
-												("\\.pdf\\'" . "evince \"%s\"")
-												("\\.pdf::\\([0-9]+\\)\\'" . "evince \"%s\" -p %1")
-												))
+		(setq org-file-apps
+	'((auto-mode . emacs)
+		("\\.x?html?\\'" . "firefox %s")
+		("\\.pdf\\'" . "evince \"%s\"")
+		("\\.pdf::\\([0-9]+\\)\\'" . "evince \"%s\" -p %1")
+		))
 #+END_SRC
 Link frame setup. Prevent windows from splitting.
 #+BEGIN_SRC emacs-lisp
-	(setq org-link-frame-setup '((file . find-file)
-														 ))
+	(setq org-link-frame-setup
+				'((file . find-file)
+					))
 #+END_SRC
 
 *Harry:* Exporting to HTML and opening the results triggers
@@ -74,14 +76,14 @@ Some handy keybindings.
 ** habits (and repeating tasks)
 Habit tracking in agenda enabled in org-modules.
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'org-modules 'org-habit)
-(require 'org-habit)
+	(add-to-list 'org-modules 'org-habit)
+	(require 'org-habit)
 #+END_SRC
 
 
 Skip displaying scheduled tasks if deadline is visible.
 #+BEGIN_SRC emacs-lisp
-(setq org-agenda-skip-scheduled-if-deadline-is-shown 'repeated-after-deadline)
+	(setq org-agenda-skip-scheduled-if-deadline-is-shown 'repeated-after-deadline)
 #+END_SRC
 
 Now to make a habit look closely at the following example, from
@@ -126,11 +128,11 @@ In the agenda view habits will show different colors on each day.
 
 Configuration variables for habits.
 #+BEGIN_SRC elisp
-(setq org-habit-graph-column 50
-org-habit-preceding-days 28
-org-habit-following-days 7
-org-habit-show-habits-only-for-today t
-)
+	(setq org-habit-graph-column 50
+				org-habit-preceding-days 28
+				org-habit-following-days 7
+				org-habit-show-habits-only-for-today t
+				)
 #+END_SRC
 Press K to enable/disable habits in the agenda.
 ** 'TODO' Keywords
@@ -169,41 +171,43 @@ For group projects, put this at the top of the project line for custom keywords.
 *** Default Tag list
 See =org-tag-alist= for more details.
 #+BEGIN_SRC emacs-lisp
-	(setq org-tag-alist '(("food" . ?e)
-												("security" . ?s)
-												("affection" . ?a)
-												("learning" . ?l)
-												("contrib" . ?p)
-												("fun" . ?f )
-												("identity" . ?i)
-												("freedom" . ?r)
-											  ("creative" . ?c)
-											))
+	(setq org-tag-alist
+				'(("food" . ?e)
+					("security" . ?s)
+					("affection" . ?a)
+					("learning" . ?l)
+					("contrib" . ?p)
+					("fun" . ?f )
+					("identity" . ?i)
+					("freedom" . ?r)
+					("creative" . ?c)
+					))
 #+END_SRC
 *** Persistent Tag list
 These tags will always be available unless =#+STARTUP: noptag= is set in the buffer.
 #+BEGIN_SRC emacs-lisp
-	(setq org-tag-persistent-alist '(
-																	 ("PROJECT" . ?P)
-																	 ("FLAGGED" . ?F)
-																	 (:newline)
-																	 ("NEW" . ?N)
-																	 ("DELEGATE" . ?D)
-																	 ("WAITING" . ?W)
-																	 ("BREAKDOWN" . ?B)
-																	 ("VERIFY" . ?V)
-																	 ("CANCELLED" . ?C)
-																	 (:newline)
-																	 ("HABIT" . ?H)
-																	 (:newline)
-																	 ("MOTIVATION" . ?M)
-																	 ("ACQUIRE" . ?A)
-																	 ("SIGNIFICANCE" . ?S)
-																	 ("TRIGGER" . ?T)
-																	 ("EXHIBIT" . ?E)
-																	 ("REVIEW" . ?R)
-																	 (:newline)
-																 ))
+	(setq org-tag-persistent-alist
+				'(
+					("PROJECT" . ?P)
+					("FLAGGED" . ?F)
+					(:newline)
+					("NEW" . ?N)
+					("DELEGATE" . ?D)
+					("WAITING" . ?W)
+					("BREAKDOWN" . ?B)
+					("VERIFY" . ?V)
+					("CANCELLED" . ?C)
+					(:newline)
+					("HABIT" . ?H)
+					(:newline)
+					("MOTIVATION" . ?M)
+					("ACQUIRE" . ?A)
+					("SIGNIFICANCE" . ?S)
+					("TRIGGER" . ?T)
+					("EXHIBIT" . ?E)
+					("REVIEW" . ?R)
+					(:newline)
+					))
 #+END_SRC
 
 ** Priorities
@@ -258,41 +262,30 @@ Sorting strategy.
 Custom agenda views
 #+BEGIN_SRC emacs-lisp
 	(setq org-agenda-custom-commands
-				'(
-					("a" "Agenda for current Week or Day"
+				'(("a" "Agenda for current Week or Day"
 					 agenda ""
-									 ((org-agenda-tag-filter-preset
-										 '("-HABIT"))))
-
+					 ((org-agenda-tag-filter-preset
+						 '("-HABIT"))))
 					("n" "Agenda and all TODOs"
 					 ((agenda ""
 										((org-agenda-span 1)))
 						(alltodo "" )))
-
 					("P" "PROJECT TASKS"
 					 ((tags "LEVEL=1+PROJECT")))
-
 					("N" "NEW TASKS"
-					((tags "+NEW")))
-
+					 ((tags "+NEW")))
 					("F" "FLAGGED TASKS"
-					((tags "+FLAGGED")))
-
+					 ((tags "+FLAGGED")))
 					("V" "VERIFY TASKS"
 					 ((tags "+VERIFY")))
-
 					("D" "DELEGATE TASKS"
 					 ((tags "+DELEGATE")))
-
 					("W" "WAITING TASKS"
 					 ((tags "+WAITING")))
-
 					("B" "BREAKDOWN TASKS"
 					 ((tags "+BREAKDOWN")))
-
 					("H" "HABITUAL TASKS"
-					 ((tags "STYLE=\"habit\"|HABIT" )))
-				))
+					 ((tags "STYLE=\"habit\"|HABIT" )))))
 #+END_SRC
 
 ** Stuck Projects
@@ -355,24 +348,23 @@ Do not mark archived tasks as done.
 ** Capture/Refile Settings
 These are settings for capturing/refiling information.
 #+BEGIN_SRC emacs-lisp
-(setq org-default-notes-file rjh/org-tasks)
+	(setq org-default-notes-file rjh/org-tasks)
 #+END_SRC
 
 Capture templates.
 #+BEGIN_SRC emacs-lisp
-			(setq org-capture-templates
-			'(("t" "Todo" entry (file+headline rjh/org-tasks "Inbox")
+	(setq org-capture-templates
+				'(("t" "Todo" entry (file+headline rjh/org-tasks "Inbox")
 					 "* TODO %? :NEW:\n\t%i\n\t%a\n\n" nil)
-				("j" "Journal" entry (file+datetree rjh/org-journal )
+					("j" "Journal" entry (file+datetree rjh/org-journal )
 					 "* %?\n\tEntered on %U\n\t%i\n\t%a\n\n" :kill-buffer )
-				("e" "Event/Appointment" entry (file+headline rjh/org-events "Events" )
+					("e" "Event/Appointment" entry (file+headline rjh/org-events "Events" )
 					 "* EVENT %?\n\tSCHEDULED: %^T\n\t%i\n\t%a\n\n")
-			  ("h" "Habit" entry (file+headline rjh/org-habits "Habits" )
+					("h" "Habit" entry (file+headline rjh/org-habits "Habits" )
 					 "* TODO %? :HABIT:\n\tSCHEDULED: %^T\n\t:PROPERTIES:\n\t:STYLE:\thabit\n\t:END:\n\t%i\n\t%a\n\n")
-	;; Work on clocked items
-				("x" "Checklist on clock" checkitem (clock) "+ [ ] %?\n\n" :kill-buffer)
-				("T" "Table on clock" table-line (clock) :kill-buffer )
-			))
+					;; Work on clocked items
+					("x" "Checklist on clock" checkitem (clock) "+ [ ] %?\n\n" :kill-buffer)
+					("T" "Table on clock" table-line (clock) :kill-buffer )))
 #+END_SRC
 
 
@@ -384,18 +376,16 @@ Refiling list.
 		(mapcar (function buffer-file-name)
 						(org-buffer-list 'files)))
 
-  ;; Refiling targets
+	;; Refiling targets
 	(setq org-refile-targets
-						'((nil :maxlevel . 3 )
-							(org-agenda-files :maxlevel . 3)
-							(org-agenda-files :tag . ":ref:")
-							(org-agenda-files :todo . "NEXT")
-						(ixp/org-buffer-files :maxlevel . 1)
-						 ))
-		(setq org-outline-path-complete-in-steps t)
-		(setq org-refile-use-outline-path t)
-		(setq org-refile-allow-creating-parent-nodes 'confirm)
-
+				'((nil :maxlevel . 3 )
+					(org-agenda-files :maxlevel . 3)
+					(org-agenda-files :tag . ":ref:")
+					(org-agenda-files :todo . "NEXT")
+					(ixp/org-buffer-files :maxlevel . 1)))
+	(setq org-outline-path-complete-in-steps t)
+	(setq org-refile-use-outline-path t)
+	(setq org-refile-allow-creating-parent-nodes 'confirm)
 #+END_SRC
 
 Specification is any of:
@@ -416,10 +406,11 @@ verify each headline found by the criteria above.
 * Quick Templates
 Org structure templates.
 #+BEGIN_SRC emacs-lisp
-	(add-to-list 'org-structure-template-alist
-							 '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC")
-						   '("py" "#+BEGIN_SRC python\n?\n#+END_SRC")
-							 )
+	(add-to-list
+	 'org-structure-template-alist
+	 '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC")
+	 '("py" "#+BEGIN_SRC python\n?\n#+END_SRC")
+	 )
 #+END_SRC
 * Display Settings
 ** Display preferences
@@ -490,43 +481,35 @@ FACES are custom settings for font, colour, background etc.
 *** Keyword faces
 	 #+BEGIN_SRC emacs-lisp
 		 (defface todo
-					 '(
-						 (((class color) (min-colors 8))
-							:background "red" :foreground "black" :weight extra-bold
-							:inherit default :height 1.0 :box ( :style released-button ) )
-						)
-					 "Face for basic todo items."
-					 :group 'todo-faces)
+			 '((((class color) (min-colors 8))
+					:background "red" :foreground "black" :weight extra-bold
+					:inherit default :height 1.0 :box ( :style released-button )))
+			 "Face for basic todo items."
+			 :group 'todo-faces)
 	 #+END_SRC
 	 #+BEGIN_SRC emacs-lisp
-					 (defface done
-								 '(
-									 (((class color) (min-colors 8))
-										:background "green" :foreground "black" :weight extra-bold
-										:inherit default :height 1.0 :box ( :style released-button ) )
-									)
-								 "Face for basic todo items."
-								 :group 'todo-faces)
+		 (defface done
+			 '((((class color) (min-colors 8))
+					:background "green" :foreground "black" :weight extra-bold
+					:inherit default :height 1.0 :box ( :style released-button )))
+			 "Face for basic todo items."
+			 :group 'todo-faces)
 	 #+END_SRC
 	 #+BEGIN_SRC emacs-lisp
-					 (defface next
-								 '(
-									 (((class color) (min-colors 8))
-										:background "blue" :foreground "white" :weight extra-bold
-										:inherit default :height 1.0 :box ( :style released-button ) )
-									)
-								 "Face for basic todo items."
-								 :group 'todo-faces)
+		 (defface next
+			 '((((class color) (min-colors 8))
+					:background "blue" :foreground "white" :weight extra-bold
+					:inherit default :height 1.0 :box ( :style released-button )))
+			 "Face for basic todo items."
+			 :group 'todo-faces)
 	 #+END_SRC
 	 #+BEGIN_SRC emacs-lisp
 		 (defface event
-					 '(
-						 (((class color) (min-colors 8))
-							:background "black" :foreground "green" :weight extra-bold
-							:inherit default :height 1.0 :box ( :style released-button ) )
-						)
-					 "Face for basic todo items."
-					 :group 'todo-faces)
+			 '((((class color) (min-colors 8))
+					:background "black" :foreground "green" :weight extra-bold
+					:inherit default :height 1.0 :box ( :style released-button )))
+			 "Face for basic todo items."
+			 :group 'todo-faces)
 	 #+END_SRC
  Assignment.
  #+BEGIN_SRC emacs-lisp
@@ -534,9 +517,7 @@ FACES are custom settings for font, colour, background etc.
 				 '(("TODO" . todo)
 					 ("NEXT" . next)
 					 ("DONE" . done)
-					 ("EVENT" . event )
-					 )
-	 )
+					 ("EVENT" . event )))
  #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
@@ -575,17 +556,17 @@ Activate KOMA-Script letter exporter.
 You can add your own customized class, my-letter as follows.
 #+BEGIN_EXAMPLE
 (eval-after-load 'ox-koma-letter
-  '(progn
-     (add-to-list 'org-latex-classes
-                  '("my-letter"
-                    "\\documentclass\{scrlttr2\}
-     \\usepackage[english]{babel}
-     \\setkomavar{frombank}{(1234)\\,567\\,890}
-     \[DEFAULT-PACKAGES]
-     \[PACKAGES]
-     \[EXTRA]"))
+'(progn
+(add-to-list 'org-latex-classes
+'("my-letter"
+"\\documentclass\{scrlttr2\}
+\\usepackage[english]{babel}
+\\setkomavar{frombank}{(1234)\\,567\\,890}
+\[DEFAULT-PACKAGES]
+\[PACKAGES]
+\[EXTRA]"))
 
-     (setq org-koma-letter-default-class "my-letter")))
+(setq org-koma-letter-default-class "my-letter")))
 #+END_EXAMPLE
 For more info see [[http://orgmode.org/worg/exporters/koma-letter-export.html][here.]]
 * Harry Schwartz
@@ -600,17 +581,15 @@ Allow =babel= to evaluate
  - R
 
 #+BEGIN_SRC emacs-lisp
-		(org-babel-do-load-languages
-		 'org-babel-load-languages
-			 '(
-						 (C . t)  ;; This includes support for C++
-						 (emacs-lisp . t)
-						 (ruby . t)
-						 (dot . t)
-						 (gnuplot . t)
-						 (plantuml . t)
-						 (R . t)
-						 ))
+	(org-babel-do-load-languages
+	 'org-babel-load-languages
+	 '((C . t)  ;; This includes support for C++
+		 (emacs-lisp . t)
+		 (ruby . t)
+		 (dot . t)
+		 (gnuplot . t)
+		 (plantuml . t)
+		 (R . t)))
 #+END_SRC
 
 Don't ask before evaluating code blocks.
@@ -642,7 +621,7 @@ E.g. Using =#+ATTR_ORG: :width 100=.
 Be aware you will require imagemagick6 support for this.
 (Imagemagick7 has made some changes which are currently incompatible [2018-05-17]).
 #+BEGIN_SRC emacs-lisp
-(setq org-image-actual-width nil)
+	(setq org-image-actual-width nil)
 #+END_SRC
 ***** Exporting to HTML
 
