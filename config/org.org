@@ -520,9 +520,6 @@ FACES are custom settings for font, colour, background etc.
 					 ("EVENT" . event )))
  #+END_SRC
 
-#+BEGIN_SRC emacs-lisp
-#+END_SRC
-
 * Contrib
 Org-contrib consists of packages as part of org-plus-contrib.
 ** org-index
