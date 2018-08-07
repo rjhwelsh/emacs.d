@@ -124,7 +124,6 @@ of functionality. If you dislike or would like to stop using a particular module
 comment it out.
 #+BEGIN_SRC emacs-lisp
 		 (setq rjh/load-config-modules '(
-			"graph.org"
 			"uml.org"
 			"latex.org"
 			"recent.org"
@@ -258,6 +257,12 @@ Use =M-x git-timemachine=, =np= to navigate and =q= to quit.
 	(use-package "git-timemachine" :ensure t )
 #+END_SRC
 
+* Graph
+Some packages for graphing.
+#+BEGIN_SRC emacs-lisp
+		(use-package "gnuplot" :ensure t )
+		(use-package "graphviz-dot-mode" :ensure t )
+#+END_SRC
 * Java
 JDEE - Java Development Environment for Emacs
 
