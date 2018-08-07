@@ -721,7 +721,7 @@ Save recent files every 5 minutes.
 Methods for manipulating numbers in Emacs.
 For more details see [[file:config/numbers.org][numbers.org]]
 #+BEGIN_SRC emacs-lisp
-	(rjh/load-config "startup.org")
+	(rjh/load-config "numbers.org")
 #+END_SRC
 
 Keybindings
