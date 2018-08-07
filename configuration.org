@@ -259,7 +259,7 @@ irony-mode is an Emacs minor-mode that aims at improving the editing experience
 for the C, C++ and Objective-C languages. It works by using a combination of an
 Emacs package and a C++ program (irony-server) exposing =libclang=.
 
-This configuration is based off [[http://martinsosic.com/development/emacs/2017/12/09/emacs-cpp-ide.html][Martin Sosic's work]].
+This configuration is from [[http://martinsosic.com/development/emacs/2017/12/09/emacs-cpp-ide.html][Martin Sosic]].
 
 Brief note.
 Irony is faster, and rtags is more feature-complete.
@@ -321,7 +321,7 @@ For complete installation details please see https://github.com/Sarcasm/irony-mo
 	#+END_EXAMPLE
 
 * Rtags                                                               :Cpp:C:
- This configuration is based off [[http://martinsosic.com/development/emacs/2017/12/09/emacs-cpp-ide.html][Martin Sosic's work]].
+ This configuration is from [[http://martinsosic.com/development/emacs/2017/12/09/emacs-cpp-ide.html][Martin Sosic]].
 
  Brief note.
  Irony is faster, and rtags is more feature-complete.
@@ -356,7 +356,6 @@ For complete installation details please see https://github.com/Sarcasm/irony-mo
 			 (add-hook 'objc-mode-hook 'rtags-start-process-unless-running)))
 
  #+END_SRC
-
  #+BEGIN_SRC emacs-lisp
 	 ;; TODO: Has no coloring! How can I get coloring?
 	 (use-package helm-rtags
@@ -367,7 +366,6 @@ For complete installation details please see https://github.com/Sarcasm/irony-mo
 			 (setq rtags-display-result-backend 'helm)))
  #+END_SRC
  #+BEGIN_SRC emacs-lisp
-
 	 ;; Use rtags for auto-completion.
 	 (use-package company-rtags
 		 :requires company rtags
@@ -380,8 +378,6 @@ For complete installation details please see https://github.com/Sarcasm/irony-mo
 			 (push 'company-rtags company-backends)
 			 ))
  #+END_SRC
-
-
  #+BEGIN_SRC emacs-lisp
 	 ;; Live code checking.
 	 (use-package flycheck-rtags
