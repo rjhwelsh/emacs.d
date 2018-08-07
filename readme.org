@@ -74,7 +74,6 @@ Clone the repository to your desired location and run =./setup.sh=.
  mkdir -vp $CONFIGDIR/{org,snippets}
  #+END_SRC
 
-
 ** personal.org - Required config
 *** rjh/load-config-repo
 	Make sure that =personal.org= in the =$CONFIGDIR= uses the correct
@@ -102,7 +101,7 @@ Clone the repository to your desired location and run =./setup.sh=.
 * Configuration
 
 ** configuration.org
- The =configuration.org= in your .emacs.d (emacs config) directory, acts as the
+ The [[file:configuration.org][configuration.org]] in your .emacs.d (emacs config) directory, acts as the
  centre of operations for adjusting your configuration.
 
  If you find anything you dislike, you can comment it out with =;=.
@@ -125,7 +124,7 @@ Clone the repository to your desired location and run =./setup.sh=.
  get a newbie to Emacs up and running quickly.
 
 ** personal.org
-Use =personal.org= in your .emacs.d (emacs config) directory for all your
+Use [[file:personal.org][personal.org]] in your .emacs.d (emacs config) directory for all your
 personal configuration. Personal configuration, is anything you might want to
 keep private and separate from the rest of your config.
 
