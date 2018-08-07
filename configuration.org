@@ -110,13 +110,31 @@ please use the =:diminish= option there instead.
 #+END_SRC
 
 * Auto-compile
-
 Always compile packages and use the newest available.
 #+BEGIN_SRC emacs-lisp
 (use-package auto-compile
   :config (auto-compile-on-load-mode)
   :ensure t)
 (setq load-prefer-newer t)
+#+END_SRC
+
+* Git
+I use =magit= for git integration.
+The following key-bindings are for global convenience.
+Use =C-x g ?= to get a quick command listing.
+#+BEGIN_SRC emacs-lisp
+	(use-package magit
+		:ensure t
+		:pin melpa-stable
+		:bind (("C-x g" . magit-status)
+					 ("C-x M-g" . magit-dispatch-popup)))
+#+END_SRC
+
+Git time-machine provides a mode for traversing the git history of a file.
+Use =M-x git-timemachine=, =np= to navigate and =q= to quit.
+#+BEGIN_SRC emacs-lisp
+	(use-package "git-timemachine"
+		:ensure t )
 #+END_SRC
 
 * Configuration modules
@@ -127,7 +145,6 @@ comment it out.
 		 (setq rjh/load-config-modules '(
 			"org.org"
 			"org-gantt.org"
-			"git.org"
 			"calendar.org"
 			;"evil.org"
 			"backup.org"
