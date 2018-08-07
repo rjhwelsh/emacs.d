@@ -2,24 +2,6 @@
 #+AUTHOR: Roger J. H. Welsh
 #+EMAIL: rjhwelsh@gmail.com
 
-* Packages
-#+BEGIN_SRC emacs-lisp
-		(use-package company :ensure t :diminish company-mode)
-#+END_SRC
-* Setup
-Adding auto-completion features using company-mode.
-
-Use auto-completion on all modes.
-#+BEGIN_SRC emacs-lisp
-	(setq company-global-modes t)
-	(global-company-mode 1)
-#+END_SRC
-* Delay and prefix length
-Completion delay and minimum prefix length.
-#+BEGIN_SRC emacs-lisp
-(setq company-idle-delay 0.8)
-(setq company-minimum-prefix-length 2)
-#+END_SRC
 * Yasnippet compatibility
 Yasnippet and company-mode have some compatibility issues. This section aims to
 fix most of them.

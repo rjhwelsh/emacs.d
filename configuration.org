@@ -124,7 +124,6 @@ of functionality. If you dislike or would like to stop using a particular module
 comment it out.
 #+BEGIN_SRC emacs-lisp
 		 (setq rjh/load-config-modules '(
-			"company.org"
 			"crypto.org"
 			"theme.org"
 			"text.org"
@@ -226,6 +225,24 @@ N.B. For html tags use emmet-mode instead of yasnippet.
 		:config
 		(rjh/load-config "yasnippet.org"))
 	(use-package "yasnippet-snippets" :ensure t) ;; Official snippets by AndreaCrotti
+#+END_SRC
+
+* Company
+Company-mode provides auto-completion features for many other modes.
+
+Company mode has some compatibility issues with yasnippet.
+For more see [[file:config/company.org::*Yasnippet%20compatibility][Yasnippet compatibility]].
+
+#+BEGIN_SRC emacs-lisp
+	(use-package company
+		:ensure t
+		:diminish company-mode
+		:init
+		(setq company-global-modes t)
+		(global-company-mode 1)
+		(setq company-idle-delay 0.8)
+		(setq company-minimum-prefix-length 2)
+		(rjh/load-config "company.org"))
 #+END_SRC
 
 * Git
