@@ -27,7 +27,7 @@ package in elpa.
 		 (car (file-expand-wildcards "~/.emacs.d/elpa/org-plus-contrib*" ))
 		)
 #+END_SRC
-.
+
 
 * Setup
 For a minimal =.emacs= for =org-mode=, see [[http://orgmode.org/worg/org-faq.html#minimal-emacs][here]].
@@ -77,7 +77,7 @@ Habit tracking in agenda enabled in org-modules.
 (add-to-list 'org-modules 'org-habit)
 (require 'org-habit)
 #+END_SRC
-.
+
 
 Skip displaying scheduled tasks if deadline is visible.
 #+BEGIN_SRC emacs-lisp
@@ -565,7 +565,7 @@ Then maybe later progress to this...
 (define-key org-index-map (kbd "h") (lambda () (interactive) (org-index 'head)))
 (define-key org-index-map (kbd "i") (lambda () (interactive) (org-index)))
 #+END_EXAMPLE
-.
+
 ** koma-letter-export
 Activate KOMA-Script letter exporter.
 #+BEGIN_SRC emacs-lisp
@@ -652,7 +652,7 @@ of every exported HTML document.
 #+BEGIN_SRC emacs-lisp
   (setq org-html-postamble nil)
 #+END_SRC
-.
+
 * Bernt Hansen
 A function for skipping archiving tasks from Bernt Hansen.
 N.B. This hasn't actually been implemented anywhere yet.
