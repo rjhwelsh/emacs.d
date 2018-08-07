@@ -2,7 +2,6 @@
 #+AUTHOR: Roger J. H. Welsh
 #+EMAIL: rjhwelsh@gmail.com
 
-
 * About
 This configuration module uses elpy and other packages for an easy to use python
 development environment.
@@ -16,20 +15,8 @@ pip install jedi flake8 autopep8
 emerge -av dev-python/jedi dev-python/flake8 dev-python/autopep8
 #+END_EXAMPLE
 
-
 * Elpy
 [[https://elpy.readthedocs.io/en/latest/index.html][Elpy - read the docs]].
-
-The Emacs Python Development Environment. This is a full featured environment
-for python development. For introspection and analysis of Python sources, Elpy
-mainly relies on Jedi. Jedi is known to have some problems coping with
-badly-formatted Python.
-
-#+BEGIN_SRC emacs-lisp
-		(use-package "elpy" :ensure t )
-    (elpy-enable)
-#+END_SRC
-
 Interpreter setup (default). You could use Jupyter as an alternative here. ("jupyter"
 , "console --simple-prompt" )
 #+BEGIN_SRC emacs-lisp
@@ -42,15 +29,10 @@ Set up a dedicated python shell for each buffer.
 (setq elpy-dedicated-shells nil)
 #+END_SRC
 
-
 * Jedi
 [[http://jedi.readthedocs.io/en/latest/][Jedi - read the docs]].
 
 I use company-mode, so the specific implementation of jedi I use is [[https://github.com/syohex/emacs-company-jedi][company-jedi]].
-#+BEGIN_SRC emacs-lisp
-    (use-package "company-jedi" :ensure t)
-#+END_SRC
-
 Add a hook for company-jedi to python-mode.
 #+BEGIN_SRC emacs-lisp
   (defun rjh/python-mode-hook ()
@@ -120,7 +102,6 @@ common directory. This common directory is called project root.
 	- =M-?= :: Find references to the identifier at point.
 
 
-
 *** Shell buffer
 		- =C-cz= :: elpy-shell-switch-to-shell, Switch to a buffer with a python
                interpreter, running one if necessary.
@@ -157,7 +138,6 @@ Variations on the above include.
  - =C-ct= :: elpy-test , Start a test run. This uses the currently configured
              test runner to discover and run tests.
  - =M-x elpy-set-test-runner= :: This changes the current test-runner.
-
 
 *** Refactoring
 		- =C-ce= :: edit all occurences of symbol at point at once.
