@@ -160,6 +160,28 @@ For those who prefer the feel of Vi on emacs.
 				)
 #+END_EXAMPLE
 
+* Finding files
+The following commands will help you when locating files.
+    - find-file :: Opens up a file buffer
+									 ( =C-x C-f= )
+		- find-dired :: Opens up a directory buffer.
+		- find-name-dired :: Finds files matching a pattern.
+		- find-grep-dired :: Finds files containing a pattern.
+
+In any of the =dired= buffers you can perform certain actions.
+For example to start a =query-replace-regexp=, hit the =Q= key.
+
+For more information, hit =?= inside any =dired= buffer.
+And =h= for more advanced help.
+
+* Emacs lisp
+An api for working with files in Emacs lisp.
+( https://github.com/rejeep/f.el )
+
+#+BEGIN_SRC emacs-lisp
+	(use-package "f" :ensure t )
+#+END_SRC
+
 * Configuration modules
 Below is a list of sub-configurations which are loaded to provide certain types
 of functionality. If you dislike or would like to stop using a particular module, simply
@@ -181,7 +203,6 @@ comment it out.
 			"bbdb.org"
 			"theme.org"
 			"text.org"
-			"file.org"
 			"python.org"
 			"study.org"
 			"undo.org"
