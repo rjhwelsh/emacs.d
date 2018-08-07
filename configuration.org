@@ -174,6 +174,31 @@ For example to start a =query-replace-regexp=, hit the =Q= key.
 For more information, hit =?= inside any =dired= buffer.
 And =h= for more advanced help.
 
+* Address-book
+BBDB, The insidious big brother database.
+#+BEGIN_SRC emacs-lisp
+	(use-package bbdb
+	:ensure t
+	:init
+	(require 'bbdb)
+	(setq bbdb-file "~/.bbdb/bbdb"
+				bbdb-phone-style nil)
+	(bbdb-initialize 'message)
+	(bbdb-insinuate-message)
+	)
+#+END_SRC
+
+BBDB vcard import/export.
+Use =bbdb-vcard-import-file= to import a vcard file.
+And =bbdb-vcard-export-file= to export a vcard file.
+#+BEGIN_SRC emacs-lisp
+	(use-package bbdb-vcard
+		:ensure t
+		:init
+		(require 'bbdb-vcard)
+		(setq bbdb-vcard-directory "~/.bbdb"))
+#+END_SRC
+
 * Emacs lisp
 An api for working with files in Emacs lisp.
 ( https://github.com/rejeep/f.el )
@@ -200,7 +225,6 @@ comment it out.
 			"company.org"
 			"mutt.org"
 			"crypto.org"
-			"bbdb.org"
 			"theme.org"
 			"text.org"
 			"python.org"
