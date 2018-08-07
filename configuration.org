@@ -124,9 +124,6 @@ of functionality. If you dislike or would like to stop using a particular module
 comment it out.
 #+BEGIN_SRC emacs-lisp
 		 (setq rjh/load-config-modules '(
-			"org.org"
-			"org-gantt.org"
-			"backup.org"
 			"workgroups.org"
 			"abbrev.org"
 			"company.org"
@@ -195,6 +192,10 @@ For those who prefer the feel of Vi on emacs.
 
 * Org
 To see the complete org configuration, see [[file:config/org.org][org.org]].
+#+BEGIN_SRC emacs-lisp
+(rjh/load-config "org.org" )
+(rjh/load-config "org-gantt.org" )
+#+END_SRC
 
 Add pretty bullets for org-mode.
 #+BEGIN_SRC emacs-lisp
