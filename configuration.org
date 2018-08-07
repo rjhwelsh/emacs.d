@@ -118,14 +118,14 @@ Always compile packages and use the newest available.
 (setq load-prefer-newer t)
 #+END_SRC
 
-* Sub-configuration modules
+* Load configuration methods
 All of these use =use-package= to install packages, with the =:ensure t= option.
 If you are loading this for the first time, make sure you have an internet
 connection.
 
-I typically load an emacs server (=emacs --daemon=), and edit files using
-=emacsclient -c=. This loads a new frame for each file I edit.
-If I am already inside emacs, I will use =C-x C-f= to find a file and load it.
+When I use Emacs, I typically load an emacs server (=emacs --daemon=), and edit
+files using =emacsclient -c=. This loads a new frame for each file I edit. If I
+am already inside emacs, I will use =C-x C-f= to find a file and load it.
 
 If you are new to emacs, (like I was) my process to start off was:
  * I started off with the tutorial =C-h t=.
@@ -136,7 +136,10 @@ If you are new to emacs, (like I was) my process to start off was:
 
 This sets the local-config-dir.
 #+BEGIN_SRC emacs-lisp
-(setq rjh/local-config-dir (expand-file-name "config" rjh/local-config-repo ))
+	(setq rjh/local-config-dir
+				(expand-file-name
+				 "config"
+				 rjh/local-config-repo ))
 #+END_SRC
 
 This function will load a single configuration file.
@@ -157,8 +160,8 @@ For those who prefer the feel of Vi on emacs.
 * Org
 To see the complete org configuration, see [[file:config/org.org][org.org]].
 #+BEGIN_SRC emacs-lisp
-(rjh/load-config "org.org" )
-(rjh/load-config "org-gantt.org" )
+	(rjh/load-config "org.org" )
+	(rjh/load-config "org-gantt.org" )
 #+END_SRC
 
 Add pretty bullets for org-mode.
@@ -216,14 +219,14 @@ For more see [[file:config/company.org::*Yasnippet%20compatibility][Yasnippet co
 Latex configuration.
 For more see [[file:config/latex.org][latex.org]].
 #+BEGIN_SRC emacs-lisp
-(rjh/load-config "latex.org")
+	(rjh/load-config "latex.org")
 #+END_SRC
 
 * Graph
 Some packages for graphing.
 #+BEGIN_SRC emacs-lisp
-		(use-package "gnuplot" :ensure t )
-		(use-package "graphviz-dot-mode" :ensure t )
+	(use-package "gnuplot" :ensure t )
+	(use-package "graphviz-dot-mode" :ensure t )
 #+END_SRC
 
 * UML
@@ -338,35 +341,35 @@ For complete installation details please see https://github.com/Sarcasm/irony-mo
 			(add-hook 'c-mode-hook 'irony-mode)
 			;; Use compilation database first, clang_complete as fallback.
 			(setq-default irony-cdb-compilation-databases '(irony-cdb-libclang
-																												irony-cdb-clang-complete))
+																											irony-cdb-clang-complete))
 			(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)))
 #+END_SRC
 #+BEGIN_SRC emacs-lisp
-		;; I use irony with company to get code completion.
-		(use-package company-irony
-			:requires company irony
-			:ensure t
-			:config
-			(progn
-				(eval-after-load 'company '(add-to-list 'company-backends 'company-irony))))
+	;; I use irony with company to get code completion.
+	(use-package company-irony
+		:requires company irony
+		:ensure t
+		:config
+		(progn
+			(eval-after-load 'company '(add-to-list 'company-backends 'company-irony))))
 #+END_SRC
 #+BEGIN_SRC emacs-lisp
-		;; I use irony with flycheck to get real-time syntax checking.
-		(use-package flycheck-irony
-			:requires flycheck irony
-			:ensure t
-			:config
-			(progn
-				(eval-after-load 'flycheck '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))))
+	;; I use irony with flycheck to get real-time syntax checking.
+	(use-package flycheck-irony
+		:requires flycheck irony
+		:ensure t
+		:config
+		(progn
+			(eval-after-load 'flycheck '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))))
 #+END_SRC
 #+BEGIN_SRC emacs-lisp
-		;; Eldoc shows argument list of the function you are currently writing in the echo area.
-		(use-package irony-eldoc
-			:requires eldoc irony
-			:ensure t
-			:config
-			(progn
-				(add-hook 'irony-mode-hook #'irony-eldoc)))
+	;; Eldoc shows argument list of the function you are currently writing in the echo area.
+	(use-package irony-eldoc
+		:requires eldoc irony
+		:ensure t
+		:config
+		(progn
+			(add-hook 'irony-mode-hook #'irony-eldoc)))
 #+END_SRC
 
  Setup is similar to rtags.org (RTag).
@@ -587,21 +590,21 @@ This is [[https://www.gnu.org/software/emacs/manual/html_mono/epa.html#fnd-1][re
 This file provides integration with mutt.
 For more see [[file:config/mutt.org][mutt.org]]
 #+BEGIN_SRC emacs-lisp
-(rjh/load-config "mutt.org")
+	(rjh/load-config "mutt.org")
 #+END_SRC
 
 * Address-book
 BBDB, The insidious big brother database.
 #+BEGIN_SRC emacs-lisp
 	(use-package bbdb
-	:ensure t
-	:init
-	(require 'bbdb)
-	(setq bbdb-file "~/.bbdb/bbdb"
-				bbdb-phone-style nil)
-	(bbdb-initialize 'message)
-	(bbdb-insinuate-message)
-	)
+		:ensure t
+		:init
+		(require 'bbdb)
+		(setq bbdb-file "~/.bbdb/bbdb"
+					bbdb-phone-style nil)
+		(bbdb-initialize 'message)
+		(bbdb-insinuate-message)
+		)
 #+END_SRC
 
 BBDB vcard import/export.
@@ -644,7 +647,7 @@ For more information see the configuration file, [[file:config/calfw.org][calfw.
 
 Diary mode configuration.
 #+BEGIN_SRC emacs-lisp
-(rjh/load-config "diary.org")
+	(rjh/load-config "diary.org")
 #+END_SRC
 
 * Emacs lisp
@@ -658,8 +661,8 @@ An api for working with files in Emacs lisp.
 Multi-lingual environment for Emacs.
 For more see [[file:config/mule.org][mule.org]]
 #+BEGIN_SRC emacs-lisp
-(set-language-environment "Japanese")
-(load-library "anthy")
+	(set-language-environment "Japanese")
+	(load-library "anthy")
 #+END_SRC
 
 Font correction.
@@ -668,9 +671,9 @@ Font correction.
 		(set-fontset-font (frame-parameter nil 'font)
 											'japanese-jisx0208
 											'("Sazanami Gothic" . "unicode-bmp")))
-		(if (daemonp)
+	(if (daemonp)
 			'()
-			(rjh/font-correction))
+		(rjh/font-correction))
 #+END_SRC
 
 * Workgroups
@@ -705,11 +708,11 @@ Use the =diff-hl= package to highlight changed-and-uncommitted lines when
 programming.
 #+BEGIN_SRC emacs-lisp
 	(use-package diff-hl
-	:ensure t
-	:init
-	(require 'diff-hl)
-	(add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
-	(add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
+		:ensure t
+		:init
+		(require 'diff-hl)
+		(add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
+		(add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
 #+END_SRC
 
 For more on themes, checkout [[file:config/theme.org][theme.org]].
@@ -727,13 +730,13 @@ For more on themes, checkout [[file:config/theme.org][theme.org]].
 			(setq solarized-high-contrast-mode-line t)
 			(load-theme 'solarized-dark t)))
 	(use-package "fill-column-indicator" :ensure t )
-(rjh/load-config "theme.org")
+	(rjh/load-config "theme.org")
 #+END_SRC
 
 Miscellaneous text options.
 For more info see [[file:config/text.org][text.org]].
 #+BEGIN_SRC emacs-lisp
-(rjh/load-config "text.org")
+	(rjh/load-config "text.org")
 #+END_SRC
 
 * Telephone line
@@ -741,32 +744,32 @@ A pretty message bar for Emacs.
 ( https://github.com/dbordak/telephone-line )
 #+BEGIN_SRC emacs-lisp
 	(use-package telephone-line
-	 :ensure t
-	 :config
-	 (rjh/load-config "telephone-line.org"))
+		:ensure t
+		:config
+		(rjh/load-config "telephone-line.org"))
 ;	 :init
-	 (require 'telephone-line)
-	 (telephone-line-mode 1)
+	(require 'telephone-line)
+	(telephone-line-mode 1)
 #+END_SRC
 
 * Abbrev
 Abbreviation configuration.
 For more see [[file:config/abbrev.org][abbrev.org]].
 #+BEGIN_SRC emacs-lisp
-(rjh/load-config "abbrev.org")
+	(rjh/load-config "abbrev.org")
 #+END_SRC
 * Fonts
 Setup font functions, mostly courtesy of Harry Schwartz.
 For more see [[file:config/fonts.org][fonts.org]].
 #+BEGIN_SRC emacs-lisp
-(rjh/load-config "fonts.org")
+	(rjh/load-config "fonts.org")
 #+END_SRC
 
 * Backups
 Setup file backup behaviour for Emacs.
 For more see [[file:config/backup.org][backup.org]].
 #+BEGIN_SRC emacs-lisp
-(rjh/load-config "backup.org")
+	(rjh/load-config "backup.org")
 #+END_SRC
 
 * Undo tree
@@ -790,26 +793,26 @@ Save recent files list between sessions.
 
 Enable recentf-mode, set max items, set keybinding.
 #+BEGIN_SRC emacs-lisp
-(recentf-mode 1)
-(setq recentf-max-menu-items 100)
-(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+	(recentf-mode 1)
+	(setq recentf-max-menu-items 100)
+	(global-set-key "\C-x\ \C-r" 'recentf-open-files)
 #+END_SRC
 
 Save recent files every 5 minutes.
 #+BEGIN_SRC emacs-lisp
-(run-at-time nil (* 5 60) 'recentf-save-list)
+	(run-at-time nil (* 5 60) 'recentf-save-list)
 #+END_SRC
 
 * Numbers
 Methods for manipulating numbers in Emacs.
 For more details see [[file:config/numbers.org][numbers.org]]
 #+BEGIN_SRC emacs-lisp
-(rjh/load-config "startup.org")
+	(rjh/load-config "startup.org")
 #+END_SRC
 
 * Startup
 Start-up configuration.
 For more see [[file:config/startup.org][startup.org]].
 #+BEGIN_SRC emacs-lisp
-(rjh/load-config "startup.org")
+	(rjh/load-config "startup.org")
 #+END_SRC
