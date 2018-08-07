@@ -142,8 +142,6 @@ comment it out.
 			"uml.org"
 			"latex.org"
 			"recent.org"
-			"rtags.org"
-			"irony.org"
 		  "numbers.org"
 			"mule.org"
 		))
@@ -190,29 +188,12 @@ Load a single configuration file.
 
 .
 
-* Authentication
-=oauth= package.
-Mainly for Google authentication.
+* eVil
+The emacs VI interface layer.
+For those who prefer the feel of Vi on emacs.
 #+BEGIN_SRC emacs-lisp
-	(use-package "oauth2" :ensure t)
-#+END_SRC
-
-* Git
-I use =magit= for git integration.
-The following key-bindings are for global convenience.
-Use =C-x g ?= to get a quick command listing.
-#+BEGIN_SRC emacs-lisp
-	(use-package magit
-		:ensure t
-		:pin melpa-stable
-		:bind (("C-x g" . magit-status)
-					 ("C-x M-g" . magit-dispatch-popup)))
-#+END_SRC
-
-Git time-machine provides a mode for traversing the git history of a file.
-Use =M-x git-timemachine=, =np= to navigate and =q= to quit.
-#+BEGIN_SRC emacs-lisp
-	(use-package "git-timemachine" :ensure t )
+	(use-package evil
+		:ensure t)
 #+END_SRC
 
 * Org
@@ -232,6 +213,24 @@ Emacs speaks statistics package.
 Emacs org-caldav package for calendar integration.
 #+BEGIN_SRC emacs-lisp
 	(use-package "org-caldav" :ensure t)
+#+END_SRC
+
+* Git
+I use =magit= for git integration.
+The following key-bindings are for global convenience.
+Use =C-x g ?= to get a quick command listing.
+#+BEGIN_SRC emacs-lisp
+	(use-package magit
+		:ensure t
+		:pin melpa-stable
+		:bind (("C-x g" . magit-status)
+					 ("C-x M-g" . magit-dispatch-popup)))
+#+END_SRC
+
+Git time-machine provides a mode for traversing the git history of a file.
+Use =M-x git-timemachine=, =np= to navigate and =q= to quit.
+#+BEGIN_SRC emacs-lisp
+	(use-package "git-timemachine" :ensure t )
 #+END_SRC
 
 * Java
@@ -254,20 +253,228 @@ For more documentation, please see http://jdee.sourceforge.net/jdedoc/html/jde-u
 		(setq jdee-global-classpath '("."))) ;; Use the current working directory as a classpath for java projects.
 #+END_SRC
 
+* Irony                                                               :Cpp:C:
+https://github.com/Sarcasm/irony-mode
+irony-mode is an Emacs minor-mode that aims at improving the editing experience
+for the C, C++ and Objective-C languages. It works by using a combination of an
+Emacs package and a C++ program (irony-server) exposing =libclang=.
+
+This configuration is based off [[http://martinsosic.com/development/emacs/2017/12/09/emacs-cpp-ide.html][Martin Sosic's work]].
+
+Brief note.
+Irony is faster, and rtags is more feature-complete.
+
+For complete installation details please see https://github.com/Sarcasm/irony-mode#installation
+
+#+BEGIN_SRC emacs-lisp
+	(use-package irony
+		:ensure t
+		:config
+		(progn
+			;; If irony server was never installed, install it.
+			(unless (irony--find-server-executable) (call-interactively #'irony-install-server))
+			(add-hook 'c++-mode-hook 'irony-mode)
+			(add-hook 'c-mode-hook 'irony-mode)
+			;; Use compilation database first, clang_complete as fallback.
+			(setq-default irony-cdb-compilation-databases '(irony-cdb-libclang
+																												irony-cdb-clang-complete))
+			(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+		;; I use irony with company to get code completion.
+		(use-package company-irony
+			:requires company irony
+			:ensure t
+			:config
+			(progn
+				(eval-after-load 'company '(add-to-list 'company-backends 'company-irony))))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+		;; I use irony with flycheck to get real-time syntax checking.
+		(use-package flycheck-irony
+			:requires flycheck irony
+			:ensure t
+			:config
+			(progn
+				(eval-after-load 'flycheck '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+		;; Eldoc shows argument list of the function you are currently writing in the echo area.
+		(use-package irony-eldoc
+			:requires eldoc irony
+			:ensure t
+			:config
+			(progn
+				(add-hook 'irony-mode-hook #'irony-eldoc)))
+#+END_SRC
+
+ Setup is similar to rtags.org (RTag).
+ See [[./rtags.org::Setup][rtags.org]] or [[https://github.com/Sarcasm/irony-mode#compilation-database][Compilation Databases]] for more details.
+
+ A compilation database (compile_commands.json) is required.
+ See Sarcasm's notes on the [[https://sarcasm.github.io/notes/dev/compilation-database.html][Compilation Database]] for extensive documentation on
+ what this is, and why it is important.
+
+*** cmake
+	#+BEGIN_EXAMPLE
+	cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .
+	#+END_EXAMPLE
+
+* Rtags                                                               :Cpp:C:
+ This configuration is based off [[http://martinsosic.com/development/emacs/2017/12/09/emacs-cpp-ide.html][Martin Sosic's work]].
+
+ Brief note.
+ Irony is faster, and rtags is more feature-complete.
+
+ https://github.com/Andersbakken/rtags
+ http://www.rtags.net
+
+ RTags is a client/server application that indexes C/C++ code and keeps a
+ persistent file-based database of references, declarations, definitions,
+ symbolnames etc.
+
+ #+BEGIN_SRC emacs-lisp
+	 (use-package rtags
+		 :ensure t
+		 :config
+		 (progn
+		   (setq rtags-path "~/.emacs.d/rtags/build/bin")
+			 (unless (rtags-executable-find "rc") (error "Binary rc is not installed!"))
+			 (unless (rtags-executable-find "rdm") (error "Binary rdm is not installed!"))
+
+			 (define-key c-mode-base-map (kbd "M-.") 'rtags-find-symbol-at-point)
+			 (define-key c-mode-base-map (kbd "M-,") 'rtags-find-references-at-point)
+			 (define-key c-mode-base-map (kbd "M-?") 'rtags-display-summary)
+			 (rtags-enable-standard-keybindings)
+
+			 (setq rtags-use-helm t)
+
+			 ;; Shutdown rdm when leaving emacs.
+			 (add-hook 'kill-emacs-hook 'rtags-quit-rdm)
+			 (add-hook 'c-mode-hook 'rtags-start-process-unless-running)
+			 (add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
+			 (add-hook 'objc-mode-hook 'rtags-start-process-unless-running)))
+
+ #+END_SRC
+
+ #+BEGIN_SRC emacs-lisp
+	 ;; TODO: Has no coloring! How can I get coloring?
+	 (use-package helm-rtags
+		 :requires helm rtags
+		 :ensure t
+		 :config
+		 (progn
+			 (setq rtags-display-result-backend 'helm)))
+ #+END_SRC
+ #+BEGIN_SRC emacs-lisp
+
+	 ;; Use rtags for auto-completion.
+	 (use-package company-rtags
+		 :requires company rtags
+	   :ensure t
+		 :config
+		 (progn
+			 (setq rtags-autostart-diagnostics t)
+			 (rtags-diagnostics)
+			 (setq rtags-completions-enabled t)
+			 (push 'company-rtags company-backends)
+			 ))
+ #+END_SRC
+
+
+ #+BEGIN_SRC emacs-lisp
+	 ;; Live code checking.
+	 (use-package flycheck-rtags
+		 :requires flycheck rtags
+	   :ensure t
+		 :config
+		 (progn
+			 ;; ensure that we use only rtags checking
+			 ;; https://github.com/Andersbakken/rtags#optional-1
+			 (defun setup-flycheck-rtags ()
+				 (flycheck-select-checker 'rtags)
+				 (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
+				 (setq-local flycheck-check-syntax-automatically nil)
+				 (rtags-set-periodic-reparse-timeout 2.0)  ;; Run flycheck 2 seconds after being idle.
+				 )
+			 (add-hook 'c-mode-hook #'setup-flycheck-rtags)
+			 (add-hook 'c++-mode-hook #'setup-flycheck-rtags)))
+ #+END_SRC
+
+** Dependencies
+ See https://github.com/Andersbakken/rtags#tldr-quickstart for details.
+*** The rtags binaries
+	Build the rtags binaries. The following configuration for =Rtags= will make
+	them available to emacs.
+	#+BEGIN_EXAMPLE bash
+	git clone --recursive https://github.com/Andersbakken/rtags.git ~/.emacs.d/rtags
+	cd ~/.emacs.d/rtags
+	mkdir -vp build
+	cd build
+	cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 ..
+	make
+	#+END_EXAMPLE
+
+** Setup
+ For more details, please see [[https://github.com/Andersbakken/rtags#setup][here]].
+
+ Basically a =compile_commands.json= is required for rtags to work with your
+ project. Clang requires information about how your sources are compiled in order
+ to properly index them.
+
+ #+BEGIN_EXAMPLE
+ rc -c gcc -I... -fsomeflag -c foobar.c
+ rc -J /path/to/a/directory/containing/compile_commands.json
+ #+END_EXAMPLE
+
+ You can generate a compile_commands.json with various different tools, one might
+ fit better than the other, depending on your project build system. See below for
+ examples.
+
+*** ninja
+ #+BEGIN_EXAMPLE
+ ninja -t compdb cxx cc > compile_commands.json
+ rc -J
+ #+END_EXAMPLE
+*** cmake
+ #+BEGIN_EXAMPLE
+ cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .
+ rc -J
+ #+END_EXAMPLE
+*** bear
+ For other projects, see [[https://github.com/rizsotto/Bear][Bear]].
+ #+BEGIN_EXAMPLE
+ make clean
+ bear make
+ rc -J
+ # Parse commands for a specific target only
+ make clean
+ bear make rdm
+ rc -J
+ #+END_EXAMPLE
+*** make
+ For not too complex makefiles, you can do this.
+ #+BEGIN_EXAMPLE
+ make clean
+ make -nk | rc -c -
+ #+END_EXAMPLE
+*** mitm
+ You can also *man-in-the-middle* your gcc, cc, c++ commands such that rc will
+ make sure RTags knows about it.
+ #+BEGIN_EXAMPLE
+ ln -s /path/to/rtags/bin/gcc-rtags-wrapper.sh /somewhere/that/is/in/your/path/before/usr/bin/gcc
+ ln -s /path/to/rtags/bin/gcc-rtags-wrapper.sh /somewhere/that/is/in/your/path/before/usr/bin/c++
+ ln -s /path/to/rtags/bin/gcc-rtags-wrapper.sh /somewhere/that/is/in/your/path/before/usr/bin/cc
+ ln -s /path/to/rtags/bin/gcc-rtags-wrapper.sh /somewhere/that/is/in/your/path/before/usr/bin/g++
+ #+END_EXAMPLE
+ RTags will group source files into projects based on some heuristics.
+
 * Code browser
 ECB - The Emacs code browser.
 For more information, see http://ecb.sourceforge.net/.
 #+BEGIN_SRC emacs-lisp
 	(use-package "ecb"
 		:ensure t )
-#+END_SRC
-
-* eVil
-The emacs VI interface layer.
-For those who prefer the feel of Vi on emacs.
-#+BEGIN_SRC emacs-lisp
-	(use-package evil
-		:ensure t)
 #+END_SRC
 
 * Finding files
@@ -283,6 +490,13 @@ For example to start a =query-replace-regexp=, hit the =Q= key.
 
 For more information, hit =?= inside any =dired= buffer.
 And =h= for more advanced help.
+
+* Authentication
+=oauth= package.
+Mainly for Google authentication.
+#+BEGIN_SRC emacs-lisp
+	(use-package "oauth2" :ensure t)
+#+END_SRC
 
 * Address-book
 BBDB, The insidious big brother database.
