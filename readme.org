@@ -40,7 +40,16 @@ To install the emacs.d setup, you will need to do the following.
 These instructions, assume you will clone the repo to =~/emacs.d= .
 *You can clone directly to your .emacs.d directory, but this is not recommended.*
 
-** basic config setup
+** Quick install on Linux
+Clone the repository to your desired location and run =./setup.sh=.
+#+BEGIN_SRC sh
+	export LOCALREPO=~/emacs.d
+	git clone https://github.com/rjhwelsh/emacs.d $LOCALREPO &&
+		cd $LOCALREPO &&
+		./setup.sh
+#+END_SRC
+
+** Basic Linux guidelines
  Set the following locations as variables; note these *will* be different on
  Windows.
  #+BEGIN_SRC sh
