@@ -29,7 +29,7 @@ Backup cache locations.
 		)
 #+END_SRC
 
-* Force backup on save
+* Force backup on save                                             :DISABLED:
 Force a backup on EVERY save, not just the first one!
 #+BEGIN_SRC emacs-lisp
 (defun force-backup-of-buffer ()
@@ -45,7 +45,7 @@ Force a backup on EVERY save, not just the first one!
     ;; of per-save backups consistent.
     (let ((buffer-backed-up nil))
       (backup-buffer)))
-(add-hook 'before-save-hook  'force-backup-of-buffer)
+;(add-hook 'before-save-hook  'force-backup-of-buffer)
 #+END_SRC
 
 * Security detail
