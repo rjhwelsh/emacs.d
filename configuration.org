@@ -217,7 +217,8 @@ Use =M-x git-timemachine=, =np= to navigate and =q= to quit.
 	(use-package "git-timemachine" :ensure t )
 #+END_SRC
 
-* Org Extras
+* Org
+To see the complete org configuration, see [[file:config/org.org][org.org]].
 
 Add pretty bullets for org-mode.
 #+BEGIN_SRC emacs-lisp
@@ -287,6 +288,7 @@ And =bbdb-vcard-export-file= to export a vcard file.
 
 * Calendar
  Calfw - The pretty Calendar
+For more information see the configuration file, [[file:config/calfw.org][calfw.org]].
 	#+BEGIN_SRC emacs-lisp
 		(use-package "calfw"
 			:ensure t
@@ -325,6 +327,7 @@ An api for working with files in Emacs lisp.
 
 * Fonts
 Setup font functions, mostly courtesy of Harry Schwartz.
+For more see [[file:config/fonts.org][fonts.org]].
 #+BEGIN_SRC emacs-lisp
 (rjh/load-config "fonts.org")
 #+END_SRC
@@ -338,6 +341,7 @@ For more see [[file:config/backup.org][backup.org]].
 
 * Startup
 Start-up configuration.
+For more see [[file:config/startup.org][startup.org]].
 #+BEGIN_SRC emacs-lisp
 (rjh/load-config "startup.org")
 #+END_SRC
