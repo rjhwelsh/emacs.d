@@ -236,6 +236,34 @@ Emacs org-caldav package for calendar integration.
 	(use-package "org-caldav" :ensure t)
 #+END_SRC
 
+* Java
+JDEE - Java Development Environment for Emacs
+
+The jdee-server should be installed on your system, if it isn't please use the
+following link to install the latest version. [[https://github.com/jdee-emacs/jdee-server][jdee-server@github]].
+Jdee-server depends on Maven-3.
+
+Setup jdee to use the following server directory, =~/.emacs.d/jdee-server/target=.
+This is configurable in personal.org.
+
+Use =M-x jdee-mode= to invoke jdee.
+
+For more documentation, please see http://jdee.sourceforge.net/jdedoc/html/jde-ug/jde-ug.html
+#+BEGIN_SRC emacs-lisp
+	(use-package "jdee"
+		:ensure t
+		:config
+		(setq jdee-global-classpath '("."))) ;; Use the current working directory as a classpath for java projects.
+#+END_SRC
+
+* Code browser
+ECB - The Emacs code browser.
+For more information, see http://ecb.sourceforge.net/.
+#+BEGIN_SRC emacs-lisp
+	(use-package "ecb"
+		:ensure t )
+#+END_SRC
+
 * eVil
 The emacs VI interface layer.
 For those who prefer the feel of Vi on emacs.
