@@ -250,6 +250,7 @@ https://github.com/alexmurray/flycheck-plantuml
 		(plantuml-set-output-type "svg"))
 
 	(use-package "flycheck-plantuml"
+    :requires flycheck plantuml-mode
 		:init
 		(with-eval-after-load 'flycheck
 			(require 'flycheck-plantuml)
@@ -314,7 +315,9 @@ For more see [[file:config/python.org][python.org]].
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-	(use-package "company-jedi" :ensure t)
+	(use-package "company-jedi"
+		:requires company
+		:ensure t)
 #+END_SRC
 
 * Irony                                                               :Cpp:C:
@@ -614,6 +617,7 @@ Use =bbdb-vcard-import-file= to import a vcard file.
 And =bbdb-vcard-export-file= to export a vcard file.
 #+BEGIN_SRC emacs-lisp
 	(use-package bbdb-vcard
+	  :requires bbdb
 		:ensure t
 		:init
 		(require 'bbdb-vcard)
