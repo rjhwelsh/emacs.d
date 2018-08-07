@@ -124,7 +124,7 @@ of functionality. If you dislike or would like to stop using a particular module
 comment it out.
 #+BEGIN_SRC emacs-lisp
 		 (setq rjh/load-config-modules '(
-			"recent.org"
+
 		  "numbers.org"
 		))
 #+END_SRC
@@ -809,6 +809,21 @@ See [[http://pragmaticemacs.com/emacs/advanced-undoredo-with-undo-tree/][here]] 
 		(global-undo-tree-mode 1)
 		(defalias 'redo 'undo-tree-redo)
 		(global-set-key (kbd "C-S-/") 'redo))
+#+END_SRC
+
+* Recentf
+Save recent files list between sessions.
+
+Enable recentf-mode, set max items, set keybinding.
+#+BEGIN_SRC emacs-lisp
+(recentf-mode 1)
+(setq recentf-max-menu-items 100)
+(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+#+END_SRC
+
+Save recent files every 5 minutes.
+#+BEGIN_SRC emacs-lisp
+(run-at-time nil (* 5 60) 'recentf-save-list)
 #+END_SRC
 
 * Startup
