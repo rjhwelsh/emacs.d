@@ -18,11 +18,6 @@ specified by your configuration.org.
 (org-babel-load-file "~/.emacs.d/configuration.org")
 #+END_EXAMPLE
 
-Additional packages for org-mode are specified below, which use =use-package=.
-#+BEGIN_SRC emacs-lisp
-(use-package "org-bullets" :ensure t )
-#+END_SRC
-
 The following load-path is used for org-plus-contrib packages.
 It will automatically expand to the first available org-plus-contrib
 package in elpa.
@@ -33,12 +28,6 @@ package in elpa.
 		)
 #+END_SRC
 .
-
-Add emacs speaks statistics.
-#+BEGIN_SRC emacs-lisp
-(use-package "ess" :ensure t)
-(require 'ess-site)
-#+END_SRC
 
 * Setup
 For a minimal =.emacs= for =org-mode=, see [[http://orgmode.org/worg/org-faq.html#minimal-emacs][here]].
@@ -80,7 +69,6 @@ Some handy keybindings.
   (define-key global-map "\C-ca" 'org-agenda)
   (define-key global-map "\C-cc" 'org-capture)
 #+END_SRC
-
 
 * Agenda Configuration
 ** habits (and repeating tasks)

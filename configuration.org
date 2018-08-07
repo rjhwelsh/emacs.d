@@ -133,8 +133,20 @@ Use =C-x g ?= to get a quick command listing.
 Git time-machine provides a mode for traversing the git history of a file.
 Use =M-x git-timemachine=, =np= to navigate and =q= to quit.
 #+BEGIN_SRC emacs-lisp
-	(use-package "git-timemachine"
-		:ensure t )
+	(use-package "git-timemachine" :ensure t )
+#+END_SRC
+
+* Org Extras
+
+Add pretty bullets for org-mode.
+#+BEGIN_SRC emacs-lisp
+(use-package "org-bullets" :ensure t )
+#+END_SRC
+
+Emacs speaks statistics package.
+#+BEGIN_SRC emacs-lisp
+(use-package "ess" :ensure t)
+(require 'ess-site)
 #+END_SRC
 
 * Configuration modules
