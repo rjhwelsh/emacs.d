@@ -119,15 +119,6 @@ Always compile packages and use the newest available.
 #+END_SRC
 
 * Sub-configuration modules
-Below is a list of sub-configurations which are loaded to provide certain types
-of functionality. If you dislike or would like to stop using a particular module, simply
-comment it out.
-#+BEGIN_SRC emacs-lisp
-		 (setq rjh/load-config-modules '(
-
-		))
-#+END_SRC
-
 All of these use =use-package= to install packages, with the =:ensure t= option.
 If you are loading this for the first time, make sure you have an internet
 connection.
@@ -143,31 +134,17 @@ If you are new to emacs, (like I was) my process to start off was:
  * Then I spent weeks crafting my configuration to get the setup I wanted,
    typically most of this was spent on configuring org and reading info pages.
 
-These are functions used to load the configuration modules.
-
+This sets the local-config-dir.
 #+BEGIN_SRC emacs-lisp
 (setq rjh/local-config-dir (expand-file-name "config" rjh/local-config-repo ))
 #+END_SRC
 
-Load a single configuration file.
+This function will load a single configuration file.
 #+BEGIN_SRC emacs-lisp
 	(defun rjh/load-config (pkg_a)
 		(org-babel-load-file
 		 (expand-file-name pkg_a rjh/local-config-dir)))
 #+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-	(defun rjh/load-all-config ()
-		(let (value)
-			 (dolist (pkg_a rjh/load-config-modules value)
-					(rjh/load-config pkg_a))))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-(rjh/load-all-config)
-#+END_SRC
-
-.
 
 * eVil
 The emacs VI interface layer.
