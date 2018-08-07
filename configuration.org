@@ -140,9 +140,7 @@ comment it out.
 			"undo.org"
 			"graph.org"
 			"uml.org"
-			"telephone-line.org"
 			"latex.org"
-			"java.org"
 			"recent.org"
 			"rtags.org"
 			"irony.org"
@@ -351,6 +349,19 @@ An api for working with files in Emacs lisp.
 ( https://github.com/rejeep/f.el )
 #+BEGIN_SRC emacs-lisp
 	(use-package "f" :ensure t )
+#+END_SRC
+
+* Telephone line
+A pretty message bar for Emacs.
+( https://github.com/dbordak/telephone-line )
+#+BEGIN_SRC emacs-lisp
+	(use-package telephone-line
+	 :ensure t
+	 :config
+	 (rjh/load-config "telephone-line.org"))
+;	 :init
+	 (require 'telephone-line)
+	 (telephone-line-mode 1)
 #+END_SRC
 
 * Fonts

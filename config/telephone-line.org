@@ -4,17 +4,6 @@
 #+PROPERTY: header-args    :results silent
 #+STARTUP: content
 
-It was just too pretty.
-I saw [[https://github.com/dbordak/telephone-line][this]] on github.
-
-* Package
-This installs telephone-line, if it is not available.
-#+BEGIN_SRC emacs-lisp
-(use-package telephone-line
- :ensure t
-)
-#+END_SRC
-
 * Separators
 This uses the cubed separators, as illustrated in [[https://github.com/dbordak/telephone-line/blob/master/examples.org][examples.org]].
 #+BEGIN_SRC emacs-lisp
@@ -112,11 +101,4 @@ These are my settings for the right-hand side of the mode-line.
 				 (blue . (telephone-line-major-mode-segment))
 				 (dmagenta . (telephone-line-airline-position-segment))
 					))
-#+END_SRC
-
-* Initialize
-Initialize.
-#+BEGIN_SRC emacs-lisp
- (require 'telephone-line)
- (telephone-line-mode 1)
 #+END_SRC
