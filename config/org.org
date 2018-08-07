@@ -23,10 +23,14 @@ Additional packages for org-mode are specified below, which use =use-package=.
 (use-package "org-bullets" :ensure t )
 #+END_SRC
 
-The following load-path is used for org-plus-contrib packages, adjust this as
-necessary for your setup.
+The following load-path is used for org-plus-contrib packages.
+It will automatically expand to the first available org-plus-contrib
+package in elpa.
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path "~/.emacs.d/elpa/org-plus-contrib-20171016")
+		(add-to-list
+		 'load-path
+		 (car (file-expand-wildcards "~/.emacs.d/elpa/org-plus-contrib*" ))
+		)
 #+END_SRC
 .
 
