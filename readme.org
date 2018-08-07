@@ -31,7 +31,7 @@ cp -v ~/emacs-stuff/experiments/org-gantt.el ~/.emacs.d/org-gantt.el
 
 ** jdee-server
 If you are looking to develop in Java using JDEE (Java Development Environment
-for Emacs), then there is a "soft" dependency for the jdee-server for some functions. 
+for Emacs), then there is a "soft" dependency on the jdee-server for some functions.
 For more about installing this, read more [[https://github.com/jdee-emacs/jdee-server][here]].
 Jdee-server itself depends on Maven-3.
 
@@ -96,31 +96,24 @@ These instructions, assume you will clone the repo to =~/emacs.d= .
  The =configuration.org= in your .emacs.d (emacs config) directory, acts as the
  centre of operations for adjusting your configuration.
 
- Adding/removing config options from the =Configuraton Modules= section, will
- selectively load/not-load parts of my configuration that you like/dislike.
+ If you find anything you dislike, you can comment it out with =;=.
+ #+BEGIN_EXAMPLE emacs-lisp
+	; (use-package evil
+	; 	:ensure t)
+	(use-package good
+	    :ensure t)
+ #+END_EXAMPLE
 
- Each configuration is specified as an org-file that you may load using the
- =rjh/load-config-modules= variable.
-
- For example, to only load my =org.org= and =git.org= configuration modules, simply
- change the variable to only include these in =configuration.org=.
- Lines can also be commented out using =;= , as in =; "evil.org"=.
-
- #+BEGIN_SRC emacs-lisp
-	 (setq rjh/load-config-modules '(
-			 "org.org"
-			 "git.org"
-			; "evil.org"
-	 ))
- #+END_SRC
-
- You can even write your own modules, and put them in the load-path.
- If you have any =org= modules for configuration that you would like to submit,
- please submit a pull-request.
+ Large configurations are separated into other org-files that you may load using
+ the =rjh/load-config= function. Here =org.org= is my configuration for
+ =org-mode=. =org-mode-plus-contrib= is a prerequisite that is built into the
+ =init.el= file, before =init.el= calls =configuration.org=.
+#+BEGIN_SRC emacs-lisp
+	(rjh/load-config "org.org")
+#+END_SRC
 
  The main goal of this project is to provide documented configuration, to quickly
- get a newbie to emacs up and running quickly. Modules should stand alone, and be
- set up for a particular purpose.
+ get a newbie to Emacs up and running quickly.
 
 ** personal.org
 Use =personal.org= in your .emacs.d (emacs config) directory for all your
@@ -138,9 +131,10 @@ The file is mostly self-explanatory. use it to setup variables describing:
  4. Contact Information
  5. Default font
  6. Default web-browser
+ 7. Anything else you wouldn't want to necessarily share.
 
 * Updating
-To update configuration modules from my repo, use a git pull.
+	To update configuration modules from my repo, use a git pull.
 #+BEGIN_EXAMPLE sh
 cd $LOCALREPO
 git pull
