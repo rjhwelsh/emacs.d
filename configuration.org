@@ -125,7 +125,6 @@ comment it out.
 #+BEGIN_SRC emacs-lisp
 		 (setq rjh/load-config-modules '(
 
-		  "numbers.org"
 		))
 #+END_SRC
 
@@ -824,6 +823,13 @@ Enable recentf-mode, set max items, set keybinding.
 Save recent files every 5 minutes.
 #+BEGIN_SRC emacs-lisp
 (run-at-time nil (* 5 60) 'recentf-save-list)
+#+END_SRC
+
+* Numbers
+Methods for manipulating numbers in Emacs.
+For more details see [[file:config/numbers.org][numbers.org]]
+#+BEGIN_SRC emacs-lisp
+(rjh/load-config "startup.org")
 #+END_SRC
 
 * Startup
