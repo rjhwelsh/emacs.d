@@ -149,6 +149,17 @@ Emacs speaks statistics package.
 (require 'ess-site)
 #+END_SRC
 
+* eVil                                                         :EXAMPLE_ONLY:
+The emacs VI interface layer.
+For those who prefer the feel of Vi on emacs.
+#+BEGIN_EXAMPLE emacs-lisp
+			(use-package evil :ensure t
+			:init
+			(require 'evil)
+			(evil-mode t)
+				)
+#+END_EXAMPLE
+
 * Configuration modules
 Below is a list of sub-configurations which are loaded to provide certain types
 of functionality. If you dislike or would like to stop using a particular module, simply
@@ -158,7 +169,6 @@ comment it out.
 			"org.org"
 			"org-gantt.org"
 			"calendar.org"
-			;"evil.org"
 			"backup.org"
 			"fonts.org"
 			"yasnippet.org"
