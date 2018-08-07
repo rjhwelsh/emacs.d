@@ -183,9 +183,8 @@ Load a single configuration file.
 #+BEGIN_SRC emacs-lisp
 	(defun rjh/load-all-config ()
 		(let (value)
-			 (dolist (module rjh/load-config-modules value)
-					(org-babel-load-file
-					 (expand-file-name module rjh/local-config-dir)))))
+			 (dolist (pkg_a rjh/load-config-modules value)
+					(rjh/load-config pkg_a))))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
