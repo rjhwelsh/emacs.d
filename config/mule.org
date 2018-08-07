@@ -13,14 +13,13 @@ The following keyboard shortcuts are useful.
 * Font correction
 	Sometimes the wrong font provides simplified Chinese instead of Japanese (漢字).
   To correct this, set the font as follows.
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_EXAMPLE emacs-lisp
 (set-fontset-font (frame-parameter nil 'font)
   'japanese-jisx0208
   '("Sazanami Gothic" . "unicode-bmp"))
-#+END_SRC
+#+END_EXAMPLE
 
-* Japanese Anthy
-
+* Japanese Anthy Patch
 If you are using Emacs 24 the following patch may be required to anthy.el.
 If you patch this manually, make sure you remember to recompile the elc file
 with the =byte-compile-file= command.
@@ -34,10 +33,3 @@ with the =byte-compile-file= command.
 -    last-command-char))
 +    last-command-event))
 #+END_EXAMPLE
-
-
-#+BEGIN_SRC emacs-lisp
-(set-language-environment "Japanese")
-(load-library "anthy")
-
-#+END_SRC

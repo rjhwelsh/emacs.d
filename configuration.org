@@ -126,7 +126,6 @@ comment it out.
 		 (setq rjh/load-config-modules '(
 			"recent.org"
 		  "numbers.org"
-			"mule.org"
 		))
 #+END_SRC
 
@@ -677,6 +676,27 @@ An api for working with files in Emacs lisp.
 ( https://github.com/rejeep/f.el )
 #+BEGIN_SRC emacs-lisp
 	(use-package "f" :ensure t )
+#+END_SRC
+
+* MULE
+Multi-lingual environment for Emacs.
+For more see [[file:config/mule.org][mule.org]]
+#+BEGIN_SRC emacs-lisp
+(set-language-environment "Japanese")
+(load-library "anthy")
+#+END_SRC
+
+Font correction.
+#+BEGIN_SRC emacs-lisp
+	(defun rjh/font-correction ()
+		(set-fontset-font (frame-parameter nil 'font)
+											'japanese-jisx0208
+											'("Sazanami Gothic" . "unicode-bmp")))
+		(if (daemonp)
+				(add-hook 'after-make-frame-functions
+									(lambda (frame)
+											(rjh/font-correction)))
+			(rjh/font-correction))
 #+END_SRC
 
 * Workgroups
