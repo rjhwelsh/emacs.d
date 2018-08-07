@@ -4,15 +4,15 @@
 #+PROPERTY: header-args    :results silent
 #+STARTUP: content
 
-Harry's partial to Inconsolata. I prefer Hermit.
+Set your actual font with =hrs/default-font= in your personal.org file.
+
 * Default fonts
 Set your preferred font settings here.
 #+BEGIN_SRC emacs-lisp
   (setq scalable-fonts-allowed '( "iso10646-1$" ) )
- ; (setq hrs/default-font "Hermit")
+ ; (setq hrs/default-font "Hermit") ; This is set in your personal.org file.
   (setq hrs/default-font-size 8)
   (setq hrs/current-font-size hrs/default-font-size)
-
 #+END_SRC
 .
 * Harry Schwartz's font commands

@@ -127,7 +127,6 @@ comment it out.
 			"org.org"
 			"org-gantt.org"
 			"backup.org"
-			"fonts.org"
 			"yasnippet.org"
 			"workgroups.org"
 			"abbrev.org"
@@ -322,6 +321,12 @@ An api for working with files in Emacs lisp.
 ( https://github.com/rejeep/f.el )
 #+BEGIN_SRC emacs-lisp
 	(use-package "f" :ensure t )
+#+END_SRC
+
+* Fonts
+Setup font functions, mostly courtesy of Harry Schwartz.
+#+BEGIN_SRC emacs-lisp
+(rjh/load-config "fonts.org")
 #+END_SRC
 
 * Startup
