@@ -22,10 +22,10 @@ The following load-path is used for org-plus-contrib packages.
 It will automatically expand to the first available org-plus-contrib
 package in elpa.
 #+BEGIN_SRC emacs-lisp
-		(add-to-list
-		 'load-path
-		 (car (file-expand-wildcards "~/.emacs.d/elpa/org-plus-contrib*" ))
-		)
+	(add-to-list
+	 'load-path
+	 (car (file-expand-wildcards "~/.emacs.d/elpa/org-plus-contrib*" ))
+	 )
 #+END_SRC
 
 
@@ -43,12 +43,12 @@ Enable extension modules for org-mode
 ** Application Defaults
 Default application associations.
 #+BEGIN_SRC emacs-lisp
-		(setq org-file-apps
-	'((auto-mode . emacs)
-		("\\.x?html?\\'" . "firefox %s")
-		("\\.pdf\\'" . "evince \"%s\"")
-		("\\.pdf::\\([0-9]+\\)\\'" . "evince \"%s\" -p %1")
-		))
+	(setq org-file-apps
+				'((auto-mode . emacs)
+					("\\.x?html?\\'" . "firefox %s")
+					("\\.pdf\\'" . "evince \"%s\"")
+					("\\.pdf::\\([0-9]+\\)\\'" . "evince \"%s\" -p %1")
+					))
 #+END_SRC
 Link frame setup. Prevent windows from splitting.
 #+BEGIN_SRC emacs-lisp
@@ -60,7 +60,6 @@ Link frame setup. Prevent windows from splitting.
 *Harry:* Exporting to HTML and opening the results triggers
 =/usr/bin/sensible-browser=, which checks the =$BROWSER= environment variable to
 choose the right browser. I'd like to always use Firefox, so:
-
 #+BEGIN_SRC emacs-lisp
   (setenv "BROWSER" "firefox")
 #+END_SRC
