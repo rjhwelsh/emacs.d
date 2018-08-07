@@ -124,7 +124,6 @@ of functionality. If you dislike or would like to stop using a particular module
 comment it out.
 #+BEGIN_SRC emacs-lisp
 		 (setq rjh/load-config-modules '(
-			"theme.org"
 			"text.org"
 			"study.org"
 			"undo.org"
@@ -652,6 +651,36 @@ Use the following with <prefix> ;
    + k :: kill workgroup
    + ,/. :: move left/right in group listing
 	 + ? :: wg-help
+
+* Themes
+Use the =diff-hl= package to highlight changed-and-uncommitted lines when
+programming.
+#+BEGIN_SRC emacs-lisp
+	(use-package diff-hl
+	:ensure t
+	:init
+	(require 'diff-hl)
+	(add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
+	(add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
+#+END_SRC
+
+For more on themes, checkout [[file:config/theme.org][theme.org]].
+#+BEGIN_SRC emacs-lisp
+	(use-package "material-theme" :ensure t )
+	(use-package "solarized-theme"
+		:ensure t
+		:config
+		(defun hrs/apply-theme ()
+			(setq solarized-use-variable-pitch nil)
+			(setq solarized-height-plus-1 1.0)
+			(setq solarized-height-plus-2 1.0)
+			(setq solarized-height-plus-3 1.0)
+			(setq solarized-height-plus-4 1.0)
+			(setq solarized-high-contrast-mode-line t)
+			(load-theme 'solarized-dark t)))
+	(use-package "fill-column-indicator" :ensure t )
+(rjh/load-config "theme.org")
+#+END_SRC
 
 * Telephone line
 A pretty message bar for Emacs.

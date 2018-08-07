@@ -2,22 +2,10 @@
 #+AUTHOR: Roger J. H. Welsh
 #+EMAIL: rjhwelsh@gmail.com
 
-
-* Packages
-#+BEGIN_SRC emacs-lisp
-		(use-package diff-hl  :ensure t )
-		; Themes +
-		(use-package "material-theme" :ensure t )
-		(use-package "solarized-theme" :ensure t )
-		(use-package "fill-column-indicator" :ensure t )
-#+END_SRC
-
 * Harry's UI preferences
 N.B. All of this was taken from Harry Schwartz's configuration.org.
 **** Tweak window chrome
-
 I don't usually use the menu or scroll bar, and they take up useful space.
-
 #+BEGIN_SRC emacs-lisp
   (tool-bar-mode 0)
   (menu-bar-mode 0)
@@ -26,42 +14,23 @@ I don't usually use the menu or scroll bar, and they take up useful space.
 #+END_SRC
 
 **** Use fancy lambdas
-
 Why not?
-
 #+BEGIN_SRC emacs-lisp
   (global-prettify-symbols-mode t)
 #+END_SRC
 
-**** Custom solarized-dark theme
-
-I like the solarized-dark theme. I prefer keeping all the characters in the same
-side and font, though.
-
-#+BEGIN_SRC emacs-lisp
-  (defun hrs/apply-solarized-theme ()
-    (setq solarized-use-variable-pitch nil)
-    (setq solarized-height-plus-1 1.0)
-    (setq solarized-height-plus-2 1.0)
-    (setq solarized-height-plus-3 1.0)
-    (setq solarized-height-plus-4 1.0)
-    (setq solarized-high-contrast-mode-line t)
-    (load-theme 'solarized-dark t))
-#+END_SRC
-
+**** Custom theme
 If this code is being evaluated by =emacs --daemon=, ensure that each subsequent
 frame is themed appropriately.
-
 #+BEGIN_SRC emacs-lisp
   (if (daemonp)
       (add-hook 'after-make-frame-functions
                 (lambda (frame)
-                    (hrs/apply-solarized-theme)))
-    (hrs/apply-solarized-theme))
+                    (hrs/apply-theme)))
+    (hrs/apply-theme))
 #+END_SRC
 
 **** Disable visual bell
-
 =sensible-defaults= replaces the audible bell with a visual one, but I really
 don't even want that (and my Emacs/Mac pair renders it poorly). This disables
 the bell altogether.
@@ -71,7 +40,6 @@ the bell altogether.
 #+END_SRC
 
 **** Scroll conservatively
-
 When point goes outside the window, Emacs usually recenters the buffer point.
 I'm not crazy about that. This changes scrolling behavior to only scroll as far
 as point goes.
@@ -81,7 +49,6 @@ as point goes.
 #+END_SRC
 
 **** Highlight the current line
-
 =global-hl-line-mode= softly highlights the background color of the line
 containing point. It makes it a bit easier to find point, and it's useful when
 pairing or presenting code.
@@ -89,15 +56,4 @@ pairing or presenting code.
 #+BEGIN_SRC emacs-lisp
   (when window-system
     (global-hl-line-mode))
-#+END_SRC
-
-**** Highlight uncommitted changes
-
-Use the =diff-hl= package to highlight changed-and-uncommitted lines when
-programming.
-
-#+BEGIN_SRC emacs-lisp
-  (require 'diff-hl)
-  (add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
-  (add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode)
 #+END_SRC
