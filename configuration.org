@@ -647,6 +647,7 @@ For more information see the configuration file, [[file:config/calfw.org][calfw.
 	#+END_SRC
 
 Diary mode configuration.
+For more details see [[file:config/diary.org][diary.org]].
 #+BEGIN_SRC emacs-lisp
 	(rjh/load-config "diary.org")
 #+END_SRC
