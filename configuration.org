@@ -232,16 +232,21 @@ Emacs speaks statistics package.
 (require 'ess-site)
 #+END_SRC
 
-* eVil                                                         :EXAMPLE_ONLY:
+Emacs org-caldav package for calendar integration.
+#+BEGIN_SRC emacs-lisp
+	(use-package "org-caldav" :ensure t)
+#+END_SRC
+
+* eVil
 The emacs VI interface layer.
 For those who prefer the feel of Vi on emacs.
-#+BEGIN_EXAMPLE emacs-lisp
-			(use-package evil :ensure t
-			:init
-			(require 'evil)
-			(evil-mode t)
-				)
-#+END_EXAMPLE
+#+BEGIN_SRC emacs-lisp
+	(use-package evil
+		:ensure t
+		:config
+		(require 'evil)
+		(evil-mode t))
+#+END_SRC
 
 * Finding files
 The following commands will help you when locating files.
