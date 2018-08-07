@@ -9,7 +9,7 @@ I use =message-mode= for my emails, which comes standard with emacs.
 #+BEGIN_SRC emacs-lisp
   (require 'message)
 #+END_SRC
-.
+
 * Message-mode integration
 Using mutt in message mode for composing (replies, etc).
 #+BEGIN_SRC emacs-lisp
@@ -17,9 +17,9 @@ Using mutt in message mode for composing (replies, etc).
 	(setq mail-header-separator "")
 	(add-hook 'message-mode-hook 'turn-on-auto-fill)
 #+END_SRC
-.
+
 ** Keybinding
-.
+
  #+BEGIN_SRC emacs-lisp
 	(define-key message-mode-map (kbd "C-c C-c") '(lambda ()
 			"save and exit quickly"
@@ -27,4 +27,3 @@ Using mutt in message mode for composing (replies, etc).
 			(save-buffer)
 			(server-edit)))
  #+END_SRC
-.
