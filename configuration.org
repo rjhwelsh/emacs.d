@@ -726,8 +726,10 @@ For more details see [[file:config/numbers.org][numbers.org]]
 
 Keybindings
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-M-+") 'my-increment-number-decimal)
-(global-set-key (kbd "C-M--") 'my-decrement-number-decimal)
+	(global-set-key (kbd "M-+") 'my-increment-number-decimal)
+	(global-set-key (kbd "M-_") 'my-decrement-number-decimal)
+	(global-set-key (kbd "C-M-+") 'my-increment-number-hexadecimal)
+	(global-set-key (kbd "C-M-_") 'my-decrement-number-hexadecimal)
 #+END_SRC
 
 * Startup
