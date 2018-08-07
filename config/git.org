@@ -9,9 +9,10 @@ I use =magit= for git integration.
 The following key-bindings are for global convenience.
 #+BEGIN_SRC emacs-lisp
 	(use-package magit
-		:ensure t
+	  :ensure t
+		:pin melpa-stable
 		:bind (("C-x g" . magit-status)
-				    ("C-x M-g" . magit-dispatch-popup)
+						("C-x M-g" . magit-dispatch-popup)
 				 )
 		)
 #+END_SRC
