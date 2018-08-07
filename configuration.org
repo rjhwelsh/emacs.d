@@ -124,7 +124,6 @@ of functionality. If you dislike or would like to stop using a particular module
 comment it out.
 #+BEGIN_SRC emacs-lisp
 		 (setq rjh/load-config-modules '(
-			"study.org"
 			"undo.org"
 			"graph.org"
 			"uml.org"
@@ -542,6 +541,17 @@ And =h= for more advanced help.
 		:diminish flycheck-mode
 		:diminish flyspell-mode)
 #+END_SRC
+* Flash cards
+Pamparam provides a flashcard engine for org documents.
+For more details see [[file:config/pamparam.org][pamparam.org]].
+#+BEGIN_SRC emacs-lisp
+	(use-package "pamparam"
+		:ensure t
+		:init
+		(setq pamparam-path "~/.emacs.d/flashcards.pam")
+		(rjh/load-config "pamparam.org"))
+#+END_SRC
+
 * Authentication
 =oauth= package.
 Mainly for Google authentication.

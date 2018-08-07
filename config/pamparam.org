@@ -1,11 +1,7 @@
-#+TITLE: Study modules for emacs
+#+TITLE: Pamparam - Flash Cards
 #+AUTHOR: Roger J. H. Welsh
 #+EMAIL: rjhwelsh@gmail.com
-* Packages
-#+BEGIN_SRC emacs-lisp
-		; flashcards
-		(use-package "pamparam" :ensure t )
-#+END_SRC
+
 * Flashcards with Pamparam
 Pamparam is a spaced repetition (SR) memory cards implementation for Emacs.
 See https://github.com/abo-abo/pamparam for details.
@@ -17,11 +13,6 @@ https://github.com/abo-abo/hydra
 (global-set-key (kbd "C-c m") 'hydra-pamparam/body)
 #+END_SRC
 
-Default pamparam-path repo.
-#+BEGIN_SRC emacs-lisp
-(setq pamparam-path "~/.emacs.d/flashcards.pam")
-#+END_SRC
-
 Setup flashcard repos into separate directories.
 This example is no different from the default behaviour.
 #+BEGIN_EXAMPLE emacs-lisp
@@ -30,8 +21,6 @@ This example is no different from the default behaviour.
 )
 )
 #+END_EXAMPLE
-
-
 
 ** Keybindings
 Card file
