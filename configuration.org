@@ -539,6 +539,7 @@ For more information, see http://ecb.sourceforge.net/.
 
 * Finding files
 The following commands will help you when locating files.
+Use =M-x= to run a command in Emacs.
     - find-file :: Opens up a file buffer
 									 ( =C-x C-f= )
 		- find-dired :: Opens up a directory buffer.
