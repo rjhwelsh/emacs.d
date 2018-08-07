@@ -118,6 +118,89 @@ Always compile packages and use the newest available.
 (setq load-prefer-newer t)
 #+END_SRC
 
+* Sub-configuration modules
+Below is a list of sub-configurations which are loaded to provide certain types
+of functionality. If you dislike or would like to stop using a particular module, simply
+comment it out.
+#+BEGIN_SRC emacs-lisp
+		 (setq rjh/load-config-modules '(
+			"org.org"
+			"org-gantt.org"
+			"backup.org"
+			"fonts.org"
+			"yasnippet.org"
+			"workgroups.org"
+			"abbrev.org"
+			"company.org"
+			"mutt.org"
+			"crypto.org"
+			"theme.org"
+			"text.org"
+			"python.org"
+			"study.org"
+			"undo.org"
+			"graph.org"
+			"uml.org"
+			"telephone-line.org"
+			"latex.org"
+			"java.org"
+			"recent.org"
+			"rtags.org"
+			"irony.org"
+		  "numbers.org"
+			"mule.org"
+		))
+#+END_SRC
+
+All of these use =use-package= to install packages, with the =:ensure t= option.
+If you are loading this for the first time, make sure you have an internet
+connection.
+
+I typically load an emacs server (=emacs --daemon=), and edit files using
+=emacsclient -c=. This loads a new frame for each file I edit.
+If I am already inside emacs, I will use =C-x C-f= to find a file and load it.
+
+If you are new to emacs, (like I was) my process to start off was:
+ * I started off with the tutorial =C-h t=.
+ * I moved on to the [[info:info][*info*]] tutorial =C-h i=. The *info* pages are super
+   helpful, and easy to navigate once you learn how.
+ * Then I spent weeks crafting my configuration to get the setup I wanted,
+   typically most of this was spent on configuring org and reading info pages.
+
+These are functions used to load the configuration modules.
+
+#+BEGIN_SRC emacs-lisp
+(setq rjh/local-config-dir (expand-file-name "config" rjh/local-config-repo ))
+#+END_SRC
+
+Load a single configuration file.
+#+BEGIN_SRC emacs-lisp
+	(defun rjh/load-config (pkg_a)
+		(org-babel-load-file
+		 (expand-file-name pkg_a rjh/local-config-dir)))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+	(defun rjh/load-all-config ()
+		(let (value)
+			 (dolist (module rjh/load-config-modules value)
+					(org-babel-load-file
+					 (expand-file-name module rjh/local-config-dir)))))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(rjh/load-all-config)
+#+END_SRC
+
+.
+
+* Authentication
+=oauth= package.
+Mainly for Google authentication.
+#+BEGIN_SRC emacs-lisp
+	(use-package "oauth2" :ensure t)
+#+END_SRC
+
 * Git
 I use =magit= for git integration.
 The following key-bindings are for global convenience.
@@ -199,6 +282,37 @@ And =bbdb-vcard-export-file= to export a vcard file.
 		(setq bbdb-vcard-directory "~/.bbdb"))
 #+END_SRC
 
+* Calendar
+ Calfw - The pretty Calendar
+	#+BEGIN_SRC emacs-lisp
+		(use-package "calfw"
+			:ensure t
+			:init
+			(rjh/load-config "calfw.org")
+			:bind ("C-x a c" . rjh/two-week-view))
+
+		(use-package "calfw-org"
+			:ensure t
+			:init
+			(require 'calfw-org)
+			(setq cfw:org-overwrite-default-keybinding t)) ;; Org-mode like keybindings
+
+		(use-package "calfw-ical"
+			:ensure t
+			:init
+			(require 'calfw-ical))
+
+		(use-package "calfw-cal"
+			:ensure t
+			:init
+			(require 'calfw-cal))
+	#+END_SRC
+
+Diary mode configuration.
+#+BEGIN_SRC emacs-lisp
+(rjh/load-config "diary.org")
+#+END_SRC
+
 * Emacs lisp
 An api for working with files in Emacs lisp.
 ( https://github.com/rejeep/f.el )
@@ -207,71 +321,8 @@ An api for working with files in Emacs lisp.
 	(use-package "f" :ensure t )
 #+END_SRC
 
-* Configuration modules
-Below is a list of sub-configurations which are loaded to provide certain types
-of functionality. If you dislike or would like to stop using a particular module, simply
-comment it out.
+* Startup
+Start-up configuration.
 #+BEGIN_SRC emacs-lisp
-		 (setq rjh/load-config-modules '(
-			"org.org"
-			"org-gantt.org"
-			"calendar.org"
-			"backup.org"
-			"fonts.org"
-			"yasnippet.org"
-			"workgroups.org"
-			"startup.org"
-			"abbrev.org"
-			"company.org"
-			"mutt.org"
-			"crypto.org"
-			"theme.org"
-			"text.org"
-			"python.org"
-			"study.org"
-			"undo.org"
-			"graph.org"
-			"uml.org"
-			"telephone-line.org"
-			"latex.org"
-			"java.org"
-			"recent.org"
-			"rtags.org"
-			"irony.org"
-		  "numbers.org"
-			"mule.org"
-		))
+(rjh/load-config "startup.org")
 #+END_SRC
-
-All of these use =use-package= to install packages, with the =:ensure t= option.
-If you are loading this for the first time, make sure you have an internet
-connection.
-
-I typically load an emacs server (=emacs --daemon=), and edit files using
-=emacsclient -c=. This loads a new frame for each file I edit.
-If I am already inside emacs, I will use =C-x C-f= to find a file and load it.
-
-If you are new to emacs, (like I was) my process to start off was:
- * I started off with the tutorial =C-h t=.
- * I moved on to the [[info:info][*info*]] tutorial =C-h i=. The *info* pages are super
-   helpful, and easy to navigate once you learn how.
- * Then I spent weeks crafting my configuration to get the setup I wanted,
-   typically most of this was spent on configuring org and reading info pages.
-
-These are functions used to load the configuration modules.
-#+BEGIN_SRC emacs-lisp
-(setq rjh/local-config-dir (expand-file-name "config" rjh/local-config-repo ))
-	(defun rjh/load-config ()
-		(let (value)
-			 (dolist (module rjh/load-config-modules value)
-					(org-babel-load-file
-					 (expand-file-name module rjh/local-config-dir)
-															 )
-	)))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-(rjh/load-config)
-#+END_SRC
-
-.
