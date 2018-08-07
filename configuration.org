@@ -379,6 +379,7 @@ For complete installation details please see https://github.com/Sarcasm/irony-mo
  See Sarcasm's notes on the [[https://sarcasm.github.io/notes/dev/compilation-database.html][Compilation Database]] for extensive documentation on
  what this is, and why it is important.
 
+** Irony project setup
 *** cmake
 	#+BEGIN_EXAMPLE
 	cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .
@@ -475,7 +476,7 @@ For complete installation details please see https://github.com/Sarcasm/irony-mo
 	make
 	#+END_EXAMPLE
 
-** Setup
+** Rtags project setup
  For more details, please see [[https://github.com/Andersbakken/rtags#setup][here]].
 
  Basically a =compile_commands.json= is required for rtags to work with your
