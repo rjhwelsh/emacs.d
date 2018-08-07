@@ -4,14 +4,10 @@
 
 
 * Packages
-
 #+BEGIN_SRC emacs-lisp
 				(use-package rainbow-mode :ensure t )
 				(use-package "rainbow-delimiters" :ensure t )
 				; Syntax Checking
-				(use-package "flycheck" :ensure t
-					:diminish flycheck-mode
-					:diminish flyspell-mode)
 				(use-package "htmlize" :ensure t )
 #+END_SRC
 
@@ -31,7 +27,6 @@ This reduces that.
 
 Treating terms in CamelCase symbols as separate words makes editing a little
 easier for me, so I like to use =subword-mode= everywhere.
-
 #+BEGIN_SRC emacs-lisp
   (global-subword-mode 1)
 #+END_SRC
@@ -40,13 +35,11 @@ Compilation output goes to the =*compilation*= buffer. I rarely have that window
 selected, so the compilation output disappears past the bottom of the window.
 This automatically scrolls the compilation window so I can always see the
 output.
-
 #+BEGIN_SRC emacs-lisp
   (setq compilation-scroll-output t)
 #+END_SRC
 
 ** CSS and Sass
-
 Indent 2 spaces and use =rainbow-mode= to display color-related words in the
 color they describe.
 
@@ -66,9 +59,7 @@ Don't compile the current file every time I save.
 #+END_SRC
 
 ** JavaScript and CoffeeScript
-
 Indent everything by 2 spaces.
-
 #+BEGIN_SRC emacs-lisp
   (setq js-indent-level 2)
 
@@ -78,18 +69,8 @@ Indent everything by 2 spaces.
               (setq coffee-tab-width 2)))
 #+END_SRC
 
-** Python
-
-Indent 2 spaces.
-
-#+BEGIN_SRC emacs-lisp
-  (setq python-indent 2)
-#+END_SRC
-
 ** =sh=
-
 Indent with 2 spaces.
-
 #+BEGIN_SRC emacs-lisp
   (add-hook 'sh-mode-hook
             (lambda ()
@@ -98,9 +79,7 @@ Indent with 2 spaces.
 #+END_SRC
 
 ** =web-mode=
-
 If I'm in =web-mode=, I'd like to:
-
 - Color color-related words with =rainbow-mode=.
 - Still be able to run RSpec tests from =web-mode= buffers.
 - Indent everything with 2 spaces.
