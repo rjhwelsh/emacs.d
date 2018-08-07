@@ -669,9 +669,7 @@ Font correction.
 											'japanese-jisx0208
 											'("Sazanami Gothic" . "unicode-bmp")))
 		(if (daemonp)
-				(add-hook 'after-make-frame-functions
-									(lambda (frame)
-											(rjh/font-correction)))
+			'()
 			(rjh/font-correction))
 #+END_SRC
 
