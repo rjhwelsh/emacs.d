@@ -320,31 +320,26 @@ For more see [[file:config/python.org][python.org]].
 		:ensure t)
 #+END_SRC
 
-* Irony                                                               :Cpp:C:
-	https://github.com/Sarcasm/irony-mode
-irony-mode is an Emacs minor-mode that aims at improving the editing experience
-for the C, C++ and Objective-C languages. It works by using a combination of an
-Emacs package and a C++ program (irony-server) exposing =libclang=.
+* Irony                                                      :DISABLED:Cpp:C:
+This configuration is taken from [[http://martinsosic.com/development/emacs/2017/12/09/emacs-cpp-ide.html][Martin Sosic]].
+https://github.com/Sarcasm/irony-mode
 
-This configuration is from [[http://martinsosic.com/development/emacs/2017/12/09/emacs-cpp-ide.html][Martin Sosic]].
-
-Brief note.
-Irony is faster, and rtags is more feature-complete.
-
-For complete installation details please see https://github.com/Sarcasm/irony-mode#installation
-
+For more see [[file:config/irony.org][irony.org]].
 #+BEGIN_SRC emacs-lisp
 	(use-package irony
+	  :disabled
 		:ensure t
 		:config
 		(progn
 			;; If irony server was never installed, install it.
-			(unless (irony--find-server-executable) (call-interactively #'irony-install-server))
+			(unless (irony--find-server-executable)
+				(call-interactively #'irony-install-server))
 			(add-hook 'c++-mode-hook 'irony-mode)
 			(add-hook 'c-mode-hook 'irony-mode)
 			;; Use compilation database first, clang_complete as fallback.
-			(setq-default irony-cdb-compilation-databases '(irony-cdb-libclang
-																											irony-cdb-clang-complete))
+			(setq-default irony-cdb-compilation-databases
+										'(irony-cdb-libclang
+											irony-cdb-clang-complete))
 			(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)))
 #+END_SRC
 #+BEGIN_SRC emacs-lisp
@@ -354,7 +349,8 @@ For complete installation details please see https://github.com/Sarcasm/irony-mo
 		:ensure t
 		:config
 		(progn
-			(eval-after-load 'company '(add-to-list 'company-backends 'company-irony))))
+			(eval-after-load 'company
+				'(add-to-list 'company-backends 'company-irony))))
 #+END_SRC
 #+BEGIN_SRC emacs-lisp
 	;; I use irony with flycheck to get real-time syntax checking.
@@ -363,7 +359,8 @@ For complete installation details please see https://github.com/Sarcasm/irony-mo
 		:ensure t
 		:config
 		(progn
-			(eval-after-load 'flycheck '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))))
+			(eval-after-load 'flycheck
+				'(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))))
 #+END_SRC
 #+BEGIN_SRC emacs-lisp
 	;; Eldoc shows argument list of the function you are currently writing in the echo area.
@@ -374,19 +371,6 @@ For complete installation details please see https://github.com/Sarcasm/irony-mo
 		(progn
 			(add-hook 'irony-mode-hook #'irony-eldoc)))
 #+END_SRC
-
- Setup is similar to rtags.org (RTag).
- See [[./rtags.org::Setup][rtags.org]] or [[https://github.com/Sarcasm/irony-mode#compilation-database][Compilation Databases]] for more details.
-
- A compilation database (compile_commands.json) is required.
- See Sarcasm's notes on the [[https://sarcasm.github.io/notes/dev/compilation-database.html][Compilation Database]] for extensive documentation on
- what this is, and why it is important.
-
-** Irony project setup
-*** cmake
-	#+BEGIN_EXAMPLE
-	cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .
-	#+END_EXAMPLE
 
 * Rtags                                                               :Cpp:C:
  This configuration is from [[http://martinsosic.com/development/emacs/2017/12/09/emacs-cpp-ide.html][Martin Sosic]].
