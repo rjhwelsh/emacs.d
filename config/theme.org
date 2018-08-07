@@ -9,10 +9,6 @@
 		; Themes +
 		(use-package "material-theme" :ensure t )
 		(use-package "solarized-theme" :ensure t )
-		(use-package "doremi" :ensure t )
-		(use-package "palette" :ensure t )
-		(use-package "facemenu+" :ensure t )
-		(use-package "font-lock+" :ensure t )
 		(use-package "fill-column-indicator" :ensure t )
 #+END_SRC
 
