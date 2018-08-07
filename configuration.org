@@ -124,7 +124,6 @@ of functionality. If you dislike or would like to stop using a particular module
 comment it out.
 #+BEGIN_SRC emacs-lisp
 		 (setq rjh/load-config-modules '(
-			"workgroups.org"
 			"abbrev.org"
 			"company.org"
 			"crypto.org"
@@ -600,6 +599,33 @@ An api for working with files in Emacs lisp.
 #+BEGIN_SRC emacs-lisp
 	(use-package "f" :ensure t )
 #+END_SRC
+
+* Workgroups
+Workgroups provides defined layouts for Emacs.
+( https://github.com/tlh/workgroups.el )
+ #+BEGIN_SRC emacs-lisp
+	 (use-package "workgroups"
+		 :init
+		 (require 'workgroups)
+		 (workgroups-mode 1)
+		 (setq wg-prefix-key (kbd "C-c w"))
+		 (wg-load "~/.emacs.d/workgroups" )
+		 :ensure t )
+ #+END_SRC
+
+Keybindings:
+Use the following with <prefix> ;
+   + C-c w :: <prefix>
+   + c :: wg-create-workgroup
+	 + A :: wg-rename-workgroup
+	 + v :: wg-switch-to-workgroup
+	 + n/p :: next/prev workgroup
+	 + 0-9 :: switch thru positions in list
+	 + w :: wg-toggle-morph (animation)
+	 + C-s/l :: save / load workgroup
+   + k :: kill workgroup
+   + ,/. :: move left/right in group listing
+	 + ? :: wg-help
 
 * Telephone line
 A pretty message bar for Emacs.
