@@ -746,10 +746,3 @@ Keybindings
 	(global-set-key (kbd "C-M-+") 'my-increment-number-hexadecimal)
 	(global-set-key (kbd "C-M-_") 'my-decrement-number-hexadecimal)
 #+END_SRC
-
-* Startup
-Start-up configuration.
-For more see [[file:config/startup.org][startup.org]].
-#+BEGIN_SRC emacs-lisp
-	(rjh/load-config "startup.org")
-#+END_SRC
