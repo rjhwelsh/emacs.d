@@ -283,6 +283,15 @@ Custom agenda views
 						(tags "+BREAKDOWN")))
 					("h" "HABITUAL TASKS"
 					 ((tags "STYLE=\"habit\"|HABIT" )))
+
+; MASTER tags
+					("r" "Kanban for MASTER tags"
+					 (( tags "+MOTIVATION" )
+						( tags "+ACQUIRE" )
+						( tags "+SIGNIFICANCE" )
+						( tags "+TRIGGER" )
+						( tags "+EXHIBIT" )
+						( tags "+REVIEW" )))))
 #+END_SRC
 
 ** Stuck Projects
@@ -508,6 +517,7 @@ FACES are custom settings for font, colour, background etc.
 			 "Face for basic todo items."
 			 :group 'todo-faces)
 	 #+END_SRC
+
  Assignment.
  #+BEGIN_SRC emacs-lisp
 	 (setq org-todo-keyword-faces
