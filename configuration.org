@@ -217,6 +217,7 @@ For more see [[file:config/company.org::*Yasnippet%20compatibility][Yasnippet co
 
 * Helm
 Helm is an incremental completion and selection narrowing framework for Emacs.
+https://emacs-helm.github.io/helm/
 #+BEGIN_SRC emacs-lisp
 	(use-package helm
 		:ensure t
