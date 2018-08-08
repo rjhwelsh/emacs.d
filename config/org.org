@@ -252,10 +252,10 @@ Sorting strategy.
  - =habit-down= has been removed so that habits mix with regular tasks.
 #+BEGIN_SRC emacs-lisp
 	(setq org-agenda-sorting-strategy
-				'((agenda time-up todo-state-down deadline-up schedule-up effort-up priority-down tag-up category-keep)
-					(todo   todo-state-down deadline-up schedule-up effort-up priority-down tag-up category-keep)
-					(tags   todo-state-down deadline-up schedule-up effort-up priority-down tag-up category-keep)
-					(search todo-state-down deadline-up schedule-up effort-up priority-down tag-up category-keep)))
+				'((agenda time-up todo-state-down deadline-up scheduled-up effort-up priority-down tag-up category-keep)
+					(todo   todo-state-down deadline-up scheduled-up effort-up priority-down tag-up category-keep)
+					(tags   todo-state-down deadline-up scheduled-up effort-up priority-down tag-up category-keep)
+					(search todo-state-down deadline-up scheduled-up effort-up priority-down tag-up category-keep)))
 #+END_SRC
 
 Custom agenda views
