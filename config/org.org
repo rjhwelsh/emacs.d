@@ -173,7 +173,7 @@ See =org-tag-alist= for more details.
 	(setq org-tag-alist
 				'(("food" . ?e)
 					("security" . ?s)
-					("affection" . ?a)
+					("affection" . ?t)
 					("learning" . ?l)
 					("contrib" . ?p)
 					("fun" . ?f )
@@ -195,6 +195,7 @@ These tags will always be available unless =#+STARTUP: noptag= is set in the buf
 					("WAITING" . ?W)
 					("BREAKDOWN" . ?B)
 					("VERIFY" . ?V)
+				  ("ACTION" . ?a)
 					("CANCELLED" . ?C)
 					(:newline)
 					("HABIT" . ?H)
@@ -272,14 +273,15 @@ Custom agenda views
 	; GTD tags
 						("k" "Kanban for GTD TAGS"
 						 ((tags "LEVEL=1+PROJECT")
-						  (todo "NEXT")
+							(todo "NEXT")
 							(tags "+NEW")
+						  (tags "+ACTION")
 							(tags "+FLAGGED")
 							(tags "+VERIFY")
 							(tags "+DELEGATE")
 							(tags "+WAITING")
 							(tags "+BREAKDOWN")
-							(tags "-PROJECT-NEW-FLAGGED-VERIFY-DELEGATE-WAITING-BREAKDOWN/|TODO")
+							(tags "-PROJECT-ACTION-NEW-FLAGGED-VERIFY-DELEGATE-WAITING-BREAKDOWN/|TODO")
 	))
 						("h" "Habits"
 						 ((tags "STYLE=\"habit\"|HABIT" )))
@@ -588,6 +590,7 @@ Assignment
 	 (setq org-tag-faces
 				 '(("PROJECT" . org-tag-red)
 					 ("FLAGGED" . org-tag-orange)
+					 ("ACTION" . org-tag-orange)
 					 ("VERIFY" . org-tag-yellow)
 					 ("DELEGATE" . org-tag-green)
 					 ("WAITING" . org-tag-cyan)
