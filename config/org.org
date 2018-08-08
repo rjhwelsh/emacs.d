@@ -261,30 +261,28 @@ Sorting strategy.
 Custom agenda views
 #+BEGIN_SRC emacs-lisp
 	(setq org-agenda-custom-commands
+; General views
 				'(("a" "Agenda for current Week or Day"
 					 agenda ""
 					 ((org-agenda-tag-filter-preset
 						 '("-HABIT"))))
 					("n" "Agenda and all TODOs"
-					 ((agenda ""
-										((org-agenda-span 1)))
+					 ((agenda "" ((org-agenda-span 1)))
 						(alltodo "" )))
-					("P" "PROJECT TASKS"
-					 ((tags "LEVEL=1+PROJECT")))
-					("N" "NEW TASKS"
-					 ((tags "+NEW")))
-					("F" "FLAGGED TASKS"
-					 ((tags "+FLAGGED")))
-					("V" "VERIFY TASKS"
-					 ((tags "+VERIFY")))
-					("D" "DELEGATE TASKS"
-					 ((tags "+DELEGATE")))
-					("W" "WAITING TASKS"
-					 ((tags "+WAITING")))
-					("B" "BREAKDOWN TASKS"
-					 ((tags "+BREAKDOWN")))
-					("H" "HABITUAL TASKS"
-					 ((tags "STYLE=\"habit\"|HABIT" )))))
+; GTD tags
+					("g" "Todo items in current buffer"
+					 (( todo-tree "TODO|NEXT" )))
+
+					("k" "Kanban for GTD TAGS"
+					 ((tags "LEVEL=1+PROJECT")
+						(tags "+NEW")
+						(tags "+FLAGGED")
+						(tags "+VERIFY")
+						(tags "+DELEGATE")
+						(tags "+WAITING")
+						(tags "+BREAKDOWN")))
+					("h" "HABITUAL TASKS"
+					 ((tags "STYLE=\"habit\"|HABIT" )))
 #+END_SRC
 
 ** Stuck Projects
