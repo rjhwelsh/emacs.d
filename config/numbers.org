@@ -13,8 +13,6 @@ Courtesy of [[https://www.emacswiki.org/emacs/IncrementNumber][emacswiki.org]].
       (or (looking-at "[0-9]+")
           (error "No number at point"))
       (replace-match (number-to-string (1+ (string-to-number (match-string 0))))))
-
-
 #+END_SRC
 * Decimal
 Allows C-u prefix to set the increment.
