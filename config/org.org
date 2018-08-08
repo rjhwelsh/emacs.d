@@ -589,8 +589,8 @@ Assignment
  #+BEGIN_SRC emacs-lisp
 	 (setq org-tag-faces
 				 '(("PROJECT" . org-tag-red)
+					 ("ACTION" . org-tag-red)
 					 ("FLAGGED" . org-tag-orange)
-					 ("ACTION" . org-tag-orange)
 					 ("VERIFY" . org-tag-yellow)
 					 ("DELEGATE" . org-tag-green)
 					 ("WAITING" . org-tag-cyan)
