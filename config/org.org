@@ -272,13 +272,14 @@ Custom agenda views
 	; GTD tags
 						("k" "Kanban for GTD TAGS"
 						 ((tags "LEVEL=1+PROJECT")
+						  (todo "NEXT")
 							(tags "+NEW")
 							(tags "+FLAGGED")
 							(tags "+VERIFY")
 							(tags "+DELEGATE")
 							(tags "+WAITING")
 							(tags "+BREAKDOWN")
-						  (tags "-PROJECT-NEW-FLAGGED-VERIFY-DELEGATE-WAITING-BREAKDOWN/|NEXT|TODO")
+							(tags "-PROJECT-NEW-FLAGGED-VERIFY-DELEGATE-WAITING-BREAKDOWN/|TODO")
 	))
 						("h" "Habits"
 						 ((tags "STYLE=\"habit\"|HABIT" )))
