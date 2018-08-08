@@ -215,6 +215,20 @@ For more see [[file:config/company.org::*Yasnippet%20compatibility][Yasnippet co
 		(rjh/load-config "company.org"))
 #+END_SRC
 
+* Helm
+Helm is an incremental completion and selection narrowing framework for Emacs.
+#+BEGIN_SRC emacs-lisp
+	(use-package helm
+		:ensure t
+		:init
+		(require 'helm-config)
+		(helm-mode 1)
+		:bind
+		(("M-x" . helm-M-x)
+		 ("C-x C-f" . helm-find-files)
+		 ("C-x b" . helm-buffers-list)
+		 ("M-y" . helm-show-kill-ring)))
+#+END_SRC
 * Latex
 Latex configuration.
 For more see [[file:config/latex.org][latex.org]].
