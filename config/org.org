@@ -273,26 +273,26 @@ Custom agenda views
 	; GTD tags
 						("k" "Kanban for GTD TAGS"
 						 ((tags "LEVEL=1+PROJECT")
-							(todo "NEXT")
 							(tags "+NEW")
 						  (tags "+ACTION")
-							(tags "+FLAGGED")
-							(tags "+VERIFY")
-							(tags "+DELEGATE")
-							(tags "+WAITING")
-							(tags "+BREAKDOWN")
+							(tags "-ACTION/|NEXT")
+							(tags "+FLAGGED/|TODO|NEXT")
+							(tags "+VERIFY/|TODO|NEXT")
+							(tags "+DELEGATE/|TODO|NEXT")
+							(tags "+WAITING/|TODO|NEXT")
+							(tags "+BREAKDOWN/|TODO|NEXT")
 							(tags "-PROJECT-ACTION-NEW-FLAGGED-VERIFY-DELEGATE-WAITING-BREAKDOWN/|TODO")
 	))
 						("h" "Habits"
 						 ((tags "STYLE=\"habit\"|HABIT" )))
 	; MASTER tags
 						("r" "Kanban for MASTER tags"
-						 (( tags "+MOTIVATION" )
-							( tags "+ACQUIRE" )
-							( tags "+SIGNIFICANCE" )
-							( tags "+TRIGGER" )
-							( tags "+EXHIBIT" )
-							( tags "+REVIEW" )))))
+						 (( tags "+MOTIVATION/|TODO|NEXT" )
+							( tags "+ACQUIRE/|TODO|NEXT" )
+							( tags "+SIGNIFICANCE/|TODO|NEXT" )
+							( tags "+TRIGGER/|TODO|NEXT" )
+							( tags "+EXHIBIT/|TODO|NEXT" )
+							( tags "+REVIEW/|TODO|NEXT" )))))
 #+END_SRC
 
 ** Stuck Projects
