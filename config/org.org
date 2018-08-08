@@ -526,6 +526,83 @@ FACES are custom settings for font, colour, background etc.
 					 ("DONE" . done)
 					 ("EVENT" . event )))
  #+END_SRC
+*** Tag Faces
+	 #+BEGIN_SRC emacs-lisp
+		 (defface org-tag-red
+			 '((((class color) (min-colors 8))
+					:background "dark red" :foreground "cornsilk" :weight extra-bold
+					:inherit org-tag :box ( :style released-button )))
+			 "Face for tags."
+			 :group 'tag-faces)
+	 #+END_SRC
+	 #+BEGIN_SRC emacs-lisp
+		 (defface org-tag-orange
+			 '((((class color) (min-colors 8))
+					:background "tan4" :foreground "wheat" :weight extra-bold
+					:inherit org-tag :box ( :style released-button )))
+			 "Face for tags."
+			 :group 'tag-faces)
+	 #+END_SRC
+	 #+BEGIN_SRC emacs-lisp
+		 (defface org-tag-yellow
+			 '((((class color) (min-colors 8))
+					:background "dark olive green" :foreground "yellow" :weight extra-bold
+					:inherit org-tag :box ( :style released-button )))
+			 "Face for tags."
+			 :group 'tag-faces)
+	 #+END_SRC
+	 #+BEGIN_SRC emacs-lisp
+		 (defface org-tag-green
+			 '((((class color) (min-colors 8))
+					:background "dark green" :foreground "khaki" :weight extra-bold
+					:inherit org-tag :box ( :style released-button )))
+			 "Face for tags."
+			 :group 'tag-faces)
+	 #+END_SRC
+	 #+BEGIN_SRC emacs-lisp
+		 (defface org-tag-cyan
+			 '((((class color) (min-colors 8))
+					:background "dark cyan" :foreground "green yellow" :weight extra-bold
+					:inherit org-tag :box ( :style released-button )))
+			 "Face for tags."
+			 :group 'tag-faces)
+	 #+END_SRC
+	 #+BEGIN_SRC emacs-lisp
+		 (defface org-tag-blue
+			 '((((class color) (min-colors 8))
+					:background "navy" :foreground "turquoise" :weight extra-bold
+					:inherit org-tag :box ( :style released-button )))
+			 "Face for tags."
+			 :group 'tag-faces)
+	 #+END_SRC
+	 #+BEGIN_SRC emacs-lisp
+		 (defface org-tag-magenta
+			 '((((class color) (min-colors 8))
+					:background "dark magenta" :foreground "cyan" :weight extra-bold
+					:inherit org-tag :box ( :style released-button )))
+			 "Face for tags."
+			 :group 'tag-faces)
+	 #+END_SRC
+
+Assignment
+ #+BEGIN_SRC emacs-lisp
+	 (setq org-tag-faces
+				 '(("PROJECT" . org-tag-red)
+					 ("FLAGGED" . org-tag-orange)
+					 ("VERIFY" . org-tag-yellow)
+					 ("DELEGATE" . org-tag-green)
+					 ("WAITING" . org-tag-cyan)
+					 ("BREAKDOWN" . org-tag-blue)
+					 ("NEW" . org-tag-magenta)
+
+					 ( "MOTIVATION" . org-tag-red)
+					 ( "ACQUIRE" . org-tag-orange )
+					 ( "SIGNIFICANCE" . org-tag-yellow)
+					 ( "TRIGGER" . org-tag-green)
+					 ( "EXHIBIT" . org-tag-blue)
+					 ( "REVIEW" . org-tag-magenta )))
+ #+END_SRC
+
 
 * Contrib
 Org-contrib consists of packages as part of org-plus-contrib.
