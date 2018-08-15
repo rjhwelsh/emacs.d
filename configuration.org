@@ -530,6 +530,18 @@ Please ensure the following setting is enabled for =~/.gnupg/gpg-agent.conf=.
 This is [[https://www.gnu.org/software/emacs/manual/html_mono/epa.html#fnd-1][required]] for GnuPG 2.1.5 or later; if you do not use a graphical
 =pinentry= program.
 
+* Ledger
+Ledger is a cli accounting system.
+See [[https://www.ledger-cli.org/3.0/doc/ledger-mode.html][here]] for more details.
+#+BEGIN_SRC emacs-lisp
+		(use-package "ledger-mode"
+			:ensure t
+			:init
+			(add-to-list 'auto-mode-alist '("\\.ledger$" . ledger-mode))
+	)
+#+END_SRC
+
+
 * Mutt
 This file provides integration with mutt.
 For more see [[file:config/mutt.org][mutt.org]]
