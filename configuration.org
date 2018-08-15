@@ -275,7 +275,7 @@ https://github.com/alexmurray/flycheck-plantuml
 	(use-package "plantuml-mode" :ensure t
 		:init
 		(setq plantuml-jar-path "/usr/share/plantuml/lib/plantuml.jar")
-		(add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
+		(add-to-list 'auto-mode-alist '("\\.plantuml$" . plantuml-mode))
 		(add-to-list
 		 'org-src-lang-modes '("plantuml" . plantuml))
 		(setq org-plantuml-jar-path plantuml-jar-path)
