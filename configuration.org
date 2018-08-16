@@ -342,7 +342,7 @@ For more see [[file:config/python.org][python.org]].
 		:ensure t
 		:init
 		(elpy-enable)
-		(setq python-indent 2)
+		(setq python-indent-offset 4)
 		:config
 		(rjh/load-config "python.org"))
 #+END_SRC
