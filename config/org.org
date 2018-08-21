@@ -209,7 +209,11 @@ These tags will always be available unless =#+STARTUP: noptag= is set in the buf
 					(:newline)
 					))
 #+END_SRC
-
+*** Exclude tags from inheritance
+This will exclude select tags from being inherited.
+#+BEGIN_SRC emacs-lisp
+(setq org-tags-exclude-from-inheritance '("ACTION"))
+#+END_SRC
 ** Priorities
 Priorities are assigned A,B,C,D (E,F). B being the default.
 I'm particularly inspired by the Eisenhower Matrix and Must/Should/Nice todos.
