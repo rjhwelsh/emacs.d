@@ -214,6 +214,47 @@ This will exclude select tags from being inherited.
 #+BEGIN_SRC emacs-lisp
 (setq org-tags-exclude-from-inheritance '("ACTION"))
 #+END_SRC
+
+*** Functions to expire tags
+Expiration tags.
+#+BEGIN_SRC emacs-lisp
+	(setq rjh/org-tags-expiration-tags '("NEW" "ACTION"))
+#+END_SRC
+
+Tag expiration for headline.
+#+BEGIN_SRC emacs-lisp
+	(defun rjh/org-tags-expire-headline ( expiration-tags )
+		"Removes all expiration tags from headline."
+		(let ((newtagslist (org-get-local-tags)))
+			(unless (null newtagslist)
+				(dolist (element expiration-tags)
+					(when (member element newtagslist)
+						(setq newtagslist (delete element newtagslist)))
+				(org-set-tags-to newtagslist)))))
+#+END_SRC
+
+Tag expiration for entry (interactive).
+#+BEGIN_SRC emacs-lisp
+	(defun rjh/org-tags-expire ()
+		"Expires all expiration tags in current entry."
+		(interactive)
+		(save-excursion
+			(org-back-to-heading 't)
+			(rjh/org-tags-expire-headline rjh/org-tags-expiration-tags)))
+#+END_SRC
+
+Tags expiration for buffer (interactive).
+#+BEGIN_SRC emacs-lisp
+	(defun rjh/org-tags-expire-all ()
+		"Expires all expiration tags in current buffer.
+	Includes invisible heading lines."
+		(interactive)
+		(save-excursion
+			(goto-char (point-min))
+			(while (outline-next-heading)
+				(rjh/org-tags-expire-headline rjh/org-tags-expiration-tags))))
+#+END_SRC
+
 ** Priorities
 Priorities are assigned A,B,C,D (E,F). B being the default.
 I'm particularly inspired by the Eisenhower Matrix and Must/Should/Nice todos.
