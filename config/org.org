@@ -70,6 +70,7 @@ Some handy keybindings.
 	(define-key global-map "\C-ca" 'org-agenda)
 	(define-key global-map "\C-cc" 'org-capture)
   (define-key org-mode-map "\C-ce" 'rjh/org-tags-expire)
+  (define-key org-agenda-mode-map "\C-ce" 'rjh/org-tags-expire)
 #+END_SRC
 
 * Agenda Configuration
