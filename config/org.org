@@ -256,6 +256,17 @@ Tags expiration for buffer (interactive).
 				(rjh/org-tags-expire-headline rjh/org-tags-expiration-tags))))
 #+END_SRC
 
+Generic interactive function.
+#+BEGIN_SRC emacs-lisp
+	(defun rjh/org-tags-expire (ARG)
+		"Expires all expiration tags.
+	PREFIXARG = Expire tags in buffer if non-nil"
+		(interactive "p")
+		(if (>= ARG 4)
+			(rjh/org-tags-expire-buffer)
+			(rjh/org-tags-expire-entry)))
+#+END_SRC
+
 ** Priorities
 Priorities are assigned A,B,C,D (E,F). B being the default.
 I'm particularly inspired by the Eisenhower Matrix and Must/Should/Nice todos.
