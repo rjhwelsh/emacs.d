@@ -66,9 +66,10 @@ choose the right browser. I'd like to always use Firefox, so:
 ** Keybindings
 Some handy keybindings.
 #+BEGIN_SRC emacs-lisp
-  (define-key global-map "\C-cl" 'org-store-link)
-  (define-key global-map "\C-ca" 'org-agenda)
-  (define-key global-map "\C-cc" 'org-capture)
+	(define-key global-map "\C-cl" 'org-store-link)
+	(define-key global-map "\C-ca" 'org-agenda)
+	(define-key global-map "\C-cc" 'org-capture)
+  (define-key org-mode-map "\C-ce" 'rjh/org-tags-expire)
 #+END_SRC
 
 * Agenda Configuration
