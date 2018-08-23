@@ -268,17 +268,19 @@ Custom agenda views
 		(setq org-agenda-custom-commands
 	; General views
 					'(("a" "Agenda for current Week or Day"
-						 agenda ""
+						 ((tags "+ACTION")
+							(agenda ""
 						 ((org-agenda-tag-filter-preset
-							 '("-HABIT"))))
+							 '("-HABIT"))))))
 						("n" "Agenda and all TODOs"
-						 ((agenda "" ((org-agenda-span 1)))
+						 ((tags "+ACTION")
+							(agenda "" ((org-agenda-span 1)))
 							(alltodo "" )))
 	; GTD tags
 						("k" "Kanban for GTD TAGS"
 						 ((tags "LEVEL=1+PROJECT")
 							(tags "+NEW")
-						  (tags "+ACTION")
+							(tags "+ACTION")
 							(tags "-ACTION/|NEXT")
 							(tags "+FLAGGED/|TODO|NEXT")
 							(tags "+VERIFY/|TODO|NEXT")
