@@ -236,17 +236,17 @@ Tag expiration for headline.
 
 Tag expiration for entry (interactive).
 #+BEGIN_SRC emacs-lisp
-	(defun rjh/org-tags-expire ()
+	(defun rjh/org-tags-expire-entry ()
 		"Expires all expiration tags in current entry."
 		(interactive)
 		(save-excursion
-			(org-back-to-heading 't)
-			(rjh/org-tags-expire-headline rjh/org-tags-expiration-tags)))
+					(org-back-to-heading 't)
+					(rjh/org-tags-expire-headline rjh/org-tags-expiration-tags)))
 #+END_SRC
 
 Tags expiration for buffer (interactive).
 #+BEGIN_SRC emacs-lisp
-	(defun rjh/org-tags-expire-all ()
+	(defun rjh/org-tags-expire-buffer ()
 		"Expires all expiration tags in current buffer.
 	Includes invisible heading lines."
 		(interactive)
