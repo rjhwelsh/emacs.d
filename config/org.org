@@ -212,9 +212,17 @@ These tags will always be available unless =#+STARTUP: noptag= is set in the buf
 					))
 #+END_SRC
 *** Exclude tags from inheritance
-This will exclude select tags from being inherited.
-#+BEGIN_SRC emacs-lisp
+This *example* will exclude a select list of tags from being inherited.
+#+BEGIN_EXAMPLE emacs-lisp
 (setq org-tags-exclude-from-inheritance '("ACTION"))
+#+END_EXAMPLE
+
+This will exclude all tags from =org-tag-persistent-alist= from being inherited.
+#+BEGIN_SRC emacs-lisp
+(setq org-tags-exclude-from-inheritance
+	(let (newlist '())
+		(dolist (element org-tag-persistent-alist newlist)
+			(push (car element) newlist))))
 #+END_SRC
 
 *** Functions to expire tags
