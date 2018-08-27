@@ -363,6 +363,11 @@ Custom agenda views
 							( tags "+REVIEW/|TODO|NEXT" )))))
 #+END_SRC
 
+Take up current window when called.
+#+BEGIN_SRC emacs-lisp
+(setq org-agenda-window-setup 'current-window)
+#+END_SRC
+
 ** Stuck Projects
 1. Match projects with the +PROJECT property, do not match completed items.
 2. Non-stuck projects are identified with a NEXT TODO keyword.
