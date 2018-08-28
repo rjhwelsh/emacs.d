@@ -326,7 +326,7 @@ Sorting strategy.
 
 Custom agenda views
 #+BEGIN_SRC emacs-lisp
-		(setq org-agenda-custom-commands
+	(setq org-agenda-custom-commands
 	; General views
 					'(("a" "Agenda for current Week or Day"
 						 ((tags "+ACTION")
@@ -359,7 +359,17 @@ Custom agenda views
 							( tags "+SIGNIFICANCE/|TODO|NEXT" )
 							( tags "+TRIGGER/|TODO|NEXT" )
 							( tags "+EXHIBIT/|TODO|NEXT" )
-							( tags "+REVIEW/|TODO|NEXT" )))))
+							( tags "+REVIEW/|TODO|NEXT" )))
+	; STUDY keywords
+						("l" "Kanban for STUDY tags"
+						 (( tags "+ACTION/|STUDY" )
+							( tags "/|ALPHA" )
+							( tags "/|BETA" )
+							( tags "/|GAMMA" )
+							( tags "/|DELTA" )
+							( tags "/|THETA" )
+							( tags "/|STUDY" )
+							(tags "/|NU")))))
 #+END_SRC
 
 Take up current window when called.
