@@ -558,7 +558,20 @@ them far more prettier in html.
 #+END_SRC
 ** Faces
 FACES are custom settings for font, colour, background etc.
+If you would like to modify a face that has already been loaded, you will have
+to use the following function.
+#+BEGIN_SRC emacs-lisp
+	;; (face-spec-set 'study
+	;; 							 '((t (:background "black"
+	;; 										 :foreground "cyan"
+	;; 										 :weight extra-bold)))
+	;; 							 'face-defface-spec)
+#+END_SRC
+
+
 *** Keyword faces
+These define faces for todo keywords.
+
 	 #+BEGIN_SRC emacs-lisp
 		 (defface todo
 			 '((((class color) (min-colors 8))
