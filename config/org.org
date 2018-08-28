@@ -158,9 +158,8 @@ For below; make the following notes:
 		 '(
 		 (sequence "TODO(t!)" "NEXT(n!)" "|" "DONE(d!)" )
 		 (sequence "EVENT(e!)" )
-	 )
-	)
-	(setq org-log-into-drawer t) ;LOGBOOK
+	   (type "STUDY(s!)" "ALPHA" "BETA" "GAMMA" "DELTA" "THETA" "|" "NU")))
+	(setq org-log-into-drawer t) ;;LOGBOOK
 #+END_SRC
 
 For group projects, put this at the top of the project line for custom keywords.
