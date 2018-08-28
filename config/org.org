@@ -603,15 +603,32 @@ These define faces for todo keywords.
 			 "Face for basic todo items."
 			 :group 'todo-faces)
 	 #+END_SRC
+	 #+BEGIN_SRC emacs-lisp
+		 (defface study
+			 '((((class color) (min-colors 8))
+					:background "black" :foreground "cyan" :weight extra-bold
+					:inherit default :height 1.0 :box ( :style released-button )))
+			 "Face for study keyword."
+			 :group 'todo-faces)
+	 #+END_SRC
 
  Assignment.
  #+BEGIN_SRC emacs-lisp
-	 (setq org-todo-keyword-faces
-				 '(("TODO" . todo)
-					 ("NEXT" . next)
-					 ("DONE" . done)
-					 ("EVENT" . event )))
+			(setq org-todo-keyword-faces
+						'(("TODO" . todo)
+							("NEXT" . next)
+							("DONE" . done)
+							("EVENT" . event )
+							("STUDY" . todo)
+							("ALPHA" . study)
+							("BETA" . study)
+							("GAMMA" . study)
+							("DELTA" . study)
+							("THETA" . study)
+							("NU" . done)
+))
  #+END_SRC
+
 *** Tag Faces
 	 #+BEGIN_SRC emacs-lisp
 		 (defface org-tag-red
