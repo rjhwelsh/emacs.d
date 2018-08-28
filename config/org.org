@@ -445,6 +445,9 @@ Capture templates.
 	(setq org-capture-templates
 				'(("t" "Todo" entry (file+headline rjh/org-tasks "Inbox")
 					 "* TODO %? :NEW:\n\t%i\n\t%a\n\n" nil)
+					 ("l" "Learn" entry (file+headline rjh/org-tasks "Inbox")
+					 "* TODO %^{prompt} :NEW:\n\t%i%?\n** STUDY %\\1 \nSCHEDULED: <%(org-read-date nil nil \".\")>\n** ALPHA %\\1 \nSCHEDULED: <%(org-read-date nil nil \"+1h\")>\n** BETA  %\\1 \nSCHEDULED: <%(org-read-date nil nil \"+1d\")>\n** GAMMA %\\1 \nSCHEDULED: <%(org-read-date nil nil \"+14d\")>\n** DELTA %\\1 \nSCHEDULED: <%(org-read-date nil nil \"+28d\")>\n** THETA %\\1 \nSCHEDULED: <%(org-read-date nil nil \"+56d\")>\n"
+					 nil)
 					("j" "Journal" entry (file+datetree rjh/org-journal )
 					 "* %?\n\tEntered on %U\n\t%i\n\t%a\n\n" :kill-buffer )
 					("e" "Event/Appointment" entry (file+headline rjh/org-events "Events" )
