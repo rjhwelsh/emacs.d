@@ -470,6 +470,17 @@ Capture templates.
 					("T" "Table on clock" table-line (clock) :kill-buffer )))
 #+END_SRC
 
+Learning template schedule is as follows:
+ /(assuming Monday is the first learning day)/
+| Week No. | Mon   | Tue   | Wed   | Increment |
+|----------+-------+-------+-------+-----------|
+|        1 | STUDY |       |       |        +0 |
+|        1 | ALPHA |       |       |       +1h |
+|        1 |       | BETA  |       |       +1d |
+|        3 |       | GAMMA |       |      +15d |
+|        5 |       |       | DELTA |      +30d |
+|        9 |       |       | THETA |      +58d |
+
 
 Refiling list.
 #+BEGIN_SRC emacs-lisp
