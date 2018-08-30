@@ -446,7 +446,7 @@ Capture templates.
 				'(("t" "Todo" entry (file+headline rjh/org-tasks "Inbox")
 					 "* TODO %? :NEW:\n\t%i\n\t%a\n\n" nil)
 					 ("l" "Learn" entry (file+headline rjh/org-tasks "Inbox")
-					 "* TODO %^{prompt} :NEW:\n\t%i%?\n** STUDY %\\1 \nSCHEDULED: <%(org-read-date nil nil \".\")>\n** ALPHA %\\1 \nSCHEDULED: <%(org-read-date nil nil \"+1h\")>\n** BETA  %\\1 \nSCHEDULED: <%(org-read-date nil nil \"+1d\")>\n** GAMMA %\\1 \nSCHEDULED: <%(org-read-date nil nil \"+14d\")>\n** DELTA %\\1 \nSCHEDULED: <%(org-read-date nil nil \"+28d\")>\n** THETA %\\1 \nSCHEDULED: <%(org-read-date nil nil \"+56d\")>\n"
+					 "* STUDY %^{prompt} :NEW:\n\t%i%?\n** STUDY %\\1 \nSCHEDULED: <%(org-read-date nil nil (concat \". \" (format-time-string \"%a %H:%M\")))>\n** ALPHA %\\1 \nSCHEDULED: <%(org-read-date nil nil (concat \". \" (format-time-string \"%H:%M\" (time-add (current-time) 3600 ))))>\n** BETA  %\\1 \nSCHEDULED: <%(org-read-date nil nil \"+1d\")>\n** GAMMA %\\1 \nSCHEDULED: <%(org-read-date nil nil \"+15d\")>\n** DELTA %\\1 \nSCHEDULED: <%(org-read-date nil nil \"+30d\")>\n** THETA %\\1 \nSCHEDULED: <%(org-read-date nil nil \"+58d\")>\n"
 					 nil)
 					("j" "Journal" entry (file+datetree rjh/org-journal )
 					 "* %?\n\tEntered on %U\n\t%i\n\t%a\n\n" :kill-buffer )
