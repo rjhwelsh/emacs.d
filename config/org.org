@@ -435,12 +435,23 @@ Do not mark archived tasks as done.
 (setq org-archive-mark-done nil)
 #+END_SRC
 ** Capture/Refile Settings
+See [[info:org#Capture%20templates][info:org#Capture templates]] for more information.
+
 These are settings for capturing/refiling information.
 #+BEGIN_SRC emacs-lisp
 	(setq org-default-notes-file rjh/org-tasks)
 #+END_SRC
 
 Capture templates.
+  - todo :: Captures a basic todo entry.
+	- journal :: Captures a dated journal entry.
+	- event :: Captures a calendar event
+	- habit :: Captures a habitual task.
+	- learn :: Captures a learning task.
+						Learning scheduling is spaced according to optimal spacing strategy.
+						Progress is achieved through 5 study stages,
+            Alpha-Beta-Gamma-Delta-Theta.
+
 #+BEGIN_SRC emacs-lisp
 	(setq org-capture-templates
 				'(("t" "Todo" entry (file+headline rjh/org-tasks "Inbox")
