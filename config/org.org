@@ -225,23 +225,67 @@ This will exclude all tags from =org-tag-persistent-alist= from being inherited.
 #+END_SRC
 
 *** Functions to expire tags
-Expiration tags.
-#+BEGIN_SRC emacs-lisp
-	(setq rjh/org-tags-expiration-tags '("NEW" "ACTION"))
-#+END_SRC
+Expiration tags are temporary tags for grouping TODO items in a short-term
+meaningful way. These functions quickly expunge these temporary tags in bulk, to
+facilitate better short-term planning and turnover.
 
-Tag expiration for headline.
-#+BEGIN_SRC emacs-lisp
-	(defun rjh/org-tags-expire-headline ( expiration-tags )
-		"Removes all expiration tags from headline."
-		(let ((newtagslist (org-get-local-tags)))
-			(unless (null newtagslist)
-				(dolist (element expiration-tags)
-					(when (member element newtagslist)
-						(setq newtagslist (delete element newtagslist))))
-				(org-set-tags-to newtagslist)
-				(org-reveal))))
-#+END_SRC
+ Expiration tags.
+ #+BEGIN_SRC emacs-lisp
+	 (setq rjh/org-tags-expiration-tags '("NEW" "ACTION"))
+ #+END_SRC
+
+ Generic interactive function.
+   - Will expire tags for current item
+	 - Will expire tags for entire buffer when called with a prefix.
+ #+BEGIN_SRC emacs-lisp
+	 (defun rjh/org-tags-expire (ARG)
+		 "Expires all expiration tags.
+	 PREFIXARG = Expire tags in buffer if non-nil"
+		 (interactive "p")
+		 (if (>= ARG 4)
+			 (rjh/org-tags-expire-buffer)
+			 (rjh/org-tags-expire-entry)))
+ #+END_SRC
+
+**** org-mode
+		 These provide functions for removing expiration-tags in the current
+		 =org-mode= buffer.
+
+ Tag expiration for headline.
+ #+BEGIN_SRC emacs-lisp
+	 (defun rjh/org-tags-expire-headline ( expiration-tags )
+		 "Removes all expiration tags from headline."
+		 (let ((newtagslist (org-get-local-tags)))
+			 (unless (null newtagslist)
+				 (dolist (element expiration-tags)
+					 (when (member element newtagslist)
+						 (setq newtagslist (delete element newtagslist))))
+				 (org-set-tags-to newtagslist)
+				 (org-reveal))))
+ #+END_SRC
+
+ Tag expiration for entry (interactive).
+ #+BEGIN_SRC emacs-lisp
+	 (defun rjh/org-tags-expire-entry ()
+		 "Expires all expiration tags in current entry."
+		 (interactive)
+		 (save-excursion
+					 (org-back-to-heading 't)
+					 (rjh/org-tags-expire-headline rjh/org-tags-expiration-tags)))
+ #+END_SRC
+
+ Tags expiration for buffer (interactive).
+ #+BEGIN_SRC emacs-lisp
+	 (defun rjh/org-tags-expire-buffer ()
+		 "Expires all expiration tags in current buffer.
+	 Includes invisible heading lines."
+		 (interactive)
+		 (save-excursion
+			 (goto-char (point-min))
+			 (while (outline-next-heading)
+				 (rjh/org-tags-expire-headline rjh/org-tags-expiration-tags))))
+ #+END_SRC
+
 
 Tag expiration for entry (interactive).
 #+BEGIN_SRC emacs-lisp
