@@ -238,8 +238,9 @@ Tag expiration for headline.
 			(unless (null newtagslist)
 				(dolist (element expiration-tags)
 					(when (member element newtagslist)
-						(setq newtagslist (delete element newtagslist)))
-				(org-set-tags-to newtagslist)))))
+						(setq newtagslist (delete element newtagslist))))
+				(org-set-tags-to newtagslist)
+				(org-reveal))))
 #+END_SRC
 
 Tag expiration for entry (interactive).
