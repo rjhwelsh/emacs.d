@@ -643,6 +643,7 @@ Workgroups provides defined layouts for Emacs.
 		 :init
 		 (require 'workgroups)
 		 (workgroups-mode 1)
+	   (setq wg-morph-on nil)
 		 (setq wg-prefix-key (kbd "C-c w"))
 		 (wg-load "~/.emacs.d/workgroups" )
 		 :ensure t )
