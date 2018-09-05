@@ -680,6 +680,20 @@ Use the following with <prefix> ;
    + ,/. :: move left/right in group listing
 	 + ? :: wg-help
 
+* Projectile
+Projectile is a project interaction library for Emacs.
+For more about the project, see [[https://projectile.readthedocs.io/en/latest/][the docs]] or [[https://github.com/bbatsov/projectile][the source.]]
+
+#+BEGIN_SRC emacs-lisp
+	(use-package "projectile"
+		:init
+		(projectile-mode +1)
+		(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+		(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+		:ensure t
+		:diminish projectile-mode)
+#+END_SRC
+
 * Themes
 Use the =diff-hl= package to highlight changed-and-uncommitted lines when
 programming.
