@@ -203,6 +203,10 @@ Company-mode provides auto-completion features for many other modes.
 Company mode has some compatibility issues with yasnippet.
 For more see [[file:config/company.org::*Yasnippet%20compatibility][Yasnippet compatibility]].
 
+Other packages that use =<tab>= and may be affected by company-mode:
+    - magit
+		- ecb
+
 #+BEGIN_SRC emacs-lisp
 	(use-package company
 		:ensure t
