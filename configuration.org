@@ -250,7 +250,8 @@ http://tuhdo.github.io/helm-intro.html
 		 :map helm-map
 		 ("<tab>" . helm-execute-persistent-action)
 		 ("C-i" . helm-execute-persistent-action)
-		 ("C-z" . helm-select-action)))
+		 ("C-z" . helm-select-action))
+		:diminish helm-mode)
 #+END_SRC
 * Latex
 Latex configuration.
@@ -660,10 +661,11 @@ Workgroups provides defined layouts for Emacs.
 		 :init
 		 (require 'workgroups)
 		 (workgroups-mode 1)
-	   (setq wg-morph-on nil)
+		 (setq wg-morph-on nil)
 		 (setq wg-prefix-key (kbd "C-c w"))
 		 (wg-load "~/.emacs.d/workgroups" )
-		 :ensure t )
+		 :ensure t
+		 :diminish workgroups-mode)
  #+END_SRC
 
 Keybindings:
