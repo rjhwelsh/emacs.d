@@ -358,6 +358,82 @@ For more see [[file:config/python.org][python.org]].
 		:ensure t)
 #+END_SRC
 
+* Ruby                                                                 :ruby:
+Some packages to make Ruby play nice with Emacs.
+Derived from [[https://worace.works/2016/06/07/getting-started-with-emacs-for-ruby/][here]].
+
+** ruby-electric
+ Auto-close paired syntax elements with electric mode.
+ #+BEGIN_SRC emacs-lisp
+	 (use-package "ruby-electric"
+		 :hook ruby-mode
+		 :ensure t)
+ #+END_SRC
+
+** seeing-is-believing
+For more info, see [[https://github.com/JoshCheek/seeing_is_believing][source]] and [[https://github.com/jcinnamond/seeing-is-believing][emacs-source.]]
+
+First install the gem.
+#+BEGIN_EXAMPLE sh
+gem install seeing_is_believing
+#+END_EXAMPLE
+
+Now install the Emacs packages.
+#+BEGIN_SRC emacs-lisp
+	(use-package "seeing-is-believing"
+		:init
+		(require 'seeing-is-believing)
+		(setq seeing-is-believing-prefix "C-.")
+		:hook ruby-mode
+		:ensure t)
+#+END_SRC
+
+The following keybindings are useful:
+    - =C-. s= - Run for entire file
+		- =C-. c= - Clear output
+		- =C-. t= - Tag a line to be "targeted"
+		- =C-. x= - Run only the "tagged" lines.
+
+** inf-ruby
+Emacs Inferior Language Mode for Ruby.
+This provides an embedded IRB process in Emacs to interact with by sending code-snippets.
+For more, see [[https://github.com/nonsequitur/inf-ruby][source]].
+
+#+BEGIN_SRC emacs-lisp
+	(use-package "inf-ruby"
+		:init
+		(autoload 'inf-ruby-minor-mode "inf-ruby" "Run an inferior Ruby process" t)
+		:hook ruby-mode
+		:ensure t)
+#+END_SRC
+
+Keybindings:
+    - =C-c C-s= Launch inf-ruby process
+		- =C-c C-r= Push (highlighted) ruby code to IRB.
+		- =C-c M-r= Run selected code, then go to IRB buffer.
+
+** ruby-test-mode
+Emacs minor mode for Behaviour and Test Driven Development in Ruby.
+For more see [[https://github.com/r0man/ruby-test-mode][source]].
+
+#+BEGIN_SRC emacs-lisp
+	(use-package "ruby-test-mode"
+		:ensure t
+		:hook ruby-mode
+		:init
+		(require 'ruby-test-mode)
+		;; Hook to close tests with 'q'
+		(add-hook 'compilation-finish-functions
+							(lambda (buf strg)
+								(switch-to-buffer-other-window "*compilation*")
+								(read-only-mode)
+								(goto-char (point-max))
+								(local-set-key (kbd "q")
+															 (lambda () (interactive) (quit-restore-window))))))
+
+#+END_SRC
+
+
 * Irony                                                      :DISABLED:Cpp:C:
 This configuration is taken from [[http://martinsosic.com/development/emacs/2017/12/09/emacs-cpp-ide.html][Martin Sosic]].
 https://github.com/Sarcasm/irony-mode
