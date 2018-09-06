@@ -314,6 +314,15 @@ Use =M-x git-timemachine=, =np= to navigate and =q= to quit.
 	(use-package "git-timemachine" :ensure t )
 #+END_SRC
 
+* Electric-pair
+Electric pair mode is a minor mode that enables auto-closing of brackets,
+quotes, etc.
+See more [[http://ergoemacs.org/emacs/emacs_insert_brackets_by_pair.html][here]].
+
+#+BEGIN_SRC emacs-lisp
+(electric-pair-mode)
+#+END_SRC
+
 * Java
 JDEE - Java Development Environment for Emacs
 
