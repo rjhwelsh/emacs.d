@@ -367,7 +367,8 @@ Derived from [[https://worace.works/2016/06/07/getting-started-with-emacs-for-ru
  #+BEGIN_SRC emacs-lisp
 	 (use-package "ruby-electric"
 		 :hook ((ruby-mode . ruby-electric-mode))
-		 :ensure t)
+		 :ensure t
+		 :diminish ruby-electric-mode )
  #+END_SRC
 
 ** seeing-is-believing
@@ -385,6 +386,7 @@ Now install the Emacs packages.
 		(require 'seeing-is-believing)
 		:hook ruby-mode
 		:ensure t
+	  :diminish seeing-is-believing
 		:custom
 		(seeing-is-believing-prefix "C-."))
 #+END_SRC
@@ -421,6 +423,7 @@ For more see [[https://github.com/r0man/ruby-test-mode][source]].
 	(use-package "ruby-test-mode"
 		:ensure t
 		:hook ruby-mode
+	  :diminish ruby-test-mode
 		:init
 		(require 'ruby-test-mode)
 		;; Hook to close tests with 'q'
