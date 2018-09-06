@@ -366,7 +366,7 @@ Derived from [[https://worace.works/2016/06/07/getting-started-with-emacs-for-ru
  Auto-close paired syntax elements with electric mode.
  #+BEGIN_SRC emacs-lisp
 	 (use-package "ruby-electric"
-		 :hook ruby-mode
+		 :hook ((ruby-mode . ruby-electric-mode))
 		 :ensure t)
  #+END_SRC
 
@@ -403,7 +403,7 @@ For more, see [[https://github.com/nonsequitur/inf-ruby][source]].
 	(use-package "inf-ruby"
 		:init
 		(autoload 'inf-ruby-minor-mode "inf-ruby" "Run an inferior Ruby process" t)
-		:hook ruby-mode
+		:hook ((ruby-mode . inf-ruby-minor-mode))
 		:ensure t)
 #+END_SRC
 
