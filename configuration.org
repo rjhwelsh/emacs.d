@@ -719,14 +719,10 @@ For more information, see http://ecb.sourceforge.net/.
 	:init
 	(require 'ecb)
 	(setq tree-buffer-enable-xemacs-image-bug-hack nil)
-	:ensure t )
-#+END_SRC
-
-Customize the following variables.
-#+BEGIN_SRC emacs-lisp
-(custom-set-variables
-	'(ecb-primary-secondary-mouse-buttons (quote mouse-1--mouse-2))
-	'(ecb-layout-name "left8"))
+	:ensure t
+	:custom
+	(ecb-primary-secondary-mouse-buttons (quote mouse-1--mouse-2))
+	(ecb-layout-name "left8"))
 #+END_SRC
 
 * Workgroups
