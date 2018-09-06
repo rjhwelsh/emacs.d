@@ -383,9 +383,10 @@ Now install the Emacs packages.
 	(use-package "seeing-is-believing"
 		:init
 		(require 'seeing-is-believing)
-		(setq seeing-is-believing-prefix "C-.")
 		:hook ruby-mode
-		:ensure t)
+		:ensure t
+		:custom
+		(seeing-is-believing-prefix "C-."))
 #+END_SRC
 
 The following keybindings are useful:
