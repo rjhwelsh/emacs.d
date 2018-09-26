@@ -267,6 +267,16 @@ Some packages for graphing.
 	(use-package "graphviz-dot-mode" :ensure t )
 #+END_SRC
 
+* Openscad
+Openscad is parametric 3d solid modeller.
+
+scad-mode is usually provided as part of =Openscad=.
+https://github.com/zk-phi/scad-preview is an extension.
+#+BEGIN_SRC emacs-lisp
+(use-package "scad-mode" :ensure t )
+(use-package "scad-preview" :ensure t )
+#+END_SRC
+
 * UML
 Plantuml for uml diagramming.
 PlantUML is a java program for quickly constructing uml diagrams.
