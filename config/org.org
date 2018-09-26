@@ -534,8 +534,10 @@ Refiling list.
 	;; Function to return org-buffer-files
 	(defun ixp/org-buffer-files ()
 		"Return list of opened orgmode buffer files"
-		(mapcar (function buffer-file-name)
-						(org-buffer-list 'files)))
+		;; org-refile functions must remove nil values
+		(delete nil
+						(mapcar (function buffer-file-name)
+										(org-buffer-list 'files))))
 
 	;; Refiling targets
 	(setq org-refile-targets
