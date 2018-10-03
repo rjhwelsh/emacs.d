@@ -243,8 +243,10 @@ facilitate better short-term planning and turnover.
 	 PREFIXARG = Expire tags in buffer if non-nil"
 		 (interactive "p")
 		 (if (>= ARG 4)
-			 (rjh/org-tags-expire-buffer)
-			 (rjh/org-tags-expire-entry)))
+				 (rjh/org-tags-expire-buffer)
+			 (if (org-region-active-p)
+					 (call-interactively 'rjh/org-tags-expire-region)
+				 (rjh/org-tags-expire-entry))))
  #+END_SRC
 
 **** org-mode
@@ -324,11 +326,13 @@ Generic interactive agenda function.
 #+BEGIN_SRC emacs-lisp
 	(defun rjh/org-tags-expire-agenda (ARG)
 		"Expires tags in org-agenda view."
-	(interactive "p")
-	(save-excursion
-		 (if (>= ARG 4)
-			 (rjh/org-tags-expire-agenda-buffer)
-			 (rjh/org-tags-expire-agenda-headline rjh/org-tags-expiration-tags))))
+		(interactive "p")
+		(save-excursion
+			(if (>= ARG 4)
+					(rjh/org-tags-expire-agenda-buffer)
+				(if (org-region-active-p)
+						(call-interactively 'rjh/org-tags-expire-region)
+					(rjh/org-tags-expire-agenda-headline rjh/org-tags-expiration-tags)))))
 #+END_SRC
 
 ** Priorities
