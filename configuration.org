@@ -457,6 +457,12 @@ For more see [[https://github.com/r0man/ruby-test-mode][source]].
 #+END_SRC
 
 
+* Jinja 2
+Jinja2 is a modern and designer-friendly templating language for Python, modelled after Django's templates.
+#+BEGIN_SRC emacs-lisp
+(use-package "jinja2-mode" :ensure t)
+#+END_SRC
+
 * Irony                                                      :DISABLED:Cpp:C:
 This configuration is taken from [[http://martinsosic.com/development/emacs/2017/12/09/emacs-cpp-ide.html][Martin Sosic]].
 https://github.com/Sarcasm/irony-mode
