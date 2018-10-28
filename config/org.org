@@ -336,29 +336,36 @@ Generic interactive agenda function.
 #+END_SRC
 
 ** Priorities
-Priorities are assigned A,B,C,D (E,F). B being the default.
-I'm particularly inspired by the Eisenhower Matrix and Must/Should/Nice todos.
-For reference, see the table below. Typically, one should attempt to accomplish
-as many B's in a day as possible; while also taking regular breaks.
-If you have nothing left todo, D's are pleasant enough.
+*** Keys
+		Use "C-c ," to quickly set priorities.
+		Only "," is required in agenda.
 
-| PRIORITY   | NOT IMPORTANT | IMPORTANT  |
-|------------+---------------+------------|
-| NOT URGENT | D - PLEASANT  | B - SHOULD |
-|------------+---------------+------------|
-| URGENT     | C - NICE      | A - MUST   |
-|------------+---------------+------------|
+*** Default Priority Values
+ Priorities are assigned A,B,C,D (E,F). B being the default.
+ I'm particularly inspired by the Eisenhower Matrix and Must/Should/Nice todos.
+ For reference, see the table below. Typically, one should attempt to accomplish
+ as many B's in a day as possible; while also taking regular breaks.
+ If you have nothing left todo, D's are pleasant enough.
 
-So.. one way to describe my priorities, would be...
-#+BEGIN_EXAMPLE
-#+PRIORITIES: C A F .
-#+END_EXAMPLE
+ | PRIORITY   | NOT IMPORTANT | IMPORTANT  |
+ |------------+---------------+------------|
+ | NOT URGENT | D - PLEASANT  | B - SHOULD |
+ |------------+---------------+------------|
+ | URGENT     | C - NICE      | A - MUST   |
+ |------------+---------------+------------|
 
-#+BEGIN_SRC emacs-lisp
- (setq org-default-priority ?F)
- (setq org-highest-priority ?A)
- (setq org-lowest-priority ?F)
-#+END_SRC
+ So.. one way to describe my priorities, would be...
+ #+BEGIN_EXAMPLE
+ #+PRIORITIES: C A F .
+ #+END_EXAMPLE
+
+ #+BEGIN_SRC emacs-lisp
+	(setq org-default-priority ?F)
+	(setq org-highest-priority ?A)
+	(setq org-lowest-priority ?F)
+ #+END_SRC
+
+
 ** Dependencies
 Dependency settings.
 This allows for task blocking/etc.
