@@ -129,9 +129,9 @@ In the agenda view habits will show different colors on each day.
 
 Configuration variables for habits.
 #+BEGIN_SRC elisp
-	(setq org-habit-graph-column 50
-				org-habit-preceding-days 28
-				org-habit-following-days 7
+	(setq org-habit-graph-column 60
+				org-habit-preceding-days 7
+				org-habit-following-days 3
 				org-habit-show-habits-only-for-today t
 				)
 #+END_SRC
