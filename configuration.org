@@ -723,17 +723,6 @@ For more see [[file:config/mule.org][mule.org]]
 	(load-library "anthy")
 #+END_SRC
 
-Font correction.
-#+BEGIN_SRC emacs-lisp
-	(defun rjh/font-correction ()
-		(set-fontset-font
-		 (frame-parameter nil 'font)
-		 'japanese-jisx0208
-		 '("Sazanami Gothic" . "unicode-bmp")))
-	(if (daemonp)
-			'()
-		(rjh/font-correction))
-#+END_SRC
 * ECB
 ECB - The Emacs code browser.
 
