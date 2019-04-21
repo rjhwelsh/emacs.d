@@ -158,7 +158,7 @@ For below; make the following notes:
 		 '(
 		 (sequence "TODO(t!)" "NEXT(n!)" "|" "DONE(d!)" )
 		 (sequence "EVENT(e!)" )
-	   (type "STUDY(s!)" "ALPHA" "BETA" "GAMMA" "DELTA" "THETA" "|" "NU")))
+	   (type "STUDY(s!)" "ALPHA" "BETA" "GAMMA" "DELTA" "THETA" )))
 	(setq org-log-into-drawer t) ;;LOGBOOK
 #+END_SRC
 
@@ -168,20 +168,21 @@ For group projects, put this at the top of the project line for custom keywords.
 #+END_EXAMPLE
 
 ** Tags
+Tags represent environmental conditions before a task can be undertaken.
+Tasks should be organized by a hierarchy of projects and sub-projects.
+Projects are prioritized, tags develop views for batch processing tasks.
+
+IF <tag> THEN <task>
+IF <condition> THEN <task>
+IF <tag1> AND <tag2> AND ... THEN <task>
+
+Tags should not be inherited by sub-tasks.
+Sub-tasks should differentiate work dependencies only.
+
 *** Default Tag list
 See =org-tag-alist= for more details.
 #+BEGIN_SRC emacs-lisp
-	(setq org-tag-alist
-				'(("food" . ?e)
-					("security" . ?s)
-					("affection" . ?t)
-					("learning" . ?l)
-					("contrib" . ?p)
-					("fun" . ?f )
-					("identity" . ?i)
-					("freedom" . ?r)
-					("creative" . ?c)
-					))
+	(setq org-tag-alist '())
 #+END_SRC
 *** Persistent Tag list
 These tags will always be available unless =#+STARTUP: noptag= is set in the buffer.
@@ -199,19 +200,16 @@ These tags will always be available unless =#+STARTUP: noptag= is set in the buf
 				  ("ACTION" . ?a)
 					("CANCELLED" . ?C)
 					(:newline)
-					("HABIT" . ?H)
-					(:newline)
-					("MOTIVATION" . ?M)
-					("ACQUIRE" . ?A)
-					("SIGNIFICANCE" . ?S)
-					("TRIGGER" . ?T)
-					("EXHIBIT" . ?E)
-					("REVIEW" . ?R)
-					(:newline)
 					))
 #+END_SRC
 *** Exclude tags from inheritance
-This *example* will exclude a select list of tags from being inherited.
+Exclude all tags from inheritance, unless they start with a !.
+#+BEGIN_SRC emacs-lisp
+(setq org-use-tag-inheritance "^!.*")
+#+END_SRC
+
+This *example* will exclude a select list of tags from being inherited, where
+inheritance is enabled.
 #+BEGIN_EXAMPLE emacs-lisp
 (setq org-tags-exclude-from-inheritance '("ACTION"))
 #+END_EXAMPLE
