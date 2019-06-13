@@ -137,12 +137,16 @@ Configuration variables for habits.
 #+END_SRC
 Press K to enable/disable habits in the agenda.
 ** 'TODO' Keywords
-Workflow states.
- 1. Regular TODO / DONE.
- 2. Getting Things Done Workflow.
- 3. Location themed tasks.
- 5. Cancelled Or Trashed.
- 6. Bug catcher.
+Workflow states have been taken from gjstein.
+See his guide [[http://cachestocaches.com/2016/9/my-workflow-org-agenda/#][here]].
+	 - todo :: Indicate tasks / projects which need to get done
+	 - next :: Tasks which are being done "next" within a particular project
+	 - waiting :: Tasks waiting on someone else.
+							 Log notes on what this is waiting on.
+	 - inactive :: Signify something to come back to.
+	 - cancelled :: Fizzled tasks. Add :CANCELLED: tag to task.
+	 - meeting :: Indicate a meeting with someone, put in meeting notes
+	 - done :: Completed task
 
 For below; make the following notes:
  + Expressions may be a "sequence" or "type" ; "type" goes straight to DONE
@@ -155,11 +159,8 @@ For below; make the following notes:
  + org-log-into-drawer LOGS everything into a hidden drawer, so everything looks cleaner.
 #+BEGIN_SRC emacs-lisp
 	(setq org-todo-keywords
-		 '(
-		 (sequence "TODO(t!)" "NEXT(n!)" "|" "DONE(d!)" )
-		 (sequence "EVENT(e!)" )
-		 (type "STUDY(s!)" "ALPHA" "BETA" "GAMMA" "DELTA" "THETA" )
-		 (sequence "|" "CANCELED(c!)" )))
+			'((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+				(sequence "WAITING(w@/!)" "INACTIVE(i)" "|" "CANCELLED(c@/!)" "MEETING")))
 	(setq org-log-into-drawer t) ;;LOGBOOK
 #+END_SRC
 
