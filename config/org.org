@@ -521,7 +521,7 @@ Capture templates.
 	- learn :: Captures a learning task.
 						Learning scheduling is spaced according to optimal spacing strategy.
 						Progress is achieved through 5 study stages,
-            Alpha-Beta-Gamma-Delta-Theta.
+						Motivate; Acquire; Signify; Trigger; Exhibit; Review.
 
 #+BEGIN_SRC emacs-lisp
 	(setq org-capture-templates
@@ -543,14 +543,14 @@ Capture templates.
 
 Learning template schedule is as follows:
  /(assuming Monday is the first learning day)/
-| Week No. | Mon   | Tue   | Wed   | Increment |
-|----------+-------+-------+-------+-----------|
-|        1 | STUDY |       |       |        +0 |
-|        1 | ALPHA |       |       |       +1h |
-|        1 |       | BETA  |       |       +1d |
-|        3 |       | GAMMA |       |      +15d |
-|        5 |       |       | DELTA |      +30d |
-|        9 |       |       | THETA |      +58d |
+| Week No. | Mon      | Tue     | Wed     | Increment |
+|----------+----------+---------+---------+-----------|
+|        1 | MOTIVATE |         |         |        +0 |
+|        1 | ACQUIRE  |         |         |       +1h |
+|        1 |          | SIGNIFY |         |       +1d |
+|        3 |          | TRIGGER |         |      +15d |
+|        5 |          |         | EXHIBIT |      +30d |
+|        9 |          |         | REVIEW  |      +58d |
 
 
 Refiling list.
