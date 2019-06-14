@@ -508,7 +508,9 @@ See [[info:org#Capture%20templates][info:org#Capture templates]] for more inform
 
 These are settings for capturing/refiling information.
 #+BEGIN_SRC emacs-lisp
-	(setq org-default-notes-file rjh/org-tasks)
+	;; (setq org-directory "~/.emacs.d/org")	;; Setup in "personal.org"
+	(setq org-default-notes-file (expand-file-name "refile.org" org-directory))
+	(setq rjh/org-diary (expand-file-name "diary.org" org-directory))
 #+END_SRC
 
 Capture templates.
@@ -523,16 +525,16 @@ Capture templates.
 
 #+BEGIN_SRC emacs-lisp
 	(setq org-capture-templates
-				'(("t" "Todo" entry (file+headline rjh/org-tasks "Inbox")
-					 "* TODO %? :NEW:\n\t%i\n\t%a\n\n" nil)
-					 ("l" "Learn" entry (file+headline rjh/org-tasks "Inbox")
-					 "* STUDY %^{prompt} :NEW:\n\t%i%?\n** STUDY %\\1 \nSCHEDULED: <%(org-read-date nil nil (concat \". \" (format-time-string \"%a %H:%M\")))>\n** ALPHA %\\1 \nSCHEDULED: <%(org-read-date nil nil (concat \". \" (format-time-string \"%H:%M\" (time-add (current-time) 3600 ))))>\n** BETA  %\\1 \nSCHEDULED: <%(org-read-date nil nil \"+1d\")>\n** GAMMA %\\1 \nSCHEDULED: <%(org-read-date nil nil \"+15d\")>\n** DELTA %\\1 \nSCHEDULED: <%(org-read-date nil nil \"+30d\")>\n** THETA %\\1 \nSCHEDULED: <%(org-read-date nil nil \"+58d\")>\n"
-					 nil)
-					("j" "Journal" entry (file+datetree rjh/org-journal )
+				'(("t" "Todo" entry (file org-default-notes-file)
+					 "* TODO %? :NEW:\n\t%i\n\t%a\n\n")
+					 ("l" "Learn" entry (file org-default-notes-file)
+					 "* TODO %^{prompt} :NEW:\n\t%i%?\n** TODO %\\1 :MOTIVATE: \nSCHEDULED: <%(org-read-date nil nil (concat \". \" (format-time-string \"%a %H:%M\")))>\n** TODO %\\1 :ACQUIRE: \nSCHEDULED: <%(org-read-date nil nil (concat \". \" (format-time-string \"%H:%M\" (time-add (current-time) 3600 ))))>\n** TODO %\\1 :SIGNIFY: \nSCHEDULED: <%(org-read-date nil nil \"+1d\")>\n** TODO %\\1 :TRIGGER: \nSCHEDULED: <%(org-read-date nil nil \"+15d\")>\n** TODO %\\1 :EXHIBIT: \nSCHEDULED: <%(org-read-date nil nil \"+30d\")>\n** TODO %\\1 :REVIEW: \nSCHEDULED: <%(org-read-date nil nil \"+58d\")>\n"
+					 )
+					("j" "Journal" entry (file+datetree rjh/org-diary )
 					 "* %?\n\tEntered on %U\n\t%i\n\t%a\n\n" :kill-buffer )
-					("e" "Event/Appointment" entry (file+headline rjh/org-events "Events" )
+					("e" "Event/Appointment" entry (file org-default-notes-file)
 					 "* EVENT %?\n\tSCHEDULED: %^T\n\t%i\n\t%a\n\n")
-					("h" "Habit" entry (file+headline rjh/org-habits "Habits" )
+					("h" "Habit" entry (file org-default-notes-file)
 					 "* TODO %? :HABIT:\n\tSCHEDULED: %^T\n\t:PROPERTIES:\n\t:STYLE:\thabit\n\t:END:\n\t%i\n\t%a\n\n")
 					;; Work on clocked items
 					("x" "Checklist on clock" checkitem (clock) "+ [ ] %?\n\n" :kill-buffer)
