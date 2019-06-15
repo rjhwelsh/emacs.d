@@ -37,9 +37,14 @@ main() {
 }
 
 usage() {
-	echo "$0 [-h]"
-	echo " -h    Show this help"
-	echo "Run ./setup.sh without any arguments to install this Emacs configuration on a new linux system."
+	echo "$0 [-htic]"
+	echo "Setup/test emacs configuration"
+	echo " -c, --clean      Cleanup Tests"
+	echo " -t, --test       Test"
+	echo " -i, --install    Install (GNU Linux)"
+	echo " -h, --help       Show this help"
+}
+
 test() {
 	HOME="$LOCALREPO/test"
 	# Cleanup any old tests
@@ -59,6 +64,7 @@ cleanup() {
 }
 
 [[ "$1" == "-h" || "$1" == "--help" ]] && usage && exit 0
-main
 [[ "$1" == "-t" || "$1" == "--test" ]] && test && exit 0
 [[ "$1" == "-c" || "$1" == "--clean" ]] && cleanup && exit 0
+[[ "$1" == "-i" || "$1" == "--install" ]] && main && exit 0
+usage
