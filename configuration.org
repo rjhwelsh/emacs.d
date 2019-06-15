@@ -136,17 +136,17 @@ If you are new to emacs, (like I was) my process to start off was:
 
 This sets the local-config-dir.
 #+BEGIN_SRC emacs-lisp
-	(setq rjh/local-config-dir
+	(setq rjh/local-init-dir
 				(expand-file-name
-				 "config"
+				 "init"
 				 rjh/local-config-repo ))
 #+END_SRC
 
 This function will load a single configuration file.
 #+BEGIN_SRC emacs-lisp
-	(defun rjh/load-config (pkg_a)
+	(defun rjh/load-init (pkg_a)
 		(org-babel-load-file
-		 (expand-file-name pkg_a rjh/local-config-dir)))
+		 (expand-file-name pkg_a rjh/local-init-dir)))
 #+END_SRC
 
 * eVil
@@ -160,8 +160,8 @@ For those who prefer the feel of Vi on emacs.
 * Org
 To see the complete org configuration, see [[file:config/org.org][org.org]].
 #+BEGIN_SRC emacs-lisp
-	(rjh/load-config "org.org" )
-	(rjh/load-config "org-gantt.org" )
+	(rjh/load-init "org.org" )
+	(rjh/load-init "org-gantt.org" )
 #+END_SRC
 
 Add pretty bullets for org-mode.
@@ -193,7 +193,7 @@ N.B. For html tags use emmet-mode instead of yasnippet.
 		(require 'yasnippet)
 		(yas-global-mode 1) ; enable globally
 		:config
-		(rjh/load-config "yasnippet.org"))
+		(rjh/load-init "yasnippet.org"))
 	(use-package "yasnippet-snippets" :ensure t) ;; Official snippets by AndreaCrotti
 #+END_SRC
 
@@ -216,7 +216,7 @@ Other packages that use =<tab>= and may be affected by company-mode:
 		(global-company-mode 1)
 		(setq company-idle-delay 0.8)
 		(setq company-minimum-prefix-length 2)
-		(rjh/load-config "company.org"))
+		(rjh/load-init "company.org"))
 #+END_SRC
 
 * Helm
@@ -257,7 +257,7 @@ http://tuhdo.github.io/helm-intro.html
 Latex configuration.
 For more see [[file:config/latex.org][latex.org]].
 #+BEGIN_SRC emacs-lisp
-	(rjh/load-config "latex.org")
+	(rjh/load-init "latex.org")
 #+END_SRC
 
 * Graph
@@ -368,7 +368,7 @@ For more see [[file:config/python.org][python.org]].
 		(elpy-enable)
 		(setq python-indent-offset 4)
 		:config
-		(rjh/load-config "python.org"))
+		(rjh/load-init "python.org"))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
@@ -610,7 +610,7 @@ For more details see [[file:config/pamparam.org][pamparam.org]].
 		:ensure t
 		:init
 		(setq pamparam-path "~/.emacs.d/flashcards.pam")
-		(rjh/load-config "pamparam.org"))
+		(rjh/load-init "pamparam.org"))
 #+END_SRC
 
 * Authentication
@@ -646,7 +646,7 @@ See [[https://www.ledger-cli.org/3.0/doc/ledger-mode.html][here]] for more detai
 This file provides integration with mutt.
 For more see [[file:config/mutt.org][mutt.org]]
 #+BEGIN_SRC emacs-lisp
-	(rjh/load-config "mutt.org")
+	(rjh/load-init "mutt.org")
 #+END_SRC
 
 * Address-book
@@ -682,7 +682,7 @@ For more information see the configuration file, [[file:config/calfw.org][calfw.
 		(use-package "calfw"
 			:ensure t
 			:init
-			(rjh/load-config "calfw.org")
+			(rjh/load-init "calfw.org")
 			:bind ("C-x a c" . rjh/two-week-view))
 
 		(use-package "calfw-org"
@@ -705,7 +705,7 @@ For more information see the configuration file, [[file:config/calfw.org][calfw.
 Diary mode configuration.
 For more details see [[file:config/diary.org][diary.org]].
 #+BEGIN_SRC emacs-lisp
-	(rjh/load-config "diary.org")
+	(rjh/load-init "diary.org")
 #+END_SRC
 
 * Emacs lisp
@@ -813,7 +813,7 @@ For more on themes, checkout [[file:config/theme.org][theme.org]].
 			(setq solarized-high-contrast-mode-line t)
 			(load-theme 'solarized-dark t)))
 	(use-package "fill-column-indicator" :ensure t )
-	(rjh/load-config "theme.org")
+	(rjh/load-init "theme.org")
 #+END_SRC
 
 Miscellaneous text options.
@@ -822,7 +822,7 @@ For more info see [[file:config/text.org][text.org]].
 	(use-package rainbow-mode :ensure t)
 	(use-package "rainbow-delimiters" :ensure t)
 	(use-package "htmlize" :ensure t)
-	(rjh/load-config "text.org")
+	(rjh/load-init "text.org")
 #+END_SRC
 
 * Telephone line
@@ -832,7 +832,7 @@ A pretty message bar for Emacs.
 	(use-package telephone-line
 		:ensure t
 		:config
-		(rjh/load-config "telephone-line.org"))
+		(rjh/load-init "telephone-line.org"))
 ;	 :init
 	(require 'telephone-line)
 	(telephone-line-mode 1)
@@ -842,20 +842,20 @@ A pretty message bar for Emacs.
 Abbreviation configuration.
 For more see [[file:config/abbrev.org][abbrev.org]].
 #+BEGIN_SRC emacs-lisp
-	(rjh/load-config "abbrev.org")
+	(rjh/load-init "abbrev.org")
 #+END_SRC
 * Fonts
 Setup font functions, mostly courtesy of Harry Schwartz.
 For more see [[file:config/fonts.org][fonts.org]].
 #+BEGIN_SRC emacs-lisp
-	(rjh/load-config "fonts.org")
+	(rjh/load-init "fonts.org")
 #+END_SRC
 
 * Backups
 Setup file backup behaviour for Emacs.
 For more see [[file:config/backup.org][backup.org]].
 #+BEGIN_SRC emacs-lisp
-	(rjh/load-config "backup.org")
+	(rjh/load-init "backup.org")
 #+END_SRC
 
 * Undo tree
@@ -893,7 +893,7 @@ Save recent files every 5 minutes.
 Methods for manipulating numbers in Emacs.
 For more details see [[file:config/numbers.org][numbers.org]]
 #+BEGIN_SRC emacs-lisp
-	(rjh/load-config "numbers.org")
+	(rjh/load-init "numbers.org")
 #+END_SRC
 
 Keybindings
