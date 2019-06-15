@@ -71,7 +71,7 @@ test() {
 
 	# Run emacs with faux home
 	echo "Now executing emacs..."
-	env HOME="$HOME" /usr/bin/emacs
+	env HOME="$HOME" /usr/bin/emacs --debug-init
 }
 
 cleanup() {
