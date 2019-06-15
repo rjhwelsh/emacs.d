@@ -76,6 +76,7 @@ test() {
 
 cleanup() {
 	rm -rfv "$LOCALREPO/test"
+	rm -rfv "$LOCALREPO/deps"
 }
 
 [[ "$1" == "-h" || "$1" == "--help" ]] && usage && exit 0
