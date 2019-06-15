@@ -27,10 +27,11 @@ new_install() {
 }
 
 main() {
+	CONFIGDIR="$1"
 	echo "LOCALREPO=${LOCALREPO}"
 	echo "CONFIGDIR=${CONFIGDIR}"
 
-	pushd $LOCALREPO
+	pushd "$LOCALREPO"
 	patch_config
 	new_install "$CONFIGDIR"
 	popd
@@ -46,15 +47,16 @@ usage() {
 }
 
 test() {
+	# Faux home
 	HOME="$LOCALREPO/test"
+
 	# Cleanup any old tests
 	cleanup && mkdir -v "$HOME"
 
-	pushd "$LOCALREPO"
-	patch_config
-	new_install "$HOME/.emacs.d"
-	popd
+	# Install into faux home directory
+	main "$HOME/.emacs.d"
 
+	# Run emacs with faux home
 	echo "Now executing emacs..."
 	env HOME="$HOME" /usr/bin/emacs
 }
@@ -66,5 +68,5 @@ cleanup() {
 [[ "$1" == "-h" || "$1" == "--help" ]] && usage && exit 0
 [[ "$1" == "-t" || "$1" == "--test" ]] && test && exit 0
 [[ "$1" == "-c" || "$1" == "--clean" ]] && cleanup && exit 0
-[[ "$1" == "-i" || "$1" == "--install" ]] && main && exit 0
+[[ "$1" == "-i" || "$1" == "--install" ]] && main "$CONFIGDIR" && exit 0
 usage
