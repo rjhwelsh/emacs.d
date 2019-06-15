@@ -64,7 +64,7 @@ test() {
 	HOME="$LOCALREPO/test"
 
 	# Cleanup any old tests
-	cleanup && mkdir -v "$HOME"
+	mkdir -v "$HOME"
 
 	# Install into faux home directory
 	main "$HOME/.emacs.d"
