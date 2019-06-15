@@ -819,6 +819,9 @@ For more on themes, checkout [[file:config/theme.org][theme.org]].
 Miscellaneous text options.
 For more info see [[file:config/text.org][text.org]].
 #+BEGIN_SRC emacs-lisp
+	(use-package rainbow-mode :ensure t)
+	(use-package "rainbow-delimiters" :ensure t)
+	(use-package "htmlize" :ensure t)
 	(rjh/load-config "text.org")
 #+END_SRC
 
