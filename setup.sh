@@ -10,6 +10,18 @@ patch_config() {
   sed -i 's|~/emacs.d|'"$LOCALREPO|" personal.org
 }
 
+dep_install() {
+	CONFIGDIR="$1"
+
+	# Create a directory for storing third-party deps
+	D="$LOCALREPO/deps"
+	mkdir -vp "$D"
+
+	# Install Harry's sensible defaults
+	git clone https://github.com/hrs/sensible-defaults.el "$D"/sensible-defaults.el
+	cp -nv "$D"/sensible-defaults.el/sensible-defaults.el "$CONFIGDIR"/sensible-defaults.el
+}
+
 new_install() {
 	CONFIGDIR="$1"
 	# Create and install into directory.
@@ -33,6 +45,7 @@ main() {
 
 	pushd "$LOCALREPO"
 	patch_config
+	dep_install "$CONFIGDIR"
 	new_install "$CONFIGDIR"
 	popd
 }
