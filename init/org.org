@@ -808,28 +808,6 @@ Assignment
 
 * Contrib
 Org-contrib consists of packages as part of org-plus-contrib.
-** org-index
-Keybindings. Index File.
-Let's start off slow.
-N.B. Make sure the index-id corresponds with your actual index header.
-#+BEGIN_SRC emacs-lisp
-	(require 'org-index)
-	(setq org-index-file "~/.emacs.d/index.org"
-			  org-index-id "1c3f8ddb-f941-42d9-88fb-8093095b9b5b"
-				)
-	(global-set-key (kbd "C-c i") 'org-index)
-#+END_SRC
-Then maybe later progress to this...
-#+BEGIN_EXAMPLE emacs-lisp
-(define-prefix-command 'org-index-map)
-(global-set-key (kbd "C-c i") 'org-index-map)
-(define-key org-index-map (kbd "o") (lambda () (interactive) (org-index 'occur)))
-(define-key org-index-map (kbd "r") (lambda () (interactive) (org-index 'ref)))
-(define-key org-index-map (kbd "l") (lambda () (interactive) (org-index 'leave)))
-(define-key org-index-map (kbd "h") (lambda () (interactive) (org-index 'head)))
-(define-key org-index-map (kbd "i") (lambda () (interactive) (org-index)))
-#+END_EXAMPLE
-
 ** koma-letter-export
 Activate KOMA-Script letter exporter.
 #+BEGIN_SRC emacs-lisp
