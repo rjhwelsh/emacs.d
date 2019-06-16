@@ -24,11 +24,13 @@ dep_install() {
 
 new_install() {
 	CONFIGDIR="$1"
+	shift
+	CPCMD="$1"
 	# Create and install into directory.
 	echo "Preparing to copy files:"
 	ls $LOCALREPO/{init.el,configuration.org,personal.org,workgroups,agenda-files}
 
-	cp -nv \
+	${CPCMD} \
 		 $LOCALREPO/{init.el,configuration.org,personal.org,workgroups,agenda-files} \
 		 $CONFIGDIR
 
@@ -38,15 +40,18 @@ new_install() {
 
 main() {
 	CONFIGDIR="$1"
+	shift
+	[ -z "$1" ] && CPCMD="cp -nv" || CPCMD="$1"
 	mkdir -v ${CONFIGDIR}
 
 	echo "LOCALREPO=${LOCALREPO}"
 	echo "CONFIGDIR=${CONFIGDIR}"
+	echo "CPCMD=${CPCMD}"
 
 	pushd "$LOCALREPO"
 	patch_config
 	dep_install "$CONFIGDIR"
-	new_install "$CONFIGDIR"
+	new_install "$CONFIGDIR" "$CPCMD"
 	popd
 }
 
@@ -67,7 +72,7 @@ test() {
 	mkdir -v "$HOME"
 
 	# Install into faux home directory
-	main "$HOME/.emacs.d"
+	main "$HOME/.emacs.d" "cp -fv"
 
 	# Run emacs with faux home
 	echo "Now executing emacs..."
