@@ -37,48 +37,6 @@ Personal contact information:
 			)
 #+END_SRC
 
-* Calendar
-** Google Integration
- Google calendars.
-
-Create a separate calendar for Emacs, rather than using the main google
-calendar. This makes implementation easier.
- #+BEGIN_SRC emacs-lisp
-		 (setq org-icalendar-use-scheduled '(event-if-todo)
-					 org-icalendar-use-deadline  '(event-if-todo todo-due)
-					 org-icalendar-alarm-time 40
-	 )
-		 (setq org-caldav-url 'google
-							 org-caldav-calendar-id ""
-							 org-caldav-inbox nil
-							 org-icalendar-timezone "UTC"
-							 org-caldav-oauth2-client-id ""
-							 org-caldav-oauth2-client-secret ""
-							 org-caldav-files nil
-							 org-caldav-calendars '((:calendar-id "" :files ("~/.emacs.d/org/events.org")
-																									:inbox "" )
-																		 )
-				 )
-			 ;;(org-caldav-sync) ;; to sync calendars
- #+END_SRC
-
- I use crontab with emacs to sync periodically with google calendar.
- Otherwise, you will have to manually run the sync command using =M-x=.
- #+BEGIN_EXAMPLE
- (org-caldav-sync)
- #+END_EXAMPLE
-
-** Calendar sources
- More information about calfw found [[https://github.com/kiwanami/emacs-calfw][here]].
- Functions in the calendar.org, use this variable as the =:content-sources= for
- some agenda calendar views. =rjh/two-week-view= , =rjh/week-view=, etc.
-#+BEGIN_SRC emacs-lisp
-	 (setq rjh/calendar-sources (list
-				(cfw:org-create-file-source "Events" rjh/org-events "Green")  ; orgmode source
-				(cfw:cal-create-source "Orange") ; diary source
-														 )
-	)
-#+END_SRC
 * Url-browser
 Set your default browser here.
 #+BEGIN_SRC emacs-lisp
