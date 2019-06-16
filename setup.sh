@@ -28,8 +28,6 @@ new_install() {
 	echo "Preparing to copy files:"
 	ls $LOCALREPO/{init.el,configuration.org,personal.org,workgroups,agenda-files}
 
-	mkdir -v ${CONFIGDIR}
-
 	cp -nv \
 		 $LOCALREPO/{init.el,configuration.org,personal.org,workgroups,agenda-files} \
 		 $CONFIGDIR
@@ -40,6 +38,8 @@ new_install() {
 
 main() {
 	CONFIGDIR="$1"
+	mkdir -v ${CONFIGDIR}
+
 	echo "LOCALREPO=${LOCALREPO}"
 	echo "CONFIGDIR=${CONFIGDIR}"
 
