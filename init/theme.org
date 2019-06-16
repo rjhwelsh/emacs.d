@@ -23,11 +23,12 @@ Why not?
 If this code is being evaluated by =emacs --daemon=, ensure that each subsequent
 frame is themed appropriately.
 #+BEGIN_SRC emacs-lisp
-  (if (daemonp)
-      (add-hook 'after-make-frame-functions
-                (lambda (frame)
-                    (hrs/apply-theme)))
-    (hrs/apply-theme))
+	(require 'solarized-theme)
+	(if (daemonp)
+			(add-hook 'after-make-frame-functions
+								(lambda (frame)
+									(hrs/apply-theme)))
+		(hrs/apply-theme))
 #+END_SRC
 
 **** Disable visual bell
