@@ -154,30 +154,31 @@ The emacs VI interface layer.
 For those who prefer the feel of Vi on emacs.
 #+BEGIN_SRC emacs-lisp
 	(use-package evil
-		:ensure t)
+		:ensure t
+		:defer t)
 #+END_SRC
 
 * Org
 To see the complete org configuration, see [[file:config/org.org][org.org]].
 #+BEGIN_SRC emacs-lisp
 	(rjh/load-init "org.org" )
-;;	(rjh/load-init "org-gantt.org" ) ;; Disable org-gantt (no official package on Melpa or elsewhere)
+	;;	(rjh/load-init "org-gantt.org" ) ;; Disable org-gantt (no official package on Melpa or elsewhere)
 #+END_SRC
 
 Add pretty bullets for org-mode.
 #+BEGIN_SRC emacs-lisp
-	(use-package "org-bullets" :ensure t )
+	(use-package "org-bullets" :ensure t :defer t)
 #+END_SRC
 
 Emacs speaks statistics package.
 #+BEGIN_SRC emacs-lisp
-	(use-package "ess" :ensure t)
+	(use-package "ess" :ensure t :defer t)
 	(require 'ess-site)
 #+END_SRC
 
 Emacs org-caldav package for calendar integration.
 #+BEGIN_SRC emacs-lisp
-	(use-package "org-caldav" :ensure t)
+	(use-package "org-caldav" :ensure t :defer t)
 #+END_SRC
 
 * Yasnippet
@@ -185,7 +186,7 @@ Yasnippet provides a templating engine for Emacs.
 For more, see [[file:config/yasnippet.org][yasnippet.org]].
 N.B. For html tags use emmet-mode instead of yasnippet.
 #+BEGIN_SRC emacs-lisp
-	(use-package popup :ensure t)
+	(use-package popup :ensure t :defer t)
 	(use-package "yasnippet"
 		:ensure t
 		:diminish yas-minor-mode
@@ -193,8 +194,9 @@ N.B. For html tags use emmet-mode instead of yasnippet.
 		(require 'yasnippet)
 		(yas-global-mode 1) ; enable globally
 		:config
-		(rjh/load-init "yasnippet.org"))
-	(use-package "yasnippet-snippets" :ensure t) ;; Official snippets by AndreaCrotti
+		(rjh/load-init "yasnippet.org")
+		:defer t)
+	(use-package "yasnippet-snippets" :ensure t :defer t) ;; Official snippets by AndreaCrotti
 #+END_SRC
 
 * Company
@@ -263,8 +265,8 @@ For more see [[file:config/latex.org][latex.org]].
 * Graph
 Some packages for graphing.
 #+BEGIN_SRC emacs-lisp
-	(use-package "gnuplot" :ensure t )
-	(use-package "graphviz-dot-mode" :ensure t )
+	(use-package "gnuplot" :ensure t :defer t)
+	(use-package "graphviz-dot-mode" :ensure t :defer t)
 #+END_SRC
 
 * Openscad
@@ -273,8 +275,8 @@ Openscad is parametric 3d solid modeller.
 scad-mode is usually provided as part of =Openscad=.
 https://github.com/zk-phi/scad-preview is an extension.
 #+BEGIN_SRC emacs-lisp
-(use-package "scad-mode" :ensure t )
-(use-package "scad-preview" :ensure t )
+(use-package "scad-mode" :ensure t :defer t)
+(use-package "scad-preview" :ensure t :defer t)
 #+END_SRC
 
 * UML
@@ -287,7 +289,7 @@ Flycheck is used for syntax checking.
 https://github.com/alexmurray/flycheck-plantuml
 
 #+BEGIN_SRC emacs-lisp
-	(use-package "plantuml-mode" :ensure t
+	(use-package "plantuml-mode" :ensure t :defer t
 		:init
 		(setq plantuml-jar-path "/usr/share/plantuml/lib/plantuml.jar")
 		(add-to-list 'auto-mode-alist '("\\.plantuml$" . plantuml-mode))
@@ -297,7 +299,7 @@ https://github.com/alexmurray/flycheck-plantuml
 		:config
 		(plantuml-set-output-type "svg"))
 
-	(use-package "flycheck-plantuml"
+	(use-package "flycheck-plantuml" :defer t
     :requires flycheck plantuml-mode
 		:init
 		(with-eval-after-load 'flycheck
@@ -311,7 +313,7 @@ I use =magit= for git integration.
 The following key-bindings are for global convenience.
 Use =C-x g ?= to get a quick command listing.
 #+BEGIN_SRC emacs-lisp
-	(use-package magit
+	(use-package magit :defer t
 		:ensure t
 		:pin melpa-stable
 		:bind (("C-x g" . magit-status)
@@ -321,7 +323,7 @@ Use =C-x g ?= to get a quick command listing.
 Git time-machine provides a mode for traversing the git history of a file.
 Use =M-x git-timemachine=, =np= to navigate and =q= to quit.
 #+BEGIN_SRC emacs-lisp
-	(use-package "git-timemachine" :ensure t )
+	(use-package "git-timemachine" :ensure t :defer t)
 #+END_SRC
 
 * Electric-pair
@@ -347,7 +349,7 @@ Use =M-x jdee-mode= to invoke jdee.
 
 For more documentation, please see http://jdee.sourceforge.net/jdedoc/html/jde-ug/jde-ug.html
 #+BEGIN_SRC emacs-lisp
-	(use-package "jdee"
+	(use-package "jdee" :defer t
 		:ensure t
 		:config
 		(setq jdee-global-classpath '("."))) ;; Use the current working directory as a classpath for java projects.
@@ -362,7 +364,7 @@ badly-formatted Python.
 For more see [[file:config/python.org][python.org]].
 
 #+BEGIN_SRC emacs-lisp
-	(use-package "elpy"
+	(use-package "elpy" :defer t
 		:ensure t
 		:init
 		(elpy-enable)
@@ -372,7 +374,7 @@ For more see [[file:config/python.org][python.org]].
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-	(use-package "company-jedi"
+	(use-package "company-jedi" :defer t
 		:requires company
 		:ensure t)
 #+END_SRC
@@ -384,7 +386,7 @@ Derived from [[https://worace.works/2016/06/07/getting-started-with-emacs-for-ru
 ** ruby-electric
  Auto-close paired syntax elements with electric mode.
  #+BEGIN_SRC emacs-lisp
-	 (use-package "ruby-electric"
+	 (use-package "ruby-electric" :defer t
 		 :hook ((ruby-mode . ruby-electric-mode))
 		 :ensure t
 		 :diminish ruby-electric-mode )
@@ -400,7 +402,7 @@ gem install seeing_is_believing
 
 Now install the Emacs packages.
 #+BEGIN_SRC emacs-lisp
-	(use-package "seeing-is-believing"
+	(use-package "seeing-is-believing" :defer t
 		:init
 		(require 'seeing-is-believing)
 		:hook ruby-mode
@@ -422,7 +424,7 @@ This provides an embedded IRB process in Emacs to interact with by sending code-
 For more, see [[https://github.com/nonsequitur/inf-ruby][source]].
 
 #+BEGIN_SRC emacs-lisp
-	(use-package "inf-ruby"
+	(use-package "inf-ruby" :defer t
 		:init
 		(autoload 'inf-ruby-minor-mode "inf-ruby" "Run an inferior Ruby process" t)
 		:hook ((ruby-mode . inf-ruby-minor-mode))
@@ -439,7 +441,7 @@ Emacs minor mode for Behaviour and Test Driven Development in Ruby.
 For more see [[https://github.com/r0man/ruby-test-mode][source]].
 
 #+BEGIN_SRC emacs-lisp
-	(use-package "ruby-test-mode"
+	(use-package "ruby-test-mode" :defer t
 		:ensure t
 		:hook ruby-mode
 	  :diminish ruby-test-mode
@@ -460,7 +462,7 @@ For more see [[https://github.com/r0man/ruby-test-mode][source]].
 * Jinja 2
 Jinja2 is a modern and designer-friendly templating language for Python, modelled after Django's templates.
 #+BEGIN_SRC emacs-lisp
-(use-package "jinja2-mode" :ensure t)
+(use-package "jinja2-mode" :ensure t :defer t)
 #+END_SRC
 
 * Irony                                                      :DISABLED:Cpp:C:
@@ -470,7 +472,8 @@ https://github.com/Sarcasm/irony-mode
 For more see [[file:config/irony.org][irony.org]].
 #+BEGIN_SRC emacs-lisp
 	(use-package irony
-	  :disabled
+		:defer t
+		:disabled
 		:ensure t
 		:config
 		(progn
@@ -487,7 +490,7 @@ For more see [[file:config/irony.org][irony.org]].
 #+END_SRC
 #+BEGIN_SRC emacs-lisp
 	;; I use irony with company to get code completion.
-	(use-package company-irony
+	(use-package company-irony :defer t
 		:requires company irony
 		:ensure t
 		:config
@@ -497,7 +500,7 @@ For more see [[file:config/irony.org][irony.org]].
 #+END_SRC
 #+BEGIN_SRC emacs-lisp
 	;; I use irony with flycheck to get real-time syntax checking.
-	(use-package flycheck-irony
+	(use-package flycheck-irony :defer t
 		:requires flycheck irony
 		:ensure t
 		:config
@@ -507,7 +510,7 @@ For more see [[file:config/irony.org][irony.org]].
 #+END_SRC
 #+BEGIN_SRC emacs-lisp
 	;; Eldoc shows argument list of the function you are currently writing in the echo area.
-	(use-package irony-eldoc
+	(use-package irony-eldoc :defer t
 		:requires eldoc irony
 		:ensure t
 		:config
@@ -597,7 +600,7 @@ And =h= for more advanced help.
 
 * Spell checker
 #+BEGIN_SRC emacs-lisp
-	(use-package "flycheck" :ensure t
+	(use-package "flycheck" :ensure t :defer t
 		:diminish flycheck-mode
 		:diminish flyspell-mode)
 #+END_SRC
@@ -605,7 +608,7 @@ And =h= for more advanced help.
 Pamparam provides a flashcard engine for org documents.
 For more details see [[file:config/pamparam.org][pamparam.org]].
 #+BEGIN_SRC emacs-lisp
-	(use-package "pamparam"
+	(use-package "pamparam" :defer t
 		:ensure t
 		:init
 		(setq pamparam-path "~/.emacs.d/flashcards.pam")
@@ -616,12 +619,12 @@ For more details see [[file:config/pamparam.org][pamparam.org]].
 =oauth= package.
 Mainly for Google authentication.
 #+BEGIN_SRC emacs-lisp
-	(use-package "oauth2" :ensure t)
+	(use-package "oauth2" :ensure t :defer t)
 #+END_SRC
 
 Pinentry for gpg-agent
 #+BEGIN_SRC emacs-lisp
-	(use-package "pinentry" :ensure t)
+	(use-package "pinentry" :ensure t :defer t)
 #+END_SRC
 Please ensure the following setting is enabled for =~/.gnupg/gpg-agent.conf=.
 	#+BEGIN_EXAMPLE
@@ -634,7 +637,7 @@ This is [[https://www.gnu.org/software/emacs/manual/html_mono/epa.html#fnd-1][re
 Ledger is a cli accounting system.
 See [[https://www.ledger-cli.org/3.0/doc/ledger-mode.html][here]] for more details.
 #+BEGIN_SRC emacs-lisp
-	(use-package "ledger-mode"
+	(use-package "ledger-mode" :defer t
 		:ensure t
 		:init
 		(add-to-list 'auto-mode-alist '("\\.ledger$" . ledger-mode))
@@ -651,7 +654,7 @@ For more see [[file:config/mutt.org][mutt.org]]
 * Address-book
 BBDB, The insidious big brother database.
 #+BEGIN_SRC emacs-lisp
-	(use-package bbdb
+	(use-package bbdb :defer t
 		:ensure t
 		:init
 		(require 'bbdb)
@@ -666,7 +669,7 @@ BBDB vcard import/export.
 Use =bbdb-vcard-import-file= to import a vcard file.
 And =bbdb-vcard-export-file= to export a vcard file.
 #+BEGIN_SRC emacs-lisp
-	(use-package bbdb-vcard
+	(use-package bbdb-vcard :defer t
 	  :requires bbdb
 		:ensure t
 		:init
@@ -678,24 +681,24 @@ And =bbdb-vcard-export-file= to export a vcard file.
  Calfw - The pretty Calendar
 For more information see the configuration file, [[file:config/calfw.org][calfw.org]].
 	#+BEGIN_SRC emacs-lisp
-		(use-package "calfw"
+		(use-package "calfw" :defer t
 			:ensure t
 			:init
 			(rjh/load-init "calfw.org")
 			:bind ("C-x a c" . rjh/two-week-view))
 
-		(use-package "calfw-org"
+		(use-package "calfw-org" :defer t
 			:ensure t
 			:init
 			(require 'calfw-org)
 			(setq cfw:org-overwrite-default-keybinding t)) ;; Org-mode like keybindings
 
-		(use-package "calfw-ical"
+		(use-package "calfw-ical" :defer t
 			:ensure t
 			:init
 			(require 'calfw-ical))
 
-		(use-package "calfw-cal"
+		(use-package "calfw-cal" :defer t
 			:ensure t
 			:init
 			(require 'calfw-cal))
@@ -711,7 +714,7 @@ For more details see [[file:config/diary.org][diary.org]].
 An api for working with files in Emacs lisp.
 ( https://github.com/rejeep/f.el )
 #+BEGIN_SRC emacs-lisp
-	(use-package "f" :ensure t )
+	(use-package "f" :ensure t :defer t )
 #+END_SRC
 
 * MULE
@@ -732,7 +735,7 @@ For a compile window use =C-c . \=
 For more information, see http://ecb.sourceforge.net/.
 
 #+BEGIN_SRC emacs-lisp
-	(use-package "ecb"
+	(use-package "ecb" :defer t
 	:init
 	(require 'ecb)
 	(setq tree-buffer-enable-xemacs-image-bug-hack nil)
@@ -746,7 +749,7 @@ For more information, see http://ecb.sourceforge.net/.
 Workgroups provides defined layouts for Emacs.
 ( https://github.com/tlh/workgroups.el )
  #+BEGIN_SRC emacs-lisp
-	 (use-package "workgroups"
+	 (use-package "workgroups" :defer t
 		 :init
 		 (require 'workgroups)
 		 (workgroups-mode 1)
@@ -776,7 +779,7 @@ Projectile is a project interaction library for Emacs.
 For more about the project, see [[https://projectile.readthedocs.io/en/latest/][the docs]] or [[https://github.com/bbatsov/projectile][the source.]]
 
 #+BEGIN_SRC emacs-lisp
-	(use-package "projectile"
+	(use-package "projectile" :defer t
 		:init
 		(projectile-mode +1)
 		(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
@@ -799,8 +802,8 @@ programming.
 
 For more on themes, checkout [[file:config/theme.org][theme.org]].
 #+BEGIN_SRC emacs-lisp
-	(use-package "material-theme" :ensure t )
-	(use-package "solarized-theme"
+	(use-package "material-theme" :ensure t :defer t)
+	(use-package "solarized-theme" :defer t
 		:ensure t
 		:config
 		(defun hrs/apply-theme ()
@@ -811,16 +814,16 @@ For more on themes, checkout [[file:config/theme.org][theme.org]].
 			(setq solarized-height-plus-4 1.0)
 			(setq solarized-high-contrast-mode-line t)
 			(load-theme 'solarized-dark t)))
-	(use-package "fill-column-indicator" :ensure t )
+	(use-package "fill-column-indicator" :ensure t :defer t)
 	(rjh/load-init "theme.org")
 #+END_SRC
 
 Miscellaneous text options.
 For more info see [[file:config/text.org][text.org]].
 #+BEGIN_SRC emacs-lisp
-	(use-package rainbow-mode :ensure t)
-	(use-package "rainbow-delimiters" :ensure t)
-	(use-package "htmlize" :ensure t)
+	(use-package rainbow-mode :ensure t :defer t)
+	(use-package "rainbow-delimiters" :ensure t :defer t)
+	(use-package "htmlize" :ensure t :defer t)
 	(rjh/load-init "text.org")
 #+END_SRC
 
@@ -828,7 +831,7 @@ For more info see [[file:config/text.org][text.org]].
 A pretty message bar for Emacs.
 ( https://github.com/dbordak/telephone-line )
 #+BEGIN_SRC emacs-lisp
-	(use-package telephone-line
+	(use-package telephone-line :defer t
 		:ensure t
 		:config
 		(rjh/load-init "telephone-line.org"))
@@ -865,7 +868,7 @@ keys. Type =q= to exit.
 
 See [[http://pragmaticemacs.com/emacs/advanced-undoredo-with-undo-tree/][here]] for examples.
 #+BEGIN_SRC emacs-lisp
-	(use-package "undo-tree"
+	(use-package "undo-tree" :defer t
 		:ensure t
 		:init
 		(global-undo-tree-mode 1)
