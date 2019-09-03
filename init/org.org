@@ -189,24 +189,6 @@ See =org-tag-alist= for more details.
 #+BEGIN_SRC emacs-lisp
 	(setq org-tag-alist '())
 #+END_SRC
-*** Persistent Tag list
-These tags will always be available unless =#+STARTUP: noptag= is set in the buffer.
-#+BEGIN_SRC emacs-lisp
-	(setq org-tag-persistent-alist
-				'(
-					("PROJECT" . ?P)
-					("FLAGGED" . ?F)
-					(:newline)
-					("NEW" . ?N)
-					("DELEGATE" . ?D)
-					("WAITING" . ?W)
-					("BREAKDOWN" . ?B)
-					("VERIFY" . ?V)
-				  ("ACTION" . ?a)
-					("CANCELLED" . ?C)
-					(:newline)
-					))
-#+END_SRC
 *** Exclude tags from inheritance
 Exclude all tags from inheritance, unless they start with a #.
 #+BEGIN_SRC emacs-lisp
