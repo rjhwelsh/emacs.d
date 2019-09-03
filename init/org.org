@@ -208,7 +208,7 @@ These tags will always be available unless =#+STARTUP: noptag= is set in the buf
 					))
 #+END_SRC
 *** Exclude tags from inheritance
-Exclude all tags from inheritance, unless they start with a !.
+Exclude all tags from inheritance, unless they start with a #.
 #+BEGIN_SRC emacs-lisp
 (setq org-use-tag-inheritance "^#.*")
 #+END_SRC
