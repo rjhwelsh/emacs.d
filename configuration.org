@@ -265,8 +265,10 @@ For more see [[file:config/latex.org][latex.org]].
 * Graph
 Some packages for graphing.
 #+BEGIN_SRC emacs-lisp
-	(use-package "gnuplot" :ensure t :defer t)
-	(use-package "graphviz-dot-mode" :ensure t :defer t)
+		(use-package "gnuplot" :ensure t :defer t)
+		(use-package "graphviz-dot-mode" :ensure t :defer t
+			:config
+			(setq graphviz-dot-view-command "xdot %s"))
 #+END_SRC
 
 * Openscad
