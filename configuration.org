@@ -337,6 +337,14 @@ See more [[http://ergoemacs.org/emacs/emacs_insert_brackets_by_pair.html][here]]
 (electric-pair-mode)
 #+END_SRC
 
+* Auto-indent
+Automatically indent code.
+#+BEGIN_SRC emacs-lisp
+	(use-package aggressive-indent
+		:ensure t
+	  :init
+		(global-aggressive-indent-mode 1))
+#+END_SRC
 * Java
 JDEE - Java Development Environment for Emacs
 
