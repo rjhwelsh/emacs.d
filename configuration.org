@@ -921,10 +921,32 @@ Zettelkasten note-taking using deft and avy.
 #+BEGIN_SRC emacs-lisp
 	(use-package zetteldeft
 		:load-path "~/.emacs.d/"
-		:after deft)
+		:after deft
+		:bind (("C-c d d" . deft)
+					 ("C-c d D" . zetteldeft-deft-new-search)
+					 ("C-c d R" . deft-refresh)
+					 ("C-c d s" . zetteldeft-search-at-point)
+					 ("C-c d c" . zetteldeft-search-current-id)
+					 ("C-c d f" . zetteldeft-follow-link)
+					 ("C-c d F" . zetteldeft-avy-file-search-ace-window)
+					 ("C-c d l" . zetteldeft-avy-link-search)
+					 ("C-c d t" . zetteldeft-avy-tag-search)
+					 ("C-c d T" . zetteldeft-tag-buffer)
+					 ("C-c d i" . zetteldeft-find-file-id-insert)
+					 ("C-c d I" . zetteldeft-find-file-full-title-insert)
+					 ("C-c d o" . zetteldeft-find-file)
+					 ("C-c d n" . zetteldeft-new-file)
+					 ("C-c d N" . zetteldeft-new-file-and-link)
+					 ("C-c d r" . zetteldeft-file-rename)
+					 ("C-c d x" . zetteldeft-count-words)
+					 )
+		)
 
 	(use-package deft
-		:ensure t)
+		:ensure t
+		:init
+		(setq deft-directory "~/.emacs.d/deft")
+		)
 
 	(use-package avy
 		:ensure t)
