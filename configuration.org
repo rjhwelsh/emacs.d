@@ -949,5 +949,6 @@ Zettelkasten note-taking using deft and avy.
 		)
 
 	(use-package avy
+		:pin melpa
 		:ensure t)
 #+END_SRC
