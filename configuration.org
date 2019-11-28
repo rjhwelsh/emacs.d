@@ -915,3 +915,17 @@ Keybindings
 	(global-set-key (kbd "C-M-+") 'my-increment-number-hexadecimal)
 	(global-set-key (kbd "C-M-_") 'my-decrement-number-hexadecimal)
 #+END_SRC
+* Zetteldeft
+Zettelkasten note-taking using deft and avy.
+
+#+BEGIN_SRC emacs-lisp
+	(use-package zetteldeft
+		:load-path "~/.emacs.d/"
+		:after deft)
+
+	(use-package deft
+		:ensure t)
+
+	(use-package avy
+		:ensure t)
+#+END_SRC
