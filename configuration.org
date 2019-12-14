@@ -15,7 +15,7 @@ You can find this file, [[https://github.com/hrs/sensible-defaults.el][here]].
 (sensible-defaults/use-all-keybindings)
 #+END_SRC
 * xah-fly-keys
-
+https://github.com/xahlee/xah-fly-keys
 #+BEGIN_SRC emacs-lisp
 	(use-package "xah-fly-keys"
 		:ensure t
