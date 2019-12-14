@@ -22,8 +22,12 @@ You can find this file, [[https://github.com/hrs/sensible-defaults.el][here]].
 		:init
 		(require 'xah-fly-keys)
 		(xah-fly-keys-set-layout "colemak")
-		(xah-fly-keys 1)
-	;; Add highlight hooks
+
+		;; Disable control and meta variations
+		(setq xah-fly-use-meta-key nil)
+		(setq xah-fly-use-control-key nil)
+
+		;; Add highlight hooks
 		(defun my-highlight-line-on () (global-hl-line-mode 1))
 		(defun my-highlight-line-off () (global-hl-line-mode 0))
 
