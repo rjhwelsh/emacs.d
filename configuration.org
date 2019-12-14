@@ -17,11 +17,19 @@ You can find this file, [[https://github.com/hrs/sensible-defaults.el][here]].
 * xah-fly-keys
 
 #+BEGIN_SRC emacs-lisp
-	(use-package "xah-fly-keys" :ensure t
+	(use-package "xah-fly-keys"
+		:ensure t
 		:init
 		(require 'xah-fly-keys)
 		(xah-fly-keys-set-layout "colemak")
 		(xah-fly-keys 1)
+	;; Add highlight hooks
+		(defun my-highlight-line-on () (global-hl-line-mode 1))
+		(defun my-highlight-line-off () (global-hl-line-mode 0))
+
+		(add-hook 'xah-fly-command-mode-activate-hook 'my-highlight-line-on)
+		(add-hook 'xah-fly-insert-mode-activate-hook  'my-highlight-line-off)
+
 		)
 #+END_SRC
 * Personal Details

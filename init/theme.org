@@ -49,12 +49,12 @@ as point goes.
   (setq scroll-conservatively 100)
 #+END_SRC
 
-**** Highlight the current line
+**** +Highlight the current line+
 =global-hl-line-mode= softly highlights the background color of the line
 containing point. It makes it a bit easier to find point, and it's useful when
 pairing or presenting code.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_EXAMPLE emacs-lisp
   (when window-system
     (global-hl-line-mode))
-#+END_SRC
+#+END_EXAMPLE
