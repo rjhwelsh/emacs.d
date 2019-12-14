@@ -42,6 +42,16 @@ https://github.com/xahlee/xah-fly-keys
 
 		)
 #+END_SRC
+* which-key
+https://github.com/justbur/emacs-which-key
+#+BEGIN_SRC emacs-lisp
+	(use-package "which-key"
+		:ensure t
+		:init
+		(require 'which-key)
+		(which-key-mode))
+#+END_SRC
+
 * Personal Details
 I would like to be able to share my config with other people to ease their
 journey into emacs, as many others examples have done for me.
