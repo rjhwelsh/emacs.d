@@ -389,39 +389,7 @@ Custom agenda views
 						 ((tags "+ACTION")
 							(agenda "" ((org-agenda-span 1)))
 							(alltodo "" )))
-	; GTD tags
-						("k" "Kanban for GTD TAGS"
-						 ((tags "LEVEL=1+PROJECT")
-							(tags "+NEW")
-							(tags "+ACTION")
-							(tags "-ACTION/|NEXT")
-							(tags "+FLAGGED/|TODO|NEXT")
-							(tags "+VERIFY/|TODO|NEXT")
-							(tags "+DELEGATE/|TODO|NEXT")
-							(tags "+WAITING/|TODO|NEXT")
-							(tags "+BREAKDOWN/|TODO|NEXT")
-							(tags "-PROJECT-ACTION-NEW-FLAGGED-VERIFY-DELEGATE-WAITING-BREAKDOWN/|TODO")
-	))
-						("h" "Habits"
-						 ((tags "STYLE=\"habit\"|HABIT" )))
-	; MASTER tags
-						("r" "Kanban for MASTER tags"
-						 (( tags "+MOTIVATION/|TODO|NEXT" )
-							( tags "+ACQUIRE/|TODO|NEXT" )
-							( tags "+SIGNIFICANCE/|TODO|NEXT" )
-							( tags "+TRIGGER/|TODO|NEXT" )
-							( tags "+EXHIBIT/|TODO|NEXT" )
-							( tags "+REVIEW/|TODO|NEXT" )))
-	; STUDY keywords
-						("l" "Kanban for STUDY tags"
-						 (( tags "+ACTION/|STUDY" )
-							( tags "/|ALPHA" )
-							( tags "/|BETA" )
-							( tags "/|GAMMA" )
-							( tags "/|DELTA" )
-							( tags "/|THETA" )
-							( tags "/|STUDY" )
-							(tags "/|NU")))))
+						))
 #+END_SRC
 
 Take up current window when called.
