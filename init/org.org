@@ -3,7 +3,6 @@
 #+EMAIL: rjhwelsh@gmail.com
 #+PROPERTY: header-args    :results silent
 #+STARTUP: content
-
 * Packages
 The default org should be setup to be installed via the init.el file in your
 emacs.d directory. This ensures the latest org-mode is used, and not the default
@@ -27,7 +26,6 @@ package in elpa.
 	 (car (file-expand-wildcards "~/.emacs.d/elpa/org-plus-contrib*" ))
 	 )
 #+END_SRC
-
 
 * Setup
 For a minimal =.emacs= for =org-mode=, see [[http://orgmode.org/worg/org-faq.html#minimal-emacs][here]].
@@ -65,15 +63,21 @@ choose the right browser. I'd like to always use Firefox, so:
   (setenv "BROWSER" "firefox")
 #+END_SRC
 ** Keybindings
-Some handy keybindings.
-#+BEGIN_SRC emacs-lisp
+*** Global
+		#+begin_src emacs-lisp
 	(define-key global-map "\C-cl" 'org-store-link)
 	(define-key global-map "\C-ca" 'org-agenda)
 	(define-key global-map "\C-cc" 'org-capture)
+	(define-key global-map (kbd "C-c C-x C-j") 'org-clock-goto)
+		#+end_src
+*** Org-mode
+		#+begin_src emacs-lisp
   (define-key org-mode-map "\C-ce" 'rjh/org-tags-expire)
+		#+end_src
+*** Org-agenda-mode
+		#+begin_src emacs-lisp
   (define-key org-agenda-mode-map "\C-ce" 'rjh/org-tags-expire-agenda)
-#+END_SRC
-
+		#+end_src
 * Agenda Configuration
 ** 'TODO' Keywords
 Workflow states have been taken from gjstein.
