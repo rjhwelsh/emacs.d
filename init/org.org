@@ -550,6 +550,16 @@ Org structure templates.
 	 ))
 #+END_SRC
 
+Inhibit electric pair for org-mode =<=.
+#+begin_src emacs-lisp
+(add-hook
+ 'org-mode-hook
+ (lambda ()
+   (setq-local electric-pair-inhibit-predicate
+               `(lambda (c)
+                  (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
+#+end_src
+
 * Display Settings
 ** Display preferences
 
