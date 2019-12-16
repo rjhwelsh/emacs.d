@@ -540,8 +540,10 @@ Org structure templates.
 	 'org-structure-template-alist
 	 '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC")
 	 '("py" "#+BEGIN_SRC python\n?\n#+END_SRC")
+	 '("sh" "#+BEGIN_SRC sh\n?\n#+END_SRC")
 	 )
 #+END_SRC
+
 * Display Settings
 ** Display preferences
 
