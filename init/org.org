@@ -454,7 +454,7 @@ Do not mark archived tasks as done.
 #+BEGIN_SRC emacs-lisp
 (setq org-archive-mark-done nil)
 #+END_SRC
-** Capture/Refile Settings
+** Capture
 See [[info:org#Capture%20templates][info:org#Capture templates]] for more information.
 
 These are settings for capturing/refiling information.
@@ -496,6 +496,7 @@ Learning template schedule is as follows:
 |        9 |          |         | REVIEW  |      +58d |
 
 
+** Refile
 Refiling list.
 #+BEGIN_SRC emacs-lisp
 	;; Function to return org-buffer-files
