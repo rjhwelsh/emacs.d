@@ -345,7 +345,7 @@ Generic interactive agenda function.
  #+END_EXAMPLE
 
  #+BEGIN_SRC emacs-lisp
-	(setq org-default-priority ?F)
+	(setq org-default-priority ?D)
 	(setq org-highest-priority ?A)
 	(setq org-lowest-priority ?F)
  #+END_SRC
