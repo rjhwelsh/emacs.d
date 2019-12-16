@@ -534,14 +534,20 @@ You can set the variable =org-refile-target-verify-function= to a function to
 verify each headline found by the criteria above.
 
 * Quick Templates
+#+BEGIN_SRC emacs-lisp
+(require 'org-tempo)
+#+END_SRC
+
 Org structure templates.
 #+BEGIN_SRC emacs-lisp
-	(add-to-list
-	 'org-structure-template-alist
-	 '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC")
-	 '("py" "#+BEGIN_SRC python\n?\n#+END_SRC")
-	 '("sh" "#+BEGIN_SRC sh\n?\n#+END_SRC")
-	 )
+(setq org-structure-template-alist
+	(append
+	 org-structure-template-alist
+	 '(
+		 ("el" . "src emacs-lisp")
+		 ("py" . "src python")
+		 ("sh" . "src sh"))
+	 ))
 #+END_SRC
 
 * Display Settings
