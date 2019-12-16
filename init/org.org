@@ -309,13 +309,12 @@ Store the list of agenda files in ...
 #+END_SRC
 
 Sorting strategy.
- - =habit-down= has been removed so that habits mix with regular tasks.
 #+BEGIN_SRC emacs-lisp
 	(setq org-agenda-sorting-strategy
-				'((agenda time-up priority-down deadline-up scheduled-up effort-up tag-up category-keep)
-					(todo   priority-down deadline-up scheduled-up effort-up tag-up category-keep)
-					(tags   priority-down deadline-up scheduled-up effort-up tag-up category-keep)
-					(search priority-down deadline-up scheduled-up effort-up tag-up category-keep)))
+				'((agenda time-up deadline-up scheduled-up todo-state-up category-keep priority-down effort-up tag-up)
+					(todo           deadline-up              todo-state-up category-keep priority-down effort-up tag-up)
+					(tags           deadline-up              todo-state-up category-keep priority-down effort-up tag-up)
+					(search         deadline-up              todo-state-up category-keep priority-down effort-up tag-up)))
 #+END_SRC
 
 Custom agenda views
