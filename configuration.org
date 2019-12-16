@@ -768,7 +768,8 @@ An api for working with files in Emacs lisp.
 Multi-lingual environment for Emacs.
 For more see [[file:config/mule.org][mule.org]]
 #+BEGIN_SRC emacs-lisp
-	(set-language-environment "Japanese")
+	;(set-language-environment "Japanese")
+  (set-language-environment "UTF-8")
 	(load-library "anthy")
 #+END_SRC
 
