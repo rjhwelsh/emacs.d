@@ -466,9 +466,6 @@ These are settings for capturing/refiling information.
 
 Capture templates.
   - todo :: Captures a basic todo entry.
-	- journal :: Captures a dated journal entry.
-	- event :: Captures a calendar event
-	- habit :: Captures a habitual task.
 	- learn :: Captures a learning task.
 						Learning scheduling is spaced according to optimal spacing strategy.
 						Progress is achieved through 5 study stages,
@@ -480,10 +477,6 @@ Capture templates.
 					 "* TODO %? :NEW:\n\t%i\n\t%u\n\t%a\n" :clock-in t :clock-resume t :empty-lines 1)
 					("m" "Meeting" entry (file org-default-notes-file)
 					 "* MEETING with %? :MEETING:\n\t%t" :clock-in t :clock-resume t :empty-lines 1)
-					("d" "Diary" entry (file+datetree rjh/org-diary)
-					 "* %?\n%U\n" :clock-in t :clock-resume t)
-					("i" "Idea" entry (file org-default-notes-file)
-					 "* %? :IDEA:\n%t" :clock-in t :clock-resume t)
 					("n" "Next Task" entry (file+headline org-default-notes-file "Tasks")
 					 "* NEXT %? \nDEADLINE: %t")
 					("l" "Learn" entry (file+headline org-default-notes-file "Study")
