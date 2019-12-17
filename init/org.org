@@ -371,6 +371,14 @@ buffer only.
 							 )
 						 ))
 
+					(stuck-view
+					 (lambda (&optional settings filename exts)
+						 `(stuck ""
+										 ,settings
+										 ,(funcall filename-to-export-views (concat filename "stuck") exts)
+										 )
+						 ))
+
 					(full-view
 					 (lambda
 						 (&optional
@@ -395,10 +403,7 @@ buffer only.
 															 exts))
 							`(
 								,(funcall other-tags-view settings filename exts)
-								(stuck ""
-											 ,settings
-											 ,(funcall filename-to-export-views (concat filename "stuck") exts)
-											 )
+								,(funcall stuck-view settings filename exts)
 								))
 						 ))
 
