@@ -165,6 +165,19 @@ See =org-tag-alist= for more details.
 #+BEGIN_SRC emacs-lisp
 	(setq org-tag-alist '())
 #+END_SRC
+
+#+begin_src emacs-lisp
+	(setq org-tag-persistent-alist
+				'(("PROJECT" )
+					("ACTION"	 )
+					("FLAGGED" )
+					("VERIFY"	 )
+					("DELEGATE")
+					("WAITING" )
+					("EXPAND"	 )
+					("NEW"     )
+					))
+#+end_src
 *** Exclude tags from inheritance
 Exclude all tags from inheritance, unless they start with a #.
 #+BEGIN_SRC emacs-lisp
@@ -700,7 +713,7 @@ Assignment
 					 ("VERIFY" . org-tag-yellow)
 					 ("DELEGATE" . org-tag-green)
 					 ("WAITING" . org-tag-cyan)
-					 ("BREAKDOWN" . org-tag-blue)
+					 ("EXPAND" . org-tag-blue)
 					 ("NEW" . org-tag-magenta)))
  #+END_SRC
 
