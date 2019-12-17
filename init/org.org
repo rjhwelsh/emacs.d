@@ -356,6 +356,21 @@ buffer only.
 											,(funcall filename-to-export-views (concat filename "agenda") exts))
 						 ))
 
+					(other-tags-view
+					 (lambda (&optional settings filename exts)
+						 `(tags-todo
+							 ,deselect-persistent-tags
+							 ,(append
+								 '(
+									 (org-agenda-overriding-header "Remaining TODO items:")
+									 (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))
+									 )
+								 settings
+								 )
+							 ,(funcall filename-to-export-views (concat filename "tag_OTHER") exts)
+							 )
+						 ))
+
 					(full-view
 					 (lambda
 						 (&optional
@@ -379,17 +394,7 @@ buffer only.
 															 (concat filename "tag_")
 															 exts))
 							`(
-								(tags-todo
-								 ,deselect-persistent-tags
-								 ,(append
-									 '(
-										 (org-agenda-overriding-header "Remaining TODO items:")
-										 (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))
-										 )
-									 settings
-									 )
-								 ,(funcall filename-to-export-views (concat filename "tag_OTHER") exts)
-								 )
+								,(funcall other-tags-view settings filename exts)
 								(stuck ""
 											 ,settings
 											 ,(funcall filename-to-export-views (concat filename "stuck") exts)
