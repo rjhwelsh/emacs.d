@@ -561,31 +561,29 @@ Inhibit electric pair for org-mode =<=.
 FACES are custom settings for font, colour, background etc.
 If you would like to modify a face that has already been loaded, you will have
 to use the following function.
-#+BEGIN_SRC emacs-lisp
+
+#+BEGIN_EXAMPLE emacs-lisp
 	;; (face-spec-set 'study
 	;; 							 '((t (:background "black"
 	;; 										 :foreground "cyan"
 	;; 										 :weight extra-bold)))
 	;; 							 'face-defface-spec)
-#+END_SRC
+#+END_EXAMPLE
+See [[help:face-spec-set][here]].
 
-*** Faces
-		These define faces for org-mode.
-		Multiple groups are specified using [[info:elisp#Common%20Keywords][:group]] more than twice.
-
-**** Definitions
-***** Default
-			#+begin_src emacs-lisp
-				(defface org-block
-					'((
-						 ((class color)(min-colors 8))
-						 :background "gray5"
-						 :foreground "DarkGoldenrod3"
-						 ))
-					"Org block color"
-					)
-			#+end_src
-***** Custom
+*** Definitions
+**** Default
+		 #+begin_src emacs-lisp
+			 (face-spec-set 'org-block
+				 '((
+						((class color)(min-colors 8))
+						:background "gray5"
+						:foreground "DarkGoldenrod3"
+						))
+				 'face-override-spec
+				 )
+		 #+end_src
+**** Custom
 Define default color face.
 		 #+begin_src emacs-lisp
 			 (defface org-keyword
@@ -706,30 +704,30 @@ Define default color face.
 				 )
 		 #+END_SRC
 
-**** Keywords
- #+BEGIN_SRC emacs-lisp
-	 (setq org-todo-keyword-faces
-				 '(("TODO" .      org-red)
-					 ("NEXT" .      org-blue)
-					 ("DONE" .      org-green)
-					 ("WAITING" .   org-cyan)
-					 ("INACTIVE" .  org-blue)
-					 ("CANCELLED" . org-yellow)
-					 ("MEETING" .   org-orange)
-					 ))
- #+END_SRC
-**** Tags
- #+BEGIN_SRC emacs-lisp
-	 (setq org-tag-faces
-				 '(("PROJECT" . org-black)
-					 ("ACTION" . org-red)
-					 ("FLAGGED" . org-orange)
-					 ("VERIFY" . org-yellow)
-					 ("DELEGATE" . org-green)
-					 ("WAITING" . org-cyan)
-					 ("EXPAND" . org-blue)
-					 ("NEW" . org-magenta)))
- #+END_SRC
+*** Keywords
+#+BEGIN_SRC emacs-lisp
+	(setq org-todo-keyword-faces
+				'(("TODO" .      org-red)
+					("NEXT" .      org-blue)
+					("DONE" .      org-green)
+					("WAITING" .   org-cyan)
+					("INACTIVE" .  org-blue)
+					("CANCELLED" . org-yellow)
+					("MEETING" .   org-orange)
+					))
+#+END_SRC
+*** Tags
+#+BEGIN_SRC emacs-lisp
+	(setq org-tag-faces
+				'(("PROJECT" . org-black)
+					("ACTION" . org-red)
+					("FLAGGED" . org-orange)
+					("VERIFY" . org-yellow)
+					("DELEGATE" . org-green)
+					("WAITING" . org-cyan)
+					("EXPAND" . org-blue)
+					("NEW" . org-magenta)))
+#+END_SRC
 
 ** Misc
 
