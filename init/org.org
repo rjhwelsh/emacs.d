@@ -351,7 +351,7 @@ This allows for task blocking/etc.
 			'("+LEVEL=1/-DONE" ("NEXT") nil "\\<IGNORE\\>"))
 #+END_SRC
 
-** Clocking Working Time
+** Clocking
   To save the clock history across Emacs sessions, use
 #+BEGIN_SRC emacs-lisp
      (setq org-clock-persist 'history)
@@ -371,7 +371,7 @@ Use C-c C-x C-c to access.
 
 org-agenda-columns-add-appointments-to-effort-sum adds appointment times to
 effort sums for the day.
-** Archival
+** Archive
 =C-cxs=
 Add this to your file, to adjust =org-archive-location= for a particular file.
 #+BEGIN_EXAMPLE
