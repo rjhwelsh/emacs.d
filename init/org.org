@@ -452,7 +452,9 @@ buffer only.
 								'((org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline)))
 								)
 							 ("t" . "Todo items with specific persistent tags")
-							 ("A" "Agenda View" . ,(funcall agenda-view '((org-agenda-span 1)) "agenda" '("ps" "html")))
+							 ("A" "Agenda View" . ,(funcall agenda-view '((org-agenda-span 1)) "agenda/" '("ps" "html")))
+							 ("O" "Other tags (EXPORT)" . ,(funcall other-tags-view nil "agenda/" '("ps" "html")))
+							 ("S" "Stuck projects (EXPORT)" . ,(funcall stuck-view nil "agenda/" '("ps" "html")))
 							 )
 						 (funcall tag-persistent-agenda-commands
 											'((org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline)))
