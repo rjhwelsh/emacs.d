@@ -282,6 +282,16 @@ Sorting strategy.
 					(search         deadline-up              todo-state-down category-keep              priority-down effort-up tag-up)))
 #+END_SRC
 
+Prefix format
+#+begin_src emacs-lisp
+	(setq org-agenda-prefix-format
+				'((agenda . " %i %-12t%-12s%12:c")
+					(todo .   " %i %-12t%-12s%12:c")
+					(tags .   " %i %-12t%-12s%12:c")
+					(search . " %i %-12t%-12s%12:c"))
+				)
+#+end_src
+
 Custom agenda view.
 NB =`= backquote allows evaluation of selected element in the quoted list.
 =,= is used to indicate items to be evaluated.
