@@ -519,104 +519,124 @@ to use the following function.
 		Multiple groups are specified using [[info:elisp#Common%20Keywords][:group]] more than twice.
 
 **** Definitions
-		 #+BEGIN_SRC emacs-lisp
-			 (defface org-black
+Define default color face.
+		 #+begin_src emacs-lisp
+			 (defface org-keyword
 				 '((
-						((class color) (min-colors 8))
-						:background "black"
-						:foreground "white"
+						t
 						:weight extra-bold
 						:box (
 									:style released-button )
 						))
-				 "Face for org."
-				 :group 'tag-faces :group 'todo-faces)
+				 "Org base face for todo keywords and tags"
+				 :group 'tag-faces :group 'todo-faces
+				 )
+		 #+end_src
+
+     #+BEGIN_SRC emacs-lisp
+			 (defface org-black
+				 '((
+						default
+						:inherit (org-keyword))
+					 (
+						((class color) (min-colors 8))
+						:background "black"
+						:foreground "white"
+						))
+				 "Org color"
+				 )
 		 #+END_SRC
 		 #+BEGIN_SRC emacs-lisp
 			 (defface org-red
 				 '((
+						default
+						:inherit (org-keyword))
+					 (
 						((class color) (min-colors 8))
 						:background "dark red"
 						:foreground "cornsilk"
-						:weight extra-bold
-						:box (
-									:style released-button )
+						:inherit (org-keyword)
 						))
-				 "Face for org."
-				 :group 'tag-faces :group 'todo-faces)
+				 "Org color"
+				 )
 		 #+END_SRC
 		 #+BEGIN_SRC emacs-lisp
 			 (defface org-orange
 				 '((
+						default
+						:inherit (org-keyword))
+					 (
 						((class color) (min-colors 8))
 						:background "tan4"
 						:foreground "wheat"
-						:weight extra-bold
-						:box (
-									:style released-button )))
-				 "Face for org."
-
-				 :group 'tag-faces :group 'todo-faces)
+						))
+				 "Org color"
+				 )
 		 #+END_SRC
 		 #+BEGIN_SRC emacs-lisp
 			 (defface org-yellow
 				 '((
+						default
+						:inherit (org-keyword))
+					 (
 						((class color) (min-colors 8))
 						:background "dark olive green"
 						:foreground "yellow"
-						:weight extra-bold
-						:box (
-									:style released-button )))
-				 "Face for org."
-				 :group 'tag-faces :group 'todo-faces)
+						))
+				 "Org color"
+				 )
 		 #+END_SRC
 		 #+BEGIN_SRC emacs-lisp
 			 (defface org-green
 				 '((
+						default
+						:inherit (org-keyword))
+					 (
 						((class color) (min-colors 8))
 						:background "dark green"
 						:foreground "khaki"
-						:weight extra-bold
-						:box (
-									:style released-button )))
-				 "Face for org."
-				 :group 'tag-faces :group 'todo-faces)
+						))
+				 "Org color"
+				 )
 		 #+END_SRC
 		 #+BEGIN_SRC emacs-lisp
 			 (defface org-cyan
 				 '((
+						default
+						:inherit (org-keyword))
+					 (
 						((class color) (min-colors 8))
 						:background "dark cyan"
 						:foreground "green yellow"
-						:weight extra-bold
-						:box (
-									:style released-button )))
-				 "Face for org."
-				 :group 'tag-faces :group 'todo-faces)
+						))
+				 "Org color"
+				 )
 		 #+END_SRC
 		 #+BEGIN_SRC emacs-lisp
 			 (defface org-blue
 				 '((
+						default
+						:inherit (org-keyword))
+					 (
 						((class color) (min-colors 8))
 						:background "navy"
 						:foreground "turquoise"
-						:weight extra-bold
-						:box (
-									:style released-button )))
-				 "Face for org."
-				 :group 'tag-faces :group 'todo-faces)
+						))
+				 "Org color"
+				 )
 		 #+END_SRC
 		 #+BEGIN_SRC emacs-lisp
 			 (defface org-magenta
 				 '((
+						default
+						:inherit (org-keyword))
+					 (
 						((class color) (min-colors 8))
 						:background "dark magenta"
 						:foreground "cyan"
-						:weight extra-bold
-						:box (
-									:style released-button )))
-				 "Face for org."
-				 :group 'tag-faces :group 'todo-faces)
+						))
+				 "Org color"
+				 )
 		 #+END_SRC
 
 **** Keywords
