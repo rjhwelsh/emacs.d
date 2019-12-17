@@ -402,7 +402,6 @@ These are settings for capturing/refiling information.
 #+BEGIN_SRC emacs-lisp
 	;; (setq org-directory "~/.emacs.d/org")	;; Setup in "personal.org"
 	(setq org-default-notes-file (expand-file-name "refile.org" org-directory))
-	(setq rjh/org-diary (expand-file-name "diary.org" org-directory))
 #+END_SRC
 
 Capture templates.
