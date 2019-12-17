@@ -621,7 +621,6 @@ Define default color face.
 						((class color) (min-colors 8))
 						:background "dark red"
 						:foreground "cornsilk"
-						:inherit (org-keyword)
 						))
 				 "Org color"
 				 )
