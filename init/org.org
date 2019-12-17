@@ -114,40 +114,6 @@ For group projects, put this at the top of the project line for custom keywords.
 #+TYP_TODO: @ROGER(r) @NAME1(1) @NAME2(2) | DONE(d)
 #+END_EXAMPLE
 
-** Views
-Store the list of agenda files in ...
-#+BEGIN_SRC emacs-lisp
-  (setq org-agenda-files "~/.emacs.d/agenda-files" )
-#+END_SRC
-
-Sorting strategy.
-#+BEGIN_SRC emacs-lisp
-	(setq org-agenda-sorting-strategy
-				'((agenda time-up deadline-up scheduled-up todo-state-up category-keep priority-down effort-up tag-up)
-					(todo           deadline-up              todo-state-up category-keep priority-down effort-up tag-up)
-					(tags           deadline-up              todo-state-up category-keep priority-down effort-up tag-up)
-					(search         deadline-up              todo-state-up category-keep priority-down effort-up tag-up)))
-#+END_SRC
-
-Custom agenda views
-#+BEGIN_SRC emacs-lisp
-	(setq org-agenda-custom-commands
-	; General views
-					'(("a" "Agenda for current Week or Day"
-						 ((tags "+ACTION")
-							(agenda "")))
-						("n" "Agenda and all TODOs"
-						 ((tags "+ACTION")
-							(agenda "" ((org-agenda-span 1)))
-							(alltodo "" )))
-						))
-#+END_SRC
-
-Take up current window when called.
-#+BEGIN_SRC emacs-lisp
-(setq org-agenda-window-setup 'current-window)
-#+END_SRC
-
 ** Tags
 Tags represent environmental conditions before a task can be undertaken.
 Tasks should be organized by a hierarchy of projects and sub-projects.
@@ -299,6 +265,40 @@ Generic interactive agenda function.
 				(if (org-region-active-p)
 						(call-interactively 'rjh/org-tags-expire-region)
 					(rjh/org-tags-expire-agenda-headline rjh/org-tags-expiration-tags)))))
+#+END_SRC
+
+** Views
+Store the list of agenda files in ...
+#+BEGIN_SRC emacs-lisp
+  (setq org-agenda-files "~/.emacs.d/agenda-files" )
+#+END_SRC
+
+Sorting strategy.
+#+BEGIN_SRC emacs-lisp
+	(setq org-agenda-sorting-strategy
+				'((agenda time-up deadline-up scheduled-up todo-state-up category-keep priority-down effort-up tag-up)
+					(todo           deadline-up              todo-state-up category-keep priority-down effort-up tag-up)
+					(tags           deadline-up              todo-state-up category-keep priority-down effort-up tag-up)
+					(search         deadline-up              todo-state-up category-keep priority-down effort-up tag-up)))
+#+END_SRC
+
+Custom agenda views
+#+BEGIN_SRC emacs-lisp
+	(setq org-agenda-custom-commands
+	; General views
+					'(("a" "Agenda for current Week or Day"
+						 ((tags "+ACTION")
+							(agenda "")))
+						("n" "Agenda and all TODOs"
+						 ((tags "+ACTION")
+							(agenda "" ((org-agenda-span 1)))
+							(alltodo "" )))
+						))
+#+END_SRC
+
+Take up current window when called.
+#+BEGIN_SRC emacs-lisp
+(setq org-agenda-window-setup 'current-window)
 #+END_SRC
 
 ** Priorities
