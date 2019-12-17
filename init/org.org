@@ -366,8 +366,8 @@ buffer only.
 						 (append
 							`(
 								,(funcall agenda-view
-												 (append settings '((org-agenda-span 1)))
-												 filename exts))
+													(append settings '((org-agenda-span 1)))
+													filename exts))
 							(mapcar 'cdr
 											(funcall tag-persistent-agenda-views
 															 (append
@@ -442,12 +442,12 @@ buffer only.
 								'((org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline)))
 								)
 							 ("t" . "Todo items with specific persistent tags")
+							 ("A" "Agenda View" . ,(funcall agenda-view '((org-agenda-span 1)) "agenda" '("ps" "html")))
 							 )
 						 (funcall tag-persistent-agenda-commands
 											'((org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline)))
 											"tag_"
 											'("ps" "html"))
-
 						 ))
 			))
 
