@@ -323,16 +323,17 @@ buffer only.
 								 ))
 				 )
 				(tag-persistent-agenda-views
-				 (mapcar
-					(lambda (tag)
-						`(tags ,(concat "+" (car tag))
-									 (
-										(org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))
-									 )
-									 ))
-					org-tag-persistent-alist)
+				 (lambda (settings)
+					 (mapcar
+						(lambda (tag)
+							`(tags
+								,(concat "+" (car tag))
+								,settings
+								))
+						org-tag-persistent-alist))
 				 )
 				)
+
 		(setq org-agenda-custom-commands
 					`(
 						("n" "Comprehensive View"
@@ -343,7 +344,11 @@ buffer only.
 													(org-agenda-span 1)
 													))
 								 )
-							 tag-persistent-agenda-views
+							 (funcall tag-persistent-agenda-views
+												'(
+													(org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))
+													)
+												)
 							 `(
 								 (tags-todo
 									,deselect-persistent-tags
