@@ -416,13 +416,13 @@ Capture templates.
 #+BEGIN_SRC emacs-lisp
 	(setq org-capture-templates
 				'(("t" "Todo" entry (file org-default-notes-file)
-					 "* TODO %? :NEW:\n\t%i\n\t%u\n\t%a\n" :clock-in t :clock-resume t :empty-lines 1)
+					 "* TODO %? :NEW:\n%i\n" :clock-in t :clock-resume t :empty-lines 1)
 					("m" "Meeting" entry (file org-default-notes-file)
 					 "* MEETING with %? :MEETING:\n\t%t" :clock-in t :clock-resume t :empty-lines 1)
 					("n" "Next Task" entry (file+headline org-default-notes-file "Tasks")
 					 "* NEXT %? \nDEADLINE: %t")
 					("l" "Learn" entry (file+headline org-default-notes-file "Study")
-					 "* TODO %^{prompt} :NEW:\n\t%i%?\n** TODO %\\1 :MOTIVATE: \nSCHEDULED: <%(org-read-date nil nil (concat \". \" (format-time-string \"%a %H:%M\")))>\n** TODO %\\1 :ACQUIRE: \nSCHEDULED: <%(org-read-date nil nil (concat \". \" (format-time-string \"%H:%M\" (time-add (current-time) 3600 ))))>\n** TODO %\\1 :SIGNIFY: \nSCHEDULED: <%(org-read-date nil nil \"+1d\")>\n** TODO %\\1 :TRIGGER: \nSCHEDULED: <%(org-read-date nil nil \"+15d\")>\n** TODO %\\1 :EXHIBIT: \nSCHEDULED: <%(org-read-date nil nil \"+30d\")>\n** TODO %\\1 :REVIEW: \nSCHEDULED: <%(org-read-date nil nil \"+58d\")>\n"
+					 "* TODO %^{prompt} :NEW:STUDY:\n\t%i%?\n** TODO %\\1 :MOTIVATE: \nSCHEDULED: <%(org-read-date nil nil (concat \". \" (format-time-string \"%a %H:%M\")))>\n** TODO %\\1 :ACQUIRE: \nSCHEDULED: <%(org-read-date nil nil (concat \". \" (format-time-string \"%H:%M\" (time-add (current-time) 3600 ))))>\n** TODO %\\1 :SIGNIFY: \nSCHEDULED: <%(org-read-date nil nil \"+1d\")>\n** TODO %\\1 :TRIGGER: \nSCHEDULED: <%(org-read-date nil nil \"+15d\")>\n** TODO %\\1 :EXHIBIT: \nSCHEDULED: <%(org-read-date nil nil \"+30d\")>\n** TODO %\\1 :REVIEW: \nSCHEDULED: <%(org-read-date nil nil \"+58d\")>\n"
 					 )))
 #+END_SRC
 
