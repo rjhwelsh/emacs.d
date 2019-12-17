@@ -286,7 +286,8 @@ Custom agenda view.
 NB =`= backquote allows evaluation of selected element in the quoted list.
 =,= is used to indicate items to be evaluated.
 
-Sparse trees cannot be used
+Sparse trees cannot be used in assembled views; they operate on the current
+buffer only.
 
 #+BEGIN_SRC emacs-lisp
 	(let (
