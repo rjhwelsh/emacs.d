@@ -797,7 +797,7 @@ of every exported HTML document.
   (setq org-html-postamble nil)
 #+END_SRC
 
-* Bernt Hansen
+* Bernt Hansen                                                         :todo:
 A function for skipping archiving tasks from Bernt Hansen.
 N.B. This hasn't actually been implemented anywhere yet.
 #+BEGIN_SRC emacs-lisp
