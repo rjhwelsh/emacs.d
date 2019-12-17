@@ -285,10 +285,10 @@ Sorting strategy.
 Prefix format
 #+begin_src emacs-lisp
 	(setq org-agenda-prefix-format
-				'((agenda . " %i %-12t%-12s%12:c")
-					(todo .   " %i %-12t%-12s%12:c")
-					(tags .   " %i %-12t%-12s%12:c")
-					(search . " %i %-12t%-12s%12:c"))
+				'((agenda . "[ ] %i %-12t%-12s%12:c%12b ")
+					(todo .   "[ ] %i %12:c%12b ")
+					(tags .   "[ ] %i %12:c%12b ")
+					(search . "[ ] %i %12:c%12b "))
 				)
 #+end_src
 
