@@ -323,7 +323,7 @@ buffer only.
 								 ))
 				 )
 				(tag-persistent-agenda-views
-				 (lambda (settings)
+				 (lambda (&optional settings)
 					 (mapcar
 						(lambda (tag)
 							`(tags
@@ -332,33 +332,46 @@ buffer only.
 								))
 						org-tag-persistent-alist))
 				 )
+				(comprehensive-view
+				 (lambda (&optional settings)
+					 (append
+						`(
+							(agenda ""
+											,(append
+												'(
+													(org-agenda-span 1)
+													)
+												settings
+												)
+											)
+							)
+						(funcall tag-persistent-agenda-views
+										 (append
+											'(
+												(org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))
+												)
+											settings
+											))
+						`(
+							(tags-todo
+							 ,deselect-persistent-tags
+						 ,(append
+							 '(
+								(org-agenda-overriding-header "Remaining TODO items:")
+								(org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))
+								)
+							 settings
+							 ))
+							(stuck "" ,settings)
+							))
+					 ))
 				)
 
 		(setq org-agenda-custom-commands
 					`(
 						("n" "Comprehensive View"
-						 ,(append
-							 '(
-								 (agenda ""
-												 (
-													(org-agenda-span 1)
-													))
-								 )
-							 (funcall tag-persistent-agenda-views
-												'(
-													(org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))
-													)
-												)
-							 `(
-								 (tags-todo
-									,deselect-persistent-tags
-									(
-									 (org-agenda-overriding-header "Remaining TODO items:")
-									 (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))
-									 ))
-								 (stuck "" )
-								 )
-							 ))
+						 ,(funcall comprehensive-view)
+						 )
 						("p" "Todo items with persistent tags"
 						 tags-tree ,select-persistent-tags
 						 )
