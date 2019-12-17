@@ -350,6 +350,12 @@ buffer only.
 							org-tag-persistent-alist))
 					 )
 
+					(agenda-view
+					 (lambda (&optional settings filename exts)
+						 `(agenda "" ,settings
+											,(funcall filename-to-export-views (concat filename "agenda") exts))
+						 ))
+
 					(full-view
 					 (lambda
 						 (&optional
@@ -359,15 +365,9 @@ buffer only.
 							)
 						 (append
 							`(
-								(agenda ""
-												,(append
-													'(
-														(org-agenda-span 1)
-														)
-													settings
-													)
-												,(funcall filename-to-export-views (concat filename "agenda") exts)
-												))
+								,(funcall agenda-view
+												 (append settings '((org-agenda-span 1)))
+												 filename exts))
 							(mapcar 'cdr
 											(funcall tag-persistent-agenda-views
 															 (append
