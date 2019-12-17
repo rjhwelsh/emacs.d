@@ -282,18 +282,72 @@ Sorting strategy.
 					(search         deadline-up              todo-state-up category-keep priority-down effort-up tag-up)))
 #+END_SRC
 
-Custom agenda views
+Custom agenda view.
+NB =`= backquote allows evaluation of selected element in the quoted list.
+=,= is used to indicate items to be evaluated.
+
+Sparse trees cannot be used
+
 #+BEGIN_SRC emacs-lisp
-	(setq org-agenda-custom-commands
-	; General views
-					'(("a" "Agenda for current Week or Day"
-						 ((tags "+ACTION")
-							(agenda "")))
-						("n" "Agenda and all TODOs"
-						 ((tags "+ACTION")
-							(agenda "" ((org-agenda-span 1)))
-							(alltodo "" )))
+	(let (
+				(deselect-persistent-tags
+				 (apply
+					'concat
+					(mapcar
+					 (lambda (tag)
+						 (concat "-" (car tag))
+						 )
+					 org-tag-persistent-alist)
+					)
+				 )
+				(select-persistent-tags
+				 (apply 'concat
+								(cdr
+								 (apply 'append
+												(mapcar
+												 (lambda (tag)
+													 (list "|" (car tag))
+													 )
+												 org-tag-persistent-alist))
+								 ))
+				 )
+				(tag-persistent-agenda-views
+				 (mapcar
+					(lambda (tag)
+						`(tags ,(concat "+" (car tag))
+									 ))
+					org-tag-persistent-alist)
+				 )
+				)
+		(setq org-agenda-custom-commands
+					`(
+						("n" "Comprehensive View"
+						 ,(append
+							 '(
+								 (agenda ""
+												 (
+													(org-agenda-span 1)
+													))
+								 )
+							 tag-persistent-agenda-views
+							 `(
+								 (tags-todo
+									,deselect-persistent-tags
+									(
+									 (org-agenda-overriding-header "Remaining TODO items:")
+									 (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))
+									 ))
+								 (stuck "" )
+								 )
+							 ))
+						("p" "Todo items with persistent tags"
+						 tags-tree ,select-persistent-tags
+						 )
+						("u" "Todo items without persistent tags"
+						 tags-tree ,deselect-persistent-tags
+						 )
 						))
+		)
 #+END_SRC
 
 Take up current window when called.
