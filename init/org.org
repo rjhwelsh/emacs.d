@@ -573,6 +573,18 @@ to use the following function.
 		Multiple groups are specified using [[info:elisp#Common%20Keywords][:group]] more than twice.
 
 **** Definitions
+***** Default
+			#+begin_src emacs-lisp
+				(defface org-block
+					'((
+						 ((class color)(min-colors 8))
+						 :background "gray5"
+						 :foreground "DarkGoldenrod3"
+						 ))
+					"Org block color"
+					)
+			#+end_src
+***** Custom
 Define default color face.
 		 #+begin_src emacs-lisp
 			 (defface org-keyword
