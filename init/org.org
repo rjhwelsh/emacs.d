@@ -396,6 +396,22 @@ buffer only.
 											 )
 								))
 						 ))
+
+					(tag-persistent-agenda-commands
+					 (lambda (&optional settings filename exts)
+						 (mapcar
+							(lambda (tag_arr)
+								(let ((tag (car tag_arr)))
+									(append
+									 `(
+										 ,(concat "t" (substring tag 0 1)) ; PREFIX
+										 ,(format "Headlines with TAGS match: %s" tag)) ; DESCRIPTION
+									 (cdr (assoc tag (funcall tag-persistent-agenda-views settings filename exts)))
+									 )
+									))
+							org-tag-persistent-alist
+							))
+					 )
 					)
 
 
