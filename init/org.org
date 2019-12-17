@@ -79,7 +79,7 @@ choose the right browser. I'd like to always use Firefox, so:
   (define-key org-agenda-mode-map "\C-ce" 'rjh/org-tags-expire-agenda)
 		#+end_src
 * Agenda
-** 'TODO' Keywords
+** Keywords
 Workflow states have been taken from gjstein.
 See his guide [[http://cachestocaches.com/2016/9/my-workflow-org-agenda/#][here]].
 	 - todo :: Indicate tasks / projects which need to get done
@@ -101,8 +101,8 @@ For below; make the following notes:
  + /! means LOG timestamp/note when changing *FROM* item also.
 #+BEGIN_SRC emacs-lisp
 	(setq org-todo-keywords
-			'((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-				(sequence "WAITING(w@/!)" "INACTIVE(i)" "|" "CANCELLED(c@/!)" "MEETING")))
+			'((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
+				(sequence "WAITING(w@/!)" "INACTIVE(i)" "|" "CANCELLED(c@/!)" "MEETING(m!)")))
 #+END_SRC
  + org-log-into-drawer LOGS everything into a hidden drawer, so everything looks cleaner.
 #+BEGIN_SRC emacs-lisp
