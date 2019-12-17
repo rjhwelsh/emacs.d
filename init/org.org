@@ -78,7 +78,7 @@ choose the right browser. I'd like to always use Firefox, so:
 		#+begin_src emacs-lisp
   (define-key org-agenda-mode-map "\C-ce" 'rjh/org-tags-expire-agenda)
 		#+end_src
-* Agenda Configuration
+* Agenda
 ** 'TODO' Keywords
 Workflow states have been taken from gjstein.
 See his guide [[http://cachestocaches.com/2016/9/my-workflow-org-agenda/#][here]].
@@ -113,6 +113,40 @@ For group projects, put this at the top of the project line for custom keywords.
 #+BEGIN_EXAMPLE
 #+TYP_TODO: @ROGER(r) @NAME1(1) @NAME2(2) | DONE(d)
 #+END_EXAMPLE
+
+** Views
+Store the list of agenda files in ...
+#+BEGIN_SRC emacs-lisp
+  (setq org-agenda-files "~/.emacs.d/agenda-files" )
+#+END_SRC
+
+Sorting strategy.
+#+BEGIN_SRC emacs-lisp
+	(setq org-agenda-sorting-strategy
+				'((agenda time-up deadline-up scheduled-up todo-state-up category-keep priority-down effort-up tag-up)
+					(todo           deadline-up              todo-state-up category-keep priority-down effort-up tag-up)
+					(tags           deadline-up              todo-state-up category-keep priority-down effort-up tag-up)
+					(search         deadline-up              todo-state-up category-keep priority-down effort-up tag-up)))
+#+END_SRC
+
+Custom agenda views
+#+BEGIN_SRC emacs-lisp
+	(setq org-agenda-custom-commands
+	; General views
+					'(("a" "Agenda for current Week or Day"
+						 ((tags "+ACTION")
+							(agenda "")))
+						("n" "Agenda and all TODOs"
+						 ((tags "+ACTION")
+							(agenda "" ((org-agenda-span 1)))
+							(alltodo "" )))
+						))
+#+END_SRC
+
+Take up current window when called.
+#+BEGIN_SRC emacs-lisp
+(setq org-agenda-window-setup 'current-window)
+#+END_SRC
 
 ** Tags
 Tags represent environmental conditions before a task can be undertaken.
@@ -292,7 +326,6 @@ Generic interactive agenda function.
 	(setq org-lowest-priority ?F)
  #+END_SRC
 
-
 ** Dependencies
 Dependency settings.
 This allows for task blocking/etc.
@@ -300,42 +333,6 @@ This allows for task blocking/etc.
  (setq org-enforce-todo-dependencies t)
  (setq org-agenda-dim-blocked-tasks t)
  (setq org-enforce-todo-checkbox-dependencies nil)
-#+END_SRC
-
-** Agenda
-Store the list of agenda files in ...
-#+BEGIN_SRC emacs-lisp
-  (setq org-agenda-files "~/.emacs.d/agenda-files" )
-#+END_SRC
-
-Sorting strategy.
-#+BEGIN_SRC emacs-lisp
-	(setq org-agenda-sorting-strategy
-				'((agenda time-up deadline-up scheduled-up todo-state-up category-keep priority-down effort-up tag-up)
-					(todo           deadline-up              todo-state-up category-keep priority-down effort-up tag-up)
-					(tags           deadline-up              todo-state-up category-keep priority-down effort-up tag-up)
-					(search         deadline-up              todo-state-up category-keep priority-down effort-up tag-up)))
-#+END_SRC
-
-Custom agenda views
-#+BEGIN_SRC emacs-lisp
-	(setq org-agenda-custom-commands
-	; General views
-					'(("a" "Agenda for current Week or Day"
-						 ((tags "+ACTION")
-							(agenda ""
-						 ((org-agenda-tag-filter-preset
-							 '("-HABIT"))))))
-						("n" "Agenda and all TODOs"
-						 ((tags "+ACTION")
-							(agenda "" ((org-agenda-span 1)))
-							(alltodo "" )))
-						))
-#+END_SRC
-
-Take up current window when called.
-#+BEGIN_SRC emacs-lisp
-(setq org-agenda-window-setup 'current-window)
 #+END_SRC
 
 ** Stuck Projects
@@ -434,7 +431,6 @@ Learning template schedule is as follows:
 |        3 |          | TRIGGER |         |      +15d |
 |        5 |          |         | EXHIBIT |      +30d |
 |        9 |          |         | REVIEW  |      +58d |
-
 
 ** Refile
 Refiling list.
@@ -575,7 +571,6 @@ to use the following function.
 	;; 										 :weight extra-bold)))
 	;; 							 'face-defface-spec)
 #+END_SRC
-
 
 *** Keyword faces
 These define faces for todo keywords.
