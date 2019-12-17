@@ -276,10 +276,10 @@ Store the list of agenda files in ...
 Sorting strategy.
 #+BEGIN_SRC emacs-lisp
 	(setq org-agenda-sorting-strategy
-				'((agenda time-up deadline-up scheduled-up todo-state-up category-keep priority-down effort-up tag-up)
-					(todo           deadline-up              todo-state-up category-keep priority-down effort-up tag-up)
-					(tags           deadline-up              todo-state-up category-keep priority-down effort-up tag-up)
-					(search         deadline-up              todo-state-up category-keep priority-down effort-up tag-up)))
+				'((agenda time-up deadline-up scheduled-up todo-state-down category-keep              priority-down effort-up tag-up)
+					(todo                                    todo-state-down category-keep  deadline-up priority-down effort-up tag-up)
+					(tags                                    todo-state-down category-keep  deadline-up priority-down effort-up tag-up)
+					(search         deadline-up              todo-state-down category-keep              priority-down effort-up tag-up)))
 #+END_SRC
 
 Custom agenda view.
