@@ -593,6 +593,7 @@ Define default color face.
 						:weight extra-bold
 						:box (
 									:style released-button )
+		        :inherit (org-todo org-tag org-level-3)
 						))
 				 "Org base face for todo keywords and tags"
 				 :group 'tag-faces :group 'todo-faces
