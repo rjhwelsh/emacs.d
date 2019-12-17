@@ -168,14 +168,14 @@ See =org-tag-alist= for more details.
 
 #+begin_src emacs-lisp
 	(setq org-tag-persistent-alist
-				'(("PROJECT" )
+				'(("NEW"     )
 					("ACTION"	 )
 					("FLAGGED" )
 					("VERIFY"	 )
 					("DELEGATE")
-					("WAITING" )
 					("EXPAND"	 )
-					("NEW"     )
+					("WAITING" )
+					("PROJECT" )
 					))
 #+end_src
 *** Exclude tags from inheritance
