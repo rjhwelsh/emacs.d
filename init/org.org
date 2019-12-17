@@ -322,6 +322,17 @@ buffer only.
 												 org-tag-persistent-alist))
 								 ))
 				 )
+				(filename-to-export-views
+				 (lambda (filename exts)
+					 (mapcar
+						(lambda (x)
+						(expand-file-name
+							(concat filename "." x)
+							org-directory
+							))
+						exts)
+					 )
+				 )
 				(tag-persistent-agenda-views
 				 (lambda (&optional settings)
 					 (mapcar
