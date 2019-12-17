@@ -430,17 +430,16 @@ buffer only.
 						 `(
 							 ("n" "Full View"
 								,(funcall full-view nil "agenda/" '("ps" "html"))
-								nil
+								((ps-number-of-columns 1)
+								 (ps-landscape-mode t))
 								,(funcall filename-to-export-views "agenda/full" '("ps" "html"))
 								)
 							 ("s" "Summary View"
 								,(funcall full-view)
-								(
-								 (org-agenda-remove-tags t)
+								((org-agenda-remove-tags t)
 								 (ps-number-of-columns 2)
 								 (ps-landscape-mode t)
-								 (org-agenda-prefix-format "[ ] %?-12t%?-12s%:c")
-								 )
+								 (org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
 								,(funcall filename-to-export-views "agenda/summary" '("ps" "html"))
 								)
 							 ("p" "Todo items with persistent tags"
@@ -451,13 +450,28 @@ buffer only.
 								tags-tree ,deselect-persistent-tags
 								'((org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline)))
 								)
-							 ("t" . "Todo items with specific persistent tags")
-							 ("A" "Agenda View" . ,(funcall agenda-view '((org-agenda-span 1)) "agenda/agenda" '("ps" "html")))
-							 ("O" "Other tags (EXPORT)" . ,(funcall other-tags-view nil "agenda/tag/OTHER" '("ps" "html")))
-							 ("S" "Stuck projects (EXPORT)" . ,(funcall stuck-view nil "agenda/stuck" '("ps" "html")))
+							 ("A" "Agenda View" . ,(funcall agenda-view
+																							'((org-agenda-span 1)
+																								(org-agenda-remove-tags t)
+																								(ps-number-of-columns 1))
+																							"agenda/agenda"
+																							'("ps" "html")))
+							 ("O" "Other tags (EXPORT)" . ,(funcall other-tags-view
+																											'((ps-number-of-columns 1)
+																												(org-agenda-remove-tags t))
+																											"agenda/tag/OTHER"
+																											'("ps" "html")))
+							 ("S" "Stuck projects (EXPORT)" . ,(funcall stuck-view
+																													'((ps-number-of-columns 1)
+																														(org-agenda-remove-tags t))
+																													"agenda/stuck"
+																													'("ps" "html")))
+							 ("t" . "Todo items with specific persistent tags") ; See tag-persistent-agenda-commands below
 							 )
 						 (funcall tag-persistent-agenda-commands
-											'((org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline)))
+											'((org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))
+												(ps-number-of-columns 1)
+												(org-agenda-remove-tags t))
 											"agenda/tag/"
 											'("ps" "html"))
 						 ))
