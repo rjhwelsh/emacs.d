@@ -385,6 +385,16 @@ buffer only.
 						 nil
 						 nil
 						 )
+						("s" "Summary View"
+						 ,(funcall full-view)
+						 (
+							(org-agenda-remove-tags t)
+							(ps-number-of-columns 2)
+							(ps-landscape-mode t)
+							(org-agenda-prefix-format "[ ] %?-12t%?-12s%:c")
+							)
+						 ,(funcall filename-to-export-views "agenda/summary" '("ps" "html"))
+						 )
 						("p" "Todo items with persistent tags"
 						 tags-tree ,select-persistent-tags
 						 )
