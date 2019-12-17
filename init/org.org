@@ -160,12 +160,12 @@ IF <tag1> AND <tag2> AND ... THEN <task>
 Tags should not be inherited by sub-tasks.
 Sub-tasks should differentiate work dependencies only.
 
-*** Default Tag list
+*** Default tags
 See =org-tag-alist= for more details.
 #+BEGIN_SRC emacs-lisp
 	(setq org-tag-alist '())
 #+END_SRC
-
+*** Persistent tags
 #+begin_src emacs-lisp
 	(setq org-tag-persistent-alist
 				'(("NEW"     )
@@ -178,6 +178,7 @@ See =org-tag-alist= for more details.
 					("PROJECT" )
 					))
 #+end_src
+
 *** Tag inheritance
 Inherit all tags.
 #+BEGIN_SRC emacs-lisp
