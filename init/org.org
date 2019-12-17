@@ -178,24 +178,15 @@ See =org-tag-alist= for more details.
 					("PROJECT" )
 					))
 #+end_src
-*** Exclude tags from inheritance
-Exclude all tags from inheritance, unless they start with a #.
+*** Tag inheritance
+Inherit all tags.
 #+BEGIN_SRC emacs-lisp
-(setq org-use-tag-inheritance "^#.*")
+(setq org-use-tag-inheritance t)
 #+END_SRC
-
-This *example* will exclude a select list of tags from being inherited, where
-inheritance is enabled.
-#+BEGIN_EXAMPLE emacs-lisp
-(setq org-tags-exclude-from-inheritance '("ACTION"))
-#+END_EXAMPLE
 
 This will exclude all tags from =org-tag-persistent-alist= from being inherited.
 #+BEGIN_SRC emacs-lisp
-(setq org-tags-exclude-from-inheritance
-	(let (newlist '())
-		(dolist (element org-tag-persistent-alist newlist)
-			(push (car element) newlist))))
+(setq org-tags-exclude-from-inheritance (mapcar 'car org-tag-persistent-alist))
 #+END_SRC
 
 *** Functions to expire tags
