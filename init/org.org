@@ -326,6 +326,9 @@ buffer only.
 				 (mapcar
 					(lambda (tag)
 						`(tags ,(concat "+" (car tag))
+									 (
+										(org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))
+									 )
 									 ))
 					org-tag-persistent-alist)
 				 )
