@@ -416,30 +416,41 @@ buffer only.
 
 
 			(setq org-agenda-custom-commands
-						`(
-							("n" "Full View"
-							 ,(funcall full-view nil "agenda/" '("ps" "html"))
-							 nil
-							 ,(funcall filename-to-export-views "agenda/full" '("ps" "html"))
-							 )
-							("s" "Summary View"
-							 ,(funcall full-view)
-							 (
-								(org-agenda-remove-tags t)
-								(ps-number-of-columns 2)
-								(ps-landscape-mode t)
-								(org-agenda-prefix-format "[ ] %?-12t%?-12s%:c")
+						(append
+						 `(
+							 ("n" "Full View"
+								,(funcall full-view nil "agenda/" '("ps" "html"))
+								nil
+								,(funcall filename-to-export-views "agenda/full" '("ps" "html"))
 								)
-							 ,(funcall filename-to-export-views "agenda/summary" '("ps" "html"))
+							 ("s" "Summary View"
+								,(funcall full-view)
+								(
+								 (org-agenda-remove-tags t)
+								 (ps-number-of-columns 2)
+								 (ps-landscape-mode t)
+								 (org-agenda-prefix-format "[ ] %?-12t%?-12s%:c")
+								 )
+								,(funcall filename-to-export-views "agenda/summary" '("ps" "html"))
+								)
+							 ("p" "Todo items with persistent tags"
+								tags-tree ,select-persistent-tags
+								'((org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline)))
+								)
+							 ("u" "Todo items without persistent tags"
+								tags-tree ,deselect-persistent-tags
+								'((org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline)))
+								)
+							 ("t" . "Todo items with specific persistent tags")
 							 )
-							("p" "Todo items with persistent tags"
-							 tags-tree ,select-persistent-tags
-							 )
-							("u" "Todo items without persistent tags"
-							 tags-tree ,deselect-persistent-tags
-							 )
-							))
+						 (funcall tag-persistent-agenda-commands
+											'((org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline)))
+											"tag_"
+											'("ps" "html"))
+
+						 ))
 			))
+
 #+END_SRC
 
 Take up current window when called.
