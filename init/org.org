@@ -353,7 +353,7 @@ buffer only.
 					(agenda-view
 					 (lambda (&optional settings filename exts)
 						 `(agenda "" ,settings
-											,(funcall filename-to-export-views (concat filename "agenda") exts))
+											,(funcall filename-to-export-views filename exts))
 						 ))
 
 					(other-tags-view
@@ -367,7 +367,7 @@ buffer only.
 									 )
 								 settings
 								 )
-							 ,(funcall filename-to-export-views (concat filename "tag_OTHER") exts)
+							 ,(funcall filename-to-export-views filename exts)
 							 )
 						 ))
 
@@ -375,7 +375,7 @@ buffer only.
 					 (lambda (&optional settings filename exts)
 						 `(stuck ""
 										 ,settings
-										 ,(funcall filename-to-export-views (concat filename "stuck") exts)
+										 ,(funcall filename-to-export-views filename exts)
 										 )
 						 ))
 
@@ -390,7 +390,7 @@ buffer only.
 							`(
 								,(funcall agenda-view
 													(append settings '((org-agenda-span 1)))
-													filename exts))
+													(concat filename "agenda") exts))
 							(mapcar 'cdr
 											(funcall tag-persistent-agenda-views
 															 (append
@@ -402,8 +402,8 @@ buffer only.
 															 (concat filename "tag_")
 															 exts))
 							`(
-								,(funcall other-tags-view settings filename exts)
-								,(funcall stuck-view settings filename exts)
+								,(funcall other-tags-view settings (concat filename "tag_OTHER") exts)
+								,(funcall stuck-view settings (concat filename "stuck") exts)
 								))
 						 ))
 
@@ -452,13 +452,13 @@ buffer only.
 								'((org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline)))
 								)
 							 ("t" . "Todo items with specific persistent tags")
-							 ("A" "Agenda View" . ,(funcall agenda-view '((org-agenda-span 1)) "agenda/" '("ps" "html")))
-							 ("O" "Other tags (EXPORT)" . ,(funcall other-tags-view nil "agenda/" '("ps" "html")))
-							 ("S" "Stuck projects (EXPORT)" . ,(funcall stuck-view nil "agenda/" '("ps" "html")))
+							 ("A" "Agenda View" . ,(funcall agenda-view '((org-agenda-span 1)) "agenda/agenda" '("ps" "html")))
+							 ("O" "Other tags (EXPORT)" . ,(funcall other-tags-view nil "agenda/tag/OTHER" '("ps" "html")))
+							 ("S" "Stuck projects (EXPORT)" . ,(funcall stuck-view nil "agenda/stuck" '("ps" "html")))
 							 )
 						 (funcall tag-persistent-agenda-commands
 											'((org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline)))
-											"tag_"
+											"agenda/tag/"
 											'("ps" "html"))
 						 ))
 			))
