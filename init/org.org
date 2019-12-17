@@ -453,17 +453,20 @@ buffer only.
 							 ("A" "Agenda View" . ,(funcall agenda-view
 																							'((org-agenda-span 1)
 																								(org-agenda-remove-tags t)
-																								(ps-number-of-columns 1))
+																								(ps-number-of-columns 1)
+																								(org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
 																							"agenda/agenda"
 																							'("ps" "html")))
 							 ("O" "Other tags (EXPORT)" . ,(funcall other-tags-view
 																											'((ps-number-of-columns 1)
-																												(org-agenda-remove-tags t))
+																												(org-agenda-remove-tags t)
+																												(org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
 																											"agenda/tag/OTHER"
 																											'("ps" "html")))
 							 ("S" "Stuck projects (EXPORT)" . ,(funcall stuck-view
 																													'((ps-number-of-columns 1)
-																														(org-agenda-remove-tags t))
+																														(org-agenda-remove-tags t)
+																														(org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
 																													"agenda/stuck"
 																													'("ps" "html")))
 							 ("t" . "Todo items with specific persistent tags") ; See tag-persistent-agenda-commands below
@@ -471,7 +474,8 @@ buffer only.
 						 (funcall tag-persistent-agenda-commands
 											'((org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))
 												(ps-number-of-columns 1)
-												(org-agenda-remove-tags t))
+												(org-agenda-remove-tags t)
+												(org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
 											"agenda/tag/"
 											'("ps" "html"))
 						 ))
