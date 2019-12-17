@@ -311,6 +311,7 @@ buffer only.
 					 org-tag-persistent-alist)
 					)
 				 )
+
 				(select-persistent-tags
 				 (apply 'concat
 								(cdr
@@ -322,6 +323,7 @@ buffer only.
 												 org-tag-persistent-alist))
 								 ))
 				 )
+
 				(filename-to-export-views
 				 (lambda (filename exts)
 					 (mapcar
@@ -340,13 +342,14 @@ buffer only.
 					 (lambda (&optional settings filename exts)
 						 (mapcar
 							(lambda (tag)
-								`(tags
-									,(concat "+" (car tag))
-									,settings
-									,(funcall filename-to-export-views (concat filename (car tag)) exts)
-									))
+								`(,(car tag) . (tags
+																,(concat "+" (car tag))
+																,settings
+																,(funcall filename-to-export-views (concat filename (car tag)) exts)
+																)))
 							org-tag-persistent-alist))
 					 )
+
 					(full-view
 					 (lambda
 						 (&optional
@@ -363,17 +366,18 @@ buffer only.
 														)
 													settings
 													)
-								,(funcall filename-to-export-views (concat filename "agenda") exts)
-								))
-							(funcall tag-persistent-agenda-views
-											 (append
-												'(
-													(org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))
-													)
-												settings
-												)
-											 (concat filename "tag_")
-											 exts)
+												,(funcall filename-to-export-views (concat filename "agenda") exts)
+												))
+							(mapcar 'cdr
+											(funcall tag-persistent-agenda-views
+															 (append
+																'(
+																	(org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))
+																	)
+																settings
+																)
+															 (concat filename "tag_")
+															 exts))
 							`(
 								(tags-todo
 								 ,deselect-persistent-tags
