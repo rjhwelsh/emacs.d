@@ -205,7 +205,7 @@ facilitate better short-term planning and turnover.
 
  Expiration tags.
  #+BEGIN_SRC emacs-lisp
-	 (setq rjh/org-tags-expiration-tags '("NEW" "ACTION"))
+	 (setq rjh/org-tags-expiration-tags (mapcar 'car org-tag-persistent-alist))
  #+END_SRC
 
  Generic interactive function.
