@@ -268,11 +268,12 @@ Generic interactive agenda function.
 #+END_SRC
 
 ** Views
+*** Agenda Files
 Store the list of agenda files in ...
 #+BEGIN_SRC emacs-lisp
   (setq org-agenda-files "~/.emacs.d/agenda-files" )
 #+END_SRC
-
+*** Sorting Strategy
 Sorting strategy.
 #+BEGIN_SRC emacs-lisp
 	(setq org-agenda-sorting-strategy
@@ -281,7 +282,7 @@ Sorting strategy.
 					(tags                                    todo-state-down category-keep  deadline-up priority-down effort-up tag-up)
 					(search         deadline-up              todo-state-down category-keep              priority-down effort-up tag-up)))
 #+END_SRC
-
+*** Agenda Default Prefix
 Prefix format
 #+begin_src emacs-lisp
 	(setq org-agenda-prefix-format
@@ -292,7 +293,7 @@ Prefix format
 				)
 #+end_src
 
-Custom agenda view.
+*** Custom Agenda View
 NB =`= backquote allows evaluation of selected element in the quoted list.
 =,= is used to indicate items to be evaluated.
 
@@ -494,7 +495,7 @@ buffer only.
 			))
 
 #+END_SRC
-
+*** Agenda Window
 Take up current window when called.
 #+BEGIN_SRC emacs-lisp
 (setq org-agenda-window-setup 'current-window)
