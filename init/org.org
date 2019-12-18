@@ -457,6 +457,18 @@ buffer only.
 																								(org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
 																							"agenda/agenda"
 																							'("ps" "html")))
+
+							 ("Y" "Year Agenda View (ICS)" agenda ""
+																										 ((org-agenda-span 366)
+																											 (org-agenda-remove-tags t)
+																											 (ps-number-of-columns 1)
+																											 (org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
+
+																										 ,(funcall filename-to-export-views
+																															 "agenda/agenda"
+																															 '("ics"))
+																										 )
+
 							 ("O" "Other tags (EXPORT)" . ,(funcall other-tags-view
 																											'((ps-number-of-columns 1)
 																												(org-agenda-remove-tags t)
