@@ -500,6 +500,13 @@ Take up current window when called.
 #+BEGIN_SRC emacs-lisp
 (setq org-agenda-window-setup 'current-window)
 #+END_SRC
+*** Icalendar
+		#+begin_src emacs-lisp
+			(setq org-icalendar-use-scheduled '(event-if-todo)
+				org-icalendar-use-deadline  '(event-if-todo todo-due)
+				org-icalendar-alarm-time 40
+				)
+		#+end_src
 
 ** Priorities
 *** Keys
