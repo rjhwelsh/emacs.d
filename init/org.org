@@ -134,14 +134,16 @@ See =org-tag-alist= for more details.
 *** Persistent tags
 #+begin_src emacs-lisp
 	(setq org-tag-persistent-alist
-				'(("NEW"     )
-					("ACTION"	 )
-					("FLAGGED" )
-					("VERIFY"	 )
-					("DELEGATE")
-					("EXPAND"	 )
-					("WAITING" )
-					("PROJECT" )
+				'(("NEW"      )
+					("REFILE"   )
+					("ACTION"	  )
+					("FLAGGED"  )
+					("VERIFY"	  )
+					("DELEGATE" )
+					("EXPAND"	  )
+					("WAITING"  )
+					("PROJECT"  )
+					("NOARCHIVE")
 					))
 #+end_src
 
@@ -872,7 +874,9 @@ Define default color face.
 #+BEGIN_SRC emacs-lisp
 	(setq org-tag-faces
 				'(("PROJECT" . org-black)
+					("REFILE" . org-black)
 					("ACTION" . org-red)
+					("NOARCHIVE" . org-red)
 					("FLAGGED" . org-orange)
 					("VERIFY" . org-yellow)
 					("DELEGATE" . org-green)
