@@ -313,13 +313,13 @@ Prefix format
 												(this-month (format-time-string "%Y-%m-" (current-time)))
 												(subtree-is-current (save-excursion
 																							(forward-line 1)
-																							(and (< (point) subtree-end)
+																							(and ( < (point) subtree-end) ; This line is causing a bracket mismatch
 																									 (re-search-forward (concat last-month "\\|" this-month) subtree-end t)))))
 									 (if subtree-is-current
 											 subtree-end ; Has a date in this month or last month, skip it
 										 nil))  ; available to archive
 							 (or subtree-end (point-max)))
-					 next-headline)))))
+					 next-headline))))
 	 #+END_SRC
 
 *** Custom Agenda View
