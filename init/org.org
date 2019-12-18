@@ -839,13 +839,13 @@ Define default color face.
 *** Keywords
 #+BEGIN_SRC emacs-lisp
 	(setq org-todo-keyword-faces
-				'(("TODO" .      org-red)
-					("NEXT" .      org-blue)
+				'(("TODO" .      org-orange)
+					("NEXT" .      org-red)
 					("DONE" .      org-green)
 					("WAITING" .   org-cyan)
-					("INACTIVE" .  org-blue)
-					("CANCELLED" . org-yellow)
-					("MEETING" .   org-orange)
+					("INACTIVE" .  org-yellow)
+					("CANCELLED" . org-magenta)
+					("MEETING" .   org-blue)
 					))
 #+END_SRC
 *** Tags
