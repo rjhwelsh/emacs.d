@@ -623,7 +623,7 @@ The default location is set below.
 This archives items under the heading called =* Archive= in the same file.
 
 #+BEGIN_SRC emacs-lisp
-(setq org-archive-location "%s_archive::" )
+(setq org-archive-location ".%s_archive::" )
 #+END_SRC
 
 *Note*
