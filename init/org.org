@@ -332,7 +332,6 @@ Prefix format
 							 (or subtree-end (point-max)))
 					 next-headline))))
 	 #+END_SRC
-
 *** Custom Agenda View
 NB =`= backquote allows evaluation of selected element in the quoted list.
 =,= is used to indicate items to be evaluated.
@@ -404,7 +403,7 @@ buffer only.
 							 ,(append
 								 '(
 									 (org-agenda-overriding-header "Remaining TODO items:")
-									 (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))
+									 (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp 'todo 'done))
 									 )
 								 settings
 								 )
@@ -436,7 +435,7 @@ buffer only.
 											(funcall tag-persistent-agenda-views
 															 (append
 																'(
-																	(org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))
+																	(org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp 'todo 'done))
 																	)
 																settings
 																)
@@ -485,11 +484,11 @@ buffer only.
 								)
 							 ("p" "Todo items with persistent tags"
 								tags-tree ,select-persistent-tags
-								'((org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline)))
+								'((org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp 'todo 'done)))
 								)
 							 ("u" "Todo items without persistent tags"
 								tags-tree ,deselect-persistent-tags
-								'((org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline)))
+								'((org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp 'todo 'done)))
 								)
 							 ("A" "Agenda View" . ,(funcall agenda-view
 																							'((org-agenda-span 1)
@@ -530,7 +529,7 @@ buffer only.
 								)
 							 )
 						 (funcall tag-persistent-agenda-commands
-											'((org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))
+											'((org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp 'todo 'done))
 												(ps-number-of-columns 1)
 												(org-agenda-remove-tags t)
 												(org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
