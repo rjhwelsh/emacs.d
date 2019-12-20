@@ -485,13 +485,9 @@ buffer only.
 								,(funcall filename-to-export-views "agenda/summary" '("ps" "html"))
 								)
 							 ("p" "Todo items with persistent tags"
-								tags-tree ,select-persistent-tags
-								'((org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp 'todo 'done)))
-								)
+								tags-tree ,select-persistent-tags)
 							 ("u" "Todo items without persistent tags"
-								tags-tree ,deselect-persistent-tags
-								'((org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp 'todo 'done)))
-								)
+								tags-tree ,deselect-persistent-tags)
 							 ("A" "Agenda View" . ,(funcall agenda-view
 																							'((org-agenda-span 1)
 																								(org-agenda-remove-tags t)
