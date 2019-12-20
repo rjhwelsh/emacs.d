@@ -527,7 +527,7 @@ buffer only.
 								)
 							 )
 						 (funcall tag-persistent-agenda-commands
-											'((org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp 'todo 'done))
+											'((org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp 'nottodo 'todo))
 												(ps-number-of-columns 1)
 												(org-agenda-remove-tags t)
 												(org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
