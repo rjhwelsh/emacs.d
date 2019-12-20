@@ -381,8 +381,6 @@ buffer only.
 						exts)
 					 )
 				 )
-
-				(default-skip-function '(org-agenda-skip-entry-if 'timestamp 'todo 'done))
 				)
 
 		(let (
