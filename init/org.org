@@ -437,7 +437,7 @@ buffer only.
 											(funcall tag-persistent-agenda-views
 															 (append
 																'(
-																	(org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp 'todo 'done))
+																	(org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp 'nottodo 'todo))
 																	)
 																settings
 																)
