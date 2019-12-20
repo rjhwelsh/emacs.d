@@ -523,7 +523,7 @@ buffer only.
 																														(org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
 																													"agenda/stuck"
 																													'("ps" "html")))
-							 ("t" . "Todo items with specific persistent tags") ; See tag-persistent-agenda-commands below
+							 ("T" . "Todo items with specific persistent tags") ; See tag-persistent-agenda-commands below
 							 ("X" "Tasks to Archive" tags ,deselect-persistent-tags
 								((org-agenda-overriding-header "Tasks to Archive")
 								 (org-agenda-skip-function 'bh/skip-non-archivable-tasks)
