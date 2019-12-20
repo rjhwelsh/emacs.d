@@ -295,6 +295,17 @@ Prefix format
 				)
 #+end_src
 *** Agenda Skip Functions
+**** built-in
+ - =(org-agenda-skip-entry-if &rest CONDITIONS)= :: Skip if any of the CONDITIONS
+   are true
+	 - ='scheduled= :: Entry has a scheduled time.
+	 - ='deadline= :: Entry has a deadline.
+   - ='timestamp= :: Entry has any timestamp (including deadline or scheduled)
+	 - ='todo= :: Entry todo keyword matches (accepts as argument a list of todo keywords)
+		 - ='("TODO" "DONE")= :: Matches any of TODO or DONE.
+		 - ='done= :: Matches keyword class 'done
+		 - ='todo= :: Matches keyword class 'todo
+
 **** Skip non archive-able tasks
 	 A function for skipping non-archive-able tasks in the agenda-view from Bernt Hansen.
 	 #+BEGIN_SRC emacs-lisp
