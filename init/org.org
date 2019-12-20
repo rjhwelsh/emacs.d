@@ -470,7 +470,7 @@ buffer only.
 			(setq org-agenda-custom-commands
 						(append
 						 `(
-							 ("n" "Full View"
+							 ("n" "Active View"
 								,(funcall full-view nil "agenda/" '("ps" "html"))
 								((ps-number-of-columns 1)
 								 (ps-landscape-mode t))
