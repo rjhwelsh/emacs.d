@@ -295,6 +295,12 @@ Prefix format
 				)
 #+end_src
 *** Agenda Skip Functions
+
+**** Default
+		 #+begin_src emacs-lisp
+		 (setq org-agenda-skip-function-global nil)
+		 (setq org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo 'todo))
+		 #+end_src
 **** built-in
  - =(org-agenda-skip-entry-if &rest CONDITIONS)= :: Skip if any of the CONDITIONS
    are true
