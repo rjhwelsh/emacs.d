@@ -718,11 +718,30 @@ See [[https://www.ledger-cli.org/3.0/doc/ledger-mode.html][here]] for more detai
 #+END_SRC
 
 * Email
+
+** Message-mode
+Message-mode for emails.
+#+begin_src emacs-lisp
+	(require 'message)
+	(setq mail-header-separator "")
+	(add-hook 'message-mode-hook 'turn-on-auto-fill)
+#+end_src
+
+*** Keybinding
+Quick save and exit.
+#+begin_src emacs-lisp
+	(define-key message-mode-map (kbd "C-c C-c")
+		'(lambda ()
+			 "save and exit quickly"
+			 (interactive)
+			 (save-buffer)
+			 (server-edit)))
+#+end_src
+
 ** Mutt
- This file provides integration with mutt.
- For more see [[file:config/mutt.org][mutt.org]]
+	 [[https://www.emacswiki.org/emacs/MuttInEmacs][MuttInEmacs]] assisted in creating this configuration.
  #+BEGIN_SRC emacs-lisp
-	 (rjh/load-init "mutt.org")
+	 (add-to-list 'auto-mode-alist '(".*mutt.*-[0-9-]*" . message-mode))
  #+END_SRC
 
 ** Address-book
