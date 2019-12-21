@@ -717,71 +717,72 @@ See [[https://www.ledger-cli.org/3.0/doc/ledger-mode.html][here]] for more detai
 		)
 #+END_SRC
 
-* Mutt
-This file provides integration with mutt.
-For more see [[file:config/mutt.org][mutt.org]]
-#+BEGIN_SRC emacs-lisp
-	(rjh/load-init "mutt.org")
-#+END_SRC
+* Email
+** Mutt
+ This file provides integration with mutt.
+ For more see [[file:config/mutt.org][mutt.org]]
+ #+BEGIN_SRC emacs-lisp
+	 (rjh/load-init "mutt.org")
+ #+END_SRC
 
-* Address-book
-BBDB, The insidious big brother database.
-#+BEGIN_SRC emacs-lisp
-	(use-package bbdb :defer t
-		:ensure t
-		:init
-		(require 'bbdb)
-		(setq bbdb-file "~/.bbdb/bbdb"
-					bbdb-phone-style nil)
-		(bbdb-initialize 'message)
-		(bbdb-insinuate-message)
-		)
-#+END_SRC
+** Address-book
+ BBDB, The insidious big brother database.
+ #+BEGIN_SRC emacs-lisp
+	 (use-package bbdb :defer t
+		 :ensure t
+		 :init
+		 (require 'bbdb)
+		 (setq bbdb-file "~/.bbdb/bbdb"
+					 bbdb-phone-style nil)
+		 (bbdb-initialize 'message)
+		 (bbdb-insinuate-message)
+		 )
+ #+END_SRC
 
-BBDB vcard import/export.
-Use =bbdb-vcard-import-file= to import a vcard file.
-And =bbdb-vcard-export-file= to export a vcard file.
-#+BEGIN_SRC emacs-lisp
-	(use-package bbdb-vcard :defer t
-	  :requires bbdb
-		:ensure t
-		:init
-		(require 'bbdb-vcard)
-		(setq bbdb-vcard-directory "~/.bbdb"))
-#+END_SRC
+ BBDB vcard import/export.
+ Use =bbdb-vcard-import-file= to import a vcard file.
+ And =bbdb-vcard-export-file= to export a vcard file.
+ #+BEGIN_SRC emacs-lisp
+	 (use-package bbdb-vcard :defer t
+	   :requires bbdb
+		 :ensure t
+		 :init
+		 (require 'bbdb-vcard)
+		 (setq bbdb-vcard-directory "~/.bbdb"))
+ #+END_SRC
 
-* Calendar
- Calfw - The pretty Calendar
-For more information see the configuration file, [[file:config/calfw.org][calfw.org]].
-	#+BEGIN_SRC emacs-lisp
-		(use-package "calfw" :defer t
-			:ensure t
-			:init
-			(rjh/load-init "calfw.org")
-			:bind ("C-x a c" . rjh/two-week-view))
+** Calendar
+	Calfw - The pretty Calendar
+ For more information see the configuration file, [[file:config/calfw.org][calfw.org]].
+	 #+BEGIN_SRC emacs-lisp
+		 (use-package "calfw" :defer t
+			 :ensure t
+			 :init
+			 (rjh/load-init "calfw.org")
+			 :bind ("C-x a c" . rjh/two-week-view))
 
-		(use-package "calfw-org" :defer t
-			:ensure t
-			:init
-			(require 'calfw-org)
-			(setq cfw:org-overwrite-default-keybinding t)) ;; Org-mode like keybindings
+		 (use-package "calfw-org" :defer t
+			 :ensure t
+			 :init
+			 (require 'calfw-org)
+			 (setq cfw:org-overwrite-default-keybinding t)) ;; Org-mode like keybindings
 
-		(use-package "calfw-ical" :defer t
-			:ensure t
-			:init
-			(require 'calfw-ical))
+		 (use-package "calfw-ical" :defer t
+			 :ensure t
+			 :init
+			 (require 'calfw-ical))
 
-		(use-package "calfw-cal" :defer t
-			:ensure t
-			:init
-			(require 'calfw-cal))
-	#+END_SRC
+		 (use-package "calfw-cal" :defer t
+			 :ensure t
+			 :init
+			 (require 'calfw-cal))
+	 #+END_SRC
 
-Diary mode configuration.
-For more details see [[file:config/diary.org][diary.org]].
-#+BEGIN_SRC emacs-lisp
-	(rjh/load-init "diary.org")
-#+END_SRC
+ Diary mode configuration.
+ For more details see [[file:config/diary.org][diary.org]].
+ #+BEGIN_SRC emacs-lisp
+	 (rjh/load-init "diary.org")
+ #+END_SRC
 
 * Emacs lisp
 An api for working with files in Emacs lisp.
