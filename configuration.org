@@ -750,6 +750,8 @@ Send mail through emacs smtp client.
 Emacs will look credentials up in =$HOME/.authinfo.gpg=.
 
 ** Mu4e
+Enter mu4e with =M-x mu4e=.
+
 Add installed mu emacs site-lisp to load-path.
 	 #+begin_src emacs-lisp
 		 (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu")
