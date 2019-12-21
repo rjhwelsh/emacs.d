@@ -46,6 +46,13 @@ Set mail folder defaults (cross-application)
 		(setq rjh/refile-folder "/refile")
 		(setq rjh/trash-folder "/trash")
 	#+end_src
+
+Blank SMTP settings.
+#+begin_src emacs-lisp
+	(smtpmail-default-smtp-server . "") ; SMTP server
+	(smtpmail-smtp-server         . "") ; SMTP server
+	(smtpmail-smtp-service        . ) ; Port number
+#+end_src
 * Url-browser
 Set your default browser here.
 #+BEGIN_SRC emacs-lisp
