@@ -37,6 +37,15 @@ Personal contact information:
 			)
 #+END_SRC
 
+* Email
+Set mail folder defaults (cross-application)
+	#+begin_src emacs-lisp
+		(setq rjh/maildir "~/.mail")
+		(setq rjh/sent-folder "/sent")
+		(setq rjh/drafts-folder "/drafts")
+		(setq rjh/refile-folder "/refile")
+		(setq rjh/trash-folder "/trash")
+	#+end_src
 * Url-browser
 Set your default browser here.
 #+BEGIN_SRC emacs-lisp
