@@ -381,6 +381,8 @@ buffer only.
 						exts)
 					 )
 				 )
+
+				(persistent-tag-prefix-key "P")
 				)
 
 		(let (
@@ -464,7 +466,7 @@ buffer only.
 								(let ((tag (car tag_arr)))
 									(append
 									 `(
-										 ,(concat "t" (substring tag 0 1)) ; PREFIX
+										 ,(concat persistent-tag-prefix-key (substring tag 0 1)) ; PREFIX
 										 ,(format "Headlines with TAGS match: %s" tag)) ; DESCRIPTION
 									 (cdr (assoc tag (funcall tag-persistent-agenda-views settings filename exts)))
 									 )
@@ -530,7 +532,7 @@ buffer only.
 																														(org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
 																													"agenda/stuck"
 																													'("ps" "html")))
-							 ("T" . "Todo items with specific persistent tags") ; See tag-persistent-agenda-commands below
+							 ("P" . "Todo items with specific persistent tag") ; See tag-persistent-agenda-commands below
 							 ("X" "Tasks to Archive" tags ,deselect-persistent-tags
 								((org-agenda-overriding-header "Tasks to Archive")
 								 (org-agenda-skip-function 'bh/skip-non-archivable-tasks)
