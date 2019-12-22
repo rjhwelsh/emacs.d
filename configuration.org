@@ -644,6 +644,17 @@ Assign todo kwd NEXT; to the next sibling headline which is a todo entry.
 	#+END_SRC
 
 *** C                                                                 :C:Cpp:
+**** Compile command
+Setup to compile standalone c programs.
+#+begin_src emacs-lisp
+	(setq compile-command '(concat
+													"cc "
+													(buffer-file-name)
+													" -o "
+													(file-name-base (buffer-file-name))
+												  ".out"
+													))
+#+end_src
 **** Rtags
 		This configuration is taken from [[http://martinsosic.com/development/emacs/2017/12/09/emacs-cpp-ide.html][Martin Sosic]].
 		https://github.com/Andersbakken/rtags
