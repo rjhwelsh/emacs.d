@@ -163,6 +163,7 @@ Some example properties to set:
 	 - scheduled!("++1d") :: Schedule 1 day from now
 	 - scheduled!("++30M") :: Schedule 30 minutes from now
 	 - todo!(NEXT) :: Assign todo kwd NEXT
+	 - tag!("ACTION") :: Assign tag ACTION
 	 - clock-in! :: Clock in
  - Blockers :: Use the :BLOCKER: property
  - Blocker States
