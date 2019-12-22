@@ -966,6 +966,40 @@ Kill messages on exit
 	(setq message-kill-buffer-on-exit t)
 #+end_src
 
+Some additional options gained from [[https://github.com/munen/emacs.d/#mu4e][here]].
+Prefer plain text for viewing emails. Always.
+#+begin_src emacs-lisp
+	(setq mu4e-view-html-plaintext-ratio-heuristic most-positive-fixnum)
+#+end_src
+
+Show full addresses in view message.
+#+begin_src emacs-lisp
+	(setq mu4e-view-show-addresses t)
+#+end_src
+
+Add an option to view in browser.
+#+begin_src emacs-lisp
+	(require 'mu4e-contrib)
+	(setq mu4e-html2text-command 'mu4e-shr2text)
+	;;(setq mu4e-html2text-command "iconv -c -t utf-8 | pandoc -f html -t plain")
+	(add-to-list 'mu4e-view-actions '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+#+end_src
+
+#+begin_src emacs-lisp
+	(setq mu4e-compose-format-flowed t)
+#+end_src
+
+Do not auto-wrap lines, but still display them nicely wrapped.
+#+begin_src emacs-lisp
+	(add-hook 'mu4e-compose-mode-hook 'visual-clean)
+	(add-hook 'mu4e-compose-mode-hook 'flyspell-mode)
+#+end_src
+
+Automatic line breaks when reading mail.
+#+begin_src emacs-lisp
+	(add-hook 'mu4e-view-mode-hook 'visual-line-mode)
+#+end_src
+
 ** Mutt
 	 [[https://www.emacswiki.org/emacs/MuttInEmacs][MuttInEmacs]] assisted in creating this configuration.
  #+BEGIN_SRC emacs-lisp
