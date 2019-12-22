@@ -139,6 +139,16 @@ a separate personal.org file, which is not included my repository.
  #+BEGIN_SRC emacs-lisp
 	 (use-package "org-caldav" :ensure t :defer t)
  #+END_SRC
+** org-edna
+[[http://www.nongnu.org/org-edna-el/][org-edna]]; Extensible Dependencies ’N’ Actions (EDNA) for Org Mode tasks.
+	 #+begin_src emacs-lisp
+		 (use-package "org-edna"
+			 :ensure t
+			 :init
+       (require 'org-edna)
+			 (org-edna-load)
+			 )
+	 #+end_src
 * Study
 ** Flash cards
  Pamparam provides a flashcard engine for org documents.
