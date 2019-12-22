@@ -471,7 +471,7 @@ Assign todo kwd NEXT; to the next sibling headline which is a todo entry.
  ( https://github.com/tlh/workgroups.el )
 	#+BEGIN_SRC emacs-lisp
 		(use-package "workgroups" :defer t
-			:init
+			:config
 			(require 'workgroups)
 			(workgroups-mode 1)
 			(setq wg-morph-on nil)
