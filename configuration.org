@@ -17,131 +17,177 @@ a separate personal.org file, which is not included my repository.
 (org-babel-load-file "~/.emacs.d/personal.org")
 #+END_SRC
 .
-* Init.el Comments
-The following is commented out (as examples) , because it is required in the
-init.el file; such that the latest version of org can be loaded before this file
-is executed itself by *org*.
 
-The package library is required for package management.
-#+BEGIN_EXAMPLE emacs-lisp
- (require 'package)
-#+END_EXAMPLE
+* Init
+** Init.el Comments
+ The following is commented out (as examples) , because it is required in the
+ init.el file; such that the latest version of org can be loaded before this file
+ is executed itself by *org*.
 
-Disable automatic package loading.
-#+BEGIN_EXAMPLE emacs-lisp
- (setq package-enable-at-startup nil)
- (package-initialize)
-#+END_EXAMPLE
+ The package library is required for package management.
+ #+BEGIN_EXAMPLE emacs-lisp
+	(require 'package)
+ #+END_EXAMPLE
 
-This code provides a source list of package archives, from which to install packages.
-#+BEGIN_EXAMPLE emacs-lisp
- (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
- (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
- (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
-#+END_EXAMPLE
+ Disable automatic package loading.
+ #+BEGIN_EXAMPLE emacs-lisp
+	(setq package-enable-at-startup nil)
+	(package-initialize)
+ #+END_EXAMPLE
 
-Refresh the last view of the elisp archives.
-#+BEGIN_EXAMPLE emacs-lisp
- (unless package-archive-contents
-   (package-refresh-contents))
-(setq package-load-list '(all))
-#+END_EXAMPLE
+ This code provides a source list of package archives, from which to install packages.
+ #+BEGIN_EXAMPLE emacs-lisp
+	(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
+	(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+	(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+ #+END_EXAMPLE
 
-Use-package is a special set of macros to automatically install and
-load packages from the init.el file, this needs to be
-"bootstrapped" before we can use it.
-#+BEGIN_EXAMPLE emacs-lisp
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-(eval-when-compile
-  (require 'use-package))
-(require 'bind-key)
-(require 'diminish)
-#+END_EXAMPLE
+ Refresh the last view of the elisp archives.
+ #+BEGIN_EXAMPLE emacs-lisp
+	(unless package-archive-contents
+		(package-refresh-contents))
+ (setq package-load-list '(all))
+ #+END_EXAMPLE
 
-Org-mode is required for evaluating code-blocks via babel.
-#+BEGIN_EXAMPLE emacs-lisp
-(require 'org)
-#+END_EXAMPLE
+ Use-package is a special set of macros to automatically install and
+ load packages from the init.el file, this needs to be
+ "bootstrapped" before we can use it.
+ #+BEGIN_EXAMPLE emacs-lisp
+ (unless (package-installed-p 'use-package)
+   (package-refresh-contents)
+   (package-install 'use-package))
+ (eval-when-compile
+   (require 'use-package))
+ (require 'bind-key)
+ (require 'diminish)
+ #+END_EXAMPLE
 
-This ensures emacs always follows symlinks to the version-controlled source.
-#+BEGIN_EXAMPLE emacs-lisp
-(setq vc-follow-symlinks t)
-#+END_EXAMPLE
+ Org-mode is required for evaluating code-blocks via babel.
+ #+BEGIN_EXAMPLE emacs-lisp
+ (require 'org)
+ #+END_EXAMPLE
 
-Load the main-configuration file. "Literally this file".
-#+BEGIN_EXAMPLE emacs-lisp
-(org-babel-load-file "~/.emacs.d/configuration.org")
-#+END_EXAMPLE
+ This ensures emacs always follows symlinks to the version-controlled source.
+ #+BEGIN_EXAMPLE emacs-lisp
+ (setq vc-follow-symlinks t)
+ #+END_EXAMPLE
 
-* Diminish
+ Load the main-configuration file. "Literally this file".
+ #+BEGIN_EXAMPLE emacs-lisp
+ (org-babel-load-file "~/.emacs.d/configuration.org")
+ #+END_EXAMPLE
+** Auto-compile
+ Always compile packages and use the newest available.
+ #+BEGIN_SRC emacs-lisp
+ (use-package auto-compile
+   :config (auto-compile-on-load-mode)
+   :ensure t)
+ (setq load-prefer-newer t)
+ #+END_SRC
 
-*Harry:* I'd rather have only a few necessary mode identifiers on my modeline.
-This either hides or "renames" a variety of major or minor modes using the
-=diminish= package.
+** Load configuration methods
+ All of these use =use-package= to install packages, with the =:ensure t= option.
+ If you are loading this for the first time, make sure you have an internet
+ connection.
 
-I use Harry's macros for completeness. If a package is setup with =use-package=,
-please use the =:diminish= option there instead.
+ When I use Emacs, I typically load an emacs server (=emacs --daemon=), and edit
+ files using =emacsclient -c=. This loads a new frame for each file I edit. If I
+ am already inside emacs, I will use =C-x C-f= to find a file and load it.
 
+ If you are new to emacs, (like I was) my process to start off was:
+	* I started off with the tutorial =C-h t=.
+	* I moved on to the [[info:info][*info*]] tutorial =C-h i=. The *info* pages are super
+		helpful, and easy to navigate once you learn how.
+	* Then I spent weeks crafting my configuration to get the setup I wanted,
+		typically most of this was spent on configuring org and reading info pages.
+
+ This sets the local-config-dir.
+ #+BEGIN_SRC emacs-lisp
+	 (setq rjh/local-init-dir
+				 (expand-file-name
+					"init"
+					rjh/local-config-repo ))
+ #+END_SRC
+
+ This function will load a single configuration file.
+ #+BEGIN_SRC emacs-lisp
+	 (defun rjh/load-init (pkg_a)
+		 (org-babel-load-file
+			(expand-file-name pkg_a rjh/local-init-dir)))
+ #+END_SRC
+
+* Org
+To see the complete org configuration, see [[file:config/org.org][org.org]].
 #+BEGIN_SRC emacs-lisp
-  (defmacro diminish-minor-mode (filename mode &optional abbrev)
-    `(eval-after-load (symbol-name ,filename)
-       '(diminish ,mode ,abbrev)))
-
-  (defmacro diminish-major-mode (mode-hook abbrev)
-    `(add-hook ,mode-hook
-               (lambda () (setq mode-name ,abbrev))))
-
-  (diminish-minor-mode 'abbrev 'abbrev-mode)
-  (diminish-minor-mode 'simple 'auto-fill-function)
-  (diminish-minor-mode 'subword 'subword-mode)
-  (diminish-minor-mode 'undo-tree 'undo-tree-mode)
-  (diminish-major-mode 'emacs-lisp-mode-hook "el")
-  (diminish-major-mode 'lisp-interaction-mode-hook "λ")
-  (diminish-major-mode 'python-mode-hook "Py")
+	(rjh/load-init "org.org" )
+	;;	(rjh/load-init "org-gantt.org" ) ;; Disable org-gantt (no official package on Melpa or elsewhere)
 #+END_SRC
 
-* Auto-compile
-Always compile packages and use the newest available.
+Add pretty bullets for org-mode.
 #+BEGIN_SRC emacs-lisp
-(use-package auto-compile
-  :config (auto-compile-on-load-mode)
-  :ensure t)
-(setq load-prefer-newer t)
+	(use-package "org-bullets" :ensure t :defer t)
 #+END_SRC
 
-* Load configuration methods
-All of these use =use-package= to install packages, with the =:ensure t= option.
-If you are loading this for the first time, make sure you have an internet
-connection.
-
-When I use Emacs, I typically load an emacs server (=emacs --daemon=), and edit
-files using =emacsclient -c=. This loads a new frame for each file I edit. If I
-am already inside emacs, I will use =C-x C-f= to find a file and load it.
-
-If you are new to emacs, (like I was) my process to start off was:
- * I started off with the tutorial =C-h t=.
- * I moved on to the [[info:info][*info*]] tutorial =C-h i=. The *info* pages are super
-   helpful, and easy to navigate once you learn how.
- * Then I spent weeks crafting my configuration to get the setup I wanted,
-   typically most of this was spent on configuring org and reading info pages.
-
-This sets the local-config-dir.
+Emacs speaks statistics package.
 #+BEGIN_SRC emacs-lisp
-	(setq rjh/local-init-dir
-				(expand-file-name
-				 "init"
-				 rjh/local-config-repo ))
+	(use-package "ess" :ensure t :defer t)
+	(require 'ess-site)
 #+END_SRC
 
-This function will load a single configuration file.
+Emacs org-caldav package for calendar integration.
 #+BEGIN_SRC emacs-lisp
-	(defun rjh/load-init (pkg_a)
-		(org-babel-load-file
-		 (expand-file-name pkg_a rjh/local-init-dir)))
+	(use-package "org-caldav" :ensure t :defer t)
 #+END_SRC
 
+* Study
+** Flash cards
+ Pamparam provides a flashcard engine for org documents.
+ For more details see [[file:config/pamparam.org][pamparam.org]].
+ #+BEGIN_SRC emacs-lisp
+	 (use-package "pamparam" :defer t
+		 :ensure t
+		 :init
+		 (setq pamparam-path "~/.emacs.d/flashcards.pam")
+		 (rjh/load-init "pamparam.org"))
+ #+END_SRC
+
+** Zetteldeft
+ Zettelkasten note-taking using deft and avy.
+
+ #+BEGIN_SRC emacs-lisp
+	 (use-package zetteldeft
+		 :load-path "~/.emacs.d/zetteldeft"
+		 :after deft
+		 :bind (("C-c d d" . deft)
+						("C-c d D" . zetteldeft-deft-new-search)
+						("C-c d R" . deft-refresh)
+						("C-c d s" . zetteldeft-search-at-point)
+						("C-c d c" . zetteldeft-search-current-id)
+						("C-c d f" . zetteldeft-follow-link)
+						("C-c d F" . zetteldeft-avy-file-search-ace-window)
+						("C-c d l" . zetteldeft-avy-link-search)
+						("C-c d t" . zetteldeft-avy-tag-search)
+						("C-c d T" . zetteldeft-tag-buffer)
+						("C-c d i" . zetteldeft-find-file-id-insert)
+						("C-c d I" . zetteldeft-find-file-full-title-insert)
+						("C-c d o" . zetteldeft-find-file)
+						("C-c d n" . zetteldeft-new-file)
+						("C-c d N" . zetteldeft-new-file-and-link)
+						("C-c d r" . zetteldeft-file-rename)
+						("C-c d x" . zetteldeft-count-words)
+						)
+		 )
+
+	 (use-package deft
+		 :ensure t
+		 :init
+		 (setq deft-directory "~/.emacs.d/deft")
+		 )
+
+	 (use-package avy
+		 :pin melpa
+		 :ensure t)
+ #+END_SRC
 * Keybinding
 ** Harry's sensible-defaults.el
  You can find this file, [[https://github.com/hrs/sensible-defaults.el][here]].
@@ -319,411 +365,507 @@ This function will load a single configuration file.
    (set-language-environment "UTF-8")
 	 (load-library "anthy")
  #+END_SRC
-
-* Org
-To see the complete org configuration, see [[file:config/org.org][org.org]].
-#+BEGIN_SRC emacs-lisp
-	(rjh/load-init "org.org" )
-	;;	(rjh/load-init "org-gantt.org" ) ;; Disable org-gantt (no official package on Melpa or elsewhere)
-#+END_SRC
-
-Add pretty bullets for org-mode.
-#+BEGIN_SRC emacs-lisp
-	(use-package "org-bullets" :ensure t :defer t)
-#+END_SRC
-
-Emacs speaks statistics package.
-#+BEGIN_SRC emacs-lisp
-	(use-package "ess" :ensure t :defer t)
-	(require 'ess-site)
-#+END_SRC
-
-Emacs org-caldav package for calendar integration.
-#+BEGIN_SRC emacs-lisp
-	(use-package "org-caldav" :ensure t :defer t)
-#+END_SRC
-
-* Latex
-Latex configuration.
-For more see [[file:config/latex.org][latex.org]].
-#+BEGIN_SRC emacs-lisp
-	(rjh/load-init "latex.org")
-#+END_SRC
-
-* Graph
-Some packages for graphing.
-#+BEGIN_SRC emacs-lisp
-		(use-package "gnuplot" :ensure t :defer t)
-		(use-package "graphviz-dot-mode" :ensure t :defer t
-			:config
-			(setq graphviz-dot-view-command "xdot %s"))
-#+END_SRC
-
-* Openscad
-Openscad is parametric 3d solid modeller.
-
-scad-mode is usually provided as part of =Openscad=.
-https://github.com/zk-phi/scad-preview is an extension.
-#+BEGIN_SRC emacs-lisp
-(use-package "scad-mode" :ensure t :defer t)
-(use-package "scad-preview" :ensure t :defer t)
-#+END_SRC
-
-* UML
-Plantuml for uml diagramming.
-PlantUML is a java program for quickly constructing uml diagrams.
-http://plantuml.com/
-https://github.com/skuro/plantuml-mode
-
-Flycheck is used for syntax checking.
-https://github.com/alexmurray/flycheck-plantuml
-
-#+BEGIN_SRC emacs-lisp
-	(use-package "plantuml-mode" :ensure t :defer t
-		:init
-		(setq plantuml-jar-path "/usr/share/plantuml/lib/plantuml.jar")
-		(add-to-list 'auto-mode-alist '("\\.plantuml$" . plantuml-mode))
-		(add-to-list
-		 'org-src-lang-modes '("plantuml" . plantuml))
-		(setq org-plantuml-jar-path plantuml-jar-path)
-		:config
-		(plantuml-set-output-type "svg"))
-
-	(use-package "flycheck-plantuml" :defer t
-    :requires flycheck plantuml-mode
-		:init
-		(with-eval-after-load 'flycheck
-			(require 'flycheck-plantuml)
-			(flycheck-plantuml-setup))
-		:ensure t)
-#+END_SRC
-
-* Git
-I use =magit= for git integration.
-The following key-bindings are for global convenience.
-Use =C-x g ?= to get a quick command listing.
-#+BEGIN_SRC emacs-lisp
-	(use-package magit :defer t
-		:ensure t
-		:pin melpa-stable
-		:bind (("C-x g" . magit-status)
-					 ("C-x M-g" . magit-dispatch-popup)))
-#+END_SRC
-
-Git time-machine provides a mode for traversing the git history of a file.
-Use =M-x git-timemachine=, =np= to navigate and =q= to quit.
-#+BEGIN_SRC emacs-lisp
-	(use-package "git-timemachine" :ensure t :defer t)
-#+END_SRC
-
-* Java
-JDEE - Java Development Environment for Emacs
-
-The jdee-server should be installed on your system, if it isn't please use the
-following link to install the latest version. [[https://github.com/jdee-emacs/jdee-server][jdee-server@github]].
-Jdee-server depends on Maven-3.
-
-Setup jdee to use the following server directory, =~/.emacs.d/jdee-server/target=.
-This is configurable in personal.org.
-
-Use =M-x jdee-mode= to invoke jdee.
-
-For more documentation, please see http://jdee.sourceforge.net/jdedoc/html/jde-ug/jde-ug.html
-#+BEGIN_SRC emacs-lisp
-	(use-package "jdee" :defer t
-		:ensure t
-		:config
-		(setq jdee-global-classpath '("."))) ;; Use the current working directory as a classpath for java projects.
-#+END_SRC
-
-* Python
-The Emacs Python Development Environment. This is a full featured environment
-for python development. For introspection and analysis of Python sources, Elpy
-mainly relies on Jedi. Jedi is known to have some problems coping with
-badly-formatted Python.
-
-For more see [[file:config/python.org][python.org]].
-
-#+BEGIN_SRC emacs-lisp
-	(use-package "elpy" :defer t
-		:ensure t
-		:init
-		(elpy-enable)
-		(setq python-indent-offset 4)
-		:config
-		(rjh/load-init "python.org"))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-	(use-package "company-jedi" :defer t
-		:requires company
-		:ensure t)
-#+END_SRC
-
-* Ruby                                                                 :ruby:
-Some packages to make Ruby play nice with Emacs.
-Derived from [[https://worace.works/2016/06/07/getting-started-with-emacs-for-ruby/][here]].
-
-** ruby-electric
- Auto-close paired syntax elements with electric mode.
+** Numbers
+ Methods for manipulating numbers in Emacs.
+ For more details see [[file:config/numbers.org][numbers.org]]
  #+BEGIN_SRC emacs-lisp
-	 (use-package "ruby-electric" :defer t
-		 :hook ((ruby-mode . ruby-electric-mode))
-		 :ensure t
-		 :diminish ruby-electric-mode )
+	 (rjh/load-init "numbers.org")
  #+END_SRC
 
-** seeing-is-believing
-For more info, see [[https://github.com/JoshCheek/seeing_is_believing][source]] and [[https://github.com/jcinnamond/seeing-is-believing][emacs-source.]]
-
-First install the gem.
-#+BEGIN_EXAMPLE sh
-gem install seeing_is_believing
-#+END_EXAMPLE
-
-Now install the Emacs packages.
-#+BEGIN_SRC emacs-lisp
-	(use-package "seeing-is-believing" :defer t
-		:init
-		(require 'seeing-is-believing)
-		:hook ruby-mode
-		:ensure t
-	  :diminish seeing-is-believing
-		:custom
-		(seeing-is-believing-prefix "C-."))
-#+END_SRC
-
-The following keybindings are useful:
-    - =C-. s= - Run for entire file
-		- =C-. c= - Clear output
-		- =C-. t= - Tag a line to be "targeted"
-		- =C-. x= - Run only the "tagged" lines.
-
-** inf-ruby
-Emacs Inferior Language Mode for Ruby.
-This provides an embedded IRB process in Emacs to interact with by sending code-snippets.
-For more, see [[https://github.com/nonsequitur/inf-ruby][source]].
-
-#+BEGIN_SRC emacs-lisp
-	(use-package "inf-ruby" :defer t
-		:init
-		(autoload 'inf-ruby-minor-mode "inf-ruby" "Run an inferior Ruby process" t)
-		:hook ((ruby-mode . inf-ruby-minor-mode))
-		:ensure t)
-#+END_SRC
-
-Keybindings:
-    - =C-c C-s= Launch inf-ruby process
-		- =C-c C-r= Push (highlighted) ruby code to IRB.
-		- =C-c M-r= Run selected code, then go to IRB buffer.
-
-** ruby-test-mode
-Emacs minor mode for Behaviour and Test Driven Development in Ruby.
-For more see [[https://github.com/r0man/ruby-test-mode][source]].
-
-#+BEGIN_SRC emacs-lisp
-	(use-package "ruby-test-mode" :defer t
-		:ensure t
-		:hook ruby-mode
-	  :diminish ruby-test-mode
-		:init
-		(require 'ruby-test-mode)
-		;; Hook to close tests with 'q'
-		(add-hook 'compilation-finish-functions
-							(lambda (buf strg)
-								(switch-to-buffer-other-window "*compilation*")
-								(read-only-mode)
-								(goto-char (point-max))
-								(local-set-key (kbd "q")
-															 (lambda () (interactive) (quit-restore-window))))))
-
-#+END_SRC
-
-* Jinja 2
-Jinja2 is a modern and designer-friendly templating language for Python, modelled after Django's templates.
-#+BEGIN_SRC emacs-lisp
-(use-package "jinja2-mode" :ensure t :defer t)
-#+END_SRC
-
-* Irony                                                      :DISABLED:Cpp:C:
-This configuration is taken from [[http://martinsosic.com/development/emacs/2017/12/09/emacs-cpp-ide.html][Martin Sosic]].
-https://github.com/Sarcasm/irony-mode
-
-For more see [[file:config/irony.org][irony.org]].
-#+BEGIN_SRC emacs-lisp
-	(use-package irony
-		:defer t
-		:disabled
-		:ensure t
-		:config
-		(progn
-			;; If irony server was never installed, install it.
-			(unless (irony--find-server-executable)
-				(call-interactively #'irony-install-server))
-			(add-hook 'c++-mode-hook 'irony-mode)
-			(add-hook 'c-mode-hook 'irony-mode)
-			;; Use compilation database first, clang_complete as fallback.
-			(setq-default irony-cdb-compilation-databases
-										'(irony-cdb-libclang
-											irony-cdb-clang-complete))
-			(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)))
-#+END_SRC
-#+BEGIN_SRC emacs-lisp
-	;; I use irony with company to get code completion.
-	(use-package company-irony :defer t
-		:requires company irony
-		:ensure t
-		:config
-		(progn
-			(eval-after-load 'company
-				'(add-to-list 'company-backends 'company-irony))))
-#+END_SRC
-#+BEGIN_SRC emacs-lisp
-	;; I use irony with flycheck to get real-time syntax checking.
-	(use-package flycheck-irony :defer t
-		:requires flycheck irony
-		:ensure t
-		:config
-		(progn
-			(eval-after-load 'flycheck
-				'(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))))
-#+END_SRC
-#+BEGIN_SRC emacs-lisp
-	;; Eldoc shows argument list of the function you are currently writing in the echo area.
-	(use-package irony-eldoc :defer t
-		:requires eldoc irony
-		:ensure t
-		:config
-		(progn
-			(add-hook 'irony-mode-hook #'irony-eldoc)))
-#+END_SRC
-
-* Rtags                                                               :Cpp:C:
- This configuration is taken from [[http://martinsosic.com/development/emacs/2017/12/09/emacs-cpp-ide.html][Martin Sosic]].
- https://github.com/Andersbakken/rtags
- For more see [[file:config/rtags.org][rtags.org]].
+ Keybindings
  #+BEGIN_SRC emacs-lisp
-	 (use-package rtags :defer t
+	 (global-set-key (kbd "M-+") 'my-increment-number-decimal)
+	 (global-set-key (kbd "M-_") 'my-decrement-number-decimal)
+	 (global-set-key (kbd "C-M-+") 'my-increment-number-hexadecimal)
+	 (global-set-key (kbd "C-M-_") 'my-decrement-number-hexadecimal)
+ #+END_SRC
+* Display
+** Mode-line
+*** Diminish
+
+	*Harry:* I'd rather have only a few necessary mode identifiers on my modeline.
+	This either hides or "renames" a variety of major or minor modes using the
+	=diminish= package.
+
+	I use Harry's macros for completeness. If a package is setup with =use-package=,
+	please use the =:diminish= option there instead.
+
+	#+BEGIN_SRC emacs-lisp
+		(defmacro diminish-minor-mode (filename mode &optional abbrev)
+			`(eval-after-load (symbol-name ,filename)
+				 '(diminish ,mode ,abbrev)))
+
+		(defmacro diminish-major-mode (mode-hook abbrev)
+			`(add-hook ,mode-hook
+								 (lambda () (setq mode-name ,abbrev))))
+
+		(diminish-minor-mode 'abbrev 'abbrev-mode)
+		(diminish-minor-mode 'simple 'auto-fill-function)
+		(diminish-minor-mode 'subword 'subword-mode)
+		(diminish-minor-mode 'undo-tree 'undo-tree-mode)
+		(diminish-major-mode 'emacs-lisp-mode-hook "el")
+		(diminish-major-mode 'lisp-interaction-mode-hook "λ")
+		(diminish-major-mode 'python-mode-hook "Py")
+	#+END_SRC
+
+*** Telephone line
+	A pretty message bar for Emacs.
+	( https://github.com/dbordak/telephone-line )
+	#+BEGIN_SRC emacs-lisp
+		(use-package telephone-line :defer t
+			:ensure t
+			:config
+			(rjh/load-init "telephone-line.org"))
+	;	 :init
+		(require 'telephone-line)
+		(telephone-line-mode 1)
+	#+END_SRC
+
+** Workgroups
+ Workgroups provides defined layouts for Emacs.
+ ( https://github.com/tlh/workgroups.el )
+	#+BEGIN_SRC emacs-lisp
+		(use-package "workgroups" :defer t
+			:init
+			(require 'workgroups)
+			(workgroups-mode 1)
+			(setq wg-morph-on nil)
+			(setq wg-prefix-key (kbd "C-c w"))
+			(wg-load "~/.emacs.d/workgroups" )
+			:ensure t
+			:diminish workgroups-mode)
+	#+END_SRC
+
+ Keybindings:
+ Use the following with <prefix> ;
+		+ C-c w :: <prefix>
+		+ c :: wg-create-workgroup
+		+ A :: wg-rename-workgroup
+		+ v :: wg-switch-to-workgroup
+		+ n/p :: next/prev workgroup
+		+ 0-9 :: switch thru positions in list
+		+ w :: wg-toggle-morph (animation)
+		+ C-s/l :: save / load workgroup
+		+ k :: kill workgroup
+		+ ,/. :: move left/right in group listing
+		+ ? :: wg-help
+
+** Themes
+ Use the =diff-hl= package to highlight changed-and-uncommitted lines when
+ programming.
+ #+BEGIN_SRC emacs-lisp
+	 (use-package diff-hl
+		 :ensure t
+		 :init
+		 (require 'diff-hl)
+		 (add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
+		 (add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
+ #+END_SRC
+
+ For more on themes, checkout [[file:config/theme.org][theme.org]].
+ #+BEGIN_SRC emacs-lisp
+	 (use-package "material-theme" :ensure t :defer t)
+	 (use-package "solarized-theme" :defer t
 		 :ensure t
 		 :config
-		 (progn
-			 (setq rtags-path "~/.emacs.d/rtags/build/bin")
-			 (unless (rtags-executable-find "rc") (error "Binary rc is not installed!"))
-			 (unless (rtags-executable-find "rdm") (error "Binary rdm is not installed!"))
-
-			 (define-key c-mode-base-map (kbd "M-.") 'rtags-find-symbol-at-point)
-			 (define-key c-mode-base-map (kbd "M-,") 'rtags-find-references-at-point)
-			 (define-key c-mode-base-map (kbd "M-?") 'rtags-display-summary)
-			 (rtags-enable-standard-keybindings)
-
-			 (setq rtags-use-helm t)
-			 ;; Shutdown rdm when leaving emacs.
-			 (add-hook 'kill-emacs-hook 'rtags-quit-rdm)
-			 (add-hook 'c-mode-hook 'rtags-start-process-unless-running)
-			 (add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
-			 (add-hook 'objc-mode-hook 'rtags-start-process-unless-running)
-
-			 ;; Completion frameworks
-			 ;; TODO: Has no coloring! How can I get coloring?
-			 (use-package helm-rtags
-				 :requires helm rtags
-				 :ensure t
-				 :config
-				 (progn
-					 (setq rtags-display-result-backend 'helm)))
-
-			 ;; Use rtags for auto-completion.
-			 (use-package company-rtags
-				 :requires company rtags
-				 :ensure t
-				 :config
-				 (progn
-					 (setq rtags-autostart-diagnostics t)
-					 (rtags-diagnostics)
-					 (setq rtags-completions-enabled t)
-					 (push 'company-rtags company-backends)
-					 ))
-
-			 ;; Live code checking.
-			 (use-package flycheck-rtags
-				 :requires flycheck rtags
-				 :ensure t
-				 :config
-				 (progn
-					 ;; ensure that we use only rtags checking
-					 ;; https://github.com/Andersbakken/rtags#optional-1
-					 (defun setup-flycheck-rtags ()
-						 (flycheck-select-checker 'rtags)
-						 (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
-						 (setq-local flycheck-check-syntax-automatically nil)
-						 (rtags-set-periodic-reparse-timeout 2.0)  ;; Run flycheck 2 seconds after being idle.
-						 )
-					 (add-hook 'c-mode-hook #'setup-flycheck-rtags)
-					 (add-hook 'c++-mode-hook #'setup-flycheck-rtags)))
-			 ))
+		 (defun hrs/apply-theme ()
+			 (setq solarized-use-variable-pitch nil)
+			 (setq solarized-height-plus-1 1.2)
+			 (setq solarized-height-plus-2 1.4)
+			 (setq solarized-height-plus-3 1.7)
+			 (setq solarized-height-plus-4 2.0)
+			 (setq solarized-high-contrast-mode-line t)
+			 (load-theme 'solarized-dark t)))
+	 (use-package "fill-column-indicator" :ensure t :defer t)
+	 (rjh/load-init "theme.org")
  #+END_SRC
 
-* Finding files
-The following commands will help you when locating files.
-Use =M-x= to run a command in Emacs.
-    - find-file :: Opens up a file buffer
-									 ( =C-x C-f= )
-		- find-dired :: Opens up a directory buffer.
-		- find-name-dired :: Finds files matching a pattern.
-		- find-grep-dired :: Finds files containing a pattern.
+ Miscellaneous text options.
+ For more info see [[file:config/text.org][text.org]].
+ #+BEGIN_SRC emacs-lisp
+	 (use-package rainbow-mode :ensure t :defer t)
+	 (use-package "rainbow-delimiters" :ensure t :defer t)
+	 (use-package "htmlize" :ensure t :defer t)
+	 (rjh/load-init "text.org")
+ #+END_SRC
 
-In any of the =dired= buffers you can perform certain actions.
-For example to start a =query-replace-regexp=, hit the =Q= key.
+** Fonts
+ Setup font functions, mostly courtesy of Harry Schwartz.
+ For more see [[file:config/fonts.org][fonts.org]].
+ #+BEGIN_SRC emacs-lisp
+	 (rjh/load-init "fonts.org")
+ #+END_SRC
 
-For more information, hit =?= inside any =dired= buffer.
-And =h= for more advanced help.
+* API
+** F
+ An api for working with files in Emacs lisp.
+ ( https://github.com/rejeep/f.el )
+ #+BEGIN_SRC emacs-lisp
+	 (use-package "f" :ensure t :defer t )
+ #+END_SRC
+* IDEs
+** Common
+*** Projectile
+	Projectile is a project interaction library for Emacs.
+	For more about the project, see [[https://projectile.readthedocs.io/en/latest/][the docs]] or [[https://github.com/bbatsov/projectile][the source.]]
 
-* Spell checker
-#+BEGIN_SRC emacs-lisp
-	(use-package "flycheck" :ensure t :defer t
-		:diminish flycheck-mode
-		:diminish flyspell-mode)
-#+END_SRC
-* Flash cards
-Pamparam provides a flashcard engine for org documents.
-For more details see [[file:config/pamparam.org][pamparam.org]].
-#+BEGIN_SRC emacs-lisp
-	(use-package "pamparam" :defer t
-		:ensure t
+	#+BEGIN_SRC emacs-lisp
+		(use-package "projectile" :defer t
+			:init
+			(projectile-mode +1)
+			(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+			(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+			:ensure t
+			:diminish projectile-mode)
+	#+END_SRC
+
+*** ECB
+	ECB - The Emacs code browser.
+
+	After running =ecb-activate=, use the prefix =C-c .= for ECB commands.
+	See =C-c . ?= for bindings, see the [[info:ecb][ECB info page]] for the detailed guide.
+	For a compile window use =C-c . \=
+
+	For more information, see http://ecb.sourceforge.net/.
+
+	#+BEGIN_SRC emacs-lisp
+		(use-package "ecb" :defer t
 		:init
-		(setq pamparam-path "~/.emacs.d/flashcards.pam")
-		(rjh/load-init "pamparam.org"))
-#+END_SRC
+		(require 'ecb)
+		(setq tree-buffer-enable-xemacs-image-bug-hack nil)
+		:ensure t
+		:custom
+		(ecb-primary-secondary-mouse-buttons (quote mouse-1--mouse-2))
+		(ecb-layout-name "left8"))
+	#+END_SRC
 
-* Authentication
-=oauth= package.
-Mainly for Google authentication.
-#+BEGIN_SRC emacs-lisp
-	(use-package "oauth2" :ensure t :defer t)
-#+END_SRC
+*** Git
+	I use =magit= for git integration.
+	The following key-bindings are for global convenience.
+	Use =C-x g ?= to get a quick command listing.
+	#+BEGIN_SRC emacs-lisp
+		(use-package magit :defer t
+			:ensure t
+			:pin melpa-stable
+			:bind (("C-x g" . magit-status)
+						 ("C-x M-g" . magit-dispatch-popup)))
+	#+END_SRC
 
-Pinentry for gpg-agent
-#+BEGIN_SRC emacs-lisp
-	(use-package "pinentry" :ensure t :defer t)
-#+END_SRC
-Please ensure the following setting is enabled for =~/.gnupg/gpg-agent.conf=.
-	#+BEGIN_EXAMPLE
-	allow-emacs-pinentry
+	Git time-machine provides a mode for traversing the git history of a file.
+	Use =M-x git-timemachine=, =np= to navigate and =q= to quit.
+	#+BEGIN_SRC emacs-lisp
+		(use-package "git-timemachine" :ensure t :defer t)
+	#+END_SRC
+
+** Languages
+*** Openscad
+	Openscad is parametric 3d solid modeller.
+
+	scad-mode is usually provided as part of =Openscad=.
+	https://github.com/zk-phi/scad-preview is an extension.
+	#+BEGIN_SRC emacs-lisp
+	(use-package "scad-mode" :ensure t :defer t)
+	(use-package "scad-preview" :ensure t :defer t)
+	#+END_SRC
+
+*** Python
+	The Emacs Python Development Environment. This is a full featured environment
+	for python development. For introspection and analysis of Python sources, Elpy
+	mainly relies on Jedi. Jedi is known to have some problems coping with
+	badly-formatted Python.
+
+	For more see [[file:config/python.org][python.org]].
+
+	#+BEGIN_SRC emacs-lisp
+		(use-package "elpy" :defer t
+			:ensure t
+			:init
+			(elpy-enable)
+			(setq python-indent-offset 4)
+			:config
+			(rjh/load-init "python.org"))
+	#+END_SRC
+
+	#+BEGIN_SRC emacs-lisp
+		(use-package "company-jedi" :defer t
+			:requires company
+			:ensure t)
+	#+END_SRC
+
+*** Jinja 2
+	Jinja2 is a modern and designer-friendly templating language for Python, modelled after Django's templates.
+	#+BEGIN_SRC emacs-lisp
+	(use-package "jinja2-mode" :ensure t :defer t)
+	#+END_SRC
+
+*** C                                                                 :C:Cpp:
+**** Rtags
+		This configuration is taken from [[http://martinsosic.com/development/emacs/2017/12/09/emacs-cpp-ide.html][Martin Sosic]].
+		https://github.com/Andersbakken/rtags
+		For more see [[file:config/rtags.org][rtags.org]].
+		#+BEGIN_SRC emacs-lisp
+			(use-package rtags :defer t
+				:ensure t
+				:config
+				(progn
+					(setq rtags-path "~/.emacs.d/rtags/build/bin")
+					(unless (rtags-executable-find "rc") (error "Binary rc is not installed!"))
+					(unless (rtags-executable-find "rdm") (error "Binary rdm is not installed!"))
+
+					(define-key c-mode-base-map (kbd "M-.") 'rtags-find-symbol-at-point)
+					(define-key c-mode-base-map (kbd "M-,") 'rtags-find-references-at-point)
+					(define-key c-mode-base-map (kbd "M-?") 'rtags-display-summary)
+					(rtags-enable-standard-keybindings)
+
+					(setq rtags-use-helm t)
+					;; Shutdown rdm when leaving emacs.
+					(add-hook 'kill-emacs-hook 'rtags-quit-rdm)
+					(add-hook 'c-mode-hook 'rtags-start-process-unless-running)
+					(add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
+					(add-hook 'objc-mode-hook 'rtags-start-process-unless-running)
+
+					;; Completion frameworks
+					;; TODO: Has no coloring! How can I get coloring?
+					(use-package helm-rtags
+						:requires helm rtags
+						:ensure t
+						:config
+						(progn
+							(setq rtags-display-result-backend 'helm)))
+
+					;; Use rtags for auto-completion.
+					(use-package company-rtags
+						:requires company rtags
+						:ensure t
+						:config
+						(progn
+							(setq rtags-autostart-diagnostics t)
+							(rtags-diagnostics)
+							(setq rtags-completions-enabled t)
+							(push 'company-rtags company-backends)
+							))
+
+					;; Live code checking.
+					(use-package flycheck-rtags
+						:requires flycheck rtags
+						:ensure t
+						:config
+						(progn
+							;; ensure that we use only rtags checking
+							;; https://github.com/Andersbakken/rtags#optional-1
+							(defun setup-flycheck-rtags ()
+								(flycheck-select-checker 'rtags)
+								(setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
+								(setq-local flycheck-check-syntax-automatically nil)
+								(rtags-set-periodic-reparse-timeout 2.0)  ;; Run flycheck 2 seconds after being idle.
+								)
+							(add-hook 'c-mode-hook #'setup-flycheck-rtags)
+							(add-hook 'c++-mode-hook #'setup-flycheck-rtags)))
+					))
+		#+END_SRC
+
+**** Irony                                                         :DISABLED:
+	 This configuration is taken from [[http://martinsosic.com/development/emacs/2017/12/09/emacs-cpp-ide.html][Martin Sosic]].
+	 https://github.com/Sarcasm/irony-mode
+
+	 For more see [[file:config/irony.org][irony.org]].
+	 #+BEGIN_SRC emacs-lisp
+		 (use-package irony
+			 :defer t
+			 :disabled
+			 :ensure t
+			 :config
+			 (progn
+				 ;; If irony server was never installed, install it.
+				 (unless (irony--find-server-executable)
+					 (call-interactively #'irony-install-server))
+				 (add-hook 'c++-mode-hook 'irony-mode)
+				 (add-hook 'c-mode-hook 'irony-mode)
+				 ;; Use compilation database first, clang_complete as fallback.
+				 (setq-default irony-cdb-compilation-databases
+											 '(irony-cdb-libclang
+												 irony-cdb-clang-complete))
+				 (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)))
+	 #+END_SRC
+	 #+BEGIN_SRC emacs-lisp
+		 ;; I use irony with company to get code completion.
+		 (use-package company-irony :defer t
+			 :requires company irony
+			 :ensure t
+			 :config
+			 (progn
+				 (eval-after-load 'company
+					 '(add-to-list 'company-backends 'company-irony))))
+	 #+END_SRC
+	 #+BEGIN_SRC emacs-lisp
+		 ;; I use irony with flycheck to get real-time syntax checking.
+		 (use-package flycheck-irony :defer t
+			 :requires flycheck irony
+			 :ensure t
+			 :config
+			 (progn
+				 (eval-after-load 'flycheck
+					 '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))))
+	 #+END_SRC
+	 #+BEGIN_SRC emacs-lisp
+		 ;; Eldoc shows argument list of the function you are currently writing in the echo area.
+		 (use-package irony-eldoc :defer t
+			 :requires eldoc irony
+			 :ensure t
+			 :config
+			 (progn
+				 (add-hook 'irony-mode-hook #'irony-eldoc)))
+	 #+END_SRC
+
+*** Ruby                                                               :ruby:
+	Some packages to make Ruby play nice with Emacs.
+	Derived from [[https://worace.works/2016/06/07/getting-started-with-emacs-for-ruby/][here]].
+
+**** ruby-electric
+	 Auto-close paired syntax elements with electric mode.
+	 #+BEGIN_SRC emacs-lisp
+		 (use-package "ruby-electric" :defer t
+			 :hook ((ruby-mode . ruby-electric-mode))
+			 :ensure t
+			 :diminish ruby-electric-mode )
+	 #+END_SRC
+
+**** seeing-is-believing
+	For more info, see [[https://github.com/JoshCheek/seeing_is_believing][source]] and [[https://github.com/jcinnamond/seeing-is-believing][emacs-source.]]
+
+	First install the gem.
+	#+BEGIN_EXAMPLE sh
+	gem install seeing_is_believing
 	#+END_EXAMPLE
-This is [[https://www.gnu.org/software/emacs/manual/html_mono/epa.html#fnd-1][required]] for GnuPG 2.1.5 or later; if you do not use a graphical
-=pinentry= program.
 
-* Ledger
-Ledger is a cli accounting system.
-See [[https://www.ledger-cli.org/3.0/doc/ledger-mode.html][here]] for more details.
-#+BEGIN_SRC emacs-lisp
-	(use-package "ledger-mode" :defer t
-		:ensure t
-		:init
-		(add-to-list 'auto-mode-alist '("\\.ledger$" . ledger-mode))
-		)
-#+END_SRC
+	Now install the Emacs packages.
+	#+BEGIN_SRC emacs-lisp
+		(use-package "seeing-is-believing" :defer t
+			:init
+			(require 'seeing-is-believing)
+			:hook ruby-mode
+			:ensure t
+			:diminish seeing-is-believing
+			:custom
+			(seeing-is-believing-prefix "C-."))
+	#+END_SRC
 
+	The following keybindings are useful:
+			- =C-. s= - Run for entire file
+			- =C-. c= - Clear output
+			- =C-. t= - Tag a line to be "targeted"
+			- =C-. x= - Run only the "tagged" lines.
+
+**** inf-ruby
+	Emacs Inferior Language Mode for Ruby.
+	This provides an embedded IRB process in Emacs to interact with by sending code-snippets.
+	For more, see [[https://github.com/nonsequitur/inf-ruby][source]].
+
+	#+BEGIN_SRC emacs-lisp
+		(use-package "inf-ruby" :defer t
+			:init
+			(autoload 'inf-ruby-minor-mode "inf-ruby" "Run an inferior Ruby process" t)
+			:hook ((ruby-mode . inf-ruby-minor-mode))
+			:ensure t)
+	#+END_SRC
+
+	Keybindings:
+			- =C-c C-s= Launch inf-ruby process
+			- =C-c C-r= Push (highlighted) ruby code to IRB.
+			- =C-c M-r= Run selected code, then go to IRB buffer.
+
+**** ruby-test-mode
+	Emacs minor mode for Behaviour and Test Driven Development in Ruby.
+	For more see [[https://github.com/r0man/ruby-test-mode][source]].
+
+	#+BEGIN_SRC emacs-lisp
+		(use-package "ruby-test-mode" :defer t
+			:ensure t
+			:hook ruby-mode
+			:diminish ruby-test-mode
+			:init
+			(require 'ruby-test-mode)
+			;; Hook to close tests with 'q'
+			(add-hook 'compilation-finish-functions
+								(lambda (buf strg)
+									(switch-to-buffer-other-window "*compilation*")
+									(read-only-mode)
+									(goto-char (point-max))
+									(local-set-key (kbd "q")
+																 (lambda () (interactive) (quit-restore-window))))))
+
+	#+END_SRC
+*** Java
+	JDEE - Java Development Environment for Emacs
+
+	The jdee-server should be installed on your system, if it isn't please use the
+	following link to install the latest version. [[https://github.com/jdee-emacs/jdee-server][jdee-server@github]].
+	Jdee-server depends on Maven-3.
+
+	Setup jdee to use the following server directory, =~/.emacs.d/jdee-server/target=.
+	This is configurable in personal.org.
+
+	Use =M-x jdee-mode= to invoke jdee.
+
+	For more documentation, please see http://jdee.sourceforge.net/jdedoc/html/jde-ug/jde-ug.html
+	#+BEGIN_SRC emacs-lisp
+		(use-package "jdee" :defer t
+			:ensure t
+			:config
+			(setq jdee-global-classpath '("."))) ;; Use the current working directory as a classpath for java projects.
+	#+END_SRC
+* Documentation
+** Latex
+ Latex configuration.
+ For more see [[file:config/latex.org][latex.org]].
+ #+BEGIN_SRC emacs-lisp
+	 (rjh/load-init "latex.org")
+ #+END_SRC
+
+** Graph
+ Some packages for graphing.
+ #+BEGIN_SRC emacs-lisp
+		 (use-package "gnuplot" :ensure t :defer t)
+		 (use-package "graphviz-dot-mode" :ensure t :defer t
+			 :config
+			 (setq graphviz-dot-view-command "xdot %s"))
+ #+END_SRC
+
+** UML
+ Plantuml for uml diagramming.
+ PlantUML is a java program for quickly constructing uml diagrams.
+ http://plantuml.com/
+ https://github.com/skuro/plantuml-mode
+
+ Flycheck is used for syntax checking.
+ https://github.com/alexmurray/flycheck-plantuml
+
+ #+BEGIN_SRC emacs-lisp
+	 (use-package "plantuml-mode" :ensure t :defer t
+		 :init
+		 (setq plantuml-jar-path "/usr/share/plantuml/lib/plantuml.jar")
+		 (add-to-list 'auto-mode-alist '("\\.plantuml$" . plantuml-mode))
+		 (add-to-list
+			'org-src-lang-modes '("plantuml" . plantuml))
+		 (setq org-plantuml-jar-path plantuml-jar-path)
+		 :config
+		 (plantuml-set-output-type "svg"))
+
+	 (use-package "flycheck-plantuml" :defer t
+		 :requires flycheck plantuml-mode
+		 :init
+		 (with-eval-after-load 'flycheck
+			 (require 'flycheck-plantuml)
+			 (flycheck-plantuml-setup))
+		 :ensure t)
+ #+END_SRC
+
+** Spell checker
+ #+BEGIN_SRC emacs-lisp
+	 (use-package "flycheck" :ensure t :defer t
+		 :diminish flycheck-mode
+		 :diminish flyspell-mode)
+ #+END_SRC
 * Email
 ** Message-mode
 Message-mode for emails.
@@ -844,221 +986,86 @@ Kill messages on exit
 	 (rjh/load-init "diary.org")
  #+END_SRC
 
-* Emacs lisp
-An api for working with files in Emacs lisp.
-( https://github.com/rejeep/f.el )
-#+BEGIN_SRC emacs-lisp
-	(use-package "f" :ensure t :defer t )
-#+END_SRC
-
-* ECB
-ECB - The Emacs code browser.
-
-After running =ecb-activate=, use the prefix =C-c .= for ECB commands.
-See =C-c . ?= for bindings, see the [[info:ecb][ECB info page]] for the detailed guide.
-For a compile window use =C-c . \=
-
-For more information, see http://ecb.sourceforge.net/.
-
-#+BEGIN_SRC emacs-lisp
-	(use-package "ecb" :defer t
-	:init
-	(require 'ecb)
-	(setq tree-buffer-enable-xemacs-image-bug-hack nil)
-	:ensure t
-	:custom
-	(ecb-primary-secondary-mouse-buttons (quote mouse-1--mouse-2))
-	(ecb-layout-name "left8"))
-#+END_SRC
-
-* Workgroups
-Workgroups provides defined layouts for Emacs.
-( https://github.com/tlh/workgroups.el )
+* Financial
+** Ledger
+ Ledger is a cli accounting system.
+ See [[https://www.ledger-cli.org/3.0/doc/ledger-mode.html][here]] for more details.
  #+BEGIN_SRC emacs-lisp
-	 (use-package "workgroups" :defer t
-		 :init
-		 (require 'workgroups)
-		 (workgroups-mode 1)
-		 (setq wg-morph-on nil)
-		 (setq wg-prefix-key (kbd "C-c w"))
-		 (wg-load "~/.emacs.d/workgroups" )
+	 (use-package "ledger-mode" :defer t
 		 :ensure t
-		 :diminish workgroups-mode)
+		 :init
+		 (add-to-list 'auto-mode-alist '("\\.ledger$" . ledger-mode))
+		 )
  #+END_SRC
 
-Keybindings:
-Use the following with <prefix> ;
-   + C-c w :: <prefix>
-   + c :: wg-create-workgroup
-	 + A :: wg-rename-workgroup
-	 + v :: wg-switch-to-workgroup
-	 + n/p :: next/prev workgroup
-	 + 0-9 :: switch thru positions in list
-	 + w :: wg-toggle-morph (animation)
-	 + C-s/l :: save / load workgroup
-   + k :: kill workgroup
-   + ,/. :: move left/right in group listing
-	 + ? :: wg-help
+* Files
+** Finding files
+ The following commands will help you when locating files.
+ Use =M-x= to run a command in Emacs.
+     - find-file :: Opens up a file buffer
+										( =C-x C-f= )
+		 - find-dired :: Opens up a directory buffer.
+		 - find-name-dired :: Finds files matching a pattern.
+		 - find-grep-dired :: Finds files containing a pattern.
 
-* Projectile
-Projectile is a project interaction library for Emacs.
-For more about the project, see [[https://projectile.readthedocs.io/en/latest/][the docs]] or [[https://github.com/bbatsov/projectile][the source.]]
+ In any of the =dired= buffers you can perform certain actions.
+ For example to start a =query-replace-regexp=, hit the =Q= key.
 
+ For more information, hit =?= inside any =dired= buffer.
+ And =h= for more advanced help.
+
+** Backups
+ Setup file backup behaviour for Emacs.
+ For more see [[file:config/backup.org][backup.org]].
+ #+BEGIN_SRC emacs-lisp
+	 (rjh/load-init "backup.org")
+ #+END_SRC
+
+** Recentf
+ Save recent files list between sessions.
+
+ Enable recentf-mode, set max items, set keybinding.
+ #+BEGIN_SRC emacs-lisp
+	 (recentf-mode 1)
+	 (setq recentf-max-menu-items 500)
+	 (global-set-key "\C-x\ \C-r" 'recentf-open-files)
+ #+END_SRC
+
+ Save recent files every 5 minutes.
+ #+BEGIN_SRC emacs-lisp
+	 (run-at-time nil (* 5 60) 'recentf-save-list)
+ #+END_SRC
+
+** Undo tree
+ By default =C-/= will undo.
+ Now =C-S-/= will redo.
+ =C-x u= will provide a visual undo tree which can be navigated with the arrow
+ keys. Type =q= to exit.
+
+ See [[http://pragmaticemacs.com/emacs/advanced-undoredo-with-undo-tree/][here]] for examples.
+ #+BEGIN_SRC emacs-lisp
+	 (use-package "undo-tree" :defer t
+		 :ensure t
+		 :init
+		 (global-undo-tree-mode 1)
+		 (defalias 'redo 'undo-tree-redo)
+		 (global-set-key (kbd "C-S-/") 'redo))
+ #+END_SRC
+
+* Authentication
+=oauth= package.
+Mainly for Google authentication.
 #+BEGIN_SRC emacs-lisp
-	(use-package "projectile" :defer t
-		:init
-		(projectile-mode +1)
-		(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-		(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-		:ensure t
-		:diminish projectile-mode)
+	(use-package "oauth2" :ensure t :defer t)
 #+END_SRC
 
-* Themes
-Use the =diff-hl= package to highlight changed-and-uncommitted lines when
-programming.
+Pinentry for gpg-agent
 #+BEGIN_SRC emacs-lisp
-	(use-package diff-hl
-		:ensure t
-		:init
-		(require 'diff-hl)
-		(add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
-		(add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
+	(use-package "pinentry" :ensure t :defer t)
 #+END_SRC
-
-For more on themes, checkout [[file:config/theme.org][theme.org]].
-#+BEGIN_SRC emacs-lisp
-	(use-package "material-theme" :ensure t :defer t)
-	(use-package "solarized-theme" :defer t
-		:ensure t
-		:config
-		(defun hrs/apply-theme ()
-			(setq solarized-use-variable-pitch nil)
-			(setq solarized-height-plus-1 1.2)
-			(setq solarized-height-plus-2 1.4)
-			(setq solarized-height-plus-3 1.7)
-			(setq solarized-height-plus-4 2.0)
-			(setq solarized-high-contrast-mode-line t)
-			(load-theme 'solarized-dark t)))
-	(use-package "fill-column-indicator" :ensure t :defer t)
-	(rjh/load-init "theme.org")
-#+END_SRC
-
-Miscellaneous text options.
-For more info see [[file:config/text.org][text.org]].
-#+BEGIN_SRC emacs-lisp
-	(use-package rainbow-mode :ensure t :defer t)
-	(use-package "rainbow-delimiters" :ensure t :defer t)
-	(use-package "htmlize" :ensure t :defer t)
-	(rjh/load-init "text.org")
-#+END_SRC
-
-* Telephone line
-A pretty message bar for Emacs.
-( https://github.com/dbordak/telephone-line )
-#+BEGIN_SRC emacs-lisp
-	(use-package telephone-line :defer t
-		:ensure t
-		:config
-		(rjh/load-init "telephone-line.org"))
-;	 :init
-	(require 'telephone-line)
-	(telephone-line-mode 1)
-#+END_SRC
-
-* Fonts
-Setup font functions, mostly courtesy of Harry Schwartz.
-For more see [[file:config/fonts.org][fonts.org]].
-#+BEGIN_SRC emacs-lisp
-	(rjh/load-init "fonts.org")
-#+END_SRC
-
-* Backups
-Setup file backup behaviour for Emacs.
-For more see [[file:config/backup.org][backup.org]].
-#+BEGIN_SRC emacs-lisp
-	(rjh/load-init "backup.org")
-#+END_SRC
-
-* Undo tree
-By default =C-/= will undo.
-Now =C-S-/= will redo.
-=C-x u= will provide a visual undo tree which can be navigated with the arrow
-keys. Type =q= to exit.
-
-See [[http://pragmaticemacs.com/emacs/advanced-undoredo-with-undo-tree/][here]] for examples.
-#+BEGIN_SRC emacs-lisp
-	(use-package "undo-tree" :defer t
-		:ensure t
-		:init
-		(global-undo-tree-mode 1)
-		(defalias 'redo 'undo-tree-redo)
-		(global-set-key (kbd "C-S-/") 'redo))
-#+END_SRC
-
-* Recentf
-Save recent files list between sessions.
-
-Enable recentf-mode, set max items, set keybinding.
-#+BEGIN_SRC emacs-lisp
-	(recentf-mode 1)
-	(setq recentf-max-menu-items 500)
-	(global-set-key "\C-x\ \C-r" 'recentf-open-files)
-#+END_SRC
-
-Save recent files every 5 minutes.
-#+BEGIN_SRC emacs-lisp
-	(run-at-time nil (* 5 60) 'recentf-save-list)
-#+END_SRC
-
-* Numbers
-Methods for manipulating numbers in Emacs.
-For more details see [[file:config/numbers.org][numbers.org]]
-#+BEGIN_SRC emacs-lisp
-	(rjh/load-init "numbers.org")
-#+END_SRC
-
-Keybindings
-#+BEGIN_SRC emacs-lisp
-	(global-set-key (kbd "M-+") 'my-increment-number-decimal)
-	(global-set-key (kbd "M-_") 'my-decrement-number-decimal)
-	(global-set-key (kbd "C-M-+") 'my-increment-number-hexadecimal)
-	(global-set-key (kbd "C-M-_") 'my-decrement-number-hexadecimal)
-#+END_SRC
-* Zetteldeft
-Zettelkasten note-taking using deft and avy.
-
-#+BEGIN_SRC emacs-lisp
-	(use-package zetteldeft
-		:load-path "~/.emacs.d/zetteldeft"
-		:after deft
-		:bind (("C-c d d" . deft)
-					 ("C-c d D" . zetteldeft-deft-new-search)
-					 ("C-c d R" . deft-refresh)
-					 ("C-c d s" . zetteldeft-search-at-point)
-					 ("C-c d c" . zetteldeft-search-current-id)
-					 ("C-c d f" . zetteldeft-follow-link)
-					 ("C-c d F" . zetteldeft-avy-file-search-ace-window)
-					 ("C-c d l" . zetteldeft-avy-link-search)
-					 ("C-c d t" . zetteldeft-avy-tag-search)
-					 ("C-c d T" . zetteldeft-tag-buffer)
-					 ("C-c d i" . zetteldeft-find-file-id-insert)
-					 ("C-c d I" . zetteldeft-find-file-full-title-insert)
-					 ("C-c d o" . zetteldeft-find-file)
-					 ("C-c d n" . zetteldeft-new-file)
-					 ("C-c d N" . zetteldeft-new-file-and-link)
-					 ("C-c d r" . zetteldeft-file-rename)
-					 ("C-c d x" . zetteldeft-count-words)
-					 )
-		)
-
-	(use-package deft
-		:ensure t
-		:init
-		(setq deft-directory "~/.emacs.d/deft")
-		)
-
-	(use-package avy
-		:pin melpa
-		:ensure t)
-#+END_SRC
+Please ensure the following setting is enabled for =~/.gnupg/gpg-agent.conf=.
+	#+BEGIN_EXAMPLE
+	allow-emacs-pinentry
+	#+END_EXAMPLE
+This is [[https://www.gnu.org/software/emacs/manual/html_mono/epa.html#fnd-1][required]] for GnuPG 2.1.5 or later; if you do not use a graphical
+=pinentry= program.
