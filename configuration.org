@@ -180,7 +180,10 @@ sibling headline. Block if the previous sibling is not done.
 :END:
 #+end_example
 
-
+Assign todo kwd NEXT; to the next sibling headline which is a todo entry.
+#+begin_example org
+:TRIGGER: relatives(forward-wrap todo-only 1) todo!(NEXT)
+#+end_example
 * Study
 ** Flash cards
  Pamparam provides a flashcard engine for org documents.
