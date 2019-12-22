@@ -117,28 +117,28 @@ a separate personal.org file, which is not included my repository.
  #+END_SRC
 
 * Org
-To see the complete org configuration, see [[file:config/org.org][org.org]].
-#+BEGIN_SRC emacs-lisp
-	(rjh/load-init "org.org" )
-	;;	(rjh/load-init "org-gantt.org" ) ;; Disable org-gantt (no official package on Melpa or elsewhere)
-#+END_SRC
-
-Add pretty bullets for org-mode.
-#+BEGIN_SRC emacs-lisp
-	(use-package "org-bullets" :ensure t :defer t)
-#+END_SRC
-
-Emacs speaks statistics package.
-#+BEGIN_SRC emacs-lisp
-	(use-package "ess" :ensure t :defer t)
-	(require 'ess-site)
-#+END_SRC
-
-Emacs org-caldav package for calendar integration.
-#+BEGIN_SRC emacs-lisp
-	(use-package "org-caldav" :ensure t :defer t)
-#+END_SRC
-
+** org-mode
+ To see the complete org configuration, see [[file:config/org.org][org.org]].
+ #+BEGIN_SRC emacs-lisp
+	 (rjh/load-init "org.org" )
+	 ;;	(rjh/load-init "org-gantt.org" ) ;; Disable org-gantt (no official package on Melpa or elsewhere)
+ #+END_SRC
+** org-bullets
+ Add pretty bullets for org-mode.
+ #+BEGIN_SRC emacs-lisp
+	 (use-package "org-bullets" :ensure t :defer t)
+ #+END_SRC
+** ess
+ Emacs speaks statistics package.
+ #+BEGIN_SRC emacs-lisp
+	 (use-package "ess" :ensure t :defer t)
+	 (require 'ess-site)
+ #+END_SRC
+** org-caldav
+ Emacs org-caldav package for calendar integration.
+ #+BEGIN_SRC emacs-lisp
+	 (use-package "org-caldav" :ensure t :defer t)
+ #+END_SRC
 * Study
 ** Flash cards
  Pamparam provides a flashcard engine for org documents.
