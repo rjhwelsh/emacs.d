@@ -7,76 +7,6 @@
 * Introduction
 Originally inspired by Harry R. Schwartz. Your excellent introduction to
 org-mode has inspired this.
-* Harry's sensible-defaults.el
-You can find this file, [[https://github.com/hrs/sensible-defaults.el][here]].
-#+BEGIN_SRC emacs-lisp
-	(load-file "~/.emacs.d/sensible-defaults.el")
-;Settings
-	(sensible-defaults/open-files-from-home-directory)
-	(sensible-defaults/increase-gc-threshold)
-	(sensible-defaults/delete-trailing-whitespace)
-	(sensible-defaults/treat-camelcase-as-separate-words)
-	(sensible-defaults/automatically-follow-symlinks)
-	(sensible-defaults/make-scripts-executable)
-	(sensible-defaults/single-space-after-periods)
-	(sensible-defaults/offer-to-create-parent-directories-on-save)
-	(sensible-defaults/apply-changes-to-highlighted-region)
-	(sensible-defaults/overwrite-selected-text)
-	(sensible-defaults/ensure-that-files-end-with-newline)
-	(sensible-defaults/confirm-closing-emacs)
-	(sensible-defaults/quiet-startup)
-	(sensible-defaults/make-dired-file-sizes-human-readable)
-	(sensible-defaults/shorten-yes-or-no)
-	(sensible-defaults/always-highlight-code)
-	(sensible-defaults/refresh-buffers-when-files-change)
-	(sensible-defaults/show-matching-parens)
-	(sensible-defaults/flash-screen-instead-of-ringing-bell)
-	(sensible-defaults/set-default-line-length-to 80)
-;  (sensible-defaults/open-clicked-files-in-same-frame-on-mac)
-	(sensible-defaults/yank-to-point-on-mouse-click)
-;Keybindings
-	(sensible-defaults/bind-commenting-and-uncommenting)
-	(sensible-defaults/bind-home-and-end-keys)
-	(sensible-defaults/bind-keys-to-change-text-size)
-
-#+END_SRC
-* xah-fly-keys
-https://github.com/xahlee/xah-fly-keys
-#+BEGIN_SRC emacs-lisp
-	(use-package "xah-fly-keys"
-		:ensure t
-		:bind (
-					 ("<f5>" . xah-fly-command-mode-activate)
-					 ("<f6>" . xah-fly-insert-mode-activate)
-					 )
-
-		:init
-		;; Disable control and meta variations
-		;; *Must be before require statement*
-		(setq xah-fly-use-meta-key nil)
-		(setq xah-fly-use-control-key nil)
-
-		(require 'xah-fly-keys)
-		(xah-fly-keys-set-layout "colemak")
-
-		;; Add highlight hooks
-		(defun my-highlight-line-on () (global-hl-line-mode 1))
-		(defun my-highlight-line-off () (global-hl-line-mode 0))
-
-		:hook (
-					 (xah-fly-command-mode-activate . my-highlight-line-on)
-					 (xah-fly-insert-mode-activate . my-highlight-line-off))
-		)
-#+END_SRC
-* which-key
-https://github.com/justbur/emacs-which-key
-#+BEGIN_SRC emacs-lisp
-	(use-package "which-key"
-		:ensure t
-		:init
-		(require 'which-key)
-		(which-key-mode))
-#+END_SRC
 
 * Personal Details
 I would like to be able to share my config with other people to ease their
@@ -145,7 +75,7 @@ Load the main-configuration file. "Literally this file".
 (org-babel-load-file "~/.emacs.d/configuration.org")
 #+END_EXAMPLE
 
-* Hide certain modes from the modeline
+* Diminish
 
 *Harry:* I'd rather have only a few necessary mode identifiers on my modeline.
 This either hides or "renames" a variety of major or minor modes using the
@@ -212,14 +142,183 @@ This function will load a single configuration file.
 		 (expand-file-name pkg_a rjh/local-init-dir)))
 #+END_SRC
 
-* eVil
-The emacs VI interface layer.
-For those who prefer the feel of Vi on emacs.
-#+BEGIN_SRC emacs-lisp
-	(use-package evil
-		:ensure t
-		:defer t)
-#+END_SRC
+* Keybinding
+** Harry's sensible-defaults.el
+ You can find this file, [[https://github.com/hrs/sensible-defaults.el][here]].
+ #+BEGIN_SRC emacs-lisp
+	 (load-file "~/.emacs.d/sensible-defaults.el")
+ ;Settings
+	 (sensible-defaults/open-files-from-home-directory)
+	 (sensible-defaults/increase-gc-threshold)
+	 (sensible-defaults/delete-trailing-whitespace)
+	 (sensible-defaults/treat-camelcase-as-separate-words)
+	 (sensible-defaults/automatically-follow-symlinks)
+	 (sensible-defaults/make-scripts-executable)
+	 (sensible-defaults/single-space-after-periods)
+	 (sensible-defaults/offer-to-create-parent-directories-on-save)
+	 (sensible-defaults/apply-changes-to-highlighted-region)
+	 (sensible-defaults/overwrite-selected-text)
+	 (sensible-defaults/ensure-that-files-end-with-newline)
+	 (sensible-defaults/confirm-closing-emacs)
+	 (sensible-defaults/quiet-startup)
+	 (sensible-defaults/make-dired-file-sizes-human-readable)
+	 (sensible-defaults/shorten-yes-or-no)
+	 (sensible-defaults/always-highlight-code)
+	 (sensible-defaults/refresh-buffers-when-files-change)
+	 (sensible-defaults/show-matching-parens)
+	 (sensible-defaults/flash-screen-instead-of-ringing-bell)
+	 (sensible-defaults/set-default-line-length-to 80)
+ ;  (sensible-defaults/open-clicked-files-in-same-frame-on-mac)
+	 (sensible-defaults/yank-to-point-on-mouse-click)
+ ;Keybindings
+	 (sensible-defaults/bind-commenting-and-uncommenting)
+	 (sensible-defaults/bind-home-and-end-keys)
+	 (sensible-defaults/bind-keys-to-change-text-size)
+
+ #+END_SRC
+** xah-fly-keys
+ https://github.com/xahlee/xah-fly-keys
+ #+BEGIN_SRC emacs-lisp
+	 (use-package "xah-fly-keys"
+		 :ensure t
+		 :bind (
+						("<f5>" . xah-fly-command-mode-activate)
+						("<f6>" . xah-fly-insert-mode-activate)
+						)
+
+		 :init
+		 ;; Disable control and meta variations
+		 ;; *Must be before require statement*
+		 (setq xah-fly-use-meta-key nil)
+		 (setq xah-fly-use-control-key nil)
+
+		 (require 'xah-fly-keys)
+		 (xah-fly-keys-set-layout "colemak")
+
+		 ;; Add highlight hooks
+		 (defun my-highlight-line-on () (global-hl-line-mode 1))
+		 (defun my-highlight-line-off () (global-hl-line-mode 0))
+
+		 :hook (
+						(xah-fly-command-mode-activate . my-highlight-line-on)
+						(xah-fly-insert-mode-activate . my-highlight-line-off))
+		 )
+ #+END_SRC
+** which-key
+ https://github.com/justbur/emacs-which-key
+ #+BEGIN_SRC emacs-lisp
+	 (use-package "which-key"
+		 :ensure t
+		 :init
+		 (require 'which-key)
+		 (which-key-mode))
+ #+END_SRC
+
+** Electric-pair
+ Electric pair mode is a minor mode that enables auto-closing of brackets,
+ quotes, etc.
+ See more [[http://ergoemacs.org/emacs/emacs_insert_brackets_by_pair.html][here]].
+
+ #+BEGIN_SRC emacs-lisp
+ (electric-pair-mode)
+ #+END_SRC
+
+** Auto-indent
+ Automatically indent code.
+ #+BEGIN_SRC emacs-lisp
+	 (use-package aggressive-indent
+		 :ensure t
+	   :init
+		 (global-aggressive-indent-mode 1))
+ #+END_SRC
+** Yasnippet
+ Yasnippet provides a templating engine for Emacs.
+ For more, see [[file:config/yasnippet.org][yasnippet.org]].
+ N.B. For html tags use emmet-mode instead of yasnippet.
+ #+BEGIN_SRC emacs-lisp
+	 (use-package popup :ensure t :defer t)
+	 (use-package "yasnippet"
+		 :ensure t
+		 :diminish yas-minor-mode
+		 :init
+		 (require 'yasnippet)
+		 (yas-global-mode 1) ; enable globally
+		 :config
+		 (rjh/load-init "yasnippet.org")
+		 :defer t)
+	 (use-package "yasnippet-snippets" :ensure t :defer t) ;; Official snippets by AndreaCrotti
+ #+END_SRC
+
+** Company
+ Company-mode provides auto-completion features for many other modes.
+
+ Company mode has some compatibility issues with yasnippet.
+ For more see [[file:config/company.org::*Yasnippet%20compatibility][Yasnippet compatibility]].
+
+ Other packages that use =<tab>= and may be affected by company-mode:
+     - magit
+		 - ecb
+
+ #+BEGIN_SRC emacs-lisp
+	 (use-package company
+		 :ensure t
+		 :diminish company-mode
+		 :init
+		 (setq company-global-modes t)
+		 (global-company-mode 1)
+		 (setq company-idle-delay 0.8)
+		 (setq company-minimum-prefix-length 2)
+		 (rjh/load-init "company.org"))
+ #+END_SRC
+
+** Helm
+ Helm is an incremental completion and selection narrowing framework for Emacs.
+ https://emacs-helm.github.io/helm/
+ http://tuhdo.github.io/helm-intro.html
+ #+BEGIN_SRC emacs-lisp
+	 (use-package helm
+		 :ensure t
+		 :init
+		 (require 'helm)
+		 (require 'helm-config)
+		 (global-unset-key (kbd "C-x c"))
+		 (setq helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
+					 helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
+					 helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
+					 helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
+					 helm-ff-file-name-history-use-recentf t
+					 helm-echo-input-in-header-line t
+					 helm-autoresize-max-height 0
+					 helm-autoresize-min-height 20)
+		 (helm-autoresize-mode 1)
+		 (helm-mode 1)
+		 :bind
+		 (("C-c h" . helm-command-prefix)
+			("M-x" . helm-M-x)
+			("C-x C-f" . helm-find-files)
+			("C-x M-f" . helm-recentf)
+			("C-x b" . helm-mini)
+			("M-y" . helm-show-kill-ring)
+			:map helm-map
+			("<tab>" . helm-execute-persistent-action)
+			("C-i" . helm-execute-persistent-action)
+			("C-z" . helm-select-action))
+		 :diminish helm-mode)
+ #+END_SRC
+** Abbrev
+ Abbreviation configuration.
+ For more see [[file:config/abbrev.org][abbrev.org]].
+ #+BEGIN_SRC emacs-lisp
+	 (rjh/load-init "abbrev.org")
+ #+END_SRC
+** MULE
+ Multi-lingual environment for Emacs.
+ For more see [[file:config/mule.org][mule.org]]
+ #+BEGIN_SRC emacs-lisp
+	 ;(set-language-environment "Japanese")
+   (set-language-environment "UTF-8")
+	 (load-library "anthy")
+ #+END_SRC
 
 * Org
 To see the complete org configuration, see [[file:config/org.org][org.org]].
@@ -244,80 +343,6 @@ Emacs org-caldav package for calendar integration.
 	(use-package "org-caldav" :ensure t :defer t)
 #+END_SRC
 
-* Yasnippet
-Yasnippet provides a templating engine for Emacs.
-For more, see [[file:config/yasnippet.org][yasnippet.org]].
-N.B. For html tags use emmet-mode instead of yasnippet.
-#+BEGIN_SRC emacs-lisp
-	(use-package popup :ensure t :defer t)
-	(use-package "yasnippet"
-		:ensure t
-		:diminish yas-minor-mode
-		:init
-		(require 'yasnippet)
-		(yas-global-mode 1) ; enable globally
-		:config
-		(rjh/load-init "yasnippet.org")
-		:defer t)
-	(use-package "yasnippet-snippets" :ensure t :defer t) ;; Official snippets by AndreaCrotti
-#+END_SRC
-
-* Company
-Company-mode provides auto-completion features for many other modes.
-
-Company mode has some compatibility issues with yasnippet.
-For more see [[file:config/company.org::*Yasnippet%20compatibility][Yasnippet compatibility]].
-
-Other packages that use =<tab>= and may be affected by company-mode:
-    - magit
-		- ecb
-
-#+BEGIN_SRC emacs-lisp
-	(use-package company
-		:ensure t
-		:diminish company-mode
-		:init
-		(setq company-global-modes t)
-		(global-company-mode 1)
-		(setq company-idle-delay 0.8)
-		(setq company-minimum-prefix-length 2)
-		(rjh/load-init "company.org"))
-#+END_SRC
-
-* Helm
-Helm is an incremental completion and selection narrowing framework for Emacs.
-https://emacs-helm.github.io/helm/
-http://tuhdo.github.io/helm-intro.html
-#+BEGIN_SRC emacs-lisp
-	(use-package helm
-		:ensure t
-		:init
-		(require 'helm)
-		(require 'helm-config)
-		(global-unset-key (kbd "C-x c"))
-		(setq helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
-					helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
-					helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
-					helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
-					helm-ff-file-name-history-use-recentf t
-					helm-echo-input-in-header-line t
-					helm-autoresize-max-height 0
-					helm-autoresize-min-height 20)
-		(helm-autoresize-mode 1)
-		(helm-mode 1)
-		:bind
-		(("C-c h" . helm-command-prefix)
-		 ("M-x" . helm-M-x)
-		 ("C-x C-f" . helm-find-files)
-		 ("C-x M-f" . helm-recentf)
-		 ("C-x b" . helm-mini)
-		 ("M-y" . helm-show-kill-ring)
-		 :map helm-map
-		 ("<tab>" . helm-execute-persistent-action)
-		 ("C-i" . helm-execute-persistent-action)
-		 ("C-z" . helm-select-action))
-		:diminish helm-mode)
-#+END_SRC
 * Latex
 Latex configuration.
 For more see [[file:config/latex.org][latex.org]].
@@ -391,23 +416,6 @@ Use =M-x git-timemachine=, =np= to navigate and =q= to quit.
 	(use-package "git-timemachine" :ensure t :defer t)
 #+END_SRC
 
-* Electric-pair
-Electric pair mode is a minor mode that enables auto-closing of brackets,
-quotes, etc.
-See more [[http://ergoemacs.org/emacs/emacs_insert_brackets_by_pair.html][here]].
-
-#+BEGIN_SRC emacs-lisp
-(electric-pair-mode)
-#+END_SRC
-
-* Auto-indent
-Automatically indent code.
-#+BEGIN_SRC emacs-lisp
-	(use-package aggressive-indent
-		:ensure t
-	  :init
-		(global-aggressive-indent-mode 1))
-#+END_SRC
 * Java
 JDEE - Java Development Environment for Emacs
 
@@ -530,7 +538,6 @@ For more see [[https://github.com/r0man/ruby-test-mode][source]].
 															 (lambda () (interactive) (quit-restore-window))))))
 
 #+END_SRC
-
 
 * Jinja 2
 Jinja2 is a modern and designer-friendly templating language for Python, modelled after Django's templates.
@@ -844,15 +851,6 @@ An api for working with files in Emacs lisp.
 	(use-package "f" :ensure t :defer t )
 #+END_SRC
 
-* MULE
-Multi-lingual environment for Emacs.
-For more see [[file:config/mule.org][mule.org]]
-#+BEGIN_SRC emacs-lisp
-	;(set-language-environment "Japanese")
-  (set-language-environment "UTF-8")
-	(load-library "anthy")
-#+END_SRC
-
 * ECB
 ECB - The Emacs code browser.
 
@@ -968,12 +966,6 @@ A pretty message bar for Emacs.
 	(telephone-line-mode 1)
 #+END_SRC
 
-* Abbrev
-Abbreviation configuration.
-For more see [[file:config/abbrev.org][abbrev.org]].
-#+BEGIN_SRC emacs-lisp
-	(rjh/load-init "abbrev.org")
-#+END_SRC
 * Fonts
 Setup font functions, mostly courtesy of Harry Schwartz.
 For more see [[file:config/fonts.org][fonts.org]].
