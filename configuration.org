@@ -145,8 +145,9 @@ a separate personal.org file, which is not included my repository.
 		 (use-package "org-edna"
 			 :ensure t
 			 :init
-       (require 'org-edna)
+			 (require 'org-edna)
 			 (org-edna-load)
+			 (setq org-edna-use-inheritance t)
 			 )
 	 #+end_src
 * Study
