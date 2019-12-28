@@ -227,6 +227,7 @@ Assign todo kwd NEXT; to the next sibling headline which is a todo entry.
 		 :ensure t
 		 :init
 		 (setq deft-directory "~/.emacs.d/deft")
+		 (setq deft-auto-save-interval 60.0)
 		 )
 
 	 (use-package avy
