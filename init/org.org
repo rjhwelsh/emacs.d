@@ -411,8 +411,8 @@ buffer only.
 					 (lambda (&optional settings filename exts)
 						 `(agenda ""
 											,(append
-											'((org-agenda-skip-function nil)
-												)
+												'((org-agenda-skip-function nil)
+													)
 												settings)
 											,(funcall filename-to-export-views filename exts))
 						 ))
@@ -517,17 +517,17 @@ buffer only.
 																							'("ps" "html")))
 
 							 ("Y" "Year Agenda View (ICS)" agenda ""
-																										 ((org-agenda-span 366)
-																											 (org-agenda-remove-tags t)
-																											 (ps-number-of-columns 1)
-																											 (org-agenda-prefix-format "[ ] %?-12t%?-12s%:c")
-																											 (org-agenda-skip-function nil)
-																											 )
+								((org-agenda-span 366)
+								 (org-agenda-remove-tags t)
+								 (ps-number-of-columns 1)
+								 (org-agenda-prefix-format "[ ] %?-12t%?-12s%:c")
+								 (org-agenda-skip-function nil)
+								 )
 
-																										 ,(funcall filename-to-export-views
-																															 "agenda/agenda"
-																															 '("ics"))
-																										 )
+								,(funcall filename-to-export-views
+													"agenda/agenda"
+													'("ics"))
+								)
 
 							 ("O" "Other tags (EXPORT)" . ,(funcall other-tags-view
 																											'((ps-number-of-columns 1)
