@@ -287,6 +287,12 @@ Generic interactive agenda function.
 					(rjh/org-tags-expire-agenda-headline rjh/org-tags-expiration-tags)))))
 #+END_SRC
 
+*** Column
+Set tag column formatting relative to headline.
+#+begin_src emacs-lisp
+	(setq org-tags-column 0)
+#+end_src
+
 ** Views
 *** Agenda Files
 Store the list of agenda files in ...
