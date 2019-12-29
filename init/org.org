@@ -571,6 +571,7 @@ buffer only.
 							 ("O" "Other tags (EXPORT)" .
 								,(funcall other-tags-view
 													'((ps-number-of-columns 1)
+														(ps-print-color-p nil)
 														(ps-left-header (list 'org-agenda-write-buffer-name))
 														(org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
 													"agenda/tag/OTHER"
@@ -579,6 +580,7 @@ buffer only.
 								,(funcall stuck-view
 													'((ps-number-of-columns 1)
 														(ps-left-header (list 'org-agenda-write-buffer-name))
+														(ps-print-color-p nil)
 														(org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
 													"agenda/stuck"
 													'("ps" "html")))
