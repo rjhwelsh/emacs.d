@@ -492,6 +492,7 @@ buffer only.
 							 ("n" "Active View"
 								,(funcall full-view nil "agenda/" '("ps" "html"))
 								((ps-number-of-columns 1)
+								 (ps-left-header (list 'org-agenda-write-buffer-name))
 								 (ps-landscape-mode t))
 								,(funcall filename-to-export-views "agenda/full" '("ps" "html"))
 								)
@@ -526,14 +527,16 @@ buffer only.
 								tags-tree ,select-persistent-tags)
 							 ("u" "Todo items without persistent tags"
 								tags-tree ,deselect-persistent-tags)
-							 ("A" "Agenda View" . ,(funcall agenda-view
-																							'((org-agenda-span 1)
-																								(org-agenda-remove-tags t)
-																								(ps-number-of-columns 1)
-																								(org-agenda-prefix-format "[ ] %?-12t%?-12s%:c")
-																								)
-																							"agenda/agenda"
-																							'("ps" "html")))
+							 ("A" "Agenda View" .
+								,(funcall agenda-view
+													'((org-agenda-span 1)
+														(ps-left-header (list 'org-agenda-write-buffer-name))
+														(org-agenda-remove-tags t)
+														(ps-number-of-columns 1)
+														(org-agenda-prefix-format "[ ] %?-12t%?-12s%:c")
+														)
+													"agenda/agenda"
+													'("ps" "html")))
 
 							 ("Y" "Year Agenda View (ICS)" agenda ""
 								((org-agenda-span 366)
@@ -548,18 +551,22 @@ buffer only.
 													'("ics"))
 								)
 
-							 ("O" "Other tags (EXPORT)" . ,(funcall other-tags-view
-																											'((ps-number-of-columns 1)
-																												(org-agenda-remove-tags t)
-																												(org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
-																											"agenda/tag/OTHER"
-																											'("ps" "html")))
-							 ("S" "Stuck projects (EXPORT)" . ,(funcall stuck-view
-																													'((ps-number-of-columns 1)
-																														(org-agenda-remove-tags t)
-																														(org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
-																													"agenda/stuck"
-																													'("ps" "html")))
+							 ("O" "Other tags (EXPORT)" .
+								,(funcall other-tags-view
+													'((ps-number-of-columns 1)
+														(ps-left-header (list 'org-agenda-write-buffer-name))
+														(org-agenda-remove-tags t)
+														(org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
+													"agenda/tag/OTHER"
+													'("ps" "html")))
+							 ("S" "Stuck projects (EXPORT)" .
+								,(funcall stuck-view
+													'((ps-number-of-columns 1)
+														(ps-left-header (list 'org-agenda-write-buffer-name))
+														(org-agenda-remove-tags t)
+														(org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
+													"agenda/stuck"
+													'("ps" "html")))
 							 ("P" . "Todo items with specific persistent tag") ; See tag-persistent-agenda-commands below
 							 ("X" "Tasks to Archive" tags ,deselect-persistent-tags
 								((org-agenda-overriding-header "Tasks to Archive")
@@ -570,6 +577,7 @@ buffer only.
 						 (funcall tag-persistent-agenda-commands
 											'((org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp 'nottodo 'todo))
 												(ps-number-of-columns 1)
+												(ps-left-header (list 'org-agenda-write-buffer-name))
 												(org-agenda-remove-tags t)
 												(org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
 											"agenda/tag/"
