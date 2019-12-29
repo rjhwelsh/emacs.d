@@ -502,6 +502,7 @@ buffer only.
 								,(funcall full-view nil "agenda/" '("ps" "html"))
 								((ps-number-of-columns 1)
 								 (ps-left-header (list 'org-agenda-write-buffer-name))
+								 (ps-print-color-p nil)
 								 (ps-landscape-mode t))
 								,(funcall filename-to-export-views "agenda/full" '("ps" "html"))
 								)
@@ -540,6 +541,7 @@ buffer only.
 							 ("A" "Agenda View" .
 								,(funcall agenda-view
 													'((org-agenda-span 1)
+														(ps-print-color-p nil)
 														(ps-left-header (list 'org-agenda-write-buffer-name))
 														(org-agenda-remove-tags t)
 														(ps-number-of-columns 1)
@@ -586,6 +588,7 @@ buffer only.
 							 )
 						 (funcall tag-persistent-agenda-commands
 											'((org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp 'nottodo 'todo))
+												(ps-print-color-p nil)
 												(ps-number-of-columns 1)
 												(ps-left-header (list 'org-agenda-write-buffer-name))
 												(org-agenda-remove-tags t)
