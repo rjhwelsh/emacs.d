@@ -498,8 +498,8 @@ buffer only.
 							 ("s" "Summary View"
 								,(funcall full-view)
 								((org-agenda-remove-tags t)
-								 (ps-number-of-columns 2)
-								 (ps-landscape-mode t)
+								 (ps-number-of-columns 1)
+								 (ps-paper-type 'collinsorganiser)
 								 (org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
 								,(funcall filename-to-export-views "agenda/summary" '("ps" "html"))
 								)
