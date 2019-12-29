@@ -81,12 +81,16 @@ choose the right browser. I'd like to always use Firefox, so:
 		#+end_src
 ** PostScript
 *** Add paper type
+Collins Organiser Refill size.
 		#+begin_src emacs-lisp
 			(add-to-list 'ps-page-dimensions-database
-									 '(collinsorganiser 270 486 "CollinsOrganiserRefill")
-									 )
+									 '(collinsorganiser 270 486 "CollinsOrganiserRefill"))
 		#+end_src
-
+Collins Organiser 4-column on A4.
+#+begin_src emacs-lisp
+	(add-to-list 'ps-page-dimensions-database
+							 `(collinsorg4colA4 486 ,(nth 2 (assoc 'a4 ps-page-dimensions-database)) "CollinsOrganiser4ColumnsOnA4"))
+#+end_src
 * Agenda
 ** Keywords
 Workflow states have been taken from gjstein.
@@ -502,8 +506,8 @@ buffer only.
 								 (org-agenda-block-separator nil)
 								 (ps-print-color-p nil)
 								 (ps-left-header (list 'org-agenda-write-buffer-name))
+								 (ps-paper-type 'collinsorg4colA4)
 								 (ps-number-of-columns 4)
-								 (ps-paper-type 'a4)
 								 (ps-landscape-mode t)
 								 (ps-left-margin (* (/ 1 2.54) 72))
 								 (ps-right-margin (* (/ 1 2.54) 72))
