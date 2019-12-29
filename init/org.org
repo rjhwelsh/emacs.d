@@ -94,7 +94,7 @@ Collins Organiser 4-column on A4.
 Collins Organiser 3-column on A4.
 #+begin_src emacs-lisp
 	(add-to-list 'ps-page-dimensions-database
-							 `(collinsorg3colA4 486 ,(* 3 270) "CollinsOrganiser4ColumnsOnA4"))
+							 `(collinsorg3colA4 486 ,(* 3 270) "CollinsOrganiser3ColumnsOnA4"))
 #+end_src
 * Agenda
 ** Keywords
@@ -370,6 +370,7 @@ Sparse trees cannot be used in assembled views; they operate on the current
 buffer only.
 
 #+BEGIN_SRC emacs-lisp
+	(require 'ps-print)
 	(let (
 				(deselect-persistent-tags
 				 (apply
@@ -498,8 +499,9 @@ buffer only.
 							org-tag-persistent-alist
 							))
 					 )
+					(summary-side-margin (* (/ 1 2.54) 72))
+					(summary-border-file "~/.emacs.d/ps/summary_border.ps")
 					)
-
 
 			(setq org-agenda-custom-commands
 						(append
@@ -520,10 +522,13 @@ buffer only.
 								 (ps-left-header (list 'org-agenda-write-buffer-name))
 								 (ps-paper-type 'collinsorg3colA4)
 								 (ps-number-of-columns 3)
+								 (ps-print-background-image
+									'((,summary-border-file ,(- 0 summary-side-margin) ,(- 0 ps-bottom-margin))
+									 ))
 								 (ps-landscape-mode t)
-								 (ps-left-margin (* (/ 1 2.54) 72))
-								 (ps-right-margin (* (/ 1 2.54) 72))
-								 (ps-inter-column (* (/ 1 2.54) 72 2))
+								 (ps-left-margin ,summary-side-margin)
+								 (ps-right-margin ,summary-side-margin)
+								 (ps-inter-column (* ,summary-side-margin 2))
 								 (org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
 								,(funcall filename-to-export-views "agenda/summary" '("ps" "html"))
 								)
