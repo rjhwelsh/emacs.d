@@ -516,6 +516,7 @@ buffer only.
 								 (ps-landscape-mode t)
 								 (ps-left-margin (* (/ 1 2.54) 72))
 								 (ps-right-margin (* (/ 1 2.54) 72))
+								 (ps-inter-column (* (/ 1 2.54) 72 2))
 								 (org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
 								,(funcall filename-to-export-views "agenda/summary" '("ps" "html"))
 								)
