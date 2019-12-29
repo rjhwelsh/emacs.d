@@ -498,6 +498,7 @@ buffer only.
 							 ("s" "Summary View"
 								,(funcall full-view)
 								((org-agenda-remove-tags t)
+								 (org-agenda-block-separator nil)
 								 (ps-left-header (list 'org-agenda-write-buffer-name))
 								 (ps-number-of-columns 1)
 								 (ps-paper-type 'collinsorganiser)
