@@ -126,6 +126,19 @@ Add hook to agenda-mode.
 #+begin_src emacs-lisp
 	(add-hook 'org-agenda-mode-hook 'rjh/remove-schedule-from-completed-tasks)
 #+end_src
+*** auto-align tags before save
+Align all visible tags in the buffer.
+#+begin_src emacs-lisp
+	(add-hook 'org-mode-hook
+						(lambda ()
+							(add-hook 'before-save-hook
+												(lambda ()
+													(org-align-tags t)
+													)
+												nil
+												'local)
+							))
+#+end_src
 
 ** PostScript
 *** Add paper type
