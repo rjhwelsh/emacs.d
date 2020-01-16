@@ -223,6 +223,7 @@ See =org-tag-alist= for more details.
 					("WAITING"  )
 					("PROJECT"  )
 					("NOARCHIVE")
+					("DOC"      )
 					))
 #+end_src
 
@@ -1062,6 +1063,7 @@ Define default color face.
 	(setq org-tag-faces
 				'(("PROJECT" . org-black)
 					("REFILE" . org-black)
+					("DOC" . org-black)
 					("ACTION" . org-red)
 					("NOARCHIVE" . org-red)
 					("FLAGGED" . org-orange)
@@ -1069,7 +1071,8 @@ Define default color face.
 					("DELEGATE" . org-green)
 					("WAITING" . org-cyan)
 					("EXPAND" . org-blue)
-					("NEW" . org-magenta)))
+					("NEW" . org-magenta)
+					))
 #+END_SRC
 
 ** Misc
