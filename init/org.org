@@ -733,14 +733,18 @@ This allows for task blocking/etc.
 #+END_SRC
 
 ** Stuck Projects
-1. Match projects with the +PROJECT property, do not match completed items.
-2. Non-stuck projects are identified with a NEXT TODO keyword.
-3. Non-stuck projects are not identified with any tags.
+1. Match projects as
+	 1. Any LEVEL 1 headline
+	 2. Do not match completed items
+	 3. Do not match items tagged with NOARCHIVE
+2. Non-stuck projects have headlines which contain a NEXT todo-keyword.
+3. Non-stuck projects have headlines which may contain a specific tag; but not
+   in this case.
 4. Non-stuck projects are identified if the special word IGNORE is matched
    anywhere.
 #+BEGIN_SRC emacs-lisp
 	(setq org-stuck-projects
-			'("+LEVEL=1/-DONE" ("NEXT") nil "\\<IGNORE\\>"))
+			'("-NOARCHIVE+LEVEL=1/-DONE" ("NEXT") nil "\\<IGNORE\\>"))
 #+END_SRC
 
 ** Clocking
