@@ -384,6 +384,13 @@ Prefix format
 							 (or subtree-end (point-max)))
 					 next-headline))))
 	 #+END_SRC
+
+*** Custom Agenda View Defaults
+Set default agenda span for a single day.
+		#+begin_src emacs-lisp
+		(setq org-agenda-span 1)
+		#+end_src
+
 *** Custom Agenda View
 NB =`= backquote allows evaluation of selected element in the quoted list.
 =,= is used to indicate items to be evaluated.
@@ -488,7 +495,7 @@ buffer only.
 						 (append
 							`(
 								,(funcall agenda-view
-													(append settings '((org-agenda-span 1)))
+													settings
 													(concat filename "agenda") exts))
 							(mapcar 'cdr
 											(funcall tag-persistent-agenda-views
