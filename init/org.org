@@ -118,7 +118,7 @@ Function to remove schedule from all agenda entries.
 	(defun rjh/remove-schedule-from-completed-tasks ()
 		"Remove schedule from completed tasks in agenda buffers"
 		(interactive)
-		(org-map-entries 'rjh/remove-schedule "TODO=\"DONE\"" 'agenda
+		(org-map-entries 'rjh/remove-schedule "TODO=\"DONE\"+SCHEDULED<\"<today>\"" 'agenda
 		))
 #+end_src
 
