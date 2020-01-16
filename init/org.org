@@ -79,6 +79,28 @@ choose the right browser. I'd like to always use Firefox, so:
 		#+begin_src emacs-lisp
   (define-key org-agenda-mode-map "\C-ce" 'rjh/org-tags-expire-agenda)
 		#+end_src
+** Hooks
+*** org-id
+Hooks to ensure each org-mode entry has an associated org-id property.
+
+Create id upon capture.
+#+begin_src emacs-lisp
+	(add-hook 'org-capture-prepare-finalize-hook 'org-id-get-create)
+#+end_src
+
+Create a function to add ids to all headlines in a file, but only if they are an
+agenda buffer.
+#+begin_src emacs-lisp
+	(defun rjh/org-add-ids-to-headlines-in-agenda-files ()
+		"Add ID properties to all headlines across agenda buffers which do not already have one."
+	(interactive)
+  (org-map-entries 'org-id-get-create nil 'agenda))
+#+end_src
+
+Add hook to agenda-mode.
+#+begin_src emacs-lisp
+	(add-hook 'org-agenda-mode-hook 'rjh/org-add-ids-to-headlines-in-agenda-files)
+#+end_src
 ** PostScript
 *** Add paper type
 Collins Organiser Refill size.
