@@ -101,6 +101,32 @@ Add hook to agenda-mode.
 #+begin_src emacs-lisp
 	(add-hook 'org-agenda-mode-hook 'rjh/org-add-ids-to-headlines-in-agenda-files)
 #+end_src
+*** remove schedule from completed tasks
+Hook to remove schedule timestamps from any completed tasks.
+
+Function to remove schedule.
+#+begin_src emacs-lisp
+	(defun rjh/remove-schedule ()
+		(interactive)
+		(let ((current-prefix-arg '(4)))
+			(call-interactively 'org-schedule))
+		)
+#+end_src
+
+Function to remove schedule from all agenda entries.
+#+begin_src emacs-lisp
+	(defun rjh/remove-schedule-from-completed-tasks ()
+		"Remove schedule from completed tasks in agenda buffers"
+		(interactive)
+		(org-map-entries 'rjh/remove-schedule "TODO=\"DONE\"" 'agenda
+		))
+#+end_src
+
+Add hook to agenda-mode.
+#+begin_src emacs-lisp
+	(add-hook 'org-agenda-mode-hook 'rjh/remove-schedule-from-completed-tasks)
+#+end_src
+
 ** PostScript
 *** Add paper type
 Collins Organiser Refill size.
