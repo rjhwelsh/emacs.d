@@ -887,6 +887,9 @@ http://web-mode.org/
 				 :init
 				 (require 'web-mode)
 				 (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
+				 :hook
+				 ((web-mode . (lambda () (electric-pair-mode -1))
+										))
 				 )
 		 #+end_src
 
