@@ -872,15 +872,33 @@ Setup to compile standalone c programs.
 			(setq jdee-global-classpath '("."))) ;; Use the current working directory as a classpath for java projects.
 	#+END_SRC
 *** Web
-**** Web-mode
+**** web-mode
 An emacs mode for editing web templates.
 http://web-mode.org/
 		 #+begin_src emacs-lisp
 			 (use-package "web-mode"
+				 :requires rspec-mode
 				 :defer t
-				 :ensure t )
+				 :ensure t
+				 :config
+				 (setq web-mode-engines-alist
+							 '(("ctemplate" . "\\.hbs\\'"))
+							 )
+				 :init
+				 (require 'web-mode)
+				 (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
+				 )
 		 #+end_src
 
+**** rspec-mode
+RSpec mode provides some convenience functions for dealing with RSpec.
+Required for web-mode, ctemplate operation.
+https://github.com/pezra/rspec-mode
+		 #+begin_src emacs-lisp
+			 (use-package "rspec-mode"
+				 :ensure t
+				 )
+		 #+end_src
 * Documentation
 ** Latex
  Latex configuration.
