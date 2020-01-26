@@ -871,6 +871,16 @@ Setup to compile standalone c programs.
 			:config
 			(setq jdee-global-classpath '("."))) ;; Use the current working directory as a classpath for java projects.
 	#+END_SRC
+*** Web
+**** Web-mode
+An emacs mode for editing web templates.
+http://web-mode.org/
+		 #+begin_src emacs-lisp
+			 (use-package "web-mode"
+				 :defer t
+				 :ensure t )
+		 #+end_src
+
 * Documentation
 ** Latex
  Latex configuration.
