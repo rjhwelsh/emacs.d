@@ -644,7 +644,7 @@ Assign todo kwd NEXT; to the next sibling headline which is a todo entry.
 	(use-package "jinja2-mode" :ensure t :defer t)
 	#+END_SRC
 
-*** C                                                                 :C:Cpp:
+*** C :C:Cpp:
 **** Compile command
 Setup to compile standalone c programs.
 #+begin_src emacs-lisp
@@ -721,7 +721,7 @@ Setup to compile standalone c programs.
 					))
 		#+END_SRC
 
-**** Irony                                                         :DISABLED:
+**** Irony :DISABLED:
 	 This configuration is taken from [[http://martinsosic.com/development/emacs/2017/12/09/emacs-cpp-ide.html][Martin Sosic]].
 	 https://github.com/Sarcasm/irony-mode
 
@@ -774,7 +774,7 @@ Setup to compile standalone c programs.
 				 (add-hook 'irony-mode-hook #'irony-eldoc)))
 	 #+END_SRC
 
-*** Ruby                                                               :ruby:
+*** Ruby :ruby:
 	Some packages to make Ruby play nice with Emacs.
 	Derived from [[https://worace.works/2016/06/07/getting-started-with-emacs-for-ruby/][here]].
 
