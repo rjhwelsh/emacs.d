@@ -1183,7 +1183,9 @@ Allow =babel= to evaluate
 		 (dot . t)
 		 (gnuplot . t)
 		 (plantuml . t)
-		 (R . t)))
+		 (R . t)
+		 ))
+
 #+END_SRC
 
 Don't ask before evaluating code blocks.
