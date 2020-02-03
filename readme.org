@@ -46,7 +46,7 @@ Clone the repository to your desired location and run =./setup.sh=.
 	export LOCALREPO=~/emacs.d
 	git clone https://github.com/rjhwelsh/emacs.d $LOCALREPO &&
 		cd $LOCALREPO &&
-		./setup.sh
+		./setup.sh -i
 #+END_SRC
 
 ** Basic Linux guidelines
