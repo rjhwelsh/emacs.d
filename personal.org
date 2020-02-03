@@ -16,16 +16,6 @@ Set the org-directory.
 #+BEGIN_SRC emacs-lisp
  (setq org-directory "~/.emacs.d/org" )
 #+END_SRC
-Some default locations.
-#+BEGIN_SRC emacs-lisp
-	(setq rjh/org-tasks (expand-file-name "tasks.org" org-directory)
-			rjh/org-journal (expand-file-name "journal.org" org-directory)
-			rjh/org-events (expand-file-name "events.org" org-directory)
-			rjh/org-habits (expand-file-name "habits.org" org-directory)
-			rjh/org-daily (expand-file-name "daily.org" org-directory)
-			rjh/org-archive (expand-file-name "zarchive.org" org-directory)
-	 )
-#+END_SRC
 
 * Font
 Preferred font style.
@@ -47,48 +37,22 @@ Personal contact information:
 			)
 #+END_SRC
 
-* Calendar
-** Google Integration
- Google calendars.
+* Email
+Set mail folder defaults (cross-application)
+	#+begin_src emacs-lisp
+		(setq rjh/maildir "~/.mail")
+		(setq rjh/sent-folder "/sent")
+		(setq rjh/drafts-folder "/drafts")
+		(setq rjh/refile-folder "/refile")
+		(setq rjh/trash-folder "/trash")
+	#+end_src
 
-Create a separate calendar for Emacs, rather than using the main google
-calendar. This makes implementation easier.
- #+BEGIN_SRC emacs-lisp
-		 (setq org-icalendar-use-scheduled '(event-if-todo)
-					 org-icalendar-use-deadline  '(event-if-todo todo-due)
-					 org-icalendar-alarm-time 40
-	 )
-		 (setq org-caldav-url 'google
-							 org-caldav-calendar-id ""
-							 org-caldav-inbox nil
-							 org-icalendar-timezone "UTC"
-							 org-caldav-oauth2-client-id ""
-							 org-caldav-oauth2-client-secret ""
-							 org-caldav-files nil
-							 org-caldav-calendars '((:calendar-id "" :files ("~/.emacs.d/org/events.org")
-																									:inbox "" )
-																		 )
-				 )
-			 ;;(org-caldav-sync) ;; to sync calendars
- #+END_SRC
-
- I use crontab with emacs to sync periodically with google calendar.
- Otherwise, you will have to manually run the sync command using =M-x=.
- #+BEGIN_EXAMPLE
- (org-caldav-sync)
- #+END_EXAMPLE
-
-** Calendar sources
- More information about calfw found [[https://github.com/kiwanami/emacs-calfw][here]].
- Functions in the calendar.org, use this variable as the =:content-sources= for
- some agenda calendar views. =rjh/two-week-view= , =rjh/week-view=, etc.
-#+BEGIN_SRC emacs-lisp
-	 (setq rjh/calendar-sources (list
-				(cfw:org-create-file-source "Events" rjh/org-events "Green")  ; orgmode source
-				(cfw:cal-create-source "Orange") ; diary source
-														 )
-	)
-#+END_SRC
+Blank SMTP settings.
+#+begin_src emacs-lisp
+	(smtpmail-default-smtp-server . "") ; SMTP server
+	(smtpmail-smtp-server         . "") ; SMTP server
+	(smtpmail-smtp-service        . ) ; Port number
+#+end_src
 * Url-browser
 Set your default browser here.
 #+BEGIN_SRC emacs-lisp

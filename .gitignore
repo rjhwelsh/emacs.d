@@ -1,3 +1,5 @@
 update.sh
 *.el
 bugs.org
+test
+.#*

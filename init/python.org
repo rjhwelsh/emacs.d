@@ -101,7 +101,6 @@ common directory. This common directory is called project root.
 							of classes and functions.
 	- =M-?= :: Find references to the identifier at point.
 
-
 *** Shell buffer
 		- =C-cz= :: elpy-shell-switch-to-shell, Switch to a buffer with a python
                interpreter, running one if necessary.

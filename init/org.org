@@ -1,0 +1,1229 @@
+#+TITLE: Org-mode configuration
+#+AUTHOR: Roger J. H. Welsh
+#+EMAIL: rjhwelsh@gmail.com
+#+PROPERTY: header-args    :results silent
+#+STARTUP: content
+* Packages
+The default org should be setup to be installed via the init.el file in your
+emacs.d directory. This ensures the latest org-mode is used, and not the default
+provided with your emacs binaries. The following example illustrates the
+Emacs-lisp commands that bootstrap org-mode, before processing the org-files as
+specified by your configuration.org.
+
+#+BEGIN_EXAMPLE
+(unless (package-installed-p 'org-plus-contrib)
+  (package-install 'org-plus-contrib))
+(require 'org)
+(org-babel-load-file "~/.emacs.d/configuration.org")
+#+END_EXAMPLE
+
+The following load-path is used for org-plus-contrib packages.
+It will automatically expand to the first available org-plus-contrib
+package in elpa.
+#+BEGIN_SRC emacs-lisp
+	(add-to-list
+	 'load-path
+	 (car (file-expand-wildcards "~/.emacs.d/elpa/org-plus-contrib*" ))
+	 )
+#+END_SRC
+
+* Setup
+For a minimal =.emacs= for =org-mode=, see [[http://orgmode.org/worg/org-faq.html#minimal-emacs][here]].
+#+BEGIN_SRC emacs-lisp
+(require 'org-install)
+(require 'org-agenda)
+#+END_SRC
+Enable extension modules for org-mode
+ #+BEGIN_SRC emacs-lisp
+(eval-after-load 'org
+ '(org-load-modules-maybe t))
+ #+END_SRC
+
+** Application Defaults
+Default application associations.
+#+BEGIN_SRC emacs-lisp
+	(setq org-file-apps
+				'((auto-mode . emacs)
+					("\\.x?html?\\'" . "firefox %s")
+					("\\.pdf\\'" . "evince \"%s\"")
+					("\\.pdf::\\([0-9]+\\)\\'" . "evince \"%s\" -p %1")
+					))
+#+END_SRC
+Link frame setup. Prevent windows from splitting.
+#+BEGIN_SRC emacs-lisp
+	(setq org-link-frame-setup
+				'((file . find-file)
+					))
+#+END_SRC
+
+*Harry:* Exporting to HTML and opening the results triggers
+=/usr/bin/sensible-browser=, which checks the =$BROWSER= environment variable to
+choose the right browser. I'd like to always use Firefox, so:
+#+BEGIN_SRC emacs-lisp
+  (setenv "BROWSER" "firefox")
+#+END_SRC
+** Keybindings
+*** Global
+		#+begin_src emacs-lisp
+	(define-key global-map "\C-cl" 'org-store-link)
+	(define-key global-map "\C-ca" 'org-agenda)
+	(define-key global-map "\C-cc" 'org-capture)
+	(define-key global-map (kbd "C-c C-x C-j") 'org-clock-goto)
+	(define-key global-map (kbd "C-c C-x C-o") 'org-clock-out)
+		#+end_src
+*** Org-mode
+		#+begin_src emacs-lisp
+  (define-key org-mode-map "\C-ce" 'rjh/org-tags-expire)
+		#+end_src
+*** Org-agenda-mode
+		#+begin_src emacs-lisp
+  (define-key org-agenda-mode-map "\C-ce" 'rjh/org-tags-expire-agenda)
+		#+end_src
+** Hooks
+*** org-id
+Hooks to ensure each org-mode entry has an associated org-id property.
+
+Create id upon capture.
+#+begin_src emacs-lisp
+	(add-hook 'org-capture-prepare-finalize-hook 'org-id-get-create)
+#+end_src
+
+Create a function to add ids to all headlines in a file, but only if they are an
+agenda buffer.
+#+begin_src emacs-lisp
+	(defun rjh/org-add-ids-to-headlines-in-agenda-files ()
+		"Add ID properties to all headlines across agenda buffers which do not already have one."
+	(interactive)
+  (org-map-entries 'org-id-get-create nil 'agenda))
+#+end_src
+
+Add hook to agenda-mode.
+#+begin_src emacs-lisp
+	(add-hook 'org-agenda-mode-hook 'rjh/org-add-ids-to-headlines-in-agenda-files)
+#+end_src
+*** remove schedule from completed tasks
+Hook to remove schedule timestamps from any completed tasks.
+
+Function to remove schedule.
+#+begin_src emacs-lisp
+	(defun rjh/remove-schedule ()
+		(interactive)
+		(let ((current-prefix-arg '(4)))
+			(call-interactively 'org-schedule))
+		)
+#+end_src
+
+Function to remove schedule from all agenda entries.
+#+begin_src emacs-lisp
+	(defun rjh/remove-schedule-from-completed-tasks ()
+		"Remove schedule from completed tasks in agenda buffers"
+		(interactive)
+		(org-map-entries 'rjh/remove-schedule "TODO=\"DONE\"+SCHEDULED<\"<today>\"" 'agenda
+		))
+#+end_src
+
+Add hook to agenda-mode.
+#+begin_src emacs-lisp
+	(add-hook 'org-agenda-mode-hook 'rjh/remove-schedule-from-completed-tasks)
+#+end_src
+*** auto-align tags before save
+Align all visible tags in the buffer.
+#+begin_src emacs-lisp
+	(add-hook 'org-mode-hook
+						(lambda ()
+							(add-hook 'before-save-hook
+												(lambda ()
+													(org-align-tags t)
+													)
+												nil
+												'local)
+							))
+#+end_src
+
+** PostScript
+*** Add paper type
+Collins Organiser Refill size.
+		#+begin_src emacs-lisp
+			(add-to-list 'ps-page-dimensions-database
+									 '(collinsorganiser 270 486 "CollinsOrganiserRefill"))
+		#+end_src
+Collins Organiser 4-column on A4.
+#+begin_src emacs-lisp
+	(add-to-list 'ps-page-dimensions-database
+							 `(collinsorg4colA4 486 ,(nth 2 (assoc 'a4 ps-page-dimensions-database)) "CollinsOrganiser4ColumnsOnA4"))
+#+end_src
+Collins Organiser 3-column on A4.
+#+begin_src emacs-lisp
+	(add-to-list 'ps-page-dimensions-database
+							 `(collinsorg3colA4 486 ,(* 3 270) "CollinsOrganiser3ColumnsOnA4"))
+#+end_src
+* Agenda
+** Keywords
+Workflow states have been taken from gjstein.
+See his guide [[http://cachestocaches.com/2016/9/my-workflow-org-agenda/#][here]].
+	 - todo :: Indicate tasks / projects which need to get done
+	 - next :: Tasks which are being done "next" within a particular project
+	 - waiting :: Tasks waiting on someone else.
+							 Log notes on what this is waiting on.
+	 - inactive :: Signify something to come back to.
+	 - cancelled :: Fizzled tasks. Add :CANCELLED: tag to task.
+	 - meeting :: Indicate a meeting with someone, put in meeting notes
+	 - done :: Completed task
+
+For below; make the following notes:
+ + Expressions may be a "sequence" or "type" ; "type" goes straight to DONE
+	 after completion. Sequences rotate through all keywords.
+ + TODO = the todo keyword
+ + (t) = the fast key shortcut
+ + ! means LOG timestamp when changing *TO* item.
+ + @ means LOG timestamp with note when changing item.
+ + /! means LOG timestamp/note when changing *FROM* item also.
+#+BEGIN_SRC emacs-lisp
+	(setq org-todo-keywords
+			'((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
+				(sequence "WAITING(w@/!)" "INACTIVE(i)" "|" "CANCELLED(c@/!)" "MEETING(m!)")))
+#+END_SRC
+ + org-log-into-drawer LOGS everything into a hidden drawer, so everything looks cleaner.
+#+BEGIN_SRC emacs-lisp
+	(setq org-log-into-drawer t) ;;LOGBOOK
+#+END_SRC
+
+For group projects, put this at the top of the project line for custom keywords.
+#+BEGIN_EXAMPLE
+#+TYP_TODO: @ROGER(r) @NAME1(1) @NAME2(2) | DONE(d)
+#+END_EXAMPLE
+
+** Tags
+Tags represent environmental conditions before a task can be undertaken.
+Tasks should be organized by a hierarchy of projects and sub-projects.
+Projects are prioritized, tags develop views for batch processing tasks.
+
+IF <tag> THEN <task>
+IF <condition> THEN <task>
+IF <tag1> AND <tag2> AND ... THEN <task>
+
+Tags should not be inherited by sub-tasks.
+Sub-tasks should differentiate work dependencies only.
+
+*** Default tags
+See =org-tag-alist= for more details.
+#+BEGIN_SRC emacs-lisp
+	(setq org-tag-alist '())
+#+END_SRC
+*** Persistent tags
+#+begin_src emacs-lisp
+	(setq org-tag-persistent-alist
+				'(("NEW"      )
+					("REFILE"   )
+					("ACTION"	  )
+					("FLAGGED"  )
+					("VERIFY"	  )
+					("DELEGATE" )
+					("EXPAND"	  )
+					("WAITING"  )
+					("PROJECT"  )
+					("NOARCHIVE")
+					("DOC"      )
+					))
+#+end_src
+
+*** Tag inheritance
+Inherit all tags.
+#+BEGIN_SRC emacs-lisp
+(setq org-use-tag-inheritance t)
+#+END_SRC
+
+This will exclude all tags from =org-tag-persistent-alist= from being inherited.
+#+BEGIN_SRC emacs-lisp
+(setq org-tags-exclude-from-inheritance (mapcar 'car org-tag-persistent-alist))
+#+END_SRC
+
+*** Functions to expire tags
+Expiration tags are temporary tags for grouping TODO items in a short-term
+meaningful way. These functions quickly expunge these temporary tags in bulk, to
+facilitate better short-term planning and turnover.
+
+ Expiration tags.
+ #+BEGIN_SRC emacs-lisp
+	 (setq rjh/org-tags-expiration-tags (mapcar 'car org-tag-persistent-alist))
+ #+END_SRC
+
+ Generic interactive function.
+   - Will expire tags for current item
+	 - Will expire tags for entire buffer when called with a prefix.
+ #+BEGIN_SRC emacs-lisp
+	 (defun rjh/org-tags-expire (ARG)
+		 "Expires all expiration tags.
+	 PREFIXARG = Expire tags in buffer if non-nil"
+		 (interactive "p")
+		 (if (>= ARG 4)
+				 (rjh/org-tags-expire-buffer)
+			 (if (org-region-active-p)
+					 (call-interactively 'rjh/org-tags-expire-region)
+				 (rjh/org-tags-expire-entry))))
+ #+END_SRC
+
+**** org-mode
+		 These provide functions for removing expiration-tags in the current
+		 =org-mode= buffer.
+
+ Tag expiration for headline.
+ #+BEGIN_SRC emacs-lisp
+	 (defun rjh/org-tags-expire-headline ( expiration-tags )
+		 "Removes all expiration tags from headline."
+		 (let ((newtagslist (org-get-local-tags)))
+			 (unless (null newtagslist)
+				 (dolist (element expiration-tags)
+					 (when (member element newtagslist)
+						 (setq newtagslist (delete element newtagslist))))
+				 (org-set-tags-to newtagslist)
+				 (org-reveal))))
+ #+END_SRC
+
+ Tag expiration for entry (interactive).
+ #+BEGIN_SRC emacs-lisp
+	 (defun rjh/org-tags-expire-entry ()
+		 "Expires all expiration tags in current entry."
+		 (interactive)
+		 (save-excursion
+					 (org-back-to-heading 't)
+					 (rjh/org-tags-expire-headline rjh/org-tags-expiration-tags)))
+ #+END_SRC
+
+ Tags expiration for buffer (interactive).
+ #+BEGIN_SRC emacs-lisp
+	 (defun rjh/org-tags-expire-buffer ()
+		 "Expires all expiration tags in current buffer.
+	 Includes invisible heading lines."
+		 (interactive)
+		 (save-excursion
+			 (goto-char (point-min))
+			 (while (outline-next-heading)
+				 (rjh/org-tags-expire-headline rjh/org-tags-expiration-tags))))
+ #+END_SRC
+
+Tags expiration for a region of an org buffer.
+#+BEGIN_SRC emacs-lisp
+	 (defun rjh/org-tags-expire-region (start end)
+		 "Expires all expiration tags in current region."
+    (interactive "r")
+		(dolist (element rjh/org-tags-expiration-tags)
+			(org-change-tag-in-region start end element 'off)))
+#+END_SRC
+
+**** org-agenda
+		 These are functions to remove expiration tags in the =org-agenda=.
+
+Tag expiration for an agenda headline.
+#+BEGIN_SRC emacs-lisp
+	(defun rjh/org-tags-expire-agenda-headline ( expiration-tags )
+		"Removes all expiration tags from an AGENDA headline."
+		(dolist (element expiration-tags)
+			(org-agenda-set-tags element 'off)))
+#+END_SRC
+
+Tag expiration for an agenda buffer.
+#+BEGIN_SRC emacs-lisp
+	(defun rjh/org-tags-expire-agenda-buffer ()
+		"Removes all expiration tags from an AGENDA buffer."
+	(interactive)
+	(save-excursion
+		(goto-char (point-min))
+		(while (and (org-agenda-next-item 1)
+								(next-single-property-change (point-at-eol) 'org-marker))
+		  (rjh/org-tags-expire-agenda-headline rjh/org-tags-expiration-tags))))
+#+END_SRC
+
+Generic interactive agenda function.
+ - Will expire selected headlines
+ - Will expire whole agenda buffer with prefix.
+#+BEGIN_SRC emacs-lisp
+	(defun rjh/org-tags-expire-agenda (ARG)
+		"Expires tags in org-agenda view."
+		(interactive "p")
+		(save-excursion
+			(if (>= ARG 4)
+					(rjh/org-tags-expire-agenda-buffer)
+				(if (org-region-active-p)
+						(call-interactively 'rjh/org-tags-expire-region)
+					(rjh/org-tags-expire-agenda-headline rjh/org-tags-expiration-tags)))))
+#+END_SRC
+
+*** Column
+Set tag column formatting relative to headline.
+#+begin_src emacs-lisp
+	(setq org-tags-column 0)
+#+end_src
+
+** Views
+*** Agenda Files
+Store the list of agenda files in ...
+#+BEGIN_SRC emacs-lisp
+  (setq org-agenda-files "~/.emacs.d/agenda-files" )
+#+END_SRC
+*** Sorting Strategy
+Sorting strategy.
+#+BEGIN_SRC emacs-lisp
+	(setq org-agenda-sorting-strategy
+				'((agenda time-up deadline-up scheduled-up todo-state-down category-keep              priority-down effort-up tag-up)
+					(todo                                    todo-state-down category-keep  deadline-up priority-down effort-up tag-up)
+					(tags                                    todo-state-down category-keep  deadline-up priority-down effort-up tag-up)
+					(search         deadline-up              todo-state-down category-keep              priority-down effort-up tag-up)))
+#+END_SRC
+*** Agenda Default Prefix
+Prefix format
+#+begin_src emacs-lisp
+	(setq org-agenda-prefix-format
+				'((agenda . "%i %-12t%-12s%12:c%b ")
+					(todo .   "%i %12:c%b ")
+					(tags .   "%i %12:c%b ")
+					(search . "%i %12:c%b "))
+				)
+#+end_src
+*** Agenda Skip Functions
+
+**** Default
+		 #+begin_src emacs-lisp
+		 (setq org-agenda-skip-function-global nil)
+		 (setq org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo 'todo))
+		 #+end_src
+**** built-in
+ - =(org-agenda-skip-entry-if &rest CONDITIONS)= :: Skip if any of the CONDITIONS
+   are true
+	 - ='scheduled= :: Entry has a scheduled time.
+	 - ='deadline= :: Entry has a deadline.
+   - ='timestamp= :: Entry has any timestamp (including deadline or scheduled)
+	 - ='todo= :: Entry todo keyword matches (accepts as argument a list of todo keywords)
+		 - ='("TODO" "DONE")= :: Matches any of TODO or DONE.
+		 - ='done= :: Matches keyword class 'done
+		 - ='todo= :: Matches keyword class 'todo
+
+**** Skip non archive-able tasks
+	 A function for skipping non-archive-able tasks in the agenda-view from Bernt Hansen.
+	 #+BEGIN_SRC emacs-lisp
+	 (defun bh/skip-non-archivable-tasks ()
+		 "Skip trees that are not available for archiving"
+		 (save-restriction
+			 (widen)
+			 ;; Consider only tasks with done todo headings as archivable candidates
+			 (let ((next-headline (save-excursion (or (outline-next-heading) (point-max))))
+						 (subtree-end (save-excursion (org-end-of-subtree t))))
+				 (if (member (org-get-todo-state) org-todo-keywords-1)
+						 (if (member (org-get-todo-state) org-done-keywords)
+								 (let* ((daynr (string-to-number (format-time-string "%d" (current-time))))
+												(a-month-ago (* 60 60 24 (+ daynr 1)))
+												(last-month (format-time-string "%Y-%m-" (time-subtract (current-time) (seconds-to-time a-month-ago))))
+												(this-month (format-time-string "%Y-%m-" (current-time)))
+												(subtree-is-current (save-excursion
+																							(forward-line 1)
+																							(and ( < (point) subtree-end) ; This line is causing a bracket mismatch
+																									 (re-search-forward (concat last-month "\\|" this-month) subtree-end t)))))
+									 (if subtree-is-current
+											 subtree-end ; Has a date in this month or last month, skip it
+										 nil))  ; available to archive
+							 (or subtree-end (point-max)))
+					 next-headline))))
+	 #+END_SRC
+
+*** Custom Agenda View Defaults
+Set default agenda span for a single day.
+		#+begin_src emacs-lisp
+		(setq org-agenda-span 1)
+		#+end_src
+
+*** Custom Agenda View
+NB =`= backquote allows evaluation of selected element in the quoted list.
+=,= is used to indicate items to be evaluated.
+
+Sparse trees cannot be used in assembled views; they operate on the current
+buffer only.
+
+#+BEGIN_SRC emacs-lisp
+	(require 'ps-print)
+	(let (
+				(deselect-persistent-tags
+				 (apply
+					'concat
+					(mapcar
+					 (lambda (tag)
+						 (concat "-" (car tag))
+						 )
+					 org-tag-persistent-alist)
+					)
+				 )
+
+				(select-persistent-tags
+				 (apply 'concat
+								(cdr
+								 (apply 'append
+												(mapcar
+												 (lambda (tag)
+													 (list "|" (car tag))
+													 )
+												 org-tag-persistent-alist))
+								 ))
+				 )
+
+				(filename-to-export-views
+				 (lambda (filename exts)
+					 (mapcar
+						(lambda (x)
+							(expand-file-name
+							 (concat filename "." x)
+							 org-directory
+							 ))
+						exts)
+					 )
+				 )
+
+				(persistent-tag-prefix-key "P")
+				)
+
+		(let (
+					(tag-persistent-agenda-views
+					 (lambda (&optional settings filename exts)
+						 (mapcar
+							(lambda (tag)
+								`(,(car tag) . (tags
+																,(concat "+" (car tag))
+																,settings
+																,(funcall filename-to-export-views (concat filename (car tag)) exts)
+																)))
+							org-tag-persistent-alist))
+					 )
+
+					(agenda-view
+					 (lambda (&optional settings filename exts)
+						 `(agenda ""
+											,(append
+												'((org-agenda-skip-function nil)
+													)
+												settings)
+											,(funcall filename-to-export-views filename exts))
+						 ))
+
+					(other-tags-view
+					 (lambda (&optional settings filename exts)
+						 `(tags-todo
+							 ,deselect-persistent-tags
+							 ,(append
+								 '(
+									 (org-agenda-overriding-header "Remaining TODO items:")
+									 (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp 'todo 'done))
+									 )
+								 settings
+								 )
+							 ,(funcall filename-to-export-views filename exts)
+							 )
+						 ))
+
+					(stuck-view
+					 (lambda (&optional settings filename exts)
+						 `(stuck ""
+										 ,settings
+										 ,(funcall filename-to-export-views filename exts)
+										 )
+						 ))
+
+					(full-view
+					 (lambda
+						 (&optional
+							settings
+							filename
+							exts
+							)
+						 (append
+							`(
+								,(funcall agenda-view
+													settings
+													(concat filename "agenda") exts))
+							(mapcar 'cdr
+											(funcall tag-persistent-agenda-views
+															 (append
+																'(
+																	(org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp 'nottodo 'todo))
+																	)
+																settings
+																)
+															 (concat filename "tag_")
+															 exts))
+							`(
+								,(funcall other-tags-view settings (concat filename "tag_OTHER") exts)
+								,(funcall stuck-view settings (concat filename "stuck") exts)
+								))
+						 ))
+
+					(tag-persistent-agenda-commands
+					 (lambda (&optional settings filename exts)
+						 (mapcar
+							(lambda (tag_arr)
+								(let ((tag (car tag_arr)))
+									(append
+									 `(
+										 ,(concat persistent-tag-prefix-key (substring tag 0 1)) ; PREFIX
+										 ,(format "Headlines with TAGS match: %s" tag)) ; DESCRIPTION
+									 (cdr (assoc tag (funcall tag-persistent-agenda-views settings filename exts)))
+									 )
+									))
+							org-tag-persistent-alist
+							))
+					 )
+					(summary-side-margin (* (/ 1 2.54) 72))
+					(summary-border-file "~/.emacs.d/ps/summary_border.ps")
+					)
+
+			(setq org-agenda-custom-commands
+						(append
+						 `(
+							 ("n" "Active View"
+								,(funcall full-view nil "agenda/" '("ps" "html"))
+								((ps-number-of-columns 1)
+								 (ps-left-header (list 'org-agenda-write-buffer-name))
+								 (ps-print-color-p nil)
+								 (ps-landscape-mode t))
+								,(funcall filename-to-export-views "agenda/full" '("ps" "html"))
+								)
+							 ("s" "Summary View"
+								,(funcall full-view)
+								((org-agenda-start-day "+1d")
+								 (org-agenda-span 3)
+								 (org-agenda-remove-tags t)
+								 (org-agenda-block-separator nil)
+								 (ps-print-color-p nil)
+								 (ps-left-header (list 'org-agenda-write-buffer-name))
+								 (ps-paper-type 'collinsorg3colA4)
+								 (ps-number-of-columns 3)
+								 (ps-print-background-image
+									'((,summary-border-file ,(- 0 summary-side-margin) ,(- 0 ps-bottom-margin))
+									 ))
+								 (ps-landscape-mode t)
+								 (ps-left-margin ,summary-side-margin)
+								 (ps-right-margin ,summary-side-margin)
+								 (ps-inter-column (* ,summary-side-margin 2))
+								 (org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
+								,(funcall filename-to-export-views "agenda/summary" '("ps" "html"))
+								)
+							 ("o" "Organiser View"
+								,(funcall full-view)
+								((org-agenda-start-day "+1d")
+								 (org-agenda-span 3)
+								 (org-agenda-remove-tags t)
+								 (org-agenda-block-separator nil)
+								 (ps-print-color-p nil)
+								 (ps-left-header (list 'org-agenda-write-buffer-name))
+								 (ps-number-of-columns 1)
+								 (ps-paper-type 'collinsorganiser)
+								 (ps-left-margin (* (/ 1 2.54) 72))
+								 (ps-right-margin (* (/ 1 2.54) 72))
+								 (org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
+								,(funcall filename-to-export-views "agenda/collins" '("ps"))
+								)
+							 ("p" "Todo items with persistent tags"
+								tags-tree ,select-persistent-tags)
+							 ("u" "Todo items without persistent tags"
+								tags-tree ,deselect-persistent-tags)
+							 ("A" "Agenda View" .
+								,(funcall agenda-view
+													'((org-agenda-span 1)
+														(ps-print-color-p nil)
+														(ps-left-header (list 'org-agenda-write-buffer-name))
+														(ps-number-of-columns 1)
+														(org-agenda-prefix-format "[ ] %?-12t%?-12s%:c")
+														)
+													"agenda/agenda"
+													'("ps" "html")))
+
+							 ("Y" "Year Agenda View (ICS)" agenda ""
+								((org-agenda-span 366)
+								 (org-agenda-remove-tags t)
+								 (ps-number-of-columns 1)
+								 (org-agenda-prefix-format "[ ] %?-12t%?-12s%:c")
+								 (org-agenda-skip-function nil)
+								 )
+
+								,(funcall filename-to-export-views
+													"agenda/agenda"
+													'("ics"))
+								)
+
+							 ("O" "Other tags (EXPORT)" .
+								,(funcall other-tags-view
+													'((ps-number-of-columns 1)
+														(ps-print-color-p nil)
+														(ps-left-header (list 'org-agenda-write-buffer-name))
+														(org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
+													"agenda/tag/OTHER"
+													'("ps" "html")))
+							 ("S" "Stuck projects (EXPORT)" .
+								,(funcall stuck-view
+													'((ps-number-of-columns 1)
+														(ps-left-header (list 'org-agenda-write-buffer-name))
+														(ps-print-color-p nil)
+														(org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
+													"agenda/stuck"
+													'("ps" "html")))
+							 ("P" . "Todo items with specific persistent tag") ; See tag-persistent-agenda-commands below
+							 ("X" "Tasks to Archive" tags ,deselect-persistent-tags
+								((org-agenda-overriding-header "Tasks to Archive")
+								 (org-agenda-skip-function 'bh/skip-non-archivable-tasks)
+								 (org-tags-match-list-sublevels nil))
+								)
+							 )
+						 (funcall tag-persistent-agenda-commands
+											'((org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp 'nottodo 'todo))
+												(ps-print-color-p nil)
+												(ps-number-of-columns 1)
+												(ps-left-header (list 'org-agenda-write-buffer-name))
+												(org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
+											"agenda/tag/"
+											'("ps" "html"))
+						 ))
+			))
+
+#+END_SRC
+*** Agenda Window
+Take up current window when called.
+#+BEGIN_SRC emacs-lisp
+(setq org-agenda-window-setup 'current-window)
+#+END_SRC
+*** Icalendar
+		#+begin_src emacs-lisp
+			(setq org-icalendar-use-scheduled '(event-if-todo)
+				org-icalendar-use-deadline  '(event-if-todo todo-due)
+				org-icalendar-alarm-time 40
+				)
+		#+end_src
+
+** Priorities
+*** Keys
+		Use "C-c ," to quickly set priorities.
+		Only "," is required in agenda.
+
+*** Default Priority Values
+ Priorities are assigned A,B,C,D (E,F). B being the default.
+ I'm particularly inspired by the Eisenhower Matrix and Must/Should/Nice todos.
+ For reference, see the table below. Typically, one should attempt to accomplish
+ as many B's in a day as possible; while also taking regular breaks.
+ If you have nothing left todo, D's are pleasant enough.
+
+ | PRIORITY   | NOT IMPORTANT | IMPORTANT  |
+ |------------+---------------+------------|
+ | NOT URGENT | D - PLEASANT  | B - SHOULD |
+ |------------+---------------+------------|
+ | URGENT     | C - NICE      | A - MUST   |
+ |------------+---------------+------------|
+
+ So.. one way to describe my priorities, would be...
+ #+BEGIN_EXAMPLE
+ #+PRIORITIES: C A F .
+ #+END_EXAMPLE
+
+ #+BEGIN_SRC emacs-lisp
+	(setq org-default-priority ?D)
+	(setq org-highest-priority ?A)
+	(setq org-lowest-priority ?F)
+ #+END_SRC
+
+** Dependencies
+Dependency settings.
+This allows for task blocking/etc.
+#+BEGIN_SRC emacs-lisp
+ (setq org-enforce-todo-dependencies t)
+ (setq org-agenda-dim-blocked-tasks t)
+ (setq org-enforce-todo-checkbox-dependencies nil)
+#+END_SRC
+
+** Stuck Projects
+1. Match projects as
+	 1. Any LEVEL 1 headline
+	 2. Do not match completed headlines
+	 3. Do not match items tagged with NOARCHIVE
+	 3. Do not match items tagged with DOC; documentation-only
+2. Non-stuck projects have headlines which contain a NEXT todo-keyword.
+3. Non-stuck projects have headlines which may contain a specific tag; but not
+   in this case.
+4. Non-stuck projects are identified if the special word IGNORE is matched
+   anywhere.
+#+BEGIN_SRC emacs-lisp
+	(setq org-stuck-projects
+			'("-DOC-NOARCHIVE+LEVEL=1/-DONE" ("NEXT") nil "\\<IGNORE\\>"))
+#+END_SRC
+
+** Clocking
+  To save the clock history across Emacs sessions, use
+#+BEGIN_SRC emacs-lisp
+     (setq org-clock-persist 'history)
+     (org-clock-persistence-insinuate)
+#+END_SRC
+
+Effort estimates and column view
+Appointment default durations and effort addition.
+Use C-c C-x C-c to access.
+#+BEGIN_SRC emacs-lisp
+	(setq org-global-properties '(("Effort_ALL". "0:10 0:20 0:30 0:45 1:00 3:00 4:00 8:00 9:00 2:00"))
+				org-columns-default-format '"%38ITEM(Details) %7TODO(To Do) %PRIORITY(Pri) %5Effort(Effort){:} %6CLOCKSUM(Clock) %17TIMESTAMP_IA"
+			 org-agenda-columns-add-appointments-to-effort-sum t
+		 org-agenda-default-appointment-duration 30
+	)
+#+END_SRC
+
+org-agenda-columns-add-appointments-to-effort-sum adds appointment times to
+effort sums for the day.
+** Archive
+=C-cxs=
+Add this to your file, to adjust =org-archive-location= for a particular file.
+#+BEGIN_EXAMPLE
+#+ARCHIVE: %s_done::
+#+END_EXAMPLE
+
+The default location is set below.
+This archives items under the heading called =* Archive= in the same file.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-archive-location ".%s_archive::" )
+#+END_SRC
+
+*Note*
+ + =%s= represents the current filename.
+ + =::= is a seperator between files and headers.
+ + =file::= use this format for archiving to a specific file.
+ + =::header= use this format to archive to a specific header.
+ + =::***header= use asterisks to denote the sub-level of the header.
+ + =::datetree/= use =datetree/= to file under a date-tree.
+
+Do not mark archived tasks as done.
+#+BEGIN_SRC emacs-lisp
+(setq org-archive-mark-done nil)
+#+END_SRC
+** Capture
+See [[info:org#Capture%20templates][info:org#Capture templates]] for more information.
+
+These are settings for capturing/refiling information.
+#+BEGIN_SRC emacs-lisp
+	;; (setq org-directory "~/.emacs.d/org")	;; Setup in "personal.org"
+	(setq org-default-notes-file (expand-file-name "refile.org" org-directory))
+#+END_SRC
+
+Capture templates.
+  - todo :: Captures a basic todo entry.
+	- learn :: Captures a learning task.
+						Learning scheduling is spaced according to optimal spacing strategy.
+						Progress is achieved through 5 study stages,
+						Motivate; Acquire; Signify; Trigger; Exhibit; Review.
+
+#+BEGIN_SRC emacs-lisp
+	(setq org-capture-templates
+				'(("t" "Todo" entry (file org-default-notes-file)
+					 "* TODO %? :NEW:\n%i\n" :clock-in t :clock-resume t :empty-lines 1)
+					("m" "Meeting" entry (file org-default-notes-file)
+					 "* MEETING with %? :MEETING:\n\t%t" :clock-in t :clock-resume t :empty-lines 1)
+					("n" "Next Task" entry (file+headline org-default-notes-file "Tasks")
+					 "* NEXT %? \nDEADLINE: %t")
+					("l" "Learn" entry (file+headline org-default-notes-file "Study")
+					 "* TODO %^{prompt} :NEW:STUDY:\n\t%i%?\n** TODO %\\1 :MOTIVATE: \nSCHEDULED: <%(org-read-date nil nil (concat \". \" (format-time-string \"%a %H:%M\")))>\n** TODO %\\1 :ACQUIRE: \nSCHEDULED: <%(org-read-date nil nil (concat \". \" (format-time-string \"%H:%M\" (time-add (current-time) 3600 ))))>\n** TODO %\\1 :SIGNIFY: \nSCHEDULED: <%(org-read-date nil nil \"+1d\")>\n** TODO %\\1 :TRIGGER: \nSCHEDULED: <%(org-read-date nil nil \"+15d\")>\n** TODO %\\1 :EXHIBIT: \nSCHEDULED: <%(org-read-date nil nil \"+30d\")>\n** TODO %\\1 :REVIEW: \nSCHEDULED: <%(org-read-date nil nil \"+58d\")>\n"
+					 )))
+#+END_SRC
+
+Learning template schedule is as follows:
+ /(assuming Monday is the first learning day)/
+| Week No. | Mon      | Tue     | Wed     | Increment |
+|----------+----------+---------+---------+-----------|
+|        1 | MOTIVATE |         |         |        +0 |
+|        1 | ACQUIRE  |         |         |       +1h |
+|        1 |          | SIGNIFY |         |       +1d |
+|        3 |          | TRIGGER |         |      +15d |
+|        5 |          |         | EXHIBIT |      +30d |
+|        9 |          |         | REVIEW  |      +58d |
+
+** Refile
+Refiling list.
+#+BEGIN_SRC emacs-lisp
+	;; Function to return org-buffer-files
+	(defun ixp/org-buffer-files ()
+		"Return list of opened orgmode buffer files"
+		;; org-refile functions must remove nil values
+		(delete nil
+						(mapcar (function buffer-file-name)
+										(org-buffer-list 'files))))
+
+	;; Refiling targets
+	(setq org-refile-targets
+				'((nil :maxlevel . 9 ) ;; This file
+					(org-agenda-files :maxlevel . 9) ;; Any agenda file
+					(ixp/org-buffer-files :maxlevel . 9))) ;; Any open org-buffer
+	;; Refiling options
+	(setq org-outline-path-complete-in-steps t)
+	(setq org-refile-use-outline-path t)
+	(setq org-refile-allow-creating-parent-nodes 'confirm)
+#+END_SRC
+
+Specification is any of:
+ +  "FILE"
+ +  a cons cell (:tag . "TAG")
+ +  a cons cell (:todo . "KEYWORD")
+ +  a cons cell (:regexp . "REGEXP") ;; regexp to match headlines
+ +  a cons cell (:level . N) Any headline of level N is considered a target.
+ +  a cons cell (:maxlevel . N) Any headline with level <= N is a target.
+ +  (nil . (:level . 1)) Match all top-level headlines in the current buffer.
+ +  ("FILE" . (:level. 1)) Match all top-level headlines in FILE.
+
+The union of these sets is presented (with completion) to the user by
+org-refile. =C-cw= .
+You can set the variable =org-refile-target-verify-function= to a function to
+verify each headline found by the criteria above.
+
+* Quick Templates
+#+BEGIN_SRC emacs-lisp
+(require 'org-tempo)
+#+END_SRC
+
+Org structure templates.
+#+BEGIN_SRC emacs-lisp
+(setq org-structure-template-alist
+	(append
+	 org-structure-template-alist
+	 '(
+		 ("el" . "src emacs-lisp")
+		 ("py" . "src python")
+		 ("sh" . "src sh"))
+	 ))
+#+END_SRC
+
+Inhibit electric pair for org-mode =<=.
+#+begin_src emacs-lisp
+(add-hook
+ 'org-mode-hook
+ (lambda ()
+   (setq-local electric-pair-inhibit-predicate
+               `(lambda (c)
+                  (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
+#+end_src
+
+* Display
+** Faces
+FACES are custom settings for font, colour, background etc.
+If you would like to modify a face that has already been loaded, you will have
+to use the following function.
+
+#+BEGIN_EXAMPLE emacs-lisp
+	;; (face-spec-set 'study
+	;; 							 '((t (:background "black"
+	;; 										 :foreground "cyan"
+	;; 										 :weight extra-bold)))
+	;; 							 'face-defface-spec)
+#+END_EXAMPLE
+See [[help:face-spec-set][here]].
+
+*** Definitions
+**** Default
+		 #+begin_src emacs-lisp
+			 (face-spec-set 'org-block
+				 '((
+						((class color)(min-colors 8))
+						:background "gray5"
+						:foreground "DarkGoldenrod3"
+						))
+				 'face-override-spec
+				 )
+		 #+end_src
+**** Custom
+Define default color face.
+		 #+begin_src emacs-lisp
+			 (defface org-keyword
+				 '((
+						t
+						:weight extra-bold
+						:box (
+									:style released-button )
+		        :inherit (org-todo org-tag org-level-3)
+						))
+				 "Org base face for todo keywords and tags"
+				 :group 'tag-faces :group 'todo-faces
+				 )
+		 #+end_src
+
+     #+BEGIN_SRC emacs-lisp
+			 (defface org-black
+				 '((
+						default
+						:inherit (org-keyword))
+					 (
+						((class color) (min-colors 8))
+						:background "black"
+						:foreground "white"
+						))
+				 "Org color"
+				 )
+		 #+END_SRC
+		 #+BEGIN_SRC emacs-lisp
+			 (defface org-red
+				 '((
+						default
+						:inherit (org-keyword))
+					 (
+						((class color) (min-colors 8))
+						:background "dark red"
+						:foreground "cornsilk"
+						))
+				 "Org color"
+				 )
+		 #+END_SRC
+		 #+BEGIN_SRC emacs-lisp
+			 (defface org-orange
+				 '((
+						default
+						:inherit (org-keyword))
+					 (
+						((class color) (min-colors 8))
+						:background "tan4"
+						:foreground "wheat"
+						))
+				 "Org color"
+				 )
+		 #+END_SRC
+		 #+BEGIN_SRC emacs-lisp
+			 (defface org-yellow
+				 '((
+						default
+						:inherit (org-keyword))
+					 (
+						((class color) (min-colors 8))
+						:background "dark olive green"
+						:foreground "yellow"
+						))
+				 "Org color"
+				 )
+		 #+END_SRC
+		 #+BEGIN_SRC emacs-lisp
+			 (defface org-green
+				 '((
+						default
+						:inherit (org-keyword))
+					 (
+						((class color) (min-colors 8))
+						:background "dark green"
+						:foreground "khaki"
+						))
+				 "Org color"
+				 )
+		 #+END_SRC
+		 #+BEGIN_SRC emacs-lisp
+			 (defface org-cyan
+				 '((
+						default
+						:inherit (org-keyword))
+					 (
+						((class color) (min-colors 8))
+						:background "dark cyan"
+						:foreground "green yellow"
+						))
+				 "Org color"
+				 )
+		 #+END_SRC
+		 #+BEGIN_SRC emacs-lisp
+			 (defface org-blue
+				 '((
+						default
+						:inherit (org-keyword))
+					 (
+						((class color) (min-colors 8))
+						:background "navy"
+						:foreground "turquoise"
+						))
+				 "Org color"
+				 )
+		 #+END_SRC
+		 #+BEGIN_SRC emacs-lisp
+			 (defface org-magenta
+				 '((
+						default
+						:inherit (org-keyword))
+					 (
+						((class color) (min-colors 8))
+						:background "dark magenta"
+						:foreground "cyan"
+						))
+				 "Org color"
+				 )
+		 #+END_SRC
+
+*** Keywords
+#+BEGIN_SRC emacs-lisp
+	(setq org-todo-keyword-faces
+				'(("TODO" .      org-orange)
+					("NEXT" .      org-red)
+					("DONE" .      org-green)
+					("WAITING" .   org-cyan)
+					("INACTIVE" .  org-yellow)
+					("CANCELLED" . org-magenta)
+					("MEETING" .   org-blue)
+					))
+#+END_SRC
+*** Tags
+#+BEGIN_SRC emacs-lisp
+	(setq org-tag-faces
+				'(("PROJECT" . org-black)
+					("REFILE" . org-black)
+					("DOC" . org-black)
+					("ACTION" . org-red)
+					("NOARCHIVE" . org-red)
+					("FLAGGED" . org-orange)
+					("VERIFY" . org-yellow)
+					("DELEGATE" . org-green)
+					("WAITING" . org-cyan)
+					("EXPAND" . org-blue)
+					("NEW" . org-magenta)
+					))
+#+END_SRC
+
+** Misc
+
+I like to see an outline of pretty bullets instead of a list of asterisks.
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (org-bullets-mode t)))
+#+END_SRC
+
+I like seeing a little downward-pointing arrow instead of the usual ellipsis
+(=...=) that org displays when there's stuff under a header.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-ellipsis "⤵")
+#+END_SRC
+
+Use syntax highlighting in source blocks while editing.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-src-fontify-natively t)
+#+END_SRC
+
+Make TAB act as if it were issued in a buffer of the language's major mode.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-src-tab-acts-natively t)
+#+END_SRC
+
+When editing a code snippet, use the current window rather than popping open a
+new one (which shows the same information).
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-src-window-setup 'current-window)
+#+END_SRC
+
+Enable spell-checking in Org-mode.
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'org-mode-hook 'flyspell-mode)
+#+END_SRC
+
+Re-display inline images if they are generated as a results portion of babel
+code. You will need to set =#+STARTUP: inlineimages= in order to display in-line
+images. The code below will update them when you evaluate a babel source code block.
+#+BEGIN_SRC emacs-lisp
+(add-hook 'org-babel-after-execute-hook
+          (lambda ()
+            (when org-inline-image-overlays
+              (org-redisplay-inline-images))))
+#+END_SRC
+
+Startup with all headlines showing. =content=
+#+BEGIN_SRC emacs-lisp
+(setq org-startup-folded 'content)
+#+END_SRC
+
+** Render checkbox in html
+Checklists did not render as I would like them, I think this makes
+them far more prettier in html.
+#+BEGIN_SRC emacs-lisp
+(setq org-html-checkbox-type 'html)
+#+END_SRC
+* Contrib
+Org-contrib consists of packages as part of org-plus-contrib.
+** koma-letter-export
+Activate KOMA-Script letter exporter.
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'ox '(require 'ox-koma-letter))
+#+END_SRC
+
+You can add your own customized class, my-letter as follows.
+#+BEGIN_EXAMPLE
+(eval-after-load 'ox-koma-letter
+'(progn
+(add-to-list 'org-latex-classes
+'("my-letter"
+"\\documentclass\{scrlttr2\}
+\\usepackage[english]{babel}
+\\setkomavar{frombank}{(1234)\\,567\\,890}
+\[DEFAULT-PACKAGES]
+\[PACKAGES]
+\[EXTRA]"))
+
+(setq org-koma-letter-default-class "my-letter")))
+#+END_EXAMPLE
+For more info see [[http://orgmode.org/worg/exporters/koma-letter-export.html][here.]]
+* Harry Schwartz
+This is some org configuration I have copied straight from Harry's book.
+*** Exporting
+Allow =babel= to evaluate
+ - C / C++,
+ - Emacs lisp,
+ - Ruby,
+ - dot, or
+ - Gnuplot code.
+ - R
+
+#+BEGIN_SRC emacs-lisp
+	(org-babel-do-load-languages
+	 'org-babel-load-languages
+	 '((C . t)  ;; This includes support for C++
+		 (emacs-lisp . t)
+		 (ruby . t)
+		 (dot . t)
+		 (gnuplot . t)
+		 (plantuml . t)
+		 (R . t)
+		 ))
+
+#+END_SRC
+
+Don't ask before evaluating code blocks.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-confirm-babel-evaluate nil)
+#+END_SRC
+
+Associate the "dot" language with the =graphviz-dot= major mode.
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'org-src-lang-modes '("dot" . graphviz-dot))
+#+END_SRC
+
+Translate regular ol' straight quotes to typographically-correct curly quotes
+when exporting.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-export-with-smart-quotes t)
+#+END_SRC
+
+Set image sizes to their natural size.
+#+BEGIN_SRC emacs-lisp
+  (setq org-latex-image-default-width "")
+#+END_SRC
+
+Set org-mode images to whatever size you like.
+E.g. Using =#+ATTR_ORG: :width 100=.
+Be aware you will require imagemagick6 support for this.
+(Imagemagick7 has made some changes which are currently incompatible [2018-05-17]).
+#+BEGIN_SRC emacs-lisp
+	(setq org-image-actual-width nil)
+#+END_SRC
+***** Exporting to HTML
+
+Don't include a footer with my contact and publishing information at the bottom
+of every exported HTML document.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-html-postamble nil)
+#+END_SRC
