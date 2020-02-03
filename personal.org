@@ -49,9 +49,9 @@ Set mail folder defaults (cross-application)
 
 Blank SMTP settings.
 #+begin_src emacs-lisp
-	(smtpmail-default-smtp-server . "") ; SMTP server
-	(smtpmail-smtp-server         . "") ; SMTP server
-	(smtpmail-smtp-service        . ) ; Port number
+	(setq smtpmail-default-smtp-server "") ; SMTP server
+	(setq smtpmail-smtp-server         "") ; SMTP server
+	(setq smtpmail-smtp-service        25) ; Port number
 #+end_src
 * Url-browser
 Set your default browser here.
