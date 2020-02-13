@@ -86,7 +86,7 @@ Define function to obtain time from sexp expressions.
 ** org-agenda.el
 #+begin_src emacs-lisp
 	(defun org-agenda-get-sexps ()
-		"Return the sexp information for agenda display."
+		"Return the sexp information for agenda display. (PATCHED)"
 		(require 'diary-lib)
 		(let* ((props (list 'face 'org-agenda-calendar-sexp
 												'mouse-face 'highlight
@@ -109,6 +109,8 @@ Define function to obtain time from sexp expressions.
 															 (org-trim (match-string 1))
 														 ""))
 					(setq result (org-diary-sexp-entry sexp sexp-entry date))
+				;; Obtain time from sexp
+					(setq ts (org-timestamp-from-sexp sexp date))
 
 					(when result
 						(setq marker (org-agenda-new-marker beg)
@@ -138,6 +140,10 @@ Define function to obtain time from sexp expressions.
 							(if (string-match "\\S-" r)
 									(setq txt r)
 								(setq txt "SEXP entry returned empty string"))
+
+						  ;; Add time-string if available
+							(when ts
+								(setq txt (concat txt " " ts)))
 
 							(setq txt (org-agenda-format-item extra txt level category tags 'time))
 
