@@ -67,6 +67,7 @@ Define function to obtain time from sexp expressions.
 	(defun org-timestamp-from-sexp (s d)
 		"Convert Org timestamp S, as a sexp-string, into a timestamp object for date D.
 				Return nil if S is not a valid timestamp sexp"
+    (require 'diary-lib)
 		(let (
 					(ts
 					 (format "%04d"
