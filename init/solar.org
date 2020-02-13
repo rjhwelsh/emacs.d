@@ -55,3 +55,30 @@ These functions build on solar.el
       (solar-setup))
   (solar-sunset-string date))
 	#+end_src
+
+* Patch :org:org:agenda:
+Add a patch to allow times to be defined with sexp-expressions.
+Time is defined in the string portion returned by the sexp.
+The time must be at the start of the string.
+
+** org.el
+Define function to obtain time from sexp expressions.
+#+begin_src emacs-lisp
+	(defun org-timestamp-from-sexp (s d)
+		"Convert Org timestamp S, as a sexp-string, into a timestamp object for date D.
+				Return nil if S is not a valid timestamp sexp"
+		(let (
+					(ts
+					 (format "%04d"
+									 (diary-entry-time
+										(diary-sexp-entry s "" d)))
+					 ))
+			(string-match "\\(..\\)\\(..\\)" ts)
+			(concat
+			 (match-string 1 ts)
+			 ":"
+			 (match-string 2 ts))
+			)
+		)
+	(org-timestamp-from-sexp "(diary-sunrise)" (calendar-current-date))
+#+end_src
