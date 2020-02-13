@@ -364,6 +364,12 @@ a separate personal.org file, which is not included my repository.
 	 (rjh/load-init "org.org" )
 	 ;;	(rjh/load-init "org-gantt.org" ) ;; Disable org-gantt (no official package on Melpa or elsewhere)
  #+END_SRC
+** solar
+Provide sunrise/sunset functions for sexp expressions in diary and org-mode
+(agenda view).
+	 #+begin_src emacs-lisp
+	 	 (rjh/load-init "solar.org" )
+	 #+end_src
 ** org-bullets
  Add pretty bullets for org-mode.
  #+BEGIN_SRC emacs-lisp
