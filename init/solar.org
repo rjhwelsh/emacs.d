@@ -67,21 +67,23 @@ Define function to obtain time from sexp expressions.
 	(defun org-timestamp-from-sexp (s d)
 		"Convert Org timestamp S, as a sexp-string, into a timestamp object for date D.
 				Return nil if S is not a valid timestamp sexp"
-    (require 'diary-lib)
-		(let (
-					(ts
-					 (format "%04d"
-									 (diary-entry-time
-										(diary-sexp-entry s "" d)))
-					 ))
-			(string-match "\\(..\\)\\(..\\)" ts)
-			(concat
-			 (match-string 1 ts)
-			 ":"
-			 (match-string 2 ts))
-			)
-		)
+		(require 'diary-lib)
+		(let* ((sexp (diary-sexp-entry s "" d))
+					 (ts
+						(if sexp
+								(format "%04d"
+												(diary-entry-time sexp)))))
+			(if ts
+					(progn
+						(string-match "\\(..\\)\\(..\\)" ts)
+						(concat
+						 (match-string 1 ts)
+						 ":"
+						 (match-string 2 ts))
+						)
+		)))
 	(org-timestamp-from-sexp "(diary-sunrise)" (calendar-current-date))
+	(org-timestamp-from-sexp "(diary-float)" (calendar-current-date))
 #+end_src
 
 ** org-agenda.el
