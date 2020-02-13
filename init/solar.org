@@ -242,15 +242,7 @@ Define function to obtain time from sexp expressions.
 										 (tags (org-get-tags nil (not inherited-tags)))
 										 (level (make-string (org-reduced-level (org-outline-level))
 																				 ?\s))
-										 (head
-											(concat
-											 (buffer-substring (point) (line-end-position))
-											 " "
-											 (if sexp? (org-timestamp-from-sexp (substring s 2)
-																													(calendar-gregorian-from-absolute
-																													 current))
-												 )))
-
+										 (head (buffer-substring (point) (line-end-position)))
 										 (time
 											(cond
 											 ;; No time of day designation if it is only a
