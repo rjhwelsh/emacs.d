@@ -20,7 +20,7 @@ These functions build on solar.el
     (format
      "%s (%s hours daylight)"
      (if (car l)
-     (concat "Sunrise " (apply 'solar-time-string (car l)))
+     (concat (apply 'solar-time-string (car l)) " Sunrise")
        "no sunrise")
      (nth 2 l)
      )))
@@ -42,7 +42,7 @@ These functions build on solar.el
     (format
      "%s (%s hours daylight)"
      (if (cadr l)
-     (concat "Sunset " (apply 'solar-time-string (cadr l)))
+     (concat (apply 'solar-time-string (cadr l)) " Sunset" )
        "no sunset")
      (nth 2 l)
      )))
