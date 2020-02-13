@@ -82,3 +82,70 @@ Define function to obtain time from sexp expressions.
 		)
 	(org-timestamp-from-sexp "(diary-sunrise)" (calendar-current-date))
 #+end_src
+
+** org-agenda.el
+#+begin_src emacs-lisp
+	(defun org-agenda-get-sexps ()
+		"Return the sexp information for agenda display."
+		(require 'diary-lib)
+		(let* ((props (list 'face 'org-agenda-calendar-sexp
+												'mouse-face 'highlight
+												'help-echo
+												(format "mouse-2 or RET jump to org file %s"
+																(abbreviate-file-name buffer-file-name))))
+					 (regexp "^&?%%(")
+					 marker category extra level ee txt tags entry
+					 result beg b sexp sexp-entry todo-state warntime inherited-tags)
+			(goto-char (point-min))
+			(while (re-search-forward regexp nil t)
+				(catch :skip
+					(org-agenda-skip)
+					(setq beg (match-beginning 0))
+					(goto-char (1- (match-end 0)))
+					(setq b (point))
+					(forward-sexp 1)
+					(setq sexp (buffer-substring b (point)))
+					(setq sexp-entry (if (looking-at "[ \t]*\\(\\S-.*\\)")
+															 (org-trim (match-string 1))
+														 ""))
+					(setq result (org-diary-sexp-entry sexp sexp-entry date))
+
+					(when result
+						(setq marker (org-agenda-new-marker beg)
+									level (make-string (org-reduced-level (org-outline-level)) ? )
+									category (org-get-category beg)
+									inherited-tags
+									(or (eq org-agenda-show-inherited-tags 'always)
+											(and (listp org-agenda-show-inherited-tags)
+													 (memq 'agenda org-agenda-show-inherited-tags))
+											(and (eq org-agenda-show-inherited-tags t)
+													 (or (eq org-agenda-use-tag-inheritance t)
+															 (memq 'agenda org-agenda-use-tag-inheritance))))
+									tags (org-get-tags nil (not inherited-tags))
+									todo-state (org-get-todo-state)
+									warntime (get-text-property (point) 'org-appt-warntime)
+									extra nil)
+
+						(dolist (r (if (stringp result)
+													 (list result)
+												 result)) ;; we expect a list here
+
+							(when (and org-agenda-diary-sexp-prefix
+												 (string-match org-agenda-diary-sexp-prefix r))
+								(setq extra (match-string 0 r)
+											r (replace-match "" nil nil r)))
+
+							(if (string-match "\\S-" r)
+									(setq txt r)
+								(setq txt "SEXP entry returned empty string"))
+
+							(setq txt (org-agenda-format-item extra txt level category tags 'time))
+
+							(org-add-props txt props 'org-marker marker
+														 'date date 'todo-state todo-state
+														 'level level 'type "sexp" 'warntime warntime)
+
+							(push txt ee))
+						)))
+			(nreverse ee)))
+#+end_src
