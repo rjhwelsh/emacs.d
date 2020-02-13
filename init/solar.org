@@ -251,10 +251,6 @@ Define function to obtain time from sexp expressions.
 											 ;; because if there is a time of day, that is
 											 ;; interpreted to mean they should usually happen
 											 ;; then, even if doing the habit was missed.
-											 (sexp?
-												(org-timestamp-from-sexp (substring s 2)
-																								 (calendar-gregorian-from-absolute
-																									current)))
 											 ((and
 												 (not habitp)
 												 (/= current schedule)
@@ -262,6 +258,11 @@ Define function to obtain time from sexp expressions.
 												nil)
 											 ((string-match " \\([012]?[0-9]:[0-9][0-9]\\)" s)
 												(concat (substring s (match-beginning 1)) " "))
+											 (sexp?
+												(concat
+												(org-timestamp-from-sexp (substring s 2)
+																								 (calendar-gregorian-from-absolute
+																									current)) " "))
 											 (t 'time)))
 										 (item
 											(org-agenda-format-item
