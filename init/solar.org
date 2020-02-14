@@ -255,6 +255,11 @@ Define function to obtain time from sexp expressions.
 										 (level (make-string (org-reduced-level (org-outline-level))
 																				 ?\s))
 										 (head (buffer-substring (point) (line-end-position)))
+										 (sexp-time
+											(if sexp?
+													(org-time-from-sexp
+													 (replace-regexp-in-string "^%%" "" s)
+													 (calendar-gregorian-from-absolute current))))
 										 (time
 											(cond
 											 ;; No time of day designation if it is only a
@@ -270,11 +275,8 @@ Define function to obtain time from sexp expressions.
 												nil)
 											 ((string-match " \\([012]?[0-9]:[0-9][0-9]\\)" s)
 												(concat (substring s (match-beginning 1)) " "))
-											 (sexp?
-												(concat
-												(org-timestamp-from-sexp (substring s 2)
-																								 (calendar-gregorian-from-absolute
-																									current)) " "))
+											 (sexp-time
+												(concat sexp-time " "))
 											 (t 'time)))
 										 (item
 											(org-agenda-format-item
