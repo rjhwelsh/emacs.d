@@ -64,9 +64,9 @@ The time must be at the start of the string.
 ** org.el
 Define function to obtain time from sexp expressions.
 #+begin_src emacs-lisp
-	(defun org-timestamp-from-sexp (s d)
-		"Convert Org timestamp S, as a sexp-string, into a timestamp object for date D.
-							Return nil if S is not a valid timestamp sexp"
+	(defun org-time-from-sexp (s d)
+		"Convert Org timestamp S, as a sexp-string, into a time string for date D.
+							Return nil if S is no valid time string found"
 		(require 'diary-lib)
 		(let* ((result (diary-sexp-entry s "" d))
 					 (txt
@@ -92,8 +92,8 @@ Define function to obtain time from sexp expressions.
 						 (match-string 2 ts))
 						)
 				)))
-	(org-timestamp-from-sexp "(diary-sunrise)" (calendar-current-date))
-	(org-timestamp-from-sexp "(diary-anniversary 2019 2 14)" (calendar-current-date))
+	(org-time-from-sexp "(diary-sunrise)" (calendar-current-date))
+	(org-time-from-sexp "(diary-anniversary 2019 2 14)" (calendar-current-date))
 #+end_src
 
 ** org-agenda.el
