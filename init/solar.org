@@ -56,6 +56,24 @@ These functions build on solar.el
   (solar-sunset-string date))
 	#+end_src
 
+* Daylight
+** current-hour
+Function to return the current hour
+#+begin_src emacs-lisp
+	(defun current-hour (&optional time zone)
+		"Return the current hour, as a float relative to time and zone"
+		(let* ((time (or time (current-time)))
+					 (zone (or zone (current-time-zone)))
+					 (dtime (decode-time time zone))
+					 (sec (car dtime))
+					 (min (cadr dtime))
+					 (hour (caddr dtime)))
+			(cons
+			 (+ (/ (float sec) 3600)
+					(/ (float min) 60)
+					(float hour))
+			 (cdr zone))))
+#+end_src
 * Patch :org:org:agenda:
 Add a patch to allow times to be defined with sexp-expressions.
 Time is defined in the string portion returned by the sexp.
