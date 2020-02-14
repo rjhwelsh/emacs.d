@@ -3,10 +3,6 @@
 #+EMAIL: rjhwelsh@posteo.net
 #+PROPERTY: header-args    :results silent
 
-These functions have been taken from.
-https://stackoverflow.com/questions/22889036/custom-diary-sunrise-function-not-working-autoload-diary-emacs
-Credit to Brady Trainor.
-
 These functions build on solar.el
 #+begin_src emacs-lisp
 (require 'solar)
