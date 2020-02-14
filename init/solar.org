@@ -37,12 +37,20 @@ Function to return the current hour
 		"Calculate the amount of daylight hours remaining"
 		(let* ((l (solar-sunrise-sunset date))
 					 (c (current-hour))
-					 (s (cadr l))
+					 (ss (cadr l))
+					 (sr (car l))
 					 (current (car c))
-					 (sunset (car s)))
-			(if (<= current sunset) (- sunset current))
-			))
+					 (sunset (car ss))
+					 (sunrise (car sr)))
+			(if (equal date (calendar-current-date))
+					(if (and (<= current sunset) (>= current sunrise))
+							(- sunset current))
+				(if (> (calendar-absolute-from-gregorian date)
+							 (calendar-absolute-from-gregorian (calendar-current-date)))
+						(- sunset sunrise)
+					))))
 	;; (solar-remaining-daylight (calendar-current-date))
+	;; (solar-remaining-daylight (calendar-current-date -1))
 #+end_src
 
 * Sunrise
