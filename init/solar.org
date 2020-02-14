@@ -92,8 +92,6 @@ Define function to obtain time from sexp expressions.
 						 (match-string 2 ts))
 						)
 				)))
-	(org-time-from-sexp "(diary-sunrise)" (calendar-current-date))
-	(org-time-from-sexp "(diary-anniversary 2019 2 14)" (calendar-current-date))
 #+end_src
 
 ** org-agenda.el
