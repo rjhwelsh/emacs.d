@@ -364,7 +364,12 @@ Define function to obtain time from sexp expressions.
 							(let* ((pos (match-beginning 0))
 										 (repeat (match-string 1))
 										 (sexp-entry (match-string 3))
-										 (time-stamp (if (or repeat sexp-entry) (match-string 0)
+										 (sexp-time (if sexp-entry
+																		(org-time-from-sexp sexp-entry
+																												(calendar-gregorian-from-absolute current))))
+										 (time-stamp (if (or repeat sexp-entry)
+																		 (or (and sexp-time (concat sexp-time " "))
+																				 (match-string 0))
 																	 (save-excursion
 																		 (goto-char pos)
 																		 (looking-at org-ts-regexp-both)
