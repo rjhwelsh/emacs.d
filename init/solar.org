@@ -94,8 +94,40 @@ Define function to obtain time from sexp expressions.
 				)))
 #+end_src
 
-** org-agenda.el
+** org-agenda.el patches
+Patch org-agenda.el to allow sexp to calculate times.
+
 *** org-agenda-get-scheduled
+**** Patch
+#+begin_example emacs-lisp
+ 										 (level (make-string (org-reduced-level (org-outline-level))
+ 																				 ?\s))
+ 										 (head (buffer-substring (point) (line-end-position)))
++										 (sexp-time
++											(if sexp?
++													(org-time-from-sexp
++													 (replace-regexp-in-string "^%%" "" s)
++													 (calendar-gregorian-from-absolute current))))
+										 (time
+											(cond
+											 ;; No time of day designation if it is only a
+											 ;; reminder, except for habits, which always show
+											 ;; the time of day.  Habits are an exception
+											 ;; because if there is a time of day, that is
+											 ;; interpreted to mean they should usually happen
+											 ;; then, even if doing the habit was missed.
+											 ((and
+												 (not habitp)
+												 (/= current schedule)
+												 (/= current repeat))
+												nil)
+											 ((string-match " \\([012]?[0-9]:[0-9][0-9]\\)" s)
+												(concat (substring s (match-beginning 1)) " "))
++											 (sexp-time
++												(concat sexp-time " "))
+											 (t 'time)))
+#+end_example
+**** Source
 #+begin_src emacs-lisp
 	(defun org-agenda-get-scheduled (&optional deadlines with-hour)
 		"Return the scheduled information for agenda display.
@@ -307,7 +339,28 @@ Define function to obtain time from sexp expressions.
 								(push item scheduled-items))))))
 			(nreverse scheduled-items)))
 #+end_src
+
+
 *** org-agenda-get-timestamps
+**** Patch
+#+begin_example emacs-lisp
+ 							(let* ((pos (match-beginning 0))
+ 										 (repeat (match-string 1))
+ 										 (sexp-entry (match-string 3))
++										 (sexp-time (if sexp-entry
++										 							 (org-time-from-sexp sexp-entry
++																											 (calendar-gregorian-from-absolute current))))
+-										 (time-stamp (if (or repeat sexp-entry) (match-string 0)
++										 (time-stamp (if (or repeat sexp-entry)
++										  								(or (and sexp-time (concat sexp-time " "))
++																					(match-string 0))
+ 																		(save-excursion
+ 																			(goto-char pos)
+ 																			(looking-at org-ts-regexp-both)
+ 																			(match-string 0))))
+#+end_example
+
+**** Source
 		#+begin_src emacs-lisp
 			(defun org-agenda-get-timestamps (&optional deadlines)
 				"Return the date stamp information for agenda display.
