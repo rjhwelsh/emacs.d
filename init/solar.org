@@ -31,6 +31,20 @@ Function to return the current hour
 			 (cdr zone))))
 #+end_src
 
+** solar-remaining-daylight
+#+begin_src emacs-lisp
+	(defun solar-remaining-daylight (date &optional nolocation)
+		"Calculate the amount of daylight hours remaining"
+		(let* ((l (solar-sunrise-sunset date))
+					 (c (current-hour))
+					 (s (cadr l))
+					 (current (car c))
+					 (sunset (car s)))
+			(if (<= current sunset) (- sunset current))
+			))
+	;; (solar-remaining-daylight (calendar-current-date))
+#+end_src
+
 * Sunrise
 	#+begin_src emacs-lisp
 	(defun solar-sunrise-string (date &optional nolocation)
