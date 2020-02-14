@@ -30,6 +30,15 @@ Function to return the current hour
 					(float hour))
 			 (cdr zone))))
 #+end_src
+** calendar-offset-date
+	 #+begin_src emacs-lisp
+		 (defun calendar-offset-date (date &optional offset)
+			 "Offset the gregorian date by OFFSET number of days"
+			 (let ((offset (or offset 0)))
+				 (calendar-gregorian-from-absolute
+					(+ offset (calendar-absolute-from-gregorian date))
+					)))
+	 #+end_src
 
 ** solar-remaining-daylight
 #+begin_src emacs-lisp
@@ -58,10 +67,7 @@ Function to return the current hour
 		 (defun solar-remaining-night (date &optional nolocation)
 			 "Calculate the amount of hours remaining until next sunrise"
 			 (let* ((l (solar-sunrise-sunset date))
-							(l2 (solar-sunrise-sunset
-									 (calendar-gregorian-from-absolute
-										(+ 1 (calendar-absolute-from-gregorian date))
-										)))
+							(l2 (solar-sunrise-sunset (calendar-offset-date date 1)))
 							(c (current-hour))
 							(ss (cadr l))
 							(current (car c))
