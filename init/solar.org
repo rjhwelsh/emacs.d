@@ -41,7 +41,9 @@ Function to return the current hour
 					 (sr (car l))
 					 (current (car c))
 					 (sunset (car ss))
-					 (sunrise (car sr)))
+					 (sunrise (car sr))
+					 (timezones (list (cadr c) (cadr ss))))
+			(if (not (apply 'equal timezones)) (error "Timezones are not compatible! %s" timezones))
 			(if (equal date (calendar-current-date))
 					(if (and (<= current sunset) (>= current sunrise))
 							(- sunset current))
@@ -49,8 +51,6 @@ Function to return the current hour
 							 (calendar-absolute-from-gregorian (calendar-current-date)))
 						(- sunset sunrise)
 					))))
-	;; (solar-remaining-daylight (calendar-current-date))
-	;; (solar-remaining-daylight (calendar-current-date -1))
 #+end_src
 
 ** solar-remaining-night
@@ -73,14 +73,16 @@ Function to return the current hour
 							(after-sunset? (> current sunset))
 
 							(sr (car (if (or after-sunset? after-today?) l2 l)))
-							(sunrise (+ (car sr) (if (or after-sunset? after-today?) 24.0 0))))
+							(sunrise (+ (car sr) (if (or after-sunset? after-today?) 24.0 0)))
+
+							(timezones (list (cadr c) (cadr sr))))
+				 (if (not (apply 'equal timezones)) (error "Timezones are not compatible! %s" timezones))
 				 (if today?
 						 (if (and (<= current sunrise) (>= current sunset))
 								 (- sunrise current))
 					 (if after-today?
 							 (- sunrise sunset)
 						 ))))
-		 (solar-remaining-night (calendar-current-date))
 	 #+end_src
 
 * Sunrise
