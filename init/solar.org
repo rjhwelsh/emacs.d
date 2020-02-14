@@ -312,148 +312,148 @@ Define function to obtain time from sexp expressions.
 #+end_src
 *** org-agenda-get-timestamps
 		#+begin_src emacs-lisp
-		(defun org-agenda-get-timestamps (&optional deadlines)
-  "Return the date stamp information for agenda display.
-Optional argument DEADLINES is a list of deadline items to be
-displayed in agenda view."
-  (let* ((props (list 'face 'org-agenda-calendar-event
-		      'org-not-done-regexp org-not-done-regexp
-		      'org-todo-regexp org-todo-regexp
-		      'org-complex-heading-regexp org-complex-heading-regexp
-		      'mouse-face 'highlight
-		      'help-echo
-		      (format "mouse-2 or RET jump to Org file %s"
-			      (abbreviate-file-name buffer-file-name))))
-	 (current (calendar-absolute-from-gregorian date))
-	 (today (org-today))
-	 (deadline-position-alist
-	  (mapcar (lambda (d)
-		    (let ((m (get-text-property 0 'org-hd-marker d)))
-		      (and m (marker-position m))))
-		  deadlines))
-	 ;; Match time-stamps set to current date, time-stamps with
-	 ;; a repeater, and S-exp time-stamps.
-	 (regexp
-	  (concat
-	   (if org-agenda-include-inactive-timestamps "[[<]" "<")
-	   (regexp-quote
-	    (substring
-	     (format-time-string
-	      (car org-time-stamp-formats)
-	      (encode-time	; DATE bound by calendar
-	       0 0 0 (nth 1 date) (car date) (nth 2 date)))
-	     1 11))
-	   "\\|\\(<[0-9]+-[0-9]+-[0-9]+[^>\n]+?\\+[0-9]+[hdwmy]>\\)"
-	   "\\|\\(<%%\\(([^>\n]+)\\)>\\)"))
-	 timestamp-items)
-    (goto-char (point-min))
-    (while (re-search-forward regexp nil t)
-      ;; Skip date ranges, scheduled and deadlines, which are handled
-      ;; specially.  Also skip time-stamps before first headline as
-      ;; there would be no entry to add to the agenda.  Eventually,
-      ;; ignore clock entries.
-      (catch :skip
-	(save-match-data
-	  (when (or (org-at-date-range-p)
-		    (org-at-planning-p)
-		    (org-before-first-heading-p)
-		    (and org-agenda-include-inactive-timestamps
-			 (org-at-clock-log-p)))
-	    (throw :skip nil))
-	  (org-agenda-skip))
-	(let* ((pos (match-beginning 0))
-	       (repeat (match-string 1))
-	       (sexp-entry (match-string 3))
-	       (time-stamp (if (or repeat sexp-entry) (match-string 0)
-			     (save-excursion
-			       (goto-char pos)
-			       (looking-at org-ts-regexp-both)
-			       (match-string 0))))
-	       (todo-state (org-get-todo-state))
-	       (warntime (get-text-property (point) 'org-appt-warntime))
-	       (done? (member todo-state org-done-keywords)))
-	  ;; Possibly skip done tasks.
-	  (when (and done? org-agenda-skip-timestamp-if-done)
-	    (throw :skip t))
-	  ;; S-exp entry doesn't match current day: skip it.
-	  (when (and sexp-entry (not (org-diary-sexp-entry sexp-entry "" date)))
-	    (throw :skip nil))
-	  (when repeat
-	    (let* ((past
-		    ;; A repeating time stamp is shown at its base
-		    ;; date and every repeated date up to TODAY.  If
-		    ;; `org-agenda-prefer-last-repeat' is non-nil,
-		    ;; however, only the last repeat before today
-		    ;; (inclusive) is shown.
-		    (org-agenda--timestamp-to-absolute
-		     repeat
-		     (if (or (> current today)
-			     (eq org-agenda-prefer-last-repeat t)
-			     (member todo-state org-agenda-prefer-last-repeat))
-			 today
-		       current)
-		     'past (current-buffer) pos))
-		   (future
-		    ;;  Display every repeated date past TODAY
-		    ;;  (exclusive) unless
-		    ;;  `org-agenda-show-future-repeats' is nil.  If
-		    ;;  this variable is set to `next', only display
-		    ;;  the first repeated date after TODAY
-		    ;;  (exclusive).
-		    (cond
-		     ((<= current today) past)
-		     ((not org-agenda-show-future-repeats) past)
-		     (t
-		      (let ((base (if (eq org-agenda-show-future-repeats 'next)
-				      (1+ today)
-				    current)))
-			(org-agenda--timestamp-to-absolute
-			 repeat base 'future (current-buffer) pos))))))
-	      (when (and (/= current past) (/= current future))
-		(throw :skip nil))))
-	  (save-excursion
-	    (re-search-backward org-outline-regexp-bol nil t)
-	    ;; Possibly skip time-stamp when a deadline is set.
-	    (when (and org-agenda-skip-timestamp-if-deadline-is-shown
-		       (assq (point) deadline-position-alist))
-	      (throw :skip nil))
-	    (let* ((category (org-get-category pos))
-		   (inherited-tags
-		    (or (eq org-agenda-show-inherited-tags 'always)
-			(and (consp org-agenda-show-inherited-tags)
-			     (memq 'agenda org-agenda-show-inherited-tags))
-			(and (eq org-agenda-show-inherited-tags t)
-			     (or (eq org-agenda-use-tag-inheritance t)
-				 (memq 'agenda
-				       org-agenda-use-tag-inheritance)))))
-		   (tags (org-get-tags nil (not inherited-tags)))
-		   (level (make-string (org-reduced-level (org-outline-level))
-				       ?\s))
-		   (head (and (looking-at "\\*+[ \t]+\\(.*\\)")
-			      (match-string 1)))
-		   (inactive? (= (char-after pos) ?\[))
-		   (habit? (and (fboundp 'org-is-habit-p) (org-is-habit-p)))
-		   (item
-		    (org-agenda-format-item
-		     (and inactive? org-agenda-inactive-leader)
-		     head level category tags time-stamp org-ts-regexp habit?)))
-	      (org-add-props item props
-		'priority (if habit?
-			      (org-habit-get-priority (org-habit-parse-todo))
-			    (org-get-priority item))
-		'org-marker (org-agenda-new-marker pos)
-		'org-hd-marker (org-agenda-new-marker)
-		'date date
-		'level level
-		'ts-date (if repeat (org-agenda--timestamp-to-absolute repeat)
-			   current)
-		'todo-state todo-state
-		'warntime warntime
-		'type "timestamp")
-	      (push item timestamp-items))))
-	(when org-agenda-skip-additional-timestamps-same-entry
-	  (outline-next-heading))))
-    (nreverse timestamp-items)))
+			(defun org-agenda-get-timestamps (&optional deadlines)
+				"Return the date stamp information for agenda display.
+			Optional argument DEADLINES is a list of deadline items to be
+			displayed in agenda view."
+				(let* ((props (list 'face 'org-agenda-calendar-event
+														'org-not-done-regexp org-not-done-regexp
+														'org-todo-regexp org-todo-regexp
+														'org-complex-heading-regexp org-complex-heading-regexp
+														'mouse-face 'highlight
+														'help-echo
+														(format "mouse-2 or RET jump to Org file %s"
+																		(abbreviate-file-name buffer-file-name))))
+							 (current (calendar-absolute-from-gregorian date))
+							 (today (org-today))
+							 (deadline-position-alist
+								(mapcar (lambda (d)
+													(let ((m (get-text-property 0 'org-hd-marker d)))
+														(and m (marker-position m))))
+												deadlines))
+							 ;; Match time-stamps set to current date, time-stamps with
+							 ;; a repeater, and S-exp time-stamps.
+							 (regexp
+								(concat
+								 (if org-agenda-include-inactive-timestamps "[[<]" "<")
+								 (regexp-quote
+									(substring
+									 (format-time-string
+										(car org-time-stamp-formats)
+										(encode-time	; DATE bound by calendar
+										 0 0 0 (nth 1 date) (car date) (nth 2 date)))
+									 1 11))
+								 "\\|\\(<[0-9]+-[0-9]+-[0-9]+[^>\n]+?\\+[0-9]+[hdwmy]>\\)"
+								 "\\|\\(<%%\\(([^>\n]+)\\)>\\)"))
+							 timestamp-items)
+					(goto-char (point-min))
+					(while (re-search-forward regexp nil t)
+						;; Skip date ranges, scheduled and deadlines, which are handled
+						;; specially.  Also skip time-stamps before first headline as
+						;; there would be no entry to add to the agenda.  Eventually,
+						;; ignore clock entries.
+						(catch :skip
+							(save-match-data
+								(when (or (org-at-date-range-p)
+													(org-at-planning-p)
+													(org-before-first-heading-p)
+													(and org-agenda-include-inactive-timestamps
+															 (org-at-clock-log-p)))
+									(throw :skip nil))
+								(org-agenda-skip))
+							(let* ((pos (match-beginning 0))
+										 (repeat (match-string 1))
+										 (sexp-entry (match-string 3))
+										 (time-stamp (if (or repeat sexp-entry) (match-string 0)
+																	 (save-excursion
+																		 (goto-char pos)
+																		 (looking-at org-ts-regexp-both)
+																		 (match-string 0))))
+										 (todo-state (org-get-todo-state))
+										 (warntime (get-text-property (point) 'org-appt-warntime))
+										 (done? (member todo-state org-done-keywords)))
+								;; Possibly skip done tasks.
+								(when (and done? org-agenda-skip-timestamp-if-done)
+									(throw :skip t))
+								;; S-exp entry doesn't match current day: skip it.
+								(when (and sexp-entry (not (org-diary-sexp-entry sexp-entry "" date)))
+									(throw :skip nil))
+								(when repeat
+									(let* ((past
+													;; A repeating time stamp is shown at its base
+													;; date and every repeated date up to TODAY.  If
+													;; `org-agenda-prefer-last-repeat' is non-nil,
+													;; however, only the last repeat before today
+													;; (inclusive) is shown.
+													(org-agenda--timestamp-to-absolute
+													 repeat
+													 (if (or (> current today)
+																	 (eq org-agenda-prefer-last-repeat t)
+																	 (member todo-state org-agenda-prefer-last-repeat))
+															 today
+														 current)
+													 'past (current-buffer) pos))
+												 (future
+													;;  Display every repeated date past TODAY
+													;;  (exclusive) unless
+													;;  `org-agenda-show-future-repeats' is nil.  If
+													;;  this variable is set to `next', only display
+													;;  the first repeated date after TODAY
+													;;  (exclusive).
+													(cond
+													 ((<= current today) past)
+													 ((not org-agenda-show-future-repeats) past)
+													 (t
+														(let ((base (if (eq org-agenda-show-future-repeats 'next)
+																						(1+ today)
+																					current)))
+															(org-agenda--timestamp-to-absolute
+															 repeat base 'future (current-buffer) pos))))))
+										(when (and (/= current past) (/= current future))
+											(throw :skip nil))))
+								(save-excursion
+									(re-search-backward org-outline-regexp-bol nil t)
+									;; Possibly skip time-stamp when a deadline is set.
+									(when (and org-agenda-skip-timestamp-if-deadline-is-shown
+														 (assq (point) deadline-position-alist))
+										(throw :skip nil))
+									(let* ((category (org-get-category pos))
+												 (inherited-tags
+													(or (eq org-agenda-show-inherited-tags 'always)
+															(and (consp org-agenda-show-inherited-tags)
+																	 (memq 'agenda org-agenda-show-inherited-tags))
+															(and (eq org-agenda-show-inherited-tags t)
+																	 (or (eq org-agenda-use-tag-inheritance t)
+																			 (memq 'agenda
+																						 org-agenda-use-tag-inheritance)))))
+												 (tags (org-get-tags nil (not inherited-tags)))
+												 (level (make-string (org-reduced-level (org-outline-level))
+																						 ?\s))
+												 (head (and (looking-at "\\*+[ \t]+\\(.*\\)")
+																		(match-string 1)))
+												 (inactive? (= (char-after pos) ?\[))
+												 (habit? (and (fboundp 'org-is-habit-p) (org-is-habit-p)))
+												 (item
+													(org-agenda-format-item
+													 (and inactive? org-agenda-inactive-leader)
+													 head level category tags time-stamp org-ts-regexp habit?)))
+										(org-add-props item props
+											'priority (if habit?
+																		(org-habit-get-priority (org-habit-parse-todo))
+																	(org-get-priority item))
+											'org-marker (org-agenda-new-marker pos)
+											'org-hd-marker (org-agenda-new-marker)
+											'date date
+											'level level
+											'ts-date (if repeat (org-agenda--timestamp-to-absolute repeat)
+																 current)
+											'todo-state todo-state
+											'warntime warntime
+											'type "timestamp")
+										(push item timestamp-items))))
+							(when org-agenda-skip-additional-timestamps-same-entry
+								(outline-next-heading))))
+					(nreverse timestamp-items)))
 		#+end_src
 
 *** org-agenda-format-item
