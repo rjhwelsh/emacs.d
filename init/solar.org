@@ -126,13 +126,14 @@ Function to return the current hour
 			(let* ((l (solar-sunrise-sunset date))
 						 (o (or offset 0))
 						 (ss (cadr l))
-						 (ss2 (if ss (cons (+ (car ss) o) (cdr ss)))))
+						 (ss2 (if ss (cons (+ (car ss) o) (cdr ss))))
+						 (night (solar-remaining-night date)))
 				(format
-				 "%s"
+				 "%s %s"
 				 (if ss2
 						 (concat (apply 'solar-time-string ss2) " Sunset" )
 					 "no sunset")
-				 )))
+				 (concat (if night (format "(%s hrs 'til dawn)" (solar-daylight night)))))))
 
 		(defun diary-sunset (&optional offset)
 			"Local time of sunset as a diary entry.
