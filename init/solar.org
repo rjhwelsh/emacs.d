@@ -53,6 +53,36 @@ Function to return the current hour
 	;; (solar-remaining-daylight (calendar-current-date -1))
 #+end_src
 
+** solar-remaining-night
+	 #+begin_src emacs-lisp
+		 (defun solar-remaining-night (date &optional nolocation)
+			 "Calculate the amount of hours remaining until next sunrise"
+			 (let* ((l (solar-sunrise-sunset date))
+							(l2 (solar-sunrise-sunset
+									 (calendar-gregorian-from-absolute
+										(+ 1 (calendar-absolute-from-gregorian date))
+										)))
+							(c (current-hour))
+							(ss (cadr l))
+							(current (car c))
+							(sunset (car ss))
+
+							(today? (equal date (calendar-current-date)))
+							(after-today? (> (calendar-absolute-from-gregorian date)
+									(calendar-absolute-from-gregorian (calendar-current-date))))
+							(after-sunset? (> current sunset))
+
+							(sr (car (if (or after-sunset? after-today?) l2 l)))
+							(sunrise (+ (car sr) (if (or after-sunset? after-today?) 24.0 0))))
+				 (if today?
+						 (if (and (<= current sunrise) (>= current sunset))
+								 (- sunrise current))
+					 (if after-today?
+							 (- sunrise sunset)
+						 ))))
+		 (solar-remaining-night (calendar-current-date))
+	 #+end_src
+
 * Sunrise
 	#+begin_src emacs-lisp
 	(defun solar-sunrise-string (date &optional nolocation)
