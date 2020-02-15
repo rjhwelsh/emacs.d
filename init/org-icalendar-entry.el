@@ -25,16 +25,17 @@ This uses the icalendar.el library."
 			 SEXP is the diary sexp being transcoded, as a string.  UID is the
 			 unique identifier for the entry.  SUMMARY defines a short summary
 			 or subject for the event."
-	(message (format "Sexp transcode: (%s %s %s)" sexp uid summary))
-	(when (require 'icalendar nil t)
-		(org-element-normalize-string
-		 (with-temp-buffer
-			 (let ((sexp (if (not (string-match "\\`<%%" sexp)) sexp
-										 (concat (substring sexp 1 -1) " " summary))))
-				 (message (format "sexp: %s" sexp))
-				 (put-text-property 0 1 'uid uid sexp)
-				 (insert sexp "\n"))
-			 (org-diary-to-ical-string (current-buffer))))))
+	(progn
+		(message (format "Sexp transcode: (%s %s %s)" sexp uid summary))
+		(when (require 'icalendar nil t)
+			(org-element-normalize-string
+			 (with-temp-buffer
+				 (let ((sexp (if (not (string-match "\\`<%%" sexp)) sexp
+											 (concat (substring sexp 1 -1) " " summary))))
+					 (message (format "sexp: %s" sexp))
+					 (put-text-property 0 1 'uid uid sexp)
+					 (insert sexp "\n"))
+				 (org-diary-to-ical-string (current-buffer)))))))
 
 
 (defun org-icalendar-entry (entry contents info)
