@@ -122,12 +122,21 @@
 												 (org-element-map
 														 (cons (org-element-property :title entry)
 																	 (org-element-contents inside))
-														 'diary-sexp
-													 (lambda (sexp)
-														 (org-icalendar-transcode-diary-sexp
-															(org-element-property :value sexp)
-															(format "DS%d-%s" (cl-incf counter) uid)
-															summary))
+														 'timestamp
+													 (lambda (ts)
+														 (when (let ((type (org-element-property :type ts)))
+																		 (cl-case (plist-get info :with-timestamps)
+																			 (active (memq type '(diary)))
+																			 (inactive (memq type '(diary)))
+																			 ((t) t)))
+															 (let ((uid (format "DS%d-%s" (cl-incf counter) uid)))
+																 ;; (org-icalendar--vevent
+																 ;; entry ts uid summary loc desc cat tz class)
+																 (message (format "%s" (org-element-property :raw-value ts)))
+																 (org-icalendar-transcode-diary-sexp
+																	(org-element-property :raw-value ts)
+																	uid
+																	summary))))
 													 info nil (and (eq type 'headline) 'inlinetask))
 												 "")))))
 			 ;; If ENTRY is a headline, call current function on every
