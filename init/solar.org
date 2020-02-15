@@ -14,6 +14,7 @@ Function to return the current hour
 #+begin_src emacs-lisp
 	(defun current-hour (&optional time zone)
 		"Return the current hour, as a float relative to time and zone"
+		(require 'cal-dst) ;; ;TODO: Add dst zone relative to current time / date
 		(let* ((time (or time (current-time)))
 					 (zone (or zone (current-time-zone)))
 					 (dtime (decode-time time zone))
@@ -48,7 +49,7 @@ Function to return the current hour
 					 (sunset (car ss))
 					 (sunrise (car sr))
 					 (timezones (list (cadr c) (cadr ss))))
-			(if (not (apply 'equal timezones)) (error "Timezones are not compatible! %s" timezones))
+			;; (if (not (apply 'equal timezones)) (error "Timezones are not compatible! %s" timezones))
 			(if (equal date (calendar-current-date))
 					(if (and (<= current sunset) (>= current sunrise))
 							(- sunset current))
@@ -78,7 +79,7 @@ Function to return the current hour
 							(sunrise (+ (car sr) (if (or after-sunset? after-today?) 24.0 0)))
 
 							(timezones (list (cadr c) (cadr sr))))
-				 (if (not (apply 'equal timezones)) (error "Timezones are not compatible! %s" timezones))
+				 ;; (if (not (apply 'equal timezones)) (error "Timezones are not compatible! %s" timezones))
 				 (if today?
 						 (if (and (<= current sunrise) (>= current sunset))
 								 (- sunrise current))
