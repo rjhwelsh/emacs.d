@@ -146,6 +146,7 @@ Time is defined in the string portion returned by the sexp.
 The time must be at the start of the string.
 
 ** org.el
+*** org-time-from-sexp
 Define function to obtain time from sexp expressions.
 #+begin_src emacs-lisp
 	(defun org-time-from-sexp (s d)
