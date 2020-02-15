@@ -185,6 +185,24 @@ Define function to obtain time from sexp expressions.
 		Where
 - s :: timestamp/sexp (excluding <>) e.g. %%(diary-sunrise)
 - current :: (calendar-absolute-from-gregorian date)
+
+Match any day with a sunrise
+#+begin_src emacs-lisp
+(calendar-gregorian-from-absolute (org-time-string-to-absolute "%%(diary-sunrise)" (calendar-absolute-from-gregorian (calendar-current-date))))
+#+end_src
+
+Match 3rd Sunday of the month
+#+begin_src emacs-lisp
+(calendar-gregorian-from-absolute (org-time-string-to-absolute "%%(diary-float t 0 3)" (calendar-absolute-from-gregorian (calendar-current-date))))
+#+end_src
+
+Match any past/future 4th Sunday of the month (regular timestamp)
+#+begin_src emacs-lisp
+(calendar-gregorian-from-absolute (org-time-string-to-absolute "<2020-02-01 Sat 12:49 ++7d>" (calendar-absolute-from-gregorian (calendar-current-date)) 'past))
+(calendar-gregorian-from-absolute (org-time-string-to-absolute "<2020-02-01 Sat 12:49 ++7d>" (calendar-absolute-from-gregorian (calendar-current-date)) 'future))
+#+end_src
+
+Doing this with sexps, does not work for obvious reasons. (Halting problem)
 ** org-agenda.el patches
 Patch org-agenda.el to allow sexp to calculate times.
 
