@@ -178,7 +178,13 @@ Define function to obtain time from sexp expressions.
 						)
 				)))
 #+end_src
-
+*** org-time-string-to-absolute
+		This function is used to obtain the date from sexps in org-agenda.el
+		Also known as _org-agenda--timestamp-to-absolute_ in org-agenda.el
+		Uses variables s, current.
+		Where
+- s :: timestamp/sexp (excluding <>) e.g. %%(diary-sunrise)
+- current :: (calendar-absolute-from-gregorian date)
 ** org-agenda.el patches
 Patch org-agenda.el to allow sexp to calculate times.
 
