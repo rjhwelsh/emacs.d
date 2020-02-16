@@ -698,6 +698,7 @@ Patch org-agenda.el to allow sexp to calculate times.
 		#+end_src
 
 ** ox-icalendar.el patches
+Warning! sexps must be in the headline in order to be interpreted.
 *** org-icalendar-entry
 **** Patch
 #+begin_example emacs-lisp
