@@ -178,6 +178,10 @@ Define function to obtain time from sexp expressions.
 						)
 				)))
 #+end_src
+*** org-sexp-next-timestamp :NEW:
+		Calculates the next occurence of sexp, or nil if it is beyond
+		org-sexp-max-future-days.
+		Compare use of function to [[help:icalendar--convert-sexp-to-ical][icalendar--convert-sexp-to-ical]]
 *** org-time-string-to-absolute :DOC:
 		This function is used to obtain the date from sexps in org-agenda.el
 		Also known as _org-agenda--timestamp-to-absolute_ in org-agenda.el
@@ -207,10 +211,6 @@ Doing this with sexps, does not work for obvious reasons. (Halting problem)
 		Variable defining the maximum number of days into the future into which
 		sexps should be calculated
 		This variable already exists in [[help:icalendar-export-sexp-enumeration-days][icalendar-export-sexp-enumeration-days]]
-*** org-sexp-next-timestamp
-		Calculates the next occurence of sexp, or nil if it is beyond
-		org-sexp-max-future-days.
-		Compare use of function to [[help:icalendar--convert-sexp-to-ical][icalendar--convert-sexp-to-ical]]
 ** org-agenda.el patches
 Patch org-agenda.el to allow sexp to calculate times.
 
