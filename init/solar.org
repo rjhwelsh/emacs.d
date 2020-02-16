@@ -628,6 +628,21 @@ Patch org-agenda.el to allow sexp to calculate times.
 		#+end_src
 ** icalendar.el patches
 *** icalendar-export-region
+**** Patch
+		 #+begin_example emacs-lisp
+                                      (cdr contents-n-summary))))
+                       (setq result (concat result header contents alarm
+                                            "\nEND:VEVENT")))
+-                    (if (consp cns-cons-or-list)
+-                        (list cns-cons-or-list)
+-                      cns-cons-or-list)))
++                    (if (consp (car cns-cons-or-list))
++												cns-cons-or-list
++											(list cns-cons-or-list))))
+           ;; handle errors
+           (error
+            (setq found-error t)
+		 #+end_example
 **** Source
 		 #+begin_src emacs-lisp
 (defun icalendar-export-region (min max ical-filename)
