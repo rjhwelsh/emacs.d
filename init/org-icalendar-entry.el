@@ -319,9 +319,10 @@ FExport diary data into iCalendar file: ")
                                      (cdr contents-n-summary))))
                       (setq result (concat result header contents alarm
                                            "\nEND:VEVENT")))
-                    (if (consp cns-cons-or-list)
-                        (list cns-cons-or-list)
-                      cns-cons-or-list)))
+                    (if (consp (car cns-cons-or-list))
+												cns-cons-or-list
+											(list cns-cons-or-list)
+                      )))
           ;; handle errors
           (error
            (setq found-error t)
