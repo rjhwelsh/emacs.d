@@ -207,7 +207,7 @@ Doing this with sexps, does not work for obvious reasons. (Halting problem)
 		Variable defining the maximum number of days into the future into which
 		sexps should be calculated
 		This variable already exists in [[help:icalendar-export-sexp-enumeration-days][icalendar-export-sexp-enumeration-days]]
-*** org-sexp-next-date
+*** org-sexp-next-timestamp
 		Calculates the next occurence of sexp, or nil if it is beyond
 		org-sexp-max-future-days.
 		Compare use of function to [[help:icalendar--convert-sexp-to-ical][icalendar--convert-sexp-to-ical]]
