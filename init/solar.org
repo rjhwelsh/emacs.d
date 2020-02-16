@@ -182,6 +182,20 @@ Define function to obtain time from sexp expressions.
 		Calculates the next occurence of sexp, or nil if it is beyond
 		org-sexp-max-future-days.
 		Compare use of function to [[help:icalendar--convert-sexp-to-ical][icalendar--convert-sexp-to-ical]]
+		#+begin_src emacs-lisp
+			(defun org-sexp-next-timestamp ( sexp &optional start )
+				"Convert sexp to org-timestamp format.
+			Enumerate for org-sexp-enumeration-days (alias for
+			icalendar-export-sexp-enumeration-days). SEXP is a generic diary
+			sexp expression
+
+			Optional argument START determines the first day of the
+			enumeration, given as a time value, in the same format as
+			returned by `current-time'
+
+			See icalendar--convert-sexp-to-ical"
+				(progn ))
+		#+end_src
 *** org-time-string-to-absolute :DOC:
 		This function is used to obtain the date from sexps in org-agenda.el
 		Also known as _org-agenda--timestamp-to-absolute_ in org-agenda.el
@@ -207,7 +221,7 @@ Match any past/future 4th Sunday of the month (regular timestamp)
 #+end_src
 
 Doing this with sexps, does not work for obvious reasons. (Halting problem)
-*** org-sexp-max-future-days
+*** org-sexp-enumeration-days
 		Variable defining the maximum number of days into the future into which
 		sexps should be calculated
 		This variable already exists in [[help:icalendar-export-sexp-enumeration-days][icalendar-export-sexp-enumeration-days]]
