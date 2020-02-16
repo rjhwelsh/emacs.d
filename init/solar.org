@@ -213,9 +213,20 @@ Define function to obtain time from sexp expressions.
 												 (cond ((null see)
 																nil)
 															 ((stringp see)
-																;; TODO Convert to timestamp format
-																;; Break loop when successful
-																)
+																(let* ((ts (diary-entry-time see))
+																			 (hhmm (if (>= ts 0) (format "%04d" ts)))
+																			 )
+																	(if hhmm
+																			(progn
+																				(string-match "\\(..\\)\\(..\\)" hhmm)
+																				(let* ((sec 0)
+																							 (min (string-to-number (match-string 1 hhmm)))
+																							 (hour (string-to-number (match-string 1 hhmm)))
+																							 (next (encode-time sec min hour d m y)))
+																					(org-timestamp-from-time next t)))
+																		(let ((next (encode-time 0 0 0 d m y)))
+																			(org-timestamp-from-time next)))
+																	))
 															 ((error "Unsupported Sexp-entry: %s"
 																			 entry-main)))))
 										 (number-sequence
