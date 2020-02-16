@@ -173,10 +173,9 @@ This uses the icalendar.el library."
 																 ;; (org-icalendar--vevent
 																 ;; entry ts uid summary loc desc cat tz class)
 																 (message (format "%s" (org-element-property :raw-value ts)))
-																 (org-icalendar-transcode-diary-sexp
-																	(org-element-property :raw-value ts)
-																	uid
-																	summary))))
+																 (org-icalendar--vevent
+																	entry ts uid summary loc desc cat tz class)
+																 )))
 													 info nil (and (eq type 'headline) 'inlinetask))
 												 "")))))
 			 ;; If ENTRY is a headline, call current function on every
