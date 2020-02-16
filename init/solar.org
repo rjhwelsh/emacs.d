@@ -224,7 +224,7 @@ Define function to obtain time from sexp expressions.
 																						(progn
 																							(string-match "\\(..\\)\\(..\\)" hhmm)
 																							(let* ((sec 0)
-																										 (min (string-to-number (match-string 1 hhmm)))
+																										 (min (string-to-number (match-string 2 hhmm)))
 																										 (hour (string-to-number (match-string 1 hhmm)))
 																										 (next (encode-time sec min hour d m y)))
 																								(org-timestamp-from-time next t)))
