@@ -208,9 +208,16 @@ should be treated as \"PRIVATE\" if they are unknown to the iCalendar server.
 Return VEVENT component as a string."
   (org-icalendar-fold-string
    (if (eq (org-element-property :type timestamp) 'diary)
-       (org-icalendar-transcode-diary-sexp
-				(org-element-property :raw-value timestamp) uid summary)
-     (concat "BEGIN:VEVENT\n"
+			 (apply 'concat
+							(mapcar (lambda (ts)
+												(concat
+												 (org-icalendar--vevent entry ts uid summary location description categories timezone class)
+												 "\n")
+												)
+											(org-timestamp-from-sexp
+											 (substring (org-element-property :raw-value timestamp) 2 -1))))
+
+		 (concat "BEGIN:VEVENT\n"
 						 (org-icalendar-dtstamp) "\n"
 						 "UID:" uid "\n"
 						 (org-icalendar-convert-timestamp timestamp "DTSTART" nil timezone) "\n"
