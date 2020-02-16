@@ -178,22 +178,22 @@ Define function to obtain time from sexp expressions.
 						)
 				)))
 #+end_src
-*** org-sexp-next-timestamp :NEW:
+*** org-timestamp-from-sexp :NEW:
 		Calculates the next occurence of sexp, or nil if it is beyond
 		org-sexp-max-future-days.
 		Compare use of function to [[help:icalendar--convert-sexp-to-ical][icalendar--convert-sexp-to-ical]]
 		#+begin_src emacs-lisp
-			(defun org-sexp-next-timestamp ( sexp &optional start )
-				"Convert sexp to org-timestamp format.
-			Enumerate for org-sexp-enumeration-days (alias for
-			icalendar-export-sexp-enumeration-days). SEXP is a generic diary
-			sexp expression
+			(defun org-timestamp-from-sexp ( sexp &optional start )
+				"Convert SEXP to an org timestamp. Enumerate for org-sexp-enumeration-days
+					(alias for icalendar-export-sexp-enumeration-days).
 
-			Optional argument START determines the first day of the
-			enumeration, given as a time value, in the same format as
-			returned by `current-time'
+					SEXP is a generic diary sexp expression
 
-			See icalendar--convert-sexp-to-ical"
+					Optional argument START determines the first day of the enumeration, given
+					as a time value, in the same format as returned by `current-time'
+
+					See icalendar--convert-sexp-to-ical"
+
 				(progn
 					(require 'icalendar)
 					(let ((now (or start (current-time))))
