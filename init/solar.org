@@ -692,6 +692,53 @@ Patch org-agenda.el to allow sexp to calculate times.
 								(outline-next-heading))))
 					(nreverse timestamp-items)))
 		#+end_src
+
+** ox-icalendar.el patches
+*** org-icalendar--vevent
+**** Source
+		 #+begin_src emacs-lisp
+(defun org-icalendar--vevent
+    (entry timestamp uid summary location description categories timezone class)
+  "Create a VEVENT component.
+
+ENTRY is either a headline or an inlinetask element.  TIMESTAMP
+is a timestamp object defining the date-time of the event.  UID
+is the unique identifier for the event.  SUMMARY defines a short
+summary or subject for the event.  LOCATION defines the intended
+venue for the event.  DESCRIPTION provides the complete
+description of the event.  CATEGORIES defines the categories the
+event belongs to.  TIMEZONE specifies a time zone for this event
+only.  CLASS contains the visibility attribute.  Three of them
+(\"PUBLIC\", \"CONFIDENTIAL\", and \"PRIVATE\") are predefined, others
+should be treated as \"PRIVATE\" if they are unknown to the iCalendar server.
+
+Return VEVENT component as a string."
+  (org-icalendar-fold-string
+   (if (eq (org-element-property :type timestamp) 'diary)
+       (org-icalendar-transcode-diary-sexp
+	(org-element-property :raw-value timestamp) uid summary)
+     (concat "BEGIN:VEVENT\n"
+	     (org-icalendar-dtstamp) "\n"
+	     "UID:" uid "\n"
+	     (org-icalendar-convert-timestamp timestamp "DTSTART" nil timezone) "\n"
+	     (org-icalendar-convert-timestamp timestamp "DTEND" t timezone) "\n"
+	     ;; RRULE.
+	     (when (org-element-property :repeater-type timestamp)
+	       (format "RRULE:FREQ=%s;INTERVAL=%d\n"
+		       (cl-case (org-element-property :repeater-unit timestamp)
+			 (hour "HOURLY") (day "DAILY") (week "WEEKLY")
+			 (month "MONTHLY") (year "YEARLY"))
+		       (org-element-property :repeater-value timestamp)))
+	     "SUMMARY:" summary "\n"
+	     (and (org-string-nw-p location) (format "LOCATION:%s\n" location))
+	     (and (org-string-nw-p class) (format "CLASS:%s\n" class))
+	     (and (org-string-nw-p description)
+		  (format "DESCRIPTION:%s\n" description))
+	     "CATEGORIES:" categories "\n"
+	     ;; VALARM.
+	     (org-icalendar--valarm entry timestamp summary)
+	     "END:VEVENT"))))
+		 #+end_src
 ** icalendar.el patches
 *** icalendar-export-region
 **** Patch
