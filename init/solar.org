@@ -3,9 +3,13 @@
 #+EMAIL: rjhwelsh@posteo.net
 #+PROPERTY: header-args    :results silent
 
-These functions build on solar.el
+These functions build on the following.
 #+begin_src emacs-lisp
 (require 'solar)
+(require 'org)
+(require 'org-agenda)
+(require 'ox-icalendar)
+(require 'icalendar)
 #+end_src
 
 * Daylight
