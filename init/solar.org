@@ -146,7 +146,7 @@ Time is defined in the string portion returned by the sexp.
 The time must be at the start of the string.
 
 ** org.el
-*** org-time-from-sexp
+*** org-time-from-sexp :NEW:
 Define function to obtain time from sexp expressions.
 #+begin_src emacs-lisp
 	(defun org-time-from-sexp (s d)
@@ -178,7 +178,7 @@ Define function to obtain time from sexp expressions.
 						)
 				)))
 #+end_src
-*** org-time-string-to-absolute
+*** org-time-string-to-absolute :DOC:
 		This function is used to obtain the date from sexps in org-agenda.el
 		Also known as _org-agenda--timestamp-to-absolute_ in org-agenda.el
 		Uses variables s, current.
