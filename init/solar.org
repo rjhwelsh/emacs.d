@@ -203,13 +203,14 @@ Match any past/future 4th Sunday of the month (regular timestamp)
 #+end_src
 
 Doing this with sexps, does not work for obvious reasons. (Halting problem)
-*** org-sexp-max-future-days :NEW:
+*** org-sexp-max-future-days
 		Variable defining the maximum number of days into the future into which
 		sexps should be calculated
-*** org-sexp-next-date :NEW:
+		This variable already exists in [[help:icalendar-export-sexp-enumeration-days][icalendar-export-sexp-enumeration-days]]
+*** org-sexp-next-date
 		Calculates the next occurence of sexp, or nil if it is beyond
 		org-sexp-max-future-days.
-
+		Compare use of function to [[help:icalendar--convert-sexp-to-ical][icalendar--convert-sexp-to-ical]]
 ** org-agenda.el patches
 Patch org-agenda.el to allow sexp to calculate times.
 
