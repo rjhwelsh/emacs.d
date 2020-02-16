@@ -272,7 +272,7 @@ Match any past/future 4th Sunday of the month (regular timestamp)
 #+end_src
 
 Doing this with sexps, does not work for obvious reasons. (Halting problem)
-*** org-sexp-enumeration-days
+*** org-sexp-enumeration-days :notimplemented:
 		Variable defining the maximum number of days into the future into which
 		sexps should be calculated
 		This variable already exists in [[help:icalendar-export-sexp-enumeration-days][icalendar-export-sexp-enumeration-days]]
