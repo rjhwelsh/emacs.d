@@ -885,19 +885,18 @@ Patch org-agenda.el to allow sexp to calculate times.
 **** Patch
 #+begin_example emacs-lisp
 			 Return VEVENT component as a string."
- 				 (org-icalendar-fold-string
+- 				 (org-icalendar-fold-string
  					(if (eq (org-element-property :type timestamp) 'diary)
 -							(org-icalendar-transcode-diary-sexp
 -							 (org-element-property :raw-value timestamp) uid summary)
 +							(apply 'concat
 +										 (mapcar (lambda (ts)
-+															 (concat
 +																(org-icalendar--vevent entry ts uid summary location description categories timezone class)
-+																"\n")
 +															 )
 +														 (org-timestamp-from-sexp
 +															(substring (org-element-property :raw-value timestamp) 3 -1))
 +														 ))
++ 				 (org-icalendar-fold-string
  						(concat "BEGIN:VEVENT\n"
  										(org-icalendar-dtstamp) "\n"
  										"UID:" uid "\n"
@@ -920,17 +919,15 @@ Patch org-agenda.el to allow sexp to calculate times.
 			 should be treated as \"PRIVATE\" if they are unknown to the iCalendar server.
 
 			 Return VEVENT component as a string."
-				 (org-icalendar-fold-string
 					(if (eq (org-element-property :type timestamp) 'diary)
 							(apply 'concat
 										 (mapcar (lambda (ts)
-															 (concat
 																(org-icalendar--vevent entry ts uid summary location description categories timezone class)
-																"\n")
 															 )
 														 (org-timestamp-from-sexp
 															(substring (org-element-property :raw-value timestamp) 3 -1))
 														 ))
+						(org-icalendar-fold-string
 						(concat "BEGIN:VEVENT\n"
 										(org-icalendar-dtstamp) "\n"
 										"UID:" uid "\n"
