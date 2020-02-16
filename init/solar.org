@@ -718,7 +718,7 @@ Warning! sexps must be in the headline in order to be interpreted.
 +																							(active (memq type '(diary)))
 +																							(inactive (memq type '(diary)))
 +																							((t) t)))
-+																			(let ((uid (format "DS%d-%s" (cl-incf counter) uid)))
++																			(let ((uid (format "%d-%s" (cl-incf counter) uid)))
 +																				;; (org-icalendar--vevent
 +																				;; entry ts uid summary loc desc cat tz class)
 +																				(message (format "%s" (org-element-property :raw-value ts)))
@@ -890,14 +890,16 @@ Warning! sexps must be in the headline in order to be interpreted.
  					(if (eq (org-element-property :type timestamp) 'diary)
 -							(org-icalendar-transcode-diary-sexp
 -							 (org-element-property :raw-value timestamp) uid summary)
-+							(apply 'concat
-+										 (mapcar (lambda (ts)
-+																(org-icalendar--vevent entry ts uid summary location description categories timezone class)
-+															 )
-+														 (org-timestamp-from-sexp
-+															(substring (org-element-property :raw-value timestamp) 3 -1))
-+														 ))
-+ 				 (org-icalendar-fold-string
++						 (let ((counter 0))
++							 (apply 'concat
++											(mapcar (lambda (ts)
++																(let ((uid (format "DS%d-%s" (cl-incf counter) uid)))
++																	(org-icalendar--vevent entry ts uid summary location description categories timezone class)
++																	))
++															(org-timestamp-from-sexp
++															 (substring (org-element-property :raw-value timestamp) 3 -1))
++															)))
++					 (org-icalendar-fold-string
  						(concat "BEGIN:VEVENT\n"
  										(org-icalendar-dtstamp) "\n"
  										"UID:" uid "\n"
