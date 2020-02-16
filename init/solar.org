@@ -194,7 +194,33 @@ Define function to obtain time from sexp expressions.
 			returned by `current-time'
 
 			See icalendar--convert-sexp-to-ical"
-				(progn ))
+				(progn
+					(require 'icalendar)
+					(let ((now (or start (current-time))))
+						(delete nil
+										(mapcar
+										 (lambda (offset)
+											 (let* ((day (decode-time (time-add now
+																													(seconds-to-time
+																													 (* offset 60 60 24)))))
+															(d (nth 3 day))
+															(m (nth 4 day))
+															(y (nth 5 day))
+															(se (diary-sexp-entry sexp "" (list m d y)))
+															(see (cond ((stringp se) se)
+																				 ((consp se) (cdr se))
+																				 (t nil))))
+												 (cond ((null see)
+																nil)
+															 ((stringp see)
+																;; TODO Convert to timestamp format
+																;; Break loop when successful
+																)
+															 ((error "Unsupported Sexp-entry: %s"
+																			 entry-main)))))
+										 (number-sequence
+											0 (- icalendar-export-sexp-enumeration-days 1))))
+						)))
 		#+end_src
 *** org-time-string-to-absolute :DOC:
 		This function is used to obtain the date from sexps in org-agenda.el
