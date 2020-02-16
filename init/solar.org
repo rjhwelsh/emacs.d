@@ -215,18 +215,32 @@ Define function to obtain time from sexp expressions.
 															 ((stringp see)
 																(let* ((ts (diary-entry-time see))
 																			 (hhmm (if (>= ts 0) (format "%04d" ts)))
-																			 )
-																	(if hhmm
-																			(progn
-																				(string-match "\\(..\\)\\(..\\)" hhmm)
-																				(let* ((sec 0)
-																							 (min (string-to-number (match-string 1 hhmm)))
-																							 (hour (string-to-number (match-string 1 hhmm)))
-																							 (next (encode-time sec min hour d m y)))
-																					(org-timestamp-from-time next t)))
-																		(let ((next (encode-time 0 0 0 d m y)))
-																			(org-timestamp-from-time next)))
-																	))
+																			 (org-ts
+																				(if hhmm
+																						(progn
+																							(string-match "\\(..\\)\\(..\\)" hhmm)
+																							(let* ((sec 0)
+																										 (min (string-to-number (match-string 1 hhmm)))
+																										 (hour (string-to-number (match-string 1 hhmm)))
+																										 (next (encode-time sec min hour d m y)))
+																								(org-timestamp-from-time next t)))
+																					(let ((next (encode-time 0 0 0 d m y)))
+																						(org-timestamp-from-time next)))))
+																	(let
+																			((p-alist '((:minute-start . :minute-end)
+																									(:hour-start . :hour-end)
+																									(:day-start . :day-end)
+																									(:month-start . :month-end)
+																									(:year-start . :year-end)
+																									)))
+																		;; Copy start times over to end times
+																		(dolist (p-cell p-alist)
+																			(org-element-put-property org-ts
+																																(cdr p-cell)
+																																(org-element-property
+																																 (car p-cell) org-ts)))
+																		org-ts
+																		))) ;; END OF LET* ((ts (appears to match with (cond
 															 ((error "Unsupported Sexp-entry: %s"
 																			 sexp)))))
 										 (number-sequence
