@@ -228,7 +228,7 @@ Define function to obtain time from sexp expressions.
 																			(org-timestamp-from-time next)))
 																	))
 															 ((error "Unsupported Sexp-entry: %s"
-																			 entry-main)))))
+																			 sexp)))))
 										 (number-sequence
 											0 (- icalendar-export-sexp-enumeration-days 1))))
 						)))
