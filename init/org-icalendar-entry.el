@@ -215,7 +215,8 @@ Return VEVENT component as a string."
 												 "\n")
 												)
 											(org-timestamp-from-sexp
-											 (substring (org-element-property :raw-value timestamp) 2 -1))))
+											 (substring (org-element-property :raw-value timestamp) 3 -1))
+											))
 
 		 (concat "BEGIN:VEVENT\n"
 						 (org-icalendar-dtstamp) "\n"
