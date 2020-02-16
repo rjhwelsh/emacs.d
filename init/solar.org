@@ -861,8 +861,15 @@ Patch org-agenda.el to allow sexp to calculate times.
 			 Return VEVENT component as a string."
 				 (org-icalendar-fold-string
 					(if (eq (org-element-property :type timestamp) 'diary)
-							(org-icalendar-transcode-diary-sexp
-							 (org-element-property :raw-value timestamp) uid summary)
+							(apply 'concat
+										 (mapcar (lambda (ts)
+															 (concat
+																(org-icalendar--vevent entry ts uid summary location description categories timezone class)
+																"\n")
+															 )
+														 (org-timestamp-from-sexp
+															(substring (org-element-property :raw-value timestamp) 3 -1))
+														 ))
 						(concat "BEGIN:VEVENT\n"
 										(org-icalendar-dtstamp) "\n"
 										"UID:" uid "\n"
