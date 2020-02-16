@@ -691,6 +691,7 @@ Take up current window when called.
 			(setq org-icalendar-use-scheduled '(event-if-todo)
 				org-icalendar-use-deadline  '(event-if-todo todo-due)
 				org-icalendar-alarm-time 40
+        icalendar-export-sexp-enumerate-all t
 				)
 		#+end_src
 
