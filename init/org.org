@@ -694,7 +694,6 @@ Take up current window when called.
         icalendar-export-sexp-enumerate-all t
 				)
 		#+end_src
-
 ** Priorities
 *** Keys
 		Use "C-c ," to quickly set priorities.
@@ -872,7 +871,13 @@ The union of these sets is presented (with completion) to the user by
 org-refile. =C-cw= .
 You can set the variable =org-refile-target-verify-function= to a function to
 verify each headline found by the criteria above.
-
+* Export
+*** org-export-in-background
+Export in the background, export results can be retrieved with =M-x
+org-export-stack=. Does not apply to org-agenda exporting.
+		#+begin_src emacs-lisp
+		(setq org-export-in-background t)
+		#+end_src
 * Quick Templates
 #+BEGIN_SRC emacs-lisp
 (require 'org-tempo)
