@@ -881,7 +881,7 @@ Refiling list.
 #+end_src
 #+begin_src emacs-lisp
 	;; Refiling options
-	(setq org-outline-path-complete-in-steps t)
+	(setq org-outline-path-complete-in-steps nil) ;; Nil when using helm
 	(setq org-refile-use-outline-path t)
 	(setq org-refile-allow-creating-parent-nodes 'confirm)
 #+END_SRC
