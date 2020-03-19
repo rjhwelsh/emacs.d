@@ -10,7 +10,7 @@
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 (package-initialize)
 
 (unless package-archive-contents
@@ -19,6 +19,12 @@
 
 (unless (package-installed-p 'org-plus-contrib)
   (package-install 'org-plus-contrib))
+(require 'org)
+(org-reload)
+;; Org is now bootstrapped
+
+;; WORKAROUND: mu4e-org-store-link causing issues with org-babel-tangle-single-block(1)
+(setq org-link-parameters (assoc-delete-all "mu4e" org-link-parameters))
 
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
@@ -31,9 +37,6 @@
 	(require 'diminish)
 	)
 (require 'bind-key)
-(require 'org)
-;; (use-package org :ensure t :pin org )
-;; Org is now bootstrapped
 
 ;; Follow symlinks
 (setq vc-follow-symlinks t)
@@ -44,6 +47,10 @@
 ;; Force babel refresh of main config files
 (delete-file "~/.emacs.d/personal.el" nil)
 (delete-file "~/.emacs.d/configuration.el" nil)
+
+;; Fix mu4e~view-msg not set
+;; (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu")
+;; (require 'mu4e)
 
 ;; Main config
 (org-babel-load-file "~/.emacs.d/configuration.org")
