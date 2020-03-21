@@ -33,7 +33,6 @@
 
 ;; Org is now bootstrapped
 
-
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 (eval-when-compile
@@ -56,9 +55,11 @@
 (delete-file "~/.emacs.d/personal.el" nil)
 (delete-file "~/.emacs.d/configuration.el" nil)
 
+(with-eval-after-load 'org
+	;; Main config
+	(org-babel-load-file "~/.emacs.d/configuration.org")
+	)
 
-;; Main config
-(org-babel-load-file "~/.emacs.d/configuration.org")
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
