@@ -207,7 +207,7 @@ For below; make the following notes:
 #+BEGIN_SRC emacs-lisp
 	(setq org-todo-keywords
 			'((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
-				(sequence "WAITING(w@/!)" "INACTIVE(i)" "|" "CANCELLED(c@/!)" "MEETING(m!)")))
+				(sequence "WAITING(w!/!)" "INACTIVE(i)" "|" "CANCELLED(c!/!)" "MEETING(m!)")))
 #+END_SRC
  + org-log-into-drawer LOGS everything into a hidden drawer, so everything looks cleaner.
 #+BEGIN_SRC emacs-lisp
