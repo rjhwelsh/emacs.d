@@ -26,10 +26,11 @@
   (package-refresh-contents))
 (setq package-load-list '(all))
 
+;; Install and load org-plus-contrib
 (unless (package-installed-p 'org-plus-contrib)
   (package-install 'org-plus-contrib))
 (require 'org)
-(org-reload)
+
 ;; Org is now bootstrapped
 
 
