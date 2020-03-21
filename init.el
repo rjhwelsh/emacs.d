@@ -56,9 +56,6 @@
 (delete-file "~/.emacs.d/personal.el" nil)
 (delete-file "~/.emacs.d/configuration.el" nil)
 
-;; Fix mu4e~view-msg not set
-;; (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu")
-;; (require 'mu4e)
 
 ;; Main config
 (org-babel-load-file "~/.emacs.d/configuration.org")
