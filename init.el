@@ -1,3 +1,12 @@
+;; Remove any default org-mode from load-path
+(mapcar
+ '(lambda (arg) (delete arg load-path))
+ (remove nil
+				 (mapcar
+					'(lambda (arg)
+						 (if (string-match-p "org$" arg) arg nil))
+					load-path
+					)))
 
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
