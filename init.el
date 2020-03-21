@@ -23,8 +23,6 @@
 (org-reload)
 ;; Org is now bootstrapped
 
-;; WORKAROUND: mu4e-org-store-link causing issues with org-babel-tangle-single-block(1)
-(setq org-link-parameters (assoc-delete-all "mu4e" org-link-parameters))
 
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
