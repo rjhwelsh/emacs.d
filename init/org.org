@@ -201,9 +201,9 @@ For below; make the following notes:
 	 after completion. Sequences rotate through all keywords.
  + TODO = the todo keyword
  + (t) = the fast key shortcut
- + ! means LOG timestamp when changing *TO* item.
- + @ means LOG timestamp with note when changing item.
- + /! means LOG timestamp/note when changing *FROM* item also.
+ + ! means LOG timestamp when changing *TO* state.
+ + @ means LOG note when changing *TO* state.
+ + X/Y means perform X when changing *TO* state, and Y when changing *FROM* state.
 #+BEGIN_SRC emacs-lisp
 	(setq org-todo-keywords
 			'((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
