@@ -51,9 +51,24 @@
 ;; Set calendar date-style
 (calendar-set-date-style (quote iso))
 
-;; Force babel refresh of main config files
-(delete-file "~/.emacs.d/personal.el" nil)
-(delete-file "~/.emacs.d/configuration.el" nil)
+;; Auto-compile
+(use-package auto-compile
+	:config (auto-compile-on-load-mode)
+	:ensure t)
+(setq load-prefer-newer t)
+
+;; Set rjh config repo location
+(setq rjh/local-config-repo "~/.emacs.d/rjh/")
+
+;; Load config methods
+(setq rjh/local-init-dir
+			(expand-file-name
+			 "init"
+			 rjh/local-config-repo ))
+
+(defun rjh/load-init (pkg_a)
+	(org-babel-load-file
+	 (expand-file-name pkg_a rjh/local-init-dir)))
 
 (with-eval-after-load 'org
 	;; Main config

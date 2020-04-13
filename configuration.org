@@ -78,12 +78,12 @@ a separate personal.org file, which is not included my repository.
  #+END_EXAMPLE
 ** Auto-compile
  Always compile packages and use the newest available.
- #+BEGIN_SRC emacs-lisp
+ #+BEGIN_EXAMPLE emacs-lisp
  (use-package auto-compile
    :config (auto-compile-on-load-mode)
    :ensure t)
  (setq load-prefer-newer t)
- #+END_SRC
+ #+END_EXAMPLE
 
 ** Load configuration methods
  All of these use =use-package= to install packages, with the =:ensure t= option.
@@ -102,19 +102,19 @@ a separate personal.org file, which is not included my repository.
 		typically most of this was spent on configuring org and reading info pages.
 
  This sets the local-config-dir.
- #+BEGIN_SRC emacs-lisp
+ #+BEGIN_EXAMPLE emacs-lisp
 	 (setq rjh/local-init-dir
 				 (expand-file-name
 					"init"
 					rjh/local-config-repo ))
- #+END_SRC
+ #+END_EXAMPLE
 
  This function will load a single configuration file.
- #+BEGIN_SRC emacs-lisp
+ #+BEGIN_EXAMPLE emacs-lisp
 	 (defun rjh/load-init (pkg_a)
 		 (org-babel-load-file
 			(expand-file-name pkg_a rjh/local-init-dir)))
- #+END_SRC
+ #+END_EXAMPLE
 
 * Study
 ** Flash cards
