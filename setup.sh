@@ -4,10 +4,10 @@
 
 LOCALREPO=`dirname $(readlink -f $0)`
 CONFIGDIR=~/.emacs.d
+REPOLINK="rjh" # Relative to CONFIGDIR
 
 patch_config() {
-	# Patches config
-  sed -i 's|~/emacs.d|'"$LOCALREPO|" personal.org
+	return 0
 }
 
 dep_install() {
@@ -26,6 +26,7 @@ new_install() {
 	CONFIGDIR="$1"
 	shift
 	CPCMD="$1"
+
 	# Create and install into directory.
 	echo "Preparing to copy files:"
 	ls $LOCALREPO/{init.el,configuration.org,personal.org,workgroups,agenda-files}
@@ -33,6 +34,9 @@ new_install() {
 	${CPCMD} \
 		 $LOCALREPO/{init.el,configuration.org,personal.org,workgroups,agenda-files} \
 		 $CONFIGDIR
+
+	# link to repo inside config dir (or set repo location in init.el)
+	[[ ! -d "$CONFIGDIR"/"$REPOLINK" ]] && ln -srv "$LOCALREPO" "$CONFIGDIR"/"$REPOLINK"
 
 	mkdir -v $CONFIGDIR/{org,snippet}
 
