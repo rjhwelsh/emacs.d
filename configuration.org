@@ -358,19 +358,12 @@ a separate personal.org file, which is not included my repository.
 	 (global-set-key (kbd "C-M-_") 'my-decrement-number-hexadecimal)
  #+END_SRC
 * Org
-** org-mode
- To see the complete org configuration, see [[file:config/org.org][org.org]].
- #+BEGIN_SRC emacs-lisp
-	 (rjh/load-init "org.org" )
-	 ;;	(rjh/load-init "org-gantt.org" ) ;; Disable org-gantt (no official package on Melpa or elsewhere)
- #+END_SRC
 ** solar
 Provide sunrise/sunset functions for sexp expressions in diary and org-mode
 (agenda view).
 	 #+begin_src emacs-lisp
 	 	 (rjh/load-init "solar.org" )
 	 #+end_src
-** org-bullets
 ** ess
  Emacs speaks statistics package.
  #+BEGIN_SRC emacs-lisp
