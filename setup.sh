@@ -29,16 +29,16 @@ new_install() {
 
 	# Create and install into directory.
 	echo "Preparing to copy files:"
-	ls $LOCALREPO/{init.el,configuration.org,personal.org,workgroups,agenda-files}
+	ls $LOCALREPO/{init.el,workgroups,agenda-files}
 
 	${CPCMD} \
-		 $LOCALREPO/{init.el,configuration.org,personal.org,workgroups,agenda-files} \
+		 $LOCALREPO/{init.el,workgroups,agenda-files} \
 		 $CONFIGDIR
 
 	# link to repo inside config dir (or set repo location in init.el)
 	[[ ! -d "$CONFIGDIR"/"$REPOLINK" ]] && ln -srv "$LOCALREPO" "$CONFIGDIR"/"$REPOLINK"
 
-	mkdir -v $CONFIGDIR/{org,snippet}
+	mkdir -v $CONFIGDIR/{org,snippet,private}
 
 }
 
