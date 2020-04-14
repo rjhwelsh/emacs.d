@@ -375,51 +375,6 @@ Provide sunrise/sunset functions for sexp expressions in diary and org-mode
  #+BEGIN_SRC emacs-lisp
 	 (use-package "org-caldav" :ensure t :defer t)
  #+END_SRC
-** org-edna
-[[http://www.nongnu.org/org-edna-el/][org-edna]]; Extensible Dependencies ’N’ Actions (EDNA) for Org Mode tasks.
-	 #+begin_src emacs-lisp
-		 (use-package "org-edna"
-			 :ensure t
-			 :init
-			 (require 'org-edna)
-			 (org-edna-load)
-			 (setq org-edna-use-inheritance t)
-			 )
-	 #+end_src
-
-Set properties with =C-c C-x p=
-
-Some example properties to set:
- - Targets
-	 - next-sibling :: Targets the next sibling
-	 - next-sibling-wrap :: Targets the next sibling and wraps back to the top
-	 - previous-sibling :: Targets the previous sibling
- - Trigger :: Use the :TRIGGER: property
- - Trigger Actions
-	 - scheduled!("++1d") :: Schedule 1 day from now
-	 - scheduled!("++30M") :: Schedule 30 minutes from now
-	 - todo!(NEXT) :: Assign todo kwd NEXT
-	 - tag!("ACTION") :: Assign tag ACTION
-	 - clock-in! :: Clock in
- - Blockers :: Use the :BLOCKER: property
- - Blocker States
-   - ! :: Prefix to inverse match
-   - done? :: Block if TARGET is done
-	 - todo-state?(DONE) :: Block if any TARGET has TODO state set to DONE
-
-Assign kwd NEXT, schedule for tomorrow, clock-in and add tag ACTION; to the next
-sibling headline. Block if the previous sibling is not done.
-#+begin_example org
-:PROPERTIES:
-:BLOCKER:  previous-sibling !done?
-:TRIGGER:  next-sibling todo!(NEXT)scheduled!("++1d")clock-in!tag!("ACTION")
-:END:
-#+end_example
-
-Assign todo kwd NEXT; to the next sibling headline which is a todo entry.
-#+begin_example org
-:TRIGGER: relatives(forward-wrap todo-only 1) todo!(NEXT)
-#+end_example
 * Display
 ** Mode-line
 *** Diminish
