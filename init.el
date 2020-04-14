@@ -79,6 +79,15 @@
 	 t
 	 ))
 
+(defun rjh/load-env ()
+	"Loads configuration from environment variable, rjh/config-env"
+	(let ((configlist (delete "" (split-string (or (getenv rjh/config-env) ""))))
+				)
+		(dolist (orgfile configlist)
+			(format-message "Loading %s ..." orgfile)
+			(rjh/load-init orgfile)
+			)
+		))
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
