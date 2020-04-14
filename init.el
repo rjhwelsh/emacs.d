@@ -94,10 +94,16 @@
 (defun rjh/load-env ()
 	"Loads configuration from environment variable, rjh/config-env"
 	(let ((configlist (delete "" (split-string (or (getenv rjh/config-env) ""))))
+				(privatelist (delete "" (split-string (or (getenv rjh/config-private-env) ""))))
 				)
 		(dolist (orgfile configlist)
 			(format-message "Loading %s ..." orgfile)
 			(rjh/load-init orgfile)
+			)
+
+		(dolist (orgfile privatelist)
+			(format-message "Loading %s ..." orgfile)
+			(rjh/load-private orgfile)
 			)
 		))
 
