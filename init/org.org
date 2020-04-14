@@ -43,7 +43,7 @@ Pretty bullets instead of a list of asterisks for headlines.
 			 :ensure t
 			 :init
 			 (require 'org-edna)
-			 (org-edna-load)
+			 (org-edna-mode)
 			 (setq org-edna-use-inheritance t)
 			 )
 	 #+end_src
