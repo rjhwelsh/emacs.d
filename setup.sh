@@ -79,8 +79,41 @@ test() {
 	main "$HOME/.emacs.d" "cp -fv"
 
 	# Run emacs with faux home
-	echo "Now executing emacs..."
-	env HOME="$HOME" /usr/bin/emacs --debug-init
+	pushd "$HOME"
+
+	{
+		echo "Test blank configuration ..."
+		env HOME="$HOME" EMACS_CONFIG="" \
+				/usr/bin/emacs --debug-init \
+				--batch --no-window-system \
+				-l ./.emacs.d/init.el \
+				> ../test/blank.log 2>&1
+		cat ../test/blank.log
+
+		echo "Now testing each emacs config..."
+		for INIT in `find ../init -iname '*.org' -printf "%p "|\
+					 					sed 's|\.org||g'|\
+										sed 's|\.\./init/||g'`;
+		do
+			echo "Testing ($INIT) ..."
+			mkdir -vp `dirname ../test/"$INIT".log`
+			env HOME="$HOME" EMACS_CONFIG="$INIT" \
+					/usr/bin/emacs --debug-init \
+					--batch --no-window-system \
+					-l ./.emacs.d/init.el \
+					2>&1 |\
+				grep -vF -f ../test/blank.log > ../test/"$INIT".log
+			cat ../test/"$INIT".log
+			echo "Finished ($INIT)..."
+		done
+
+		# Run emacs interactively
+		env HOME="$HOME" /usr/bin/emacs --debug-init
+	}
+
+	popd
+
+
 }
 
 cleanup() {
