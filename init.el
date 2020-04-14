@@ -60,6 +60,9 @@
 ;; Set rjh config repo location
 (setq rjh/local-config-repo "~/.emacs.d/rjh/")
 
+;; Set environment variable to parse for configuration files
+(setq rjh/config-env "EMACS_CONFIG")
+
 ;; Load config methods
 (setq rjh/local-init-dir
 			(expand-file-name
