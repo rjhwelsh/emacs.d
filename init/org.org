@@ -26,6 +26,15 @@ package in elpa.
 	 (car (file-expand-wildcards "~/.emacs.d/elpa/org-plus-contrib*" ))
 	 )
 #+END_SRC
+** org-bullets
+Pretty bullets instead of a list of asterisks for headlines.
+ #+BEGIN_SRC emacs-lisp
+	 (use-package "org-bullets"
+		 :ensure t
+		 :defer t
+		 :hook (org-mode . (lambda () (org-bullets-mode t)))
+		 )
+ #+END_SRC
 
 * Setup
 For a minimal =.emacs= for =org-mode=, see [[http://orgmode.org/worg/org-faq.html#minimal-emacs][here]].
@@ -1112,15 +1121,6 @@ Define default color face.
 #+END_SRC
 
 ** Misc
-
-I like to see an outline of pretty bullets instead of a list of asterisks.
-
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'org-mode-hook
-            (lambda ()
-              (org-bullets-mode t)))
-#+END_SRC
-
 I like seeing a little downward-pointing arrow instead of the usual ellipsis
 (=...=) that org displays when there's stuff under a header.
 

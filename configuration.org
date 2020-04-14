@@ -371,10 +371,6 @@ Provide sunrise/sunset functions for sexp expressions in diary and org-mode
 	 	 (rjh/load-init "solar.org" )
 	 #+end_src
 ** org-bullets
- Add pretty bullets for org-mode.
- #+BEGIN_SRC emacs-lisp
-	 (use-package "org-bullets" :ensure t :defer t)
- #+END_SRC
 ** ess
  Emacs speaks statistics package.
  #+BEGIN_SRC emacs-lisp
