@@ -91,9 +91,12 @@ test() {
 		cat ../test/blank.log
 
 		echo "Now testing each emacs config..."
-		for INIT in `find ../init -iname '*.org' -printf "%p "|\
-					 					sed 's|\.org||g'|\
+		[ -n "$@" ] && FILES="$@"
+		[ -z "$@" ]	&& FILES=`find ../init -iname '*.org' -printf "%p "|\
+										sed 's|\.org||g'|\
 										sed 's|\.\./init/||g'`;
+
+		for INIT in ${FILES}
 		do
 			echo "Testing ($INIT) ..."
 			mkdir -vp `dirname ../test/"$INIT".log`
@@ -107,8 +110,8 @@ test() {
 			echo "Finished ($INIT)..."
 		done
 
-		# Run emacs interactively
-		env HOME="$HOME" /usr/bin/emacs --debug-init
+		# Run emacs interactively (after testing all config files)
+		[ -z "$@" ] && env HOME="$HOME" /usr/bin/emacs --debug-init
 	}
 
 	popd
@@ -122,7 +125,7 @@ cleanup() {
 }
 
 [[ "$1" == "-h" || "$1" == "--help" ]] && usage && exit 0
-[[ "$1" == "-t" || "$1" == "--test" ]] && test && exit 0
+[[ "$1" == "-t" || "$1" == "--test" ]] && shift && test "$@" && exit 0
 [[ "$1" == "-c" || "$1" == "--clean" ]] && cleanup && exit 0
 [[ "$1" == "-i" || "$1" == "--install" ]] && main "$CONFIGDIR" && exit 0
 usage
