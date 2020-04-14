@@ -63,6 +63,10 @@
 
 ;; Set environment variable to parse for configuration files
 (setq rjh/config-env "EMACS_CONFIG")
+(setq rjh/config-private-env "EMACS_CONFIG_PRIVATE")
+
+;; Location of private configuration files
+(setq rjh/local-private-dir "~/.emacs.d/private")
 
 ;; Load config methods
 (setq rjh/local-init-dir
@@ -79,6 +83,13 @@
 	 (expand-file-name (concat orgfile ".org") rjh/local-init-dir)
 	 t
 	 ))
+
+(defun rjh/load-private (orgfile)
+	"Use org-babel-load-file to load private/orgfile"
+	(org-babel-load-file
+	 (expand-file-name (concat orgfile ".org") rjh/local-init-dir)
+	 )
+	)
 
 (defun rjh/load-env ()
 	"Loads configuration from environment variable, rjh/config-env"
