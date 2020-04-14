@@ -86,7 +86,7 @@
 (defun rjh/load-private (orgfile)
 	"Use org-babel-load-file to load private/orgfile"
 	(org-babel-load-file
-	 (expand-file-name (concat orgfile ".org") rjh/local-init-dir)
+	 (expand-file-name (concat orgfile ".org") rjh/local-private-dir)
 	 )
 	)
 
