@@ -3,6 +3,9 @@
 #+EMAIL: rjhwelsh@posteo.net
 #+PROPERTY: header-args    :results silent
 
+Provide sunrise/sunset functions for sexp expressions in diary and org-mode
+(agenda view).
+
 These functions build on the following.
 #+begin_src emacs-lisp
 (require 'solar)

@@ -358,12 +358,6 @@ a separate personal.org file, which is not included my repository.
 	 (global-set-key (kbd "C-M-_") 'my-decrement-number-hexadecimal)
  #+END_SRC
 * Org
-** solar
-Provide sunrise/sunset functions for sexp expressions in diary and org-mode
-(agenda view).
-	 #+begin_src emacs-lisp
-	 	 (rjh/load-init "solar.org" )
-	 #+end_src
 ** ess
  Emacs speaks statistics package.
  #+BEGIN_SRC emacs-lisp
