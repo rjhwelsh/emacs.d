@@ -66,12 +66,13 @@
 			 "init"
 			 rjh/local-config-repo ))
 
-(defun rjh/load-init (pkg_a)
+(defun rjh/load-init (orgfile)
+	"Use org-babel-load-file to load init/orgfile in rjh/local-config-repo"
 	;; Force babel refresh of main config files
 	;; 	(delete-file "~/.emacs.d/configuration.el" nil)
 
 	(org-babel-load-file
-	 (expand-file-name pkg_a rjh/local-init-dir)
+	 (expand-file-name (concat orgfile ".org") rjh/local-init-dir)
 	 t
 	 ))
 
