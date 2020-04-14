@@ -1,11 +1,11 @@
 ;;; init.el --- -*- no-byte-compile: t -*-
 ;; Remove any default org-mode from load-path
 (mapcar
- '(lambda (arg) (delete arg load-path))
+ #'(lambda (arg) (delete arg load-path))
  (remove nil
 				 (mapcar
-					'(lambda (arg)
-						 (if (string-match-p "org$" arg) arg nil))
+					#'(lambda (arg)
+							(if (string-match-p "org$" arg) arg nil))
 					load-path
 					)))
 
