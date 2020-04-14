@@ -67,13 +67,13 @@
 			 rjh/local-config-repo ))
 
 (defun rjh/load-init (pkg_a)
-	(org-babel-load-file
-	 (expand-file-name pkg_a rjh/local-init-dir)))
+	;; Force babel refresh of main config files
+	;; 	(delete-file "~/.emacs.d/configuration.el" nil)
 
-(with-eval-after-load 'org
-	;; Main config
-	(org-babel-load-file "~/.emacs.d/configuration.org")
-	)
+	(org-babel-load-file
+	 (expand-file-name pkg_a rjh/local-init-dir)
+	 t
+	 ))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
