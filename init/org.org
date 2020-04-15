@@ -1044,7 +1044,7 @@ Define default color face.
 		        :inherit (org-todo org-tag org-level-3)
 						))
 				 "Org base face for todo keywords and tags"
-				 :group 'tag-faces :group 'todo-faces
+				 :group 'org-faces
 				 )
 		 #+end_src
 
@@ -1059,6 +1059,7 @@ Define default color face.
 						:foreground "white"
 						))
 				 "Org color"
+				 :group 'org-faces
 				 )
 		 #+END_SRC
 		 #+BEGIN_SRC emacs-lisp
@@ -1072,6 +1073,7 @@ Define default color face.
 						:foreground "cornsilk"
 						))
 				 "Org color"
+				 :group 'org-faces
 				 )
 		 #+END_SRC
 		 #+BEGIN_SRC emacs-lisp
@@ -1085,6 +1087,7 @@ Define default color face.
 						:foreground "wheat"
 						))
 				 "Org color"
+				 :group 'org-faces
 				 )
 		 #+END_SRC
 		 #+BEGIN_SRC emacs-lisp
@@ -1098,6 +1101,7 @@ Define default color face.
 						:foreground "yellow"
 						))
 				 "Org color"
+				 :group 'org-faces
 				 )
 		 #+END_SRC
 		 #+BEGIN_SRC emacs-lisp
@@ -1111,6 +1115,7 @@ Define default color face.
 						:foreground "khaki"
 						))
 				 "Org color"
+				 :group 'org-faces
 				 )
 		 #+END_SRC
 		 #+BEGIN_SRC emacs-lisp
@@ -1124,6 +1129,7 @@ Define default color face.
 						:foreground "green yellow"
 						))
 				 "Org color"
+				 :group 'org-faces
 				 )
 		 #+END_SRC
 		 #+BEGIN_SRC emacs-lisp
@@ -1137,6 +1143,7 @@ Define default color face.
 						:foreground "turquoise"
 						))
 				 "Org color"
+				 :group 'org-faces
 				 )
 		 #+END_SRC
 		 #+BEGIN_SRC emacs-lisp
@@ -1150,6 +1157,7 @@ Define default color face.
 						:foreground "cyan"
 						))
 				 "Org color"
+				 :group 'org-faces
 				 )
 		 #+END_SRC
 
