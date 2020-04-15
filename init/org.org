@@ -784,11 +784,12 @@ Take up current window when called.
 #+END_SRC
 *** Icalendar
 		#+begin_src emacs-lisp
+			(require 'ox-icalendar)
 			(setq org-icalendar-use-scheduled '(event-if-todo)
-				org-icalendar-use-deadline  '(event-if-todo todo-due)
-				org-icalendar-alarm-time 40
-        icalendar-export-sexp-enumerate-all t
-				)
+						org-icalendar-use-deadline  '(event-if-todo todo-due)
+						org-icalendar-alarm-time 40
+						icalendar-export-sexp-enumerate-all t
+						)
 		#+end_src
 ** Priorities
 *** Keys
