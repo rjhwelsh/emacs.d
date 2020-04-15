@@ -848,6 +848,10 @@ This allows for task blocking/etc.
 #+END_SRC
 
 ** Clocking
+	 #+begin_src emacs-lisp
+		 (require 'org-clock)
+	 #+end_src
+
   To save the clock history across Emacs sessions, use
 #+BEGIN_SRC emacs-lisp
      (setq org-clock-persist 'history)
@@ -868,6 +872,10 @@ Use C-c C-x C-c to access.
 org-agenda-columns-add-appointments-to-effort-sum adds appointment times to
 effort sums for the day.
 ** Archive
+	 #+begin_src emacs-lisp
+		 (require 'org-archive)
+	 #+end_src
+
 =C-cxs=
 Add this to your file, to adjust =org-archive-location= for a particular file.
 #+BEGIN_EXAMPLE
@@ -895,6 +903,9 @@ Do not mark archived tasks as done.
 #+END_SRC
 ** Capture
 See [[info:org#Capture%20templates][Capture templates]] for more information.
+#+begin_src emacs-lisp
+	(require 'org-capture)
+#+end_src
 
 These are settings for capturing/refiling information.
 #+BEGIN_SRC emacs-lisp
@@ -978,6 +989,7 @@ Org structure templates.
 
 Inhibit electric pair for org-mode =<=.
 #+begin_src emacs-lisp
+(require 'elec-pair)
 (add-hook
  'org-mode-hook
  (lambda ()
