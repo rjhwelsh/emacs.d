@@ -894,7 +894,7 @@ Do not mark archived tasks as done.
 (setq org-archive-mark-done nil)
 #+END_SRC
 ** Capture
-See [[info:org#Capture%20templates][info:org#Capture templates]] for more information.
+See [[info:org#Capture%20templates][Capture templates]] for more information.
 
 These are settings for capturing/refiling information.
 #+BEGIN_SRC emacs-lisp
