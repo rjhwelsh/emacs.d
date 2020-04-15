@@ -325,7 +325,23 @@ facilitate better short-term planning and turnover.
 
  Expiration tags.
  #+BEGIN_SRC emacs-lisp
-	 (setq rjh/org-tags-expiration-tags (mapcar 'car org-tag-persistent-alist))
+	 (defcustom rjh/org-tags-expiration-tags
+		 (mapcar 'car org-tag-persistent-alist)
+		 "Org-mode tags which can be removed quickly, with org-tags-expire."
+		 ;; The rest of this is copied from org-tag-persistent-alist
+		 :group 'org-tags
+		 :type '(repeat
+						 (choice
+							(cons :tag "Tag with key"
+										(string    :tag "Tag name")
+										(character :tag "Access char"))
+							(list :tag "Tag" (string :tag "Tag name"))
+							(const :tag "Start radio group" (:startgroup))
+							(const :tag "Start tag group, non distinct" (:startgrouptag))
+							(const :tag "Group tags delimiter" (:grouptags))
+							(const :tag "End radio group" (:endgroup))
+							(const :tag "End tag group, non distinct" (:endgrouptag))
+							(const :tag "New line" (:newline)))))
  #+END_SRC
 
  Generic interactive function.
