@@ -575,7 +575,7 @@ buffer only.
 				(persistent-tag-prefix-key "P")
 				)
 
-		(let (
+		(let* (
 					(tag-persistent-agenda-views
 					 (lambda (&optional settings filename exts)
 						 (mapcar
