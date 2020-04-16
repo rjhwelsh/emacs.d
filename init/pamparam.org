@@ -5,12 +5,18 @@
 * Flashcards with Pamparam
 Pamparam is a spaced repetition (SR) memory cards implementation for Emacs.
 See https://github.com/abo-abo/pamparam for details.
-** Config
+
+** Package
 Have all keybindings in one place with a "hydra".
 https://github.com/abo-abo/hydra
 
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-c m") 'hydra-pamparam/body)
+	(use-package "pamparam" :defer t
+		:ensure t
+		:init
+		(setq pamparam-path "~/.emacs.d/flashcards.pam")
+		(global-set-key (kbd "C-c m") 'hydra-pamparam/body)
+		)
 #+END_SRC
 
 Setup flashcard repos into separate directories.
@@ -18,8 +24,7 @@ This example is no different from the default behaviour.
 #+BEGIN_EXAMPLE emacs-lisp
 (setq pamparam-alist '(
     ("~/.emacs.d/flashcards.org" . "~/.emacs.d/flashcards.pam")
-)
-)
+		))
 #+END_EXAMPLE
 
 ** Keybindings

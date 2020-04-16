@@ -16,17 +16,6 @@ a separate personal.org file, which is not included my repository.
 
 
 * Study
-** Flash cards
- Pamparam provides a flashcard engine for org documents.
- For more details see [[file:config/pamparam.org][pamparam.org]].
- #+BEGIN_SRC emacs-lisp
-	 (use-package "pamparam" :defer t
-		 :ensure t
-		 :init
-		 (setq pamparam-path "~/.emacs.d/flashcards.pam")
-		 (rjh/load-init "pamparam.org"))
- #+END_SRC
-
 ** Zetteldeft
  Zettelkasten note-taking using deft and avy.
 
