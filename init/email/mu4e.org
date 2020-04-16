@@ -1,0 +1,61 @@
+#+TITLE: Mu4e
+#+AUTHOR: Roger J. H. Welsh
+#+EMAIL: rjhwelsh@posteo.net
+
+
+* Mu4e
+Enter mu4e with =M-x mu4e=.
+
+Add installed mu emacs site-lisp to load-path.
+	 #+begin_src emacs-lisp
+		 (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu")
+		 (require 'mu4e)
+	 #+end_src
+
+Setup mail directory locations in =personal.org=.
+#+begin_src emacs-lisp
+	(setq mu4e-maildir rjh/maildir)
+	(setq mu4e-sent-folder   rjh/sent-folder)
+	(setq mu4e-drafts-folder rjh/drafts-folder)
+	(setq mu4e-refile-folder rjh/refile-folder)
+	(setq mu4e-trash-folder  rjh/trash-folder)
+#+end_src
+
+Kill messages on exit
+#+begin_src emacs-lisp
+	(setq message-kill-buffer-on-exit t)
+#+end_src
+
+Some additional options gained from [[https://github.com/munen/emacs.d/#mu4e][here]].
+Prefer plain text for viewing emails. Always.
+#+begin_src emacs-lisp
+	(setq mu4e-view-html-plaintext-ratio-heuristic most-positive-fixnum)
+#+end_src
+
+Show full addresses in view message.
+#+begin_src emacs-lisp
+	(setq mu4e-view-show-addresses t)
+#+end_src
+
+Add an option to view in browser.
+#+begin_src emacs-lisp
+	(require 'mu4e-contrib)
+	(setq mu4e-html2text-command 'mu4e-shr2text)
+	;;(setq mu4e-html2text-command "iconv -c -t utf-8 | pandoc -f html -t plain")
+	(add-to-list 'mu4e-view-actions '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+#+end_src
+
+#+begin_src emacs-lisp
+	(setq mu4e-compose-format-flowed t)
+#+end_src
+
+Do not auto-wrap lines, but still display them nicely wrapped.
+#+begin_src emacs-lisp
+	;; (add-hook 'mu4e-compose-mode-hook 'visual-clean)
+	(add-hook 'mu4e-compose-mode-hook 'flyspell-mode)
+#+end_src
+
+Automatic line breaks when reading mail.
+#+begin_src emacs-lisp
+	(add-hook 'mu4e-view-mode-hook 'visual-line-mode)
+#+end_src
