@@ -109,14 +109,13 @@ test() {
 			cat ../test/"$INIT".log
 			echo "Finished ($INIT)..."
 		done
-
-		# Run emacs interactively (after testing all config files)
-		[ -z "$@" ] && env HOME="$HOME" /usr/bin/emacs --debug-init
 	}
-
 	popd
+}
 
-
+test_interactive() {
+	# Run emacs interactively (after testing all config files)
+	env HOME="$HOME" EMACS_CONFIG="$*" /usr/bin/emacs --debug-init
 }
 
 cleanup() {
@@ -126,6 +125,7 @@ cleanup() {
 
 [[ "$1" == "-h" || "$1" == "--help" ]] && usage && exit 0
 [[ "$1" == "-t" || "$1" == "--test" ]] && shift && test "$@" && exit 0
+[[ "$1" == "-T" || "$1" == "--test-interactive" ]] && shift && test_interactive "$@" && exit 0
 [[ "$1" == "-c" || "$1" == "--clean" ]] && cleanup && exit 0
 [[ "$1" == "-i" || "$1" == "--install" ]] && main "$CONFIGDIR" && exit 0
 usage
