@@ -997,13 +997,6 @@ The union of these sets is presented (with completion) to the user by
 org-refile. =C-cw= .
 You can set the variable =org-refile-target-verify-function= to a function to
 verify each headline found by the criteria above.
-* Export
-*** org-export-in-background
-Export in the background, export results can be retrieved with =M-x
-org-export-stack=. Does not apply to org-agenda exporting.
-		#+begin_src emacs-lisp
-		(setq org-export-in-background t)
-		#+end_src
 * Display
 ** Faces
 FACES are custom settings for font, colour, background etc.
