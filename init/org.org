@@ -898,36 +898,7 @@ Use C-c C-x C-c to access.
 
 org-agenda-columns-add-appointments-to-effort-sum adds appointment times to
 effort sums for the day.
-** Archive
-	 #+begin_src emacs-lisp
-		 (require 'org-archive)
-	 #+end_src
-
-=C-cxs=
-Add this to your file, to adjust =org-archive-location= for a particular file.
-#+BEGIN_EXAMPLE
-#+ARCHIVE: %s_done::
-#+END_EXAMPLE
-
-The default location is set below.
-This archives items under the heading called =* Archive= in the same file.
-
-#+BEGIN_SRC emacs-lisp
-(setq org-archive-location ".%s_archive::" )
-#+END_SRC
-
-*Note*
- + =%s= represents the current filename.
- + =::= is a seperator between files and headers.
- + =file::= use this format for archiving to a specific file.
- + =::header= use this format to archive to a specific header.
- + =::***header= use asterisks to denote the sub-level of the header.
- + =::datetree/= use =datetree/= to file under a date-tree.
-
-Do not mark archived tasks as done.
-#+BEGIN_SRC emacs-lisp
-(setq org-archive-mark-done nil)
-#+END_SRC
+* Structural
 ** Capture
 See [[info:org#Capture%20templates][Capture templates]] for more information.
 #+begin_src emacs-lisp
@@ -997,6 +968,70 @@ The union of these sets is presented (with completion) to the user by
 org-refile. =C-cw= .
 You can set the variable =org-refile-target-verify-function= to a function to
 verify each headline found by the criteria above.
+** Archive
+	 #+begin_src emacs-lisp
+		 (require 'org-archive)
+	 #+end_src
+
+=C-cxs=
+Add this to your file, to adjust =org-archive-location= for a particular file.
+#+BEGIN_EXAMPLE
+#+ARCHIVE: %s_done::
+#+END_EXAMPLE
+
+The default location is set below.
+This archives items under the heading called =* Archive= in the same file.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-archive-location ".%s_archive::" )
+#+END_SRC
+
+*Note*
+ + =%s= represents the current filename.
+ + =::= is a seperator between files and headers.
+ + =file::= use this format for archiving to a specific file.
+ + =::header= use this format to archive to a specific header.
+ + =::***header= use asterisks to denote the sub-level of the header.
+ + =::datetree/= use =datetree/= to file under a date-tree.
+
+Do not mark archived tasks as done.
+#+BEGIN_SRC emacs-lisp
+(setq org-archive-mark-done nil)
+#+END_SRC
+* Source
+** Languages
+Allow =babel= to evaluate
+ - C / C++,
+ - Emacs lisp,
+ - Ruby,
+ - dot, or
+ - Gnuplot code.
+ - R
+
+#+BEGIN_SRC emacs-lisp
+	(org-babel-do-load-languages
+	 'org-babel-load-languages
+	 '((C . t)  ;; This includes support for C++
+		 (emacs-lisp . t)
+		 (ruby . t)
+		 (dot . t)
+		 (gnuplot . t)
+		 (plantuml . t)
+		 (R . t)
+		 ))
+
+#+END_SRC
+
+Don't ask before evaluating code blocks.
+#+BEGIN_SRC emacs-lisp
+  (setq org-confirm-babel-evaluate nil)
+#+END_SRC
+
+** Dot
+Associate the "dot" language with the =graphviz-dot= major mode.
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'org-src-lang-modes '("dot" . graphviz-dot))
+#+END_SRC
 * Display
 ** Faces
 FACES are custom settings for font, colour, background etc.
@@ -1236,63 +1271,30 @@ them far more prettier in html.
 #+BEGIN_SRC emacs-lisp
 (setq org-html-checkbox-type 'html)
 #+END_SRC
-* Harry Schwartz
-This is some org configuration I have copied straight from Harry's book.
-*** Exporting
-Allow =babel= to evaluate
- - C / C++,
- - Emacs lisp,
- - Ruby,
- - dot, or
- - Gnuplot code.
- - R
+* Export
+** Smart quotes
+	Translate regular ol' straight quotes to typographically-correct curly quotes
+	when exporting.
 
-#+BEGIN_SRC emacs-lisp
-	(org-babel-do-load-languages
-	 'org-babel-load-languages
-	 '((C . t)  ;; This includes support for C++
-		 (emacs-lisp . t)
-		 (ruby . t)
-		 (dot . t)
-		 (gnuplot . t)
-		 (plantuml . t)
-		 (R . t)
-		 ))
+	#+BEGIN_SRC emacs-lisp
+		(setq org-export-with-smart-quotes t)
+	#+END_SRC
 
-#+END_SRC
+** Images
+	Set image sizes to their natural size.
+	#+BEGIN_SRC emacs-lisp
+		(setq org-latex-image-default-width "")
+	#+END_SRC
 
-Don't ask before evaluating code blocks.
+	Set org-mode images to whatever size you like.
+	E.g. Using =#+ATTR_ORG: :width 100=.
+	Be aware you will require imagemagick6 support for this.
+	(Imagemagick7 has made some changes which are currently incompatible [2018-05-17]).
+	#+BEGIN_SRC emacs-lisp
+		(setq org-image-actual-width nil)
+	#+END_SRC
 
-#+BEGIN_SRC emacs-lisp
-  (setq org-confirm-babel-evaluate nil)
-#+END_SRC
-
-Associate the "dot" language with the =graphviz-dot= major mode.
-
-#+BEGIN_SRC emacs-lisp
-  (add-to-list 'org-src-lang-modes '("dot" . graphviz-dot))
-#+END_SRC
-
-Translate regular ol' straight quotes to typographically-correct curly quotes
-when exporting.
-
-#+BEGIN_SRC emacs-lisp
-  (setq org-export-with-smart-quotes t)
-#+END_SRC
-
-Set image sizes to their natural size.
-#+BEGIN_SRC emacs-lisp
-  (setq org-latex-image-default-width "")
-#+END_SRC
-
-Set org-mode images to whatever size you like.
-E.g. Using =#+ATTR_ORG: :width 100=.
-Be aware you will require imagemagick6 support for this.
-(Imagemagick7 has made some changes which are currently incompatible [2018-05-17]).
-#+BEGIN_SRC emacs-lisp
-	(setq org-image-actual-width nil)
-#+END_SRC
-***** Exporting to HTML
+** HTML
 
 Don't include a footer with my contact and publishing information at the bottom
 of every exported HTML document.
