@@ -792,6 +792,22 @@ Take up current window when called.
 						icalendar-export-sexp-enumerate-all t
 						)
 		#+end_src
+** Stuck Projects
+1. Match projects as
+	 1. Any LEVEL 1 headline
+	 2. Do not match completed headlines
+	 3. Do not match items tagged with NOARCHIVE
+	 3. Do not match items tagged with DOC; documentation-only
+2. Non-stuck projects have headlines which contain a NEXT todo-keyword.
+3. Non-stuck projects have headlines which may contain a specific tag; but not
+   in this case.
+4. Non-stuck projects are identified if the special word IGNORE is matched
+   anywhere.
+#+BEGIN_SRC emacs-lisp
+	(setq org-stuck-projects
+			'("-DOC-NOARCHIVE+LEVEL=1/-DONE" ("NEXT") nil "\\<IGNORE\\>"))
+#+END_SRC
+
 ** Priorities
 *** Keys
 		Use "C-c ," to quickly set priorities.
@@ -829,22 +845,6 @@ This allows for task blocking/etc.
  (setq org-enforce-todo-dependencies t)
  (setq org-agenda-dim-blocked-tasks t)
  (setq org-enforce-todo-checkbox-dependencies nil)
-#+END_SRC
-
-** Stuck Projects
-1. Match projects as
-	 1. Any LEVEL 1 headline
-	 2. Do not match completed headlines
-	 3. Do not match items tagged with NOARCHIVE
-	 3. Do not match items tagged with DOC; documentation-only
-2. Non-stuck projects have headlines which contain a NEXT todo-keyword.
-3. Non-stuck projects have headlines which may contain a specific tag; but not
-   in this case.
-4. Non-stuck projects are identified if the special word IGNORE is matched
-   anywhere.
-#+BEGIN_SRC emacs-lisp
-	(setq org-stuck-projects
-			'("-DOC-NOARCHIVE+LEVEL=1/-DONE" ("NEXT") nil "\\<IGNORE\\>"))
 #+END_SRC
 
 ** Clocking
