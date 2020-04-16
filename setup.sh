@@ -125,15 +125,6 @@ main() {
 	popd
 }
 
-usage() {
-	echo "$0 [-htic]"
-	echo "Setup/test emacs configuration"
-	echo " -c, --clean      Cleanup Tests"
-	echo " -t, --test       Test"
-	echo " -i, --install    Install (GNU Linux)"
-	echo " -h, --help       Show this help"
-}
-
 test_prepare() {
 	# Faux home
 	HOME="$LOCALREPO/test"
@@ -195,6 +186,17 @@ test_interactive() {
 cleanup() {
 	rm -rfv "$LOCALREPO/test"
 	rm -rfv "$LOCALREPO/deps"
+}
+
+usage() {
+	echo "$0 [-htic]"
+	echo "Setup/test emacs configuration"
+	echo " -c, --clean      Cleanup Tests"
+	echo " -t, --test [config1 .. configN] Test configuration"
+	echo " -T, --test-interactive [config1 .. configN]"
+	echo " -d, --install-deps Install third-party dependencies"
+	echo " -i, --install    Install (GNU Linux)"
+	echo " -h, --help       Show this help"
 }
 
 [[ "$1" == "-h" || "$1" == "--help" ]] && usage && exit 0
