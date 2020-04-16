@@ -1,0 +1,51 @@
+#+PROPERTY: header-args    :results silent
+#+STARTUP: content
+
+* Yasnippet
+Yasnippet provides a templating engine for Emacs.
+For more details, see [[http://joaotavora.github.io/yasnippet/][documentation.]]
+
+N.B. For html tags use emmet-mode instead of yasnippet.
+
+#+BEGIN_SRC emacs-lisp
+	(use-package popup :ensure t :defer t)
+	(use-package "yasnippet"
+		:ensure t
+		:diminish yas-minor-mode
+		:init
+		(require 'yasnippet)
+		(yas-global-mode 1) ; enable globally
+		:config
+
+		;; This provides a pop-up selection menu for yasnippet.
+		(require 'popup)
+
+		;; add some shortcuts in popup menu mode
+		(define-key popup-menu-keymap (kbd "M-n") 'popup-next)
+		(define-key popup-menu-keymap (kbd "TAB") 'popup-next)
+		(define-key popup-menu-keymap (kbd "<tab>") 'popup-next)
+		(define-key popup-menu-keymap (kbd "<backtab>") 'popup-previous)
+		(define-key popup-menu-keymap (kbd "M-p") 'popup-previous)
+
+		(defun yas/popup-isearch-prompt (prompt choices &optional display-fn)
+			(when (featurep 'popup)
+				(popup-menu*
+				 (mapcar
+					(lambda (choice)
+						(popup-make-item
+						 (or (and display-fn (funcall display-fn choice))
+								 choice)
+						 :value choice))
+					choices)
+				 :prompt prompt
+				 ;; start isearch mode immediately
+				 :isearch t
+				 )))
+
+		(setq yas/prompt-functions '(yas/popup-isearch-prompt yas/no-prompt))
+
+
+
+		:defer t)
+	(use-package "yasnippet-snippets" :ensure t :defer t) ;; Official snippets by AndreaCrotti
+#+END_SRC

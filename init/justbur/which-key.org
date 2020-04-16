@@ -1,0 +1,12 @@
+#+PROPERTY: header-args    :results silent
+#+STARTUP: content
+
+* Which-key
+https://github.com/justbur/emacs-which-key
+#+BEGIN_SRC emacs-lisp
+	(use-package "which-key"
+		:ensure t
+		:init
+		(require 'which-key)
+		(which-key-mode))
+#+END_SRC

@@ -1,0 +1,11 @@
+#+PROPERTY: header-args    :results silent
+#+STARTUP: content
+
+* Aggressive indentation
+Automatically indent code.
+#+BEGIN_SRC emacs-lisp
+	(use-package aggressive-indent
+		:ensure t
+	  :init
+		(global-aggressive-indent-mode 1))
+#+END_SRC

@@ -1,14 +1,24 @@
-#+TITLE: Multilingual Environment Configuration
+#+TITLE: MULE
 #+AUTHOR: Roger J. H. Welsh
 #+EMAIL: rjhwelsh@gmail.com
 #+PROPERTY: header-args    :results silent
 #+STARTUP: content
 
+Multilingual Environment Configuration
 I have setup this according to suggestions, from the following web-page using
 emacs for typing in japanese.
 
 The following keyboard shortcuts are useful.
  - *CTRL-\* :: Invokes input method selection / switching.
+
+* Basic
+Multi-lingual environment for Emacs.
+For more see [[file:config/mule.org][mule.org]]
+#+BEGIN_SRC emacs-lisp
+	;(set-language-environment "Japanese")
+  (set-language-environment "UTF-8")
+	(load-library "anthy")
+#+END_SRC
 
 * Font correction
 	Sometimes the wrong font provides simplified Chinese instead of Japanese (漢字).

@@ -1,0 +1,37 @@
+#+PROPERTY: header-args    :results silent
+#+STARTUP: content
+
+* Helm
+Helm is an incremental completion and selection narrowing framework for Emacs.
+https://emacs-helm.github.io/helm/
+http://tuhdo.github.io/helm-intro.html
+#+BEGIN_SRC emacs-lisp
+	(use-package helm
+		:ensure t
+		:init
+		(require 'helm)
+		(require 'helm-config)
+		(global-unset-key (kbd "C-x c"))
+		(setq helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
+					helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
+					helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
+					helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
+					helm-ff-file-name-history-use-recentf t
+					helm-echo-input-in-header-line t
+					helm-autoresize-max-height 0
+					helm-autoresize-min-height 20)
+		(helm-autoresize-mode 1)
+		(helm-mode 1)
+		:bind
+		(("C-c h" . helm-command-prefix)
+		 ("M-x" . helm-M-x)
+		 ("C-x C-f" . helm-find-files)
+		 ("C-x M-f" . helm-recentf)
+		 ("C-x b" . helm-mini)
+		 ("M-y" . helm-show-kill-ring)
+		 :map helm-map
+		 ("<tab>" . helm-execute-persistent-action)
+		 ("C-i" . helm-execute-persistent-action)
+		 ("C-z" . helm-select-action))
+		:diminish helm-mode)
+#+END_SRC

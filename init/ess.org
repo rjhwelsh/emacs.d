@@ -1,0 +1,16 @@
+#+PROPERTY: header-args    :results silent
+#+STARTUP: content
+
+* ESS
+Emacs speaks statistics package.
+https://ess.r-project.org/
+
+Designed to support editing of scripts and interaction with various statistical
+analysis programs such as R, S-Plus, SAS, Stata and OpenBUGS/JAGS.
+
+An info page is available [[info:ess#Top][here]]
+
+#+BEGIN_SRC emacs-lisp
+	(use-package "ess" :ensure t :defer t)
+	(require 'ess-site)
+#+END_SRC

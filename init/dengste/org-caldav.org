@@ -1,0 +1,9 @@
+#+PROPERTY: header-args    :results silent
+#+STARTUP: content
+
+* Org-caldav
+Emacs org-caldav package for calendar integration.
+https://github.com/dengste/org-caldav
+#+BEGIN_SRC emacs-lisp
+	(use-package "org-caldav" :ensure t :defer t)
+#+END_SRC

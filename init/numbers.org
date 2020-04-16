@@ -1,6 +1,14 @@
 #+TITLE: Number functions for emacs
 #+AUTHOR: Roger J. H. Welsh
 #+EMAIL: rjhwelsh@gmail.com
+* Keybindings
+#+BEGIN_SRC emacs-lisp
+	(global-set-key (kbd "M-+") 'my-increment-number-decimal)
+	(global-set-key (kbd "M-_") 'my-decrement-number-decimal)
+	(global-set-key (kbd "C-M-+") 'my-increment-number-hexadecimal)
+	(global-set-key (kbd "C-M-_") 'my-decrement-number-hexadecimal)
+#+END_SRC
+
 * Introduction
 This configuration provides number manipulation functions for emacs.
 Courtesy of [[https://www.emacswiki.org/emacs/IncrementNumber][emacswiki.org]].

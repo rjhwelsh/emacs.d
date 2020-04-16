@@ -3,11 +3,7 @@
 #+EMAIL: rjhwelsh@gmail.com
 #+PROPERTY: header-args    :results silent
 #+STARTUP: content
-* About
-	=abbrev-mode= comes *built-in* with Emacs. Abbreviations acts as an
-auto-correct for most of my typing skills. I really love it most of the time.
-Though it can get annoying if you actually want to type the abbreviation; as
-opposed to the long form.
+
 * Setup
 Always enable =abbrev-mode=:
 #+BEGIN_SRC emacs-lisp
