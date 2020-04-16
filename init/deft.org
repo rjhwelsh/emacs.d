@@ -32,6 +32,7 @@
 	 (use-package deft
 		 :ensure t
 		 :init
+	   (setq deft-default-extension "org")
 		 (setq deft-directory "~/.emacs.d/deft")
 		 (setq deft-auto-save-interval 60.0)
 		 )
