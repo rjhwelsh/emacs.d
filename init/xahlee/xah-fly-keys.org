@@ -1,0 +1,30 @@
+#+PROPERTY: header-args    :results silent
+#+STARTUP: content
+* xah-fly-keys
+https://github.com/xahlee/xah-fly-keys
+#+BEGIN_SRC emacs-lisp
+	(use-package "xah-fly-keys"
+		:ensure t
+		:bind (
+					 ("<f5>" . xah-fly-command-mode-activate)
+					 ("<f6>" . xah-fly-insert-mode-activate)
+					 )
+
+		:init
+		;; Disable control and meta variations
+		;; *Must be before require statement*
+		(setq xah-fly-use-meta-key nil)
+		(setq xah-fly-use-control-key nil)
+
+		(require 'xah-fly-keys)
+		(xah-fly-keys-set-layout "colemak")
+
+		;; Add highlight hooks
+		(defun my-highlight-line-on () (global-hl-line-mode 1))
+		(defun my-highlight-line-off () (global-hl-line-mode 0))
+
+		:hook (
+					 (xah-fly-command-mode-activate . my-highlight-line-on)
+					 (xah-fly-insert-mode-activate . my-highlight-line-off))
+		)
+#+END_SRC
