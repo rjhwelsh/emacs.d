@@ -1,0 +1,16 @@
+* Email
+Set mail folder defaults (cross-application)
+	#+begin_src emacs-lisp
+		(setq rjh/maildir "~/.mail")
+		(setq rjh/sent-folder "/sent")
+		(setq rjh/drafts-folder "/drafts")
+		(setq rjh/refile-folder "/refile")
+		(setq rjh/trash-folder "/trash")
+	#+end_src
+
+Blank SMTP settings.
+#+begin_src emacs-lisp
+	(setq smtpmail-default-smtp-server "") ; SMTP server
+	(setq smtpmail-smtp-server         "") ; SMTP server
+	(setq smtpmail-smtp-service        25) ; Port number
+#+end_src

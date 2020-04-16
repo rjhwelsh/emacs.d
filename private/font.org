@@ -1,0 +1,8 @@
+#+PROPERTY: header-args    :results silent
+#+STARTUP: content
+
+* Font
+Preferred font style.
+#+BEGIN_SRC emacs-lisp
+ (setq hrs/default-font "Hermit") ; I use "Hermit", though it's not very common.
+#+END_SRC

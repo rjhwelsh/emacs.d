@@ -1,0 +1,5 @@
+* Org
+Set the org-directory.
+#+BEGIN_SRC emacs-lisp
+ (setq org-directory "~/.emacs.d/org" )
+#+END_SRC

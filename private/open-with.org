@@ -1,0 +1,12 @@
+#+TITLE: Open with
+#+AUTHOR: Roger J. H. Welsh
+#+EMAIL: rjhwelsh@posteo.net
+#+PROPERTY: header-args    :results silent
+#+STARTUP: content
+
+* Web browser
+Set your default browser here.
+#+BEGIN_SRC emacs-lisp
+(setq browse-url-browser-function 'browse-url-firefox)
+#+END_SRC
+.
