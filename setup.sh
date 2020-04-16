@@ -10,16 +10,82 @@ patch_config() {
 	return 0
 }
 
+dep_git_clone_install() {
+	URL="$1"
+	shift
+	DEST="$1"
+	shift
+
+	[ -d "$D"/"$DEST" ] &&\
+		{ pushd "$D"/"$DEST" && git fetch && git merge origin/master; popd; } ||\
+			git clone "$URL" "$D"/"$DEST"
+
+	for f in "$@";
+	do
+
+		mkdir -vp `dirname "$CONFIGDIR"/"$DEST"/"$f"`
+		cp -iv "$D"/"$DEST"/"$f" "$CONFIGDIR"/"$DEST"/"$f"
+	done
+}
+
+dep_sensible() {
+	# Install Harry's sensible defaults
+	dep_git_clone_install https://github.com/hrs/sensible-defaults.el sensible-defaults.el sensible-defaults.el
+}
+
+dep_zetteldeft() {
+	# Install zetteldeft
+	dep_git_clone_install https://github.com/EFLS/zetteldeft zetteldeft zetteldeft.el
+}
+
+dep_options() {
+	for dep in "$@"; do
+		case $dep in
+			"all")
+				dep_sensible;
+				dep_zetteldeft;
+				BREAK="1"
+				;;
+			"sensible-defaults")
+				dep_sensible;
+				;;
+			"zetteldeft")
+				dep_zetteldeft;
+				;;
+			"quit")
+				BREAK="1"
+				;;
+			*)
+				echo "Invalid entry."
+				BREAK="1"
+				;;
+		esac
+	done
+}
+
 dep_install() {
 	CONFIGDIR="$1"
+	shift
 
 	# Create a directory for storing third-party deps
 	D="$LOCALREPO/deps"
 	mkdir -vp "$D"
 
-	# Install Harry's sensible defaults
-	git clone https://github.com/hrs/sensible-defaults.el "$D"/sensible-defaults.el
-	cp -nv "$D"/sensible-defaults.el/sensible-defaults.el "$CONFIGDIR"/sensible-defaults.el
+	if [ -n "$1" ];
+	then
+		dep_options "$@";
+	else
+		select dep in all \
+										sensible-defaults \
+										zetteldeft \
+										quit
+		do
+			dep_options $dep;
+			if [ -n "$BREAK" ]; then
+				break
+			fi
+		done
+	fi
 }
 
 new_install() {
@@ -54,7 +120,7 @@ main() {
 
 	pushd "$LOCALREPO"
 	patch_config
-	dep_install "$CONFIGDIR"
+	# dep_install "$CONFIGDIR"
 	new_install "$CONFIGDIR" "$CPCMD"
 	popd
 }
@@ -77,6 +143,7 @@ test_prepare() {
 
 	# Install into faux home directory
 	main "$HOME/.emacs.d" "cp -fv"
+	dep_install "$HOME/.emacs.d" all
 }
 
 test() {
@@ -134,5 +201,6 @@ cleanup() {
 [[ "$1" == "-t" || "$1" == "--test" ]] && shift && test "$@" && exit 0
 [[ "$1" == "-T" || "$1" == "--test-interactive" ]] && shift && test_interactive "$@" && exit 0
 [[ "$1" == "-c" || "$1" == "--clean" ]] && cleanup && exit 0
+[[ "$1" == "-d" || "$1" == "--install-deps" ]] && shift && dep_install "$CONFIGDIR" "$@" && exit 0
 [[ "$1" == "-i" || "$1" == "--install" ]] && main "$CONFIGDIR" && exit 0
 usage
