@@ -126,6 +126,12 @@ main() {
 }
 
 test_prepare() {
+	# Links for testing:
+	# ln -srv ~/.mu test/
+	# ln -srv ~/.mail test/
+	# ln -srv ~/.gnupg test/
+	# ln -srv ~/.authinfo.gpg test/
+
 	# Faux home
 	HOME="$LOCALREPO/test"
 
