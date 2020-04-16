@@ -3,7 +3,7 @@
 * Harry's sensible-defaults.el
 You can find this file, [[https://github.com/hrs/sensible-defaults.el][here]].
 #+BEGIN_SRC emacs-lisp
-	(load-file "~/.emacs.d/sensible-defaults.el")
+	(load-file "~/.emacs.d/sensible-defaults.el/sensible-defaults.el")
 ;Settings
 	(sensible-defaults/open-files-from-home-directory)
 	(sensible-defaults/increase-gc-threshold)
