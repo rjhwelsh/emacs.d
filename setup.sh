@@ -68,7 +68,7 @@ usage() {
 	echo " -h, --help       Show this help"
 }
 
-test() {
+test_prepare() {
 	# Faux home
 	HOME="$LOCALREPO/test"
 
@@ -77,10 +77,12 @@ test() {
 
 	# Install into faux home directory
 	main "$HOME/.emacs.d" "cp -fv"
+}
 
+test() {
+	test_prepare
 	# Run emacs with faux home
 	pushd "$HOME"
-
 	{
 		echo "Test blank configuration ..."
 		env HOME="$HOME" EMACS_CONFIG="" \
@@ -114,8 +116,13 @@ test() {
 }
 
 test_interactive() {
-	# Run emacs interactively (after testing all config files)
-	env HOME="$HOME" EMACS_CONFIG="$*" /usr/bin/emacs --debug-init
+	test_prepare
+	pushd "$HOME"
+	{
+		# Run emacs interactively (after testing all config files)
+		env HOME="$HOME" EMACS_CONFIG="$*" /usr/bin/emacs --debug-init
+	}
+	popd
 }
 
 cleanup() {
