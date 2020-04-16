@@ -4,10 +4,6 @@
 #+PROPERTY: header-args    :results silent
 #+STARTUP: content
 
-* Introduction
-Originally inspired by Harry R. Schwartz. Your excellent introduction to
-org-mode has inspired this.
-
 * Personal Details
 I would like to be able to share my config with other people to ease their
 journey into emacs, as many others examples have done for me.
@@ -19,11 +15,8 @@ a separate personal.org file, which is not included my repository.
 .
 
 * Init
-** Init.el Comments
- The following is commented out (as examples) , because it is required in the
- init.el file; such that the latest version of org can be loaded before this file
- is executed itself by *org*.
-
+ The following are commented out (example) snippets from the =init.el= file.
+** Package archives
  The package library is required for package management.
  #+BEGIN_EXAMPLE emacs-lisp
 	(require 'package)
@@ -48,7 +41,15 @@ a separate personal.org file, which is not included my repository.
 		(package-refresh-contents))
  (setq package-load-list '(all))
  #+END_EXAMPLE
-
+** Org-plus-contrib
+Load the latest org-plus-contrib.
+This should be done before evaluating any conf.org files in this repo.
+ #+begin_EXAMPLE emacs-lisp
+(unless (package-installed-p 'org-plus-contrib)
+  (package-install 'org-plus-contrib))
+(require 'org)
+ #+end_EXAMPLE
+** Use-package
  Use-package is a special set of macros to automatically install and
  load packages from the init.el file, this needs to be
  "bootstrapped" before we can use it.
@@ -58,24 +59,20 @@ a separate personal.org file, which is not included my repository.
    (package-install 'use-package))
  (eval-when-compile
    (require 'use-package))
+(use-package "diminish"
+	:ensure t
+	:init
+	(require 'diminish)
+	)
  (require 'bind-key)
- (require 'diminish)
  #+END_EXAMPLE
 
- Org-mode is required for evaluating code-blocks via babel.
- #+BEGIN_EXAMPLE emacs-lisp
- (require 'org)
- #+END_EXAMPLE
-
+** Follow symlinks
  This ensures emacs always follows symlinks to the version-controlled source.
  #+BEGIN_EXAMPLE emacs-lisp
  (setq vc-follow-symlinks t)
  #+END_EXAMPLE
 
- Load the main-configuration file. "Literally this file".
- #+BEGIN_EXAMPLE emacs-lisp
- (org-babel-load-file "~/.emacs.d/configuration.org")
- #+END_EXAMPLE
 ** Auto-compile
  Always compile packages and use the newest available.
  #+BEGIN_EXAMPLE emacs-lisp
@@ -85,36 +82,95 @@ a separate personal.org file, which is not included my repository.
  (setq load-prefer-newer t)
  #+END_EXAMPLE
 
-** Load configuration methods
- All of these use =use-package= to install packages, with the =:ensure t= option.
- If you are loading this for the first time, make sure you have an internet
- connection.
+** Configuration
 
- When I use Emacs, I typically load an emacs server (=emacs --daemon=), and edit
- files using =emacsclient -c=. This loads a new frame for each file I edit. If I
- am already inside emacs, I will use =C-x C-f= to find a file and load it.
+*** Quick Setup
+After setting up, use environment variables to specify which files relative to the
+repo's =init/= directory you would like to load.
+For example; to load Emacs with the =init/org.org= configuration. (Exclude the
+file extension)
+#+begin_example sh
+ EMACS_CONFIG="org" /usr/bin/emacs
+#+end_example
 
- If you are new to emacs, (like I was) my process to start off was:
-	* I started off with the tutorial =C-h t=.
-	* I moved on to the [[info:info][*info*]] tutorial =C-h i=. The *info* pages are super
-		helpful, and easy to navigate once you learn how.
-	* Then I spent weeks crafting my configuration to get the setup I wanted,
-		typically most of this was spent on configuring org and reading info pages.
+*** Repository location
+Variable containing the path of this cloned repository.
+#+begin_src emacs-lisp
+		 ;; Set rjh config repo location
+		 (setq rjh/local-config-repo "~/.emacs.d/rjh/")
+#+end_src
+*** Environment variables
+Environmental variables to use for configuration loading specification.
+(White-space separated list of config.org files to load; with the =.org= suffix removed.)
+#+begin_src emacs-lisp
+		 ;; Set environment variable to parse for configuration files
+		 (setq rjh/config-env "EMACS_CONFIG")
+		 (setq rjh/config-private-env "EMACS_CONFIG_PRIVATE")
+#+end_src
+*** Directories
 
- This sets the local-config-dir.
- #+BEGIN_EXAMPLE emacs-lisp
-	 (setq rjh/local-init-dir
-				 (expand-file-name
-					"init"
-					rjh/local-config-repo ))
- #+END_EXAMPLE
+Location of the directories containing configuration files.
+  - rjh/local-init-dir :: Location of repo init org files
+	- rjh/local-private-dir :: Location of repo private org files
 
- This function will load a single configuration file.
- #+BEGIN_EXAMPLE emacs-lisp
-	 (defun rjh/load-init (pkg_a)
-		 (org-babel-load-file
-			(expand-file-name pkg_a rjh/local-init-dir)))
- #+END_EXAMPLE
+Use the private directory for storing configuration of sensitive configuration,
+like identity information. Or alternatively to override the regular
+configuration. *Please do NOT store passwords in here*
+The idea is to keep sensitive information separate, so that rest of your
+configuration can be shared with others.
+
+#+begin_src emacs-lisp
+		 ;; Location of private configuration files
+		 (setq rjh/local-private-dir "~/.emacs.d/private")
+
+		 ;; Load config methods
+		 (setq rjh/local-init-dir
+					 (expand-file-name
+						"init"
+						rjh/local-config-repo ))
+#+end_src
+*** Loading functions
+These functions load org files for the init and private directories
+respectively.
+
+#+begin_src emacs-lisp
+		 ;; Functions to load config
+		 (defun rjh/load-init (orgfile)
+			 "Use org-babel-load-file to load init/orgfile in rjh/local-config-repo"
+			 (org-babel-load-file
+				(expand-file-name (concat orgfile ".org") rjh/local-init-dir)
+				t
+				)
+			 )
+
+		 (defun rjh/load-private (orgfile)
+			 "Use org-babel-load-file to load private/orgfile"
+			 (org-babel-load-file
+				(expand-file-name (concat orgfile ".org") rjh/local-private-dir)
+				)
+			 )
+#+end_src
+This function reads the environment variables and loads the configuration for
+each white-space separated item.
+#+begin_src emacs-lisp
+		 (defun rjh/load-env ()
+			 "Loads configuration from environment variable, rjh/config-env"
+			 (let ((configlist (delete "" (split-string (or (getenv rjh/config-env) ""))))
+						 (privatelist (delete "" (split-string (or (getenv rjh/config-private-env) ""))))
+						 )
+				 (dolist (orgfile configlist)
+					 (format-message "Loading %s ..." orgfile)
+					 (rjh/load-init orgfile)
+					 )
+
+				 (dolist (orgfile privatelist)
+					 (format-message "Loading %s ..." orgfile)
+					 (rjh/load-private orgfile)
+					 )
+				 ))
+
+		 (rjh/load-env)
+	 #+end_src
 
 * Study
 ** Flash cards
