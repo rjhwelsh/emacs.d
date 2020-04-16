@@ -548,7 +548,6 @@ Message-mode for emails.
 #+begin_src emacs-lisp
 	(require 'message)
 	(setq mail-header-separator "")
-	(add-hook 'message-mode-hook 'turn-on-auto-fill)
 #+end_src
 
 *** Keybinding
