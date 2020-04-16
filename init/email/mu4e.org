@@ -12,15 +12,6 @@ Add installed mu emacs site-lisp to load-path.
 		 (require 'mu4e)
 	 #+end_src
 
-Setup mail directory locations in =personal.org=.
-#+begin_src emacs-lisp
-	(setq mu4e-maildir rjh/maildir)
-	(setq mu4e-sent-folder   rjh/sent-folder)
-	(setq mu4e-drafts-folder rjh/drafts-folder)
-	(setq mu4e-refile-folder rjh/refile-folder)
-	(setq mu4e-trash-folder  rjh/trash-folder)
-#+end_src
-
 Kill messages on exit
 #+begin_src emacs-lisp
 	(setq message-kill-buffer-on-exit t)
