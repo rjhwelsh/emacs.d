@@ -237,6 +237,33 @@ Collins Organiser 3-column on A4.
 	(add-to-list 'ps-page-dimensions-database
 							 `(collinsorg3colA4 486 ,(* 3 270) "CollinsOrganiser3ColumnsOnA4"))
 #+end_src
+** Quick Templates
+ #+BEGIN_SRC emacs-lisp
+ (require 'org-tempo)
+ #+END_SRC
+
+ Org structure templates.
+ #+BEGIN_SRC emacs-lisp
+ (setq org-structure-template-alist
+	 (append
+		org-structure-template-alist
+		'(
+			("el" . "src emacs-lisp")
+			("py" . "src python")
+			("sh" . "src sh"))
+		))
+ #+END_SRC
+
+ Inhibit electric pair for org-mode =<=.
+ #+begin_src emacs-lisp
+ (require 'elec-pair)
+ (add-hook
+	'org-mode-hook
+	(lambda ()
+		(setq-local electric-pair-inhibit-predicate
+								`(lambda (c)
+                   (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
+ #+end_src
 * Agenda
 ** Keywords
 Workflow states have been taken from gjstein.
@@ -970,34 +997,6 @@ The union of these sets is presented (with completion) to the user by
 org-refile. =C-cw= .
 You can set the variable =org-refile-target-verify-function= to a function to
 verify each headline found by the criteria above.
-* Quick Templates
-#+BEGIN_SRC emacs-lisp
-(require 'org-tempo)
-#+END_SRC
-
-Org structure templates.
-#+BEGIN_SRC emacs-lisp
-(setq org-structure-template-alist
-	(append
-	 org-structure-template-alist
-	 '(
-		 ("el" . "src emacs-lisp")
-		 ("py" . "src python")
-		 ("sh" . "src sh"))
-	 ))
-#+END_SRC
-
-Inhibit electric pair for org-mode =<=.
-#+begin_src emacs-lisp
-(require 'elec-pair)
-(add-hook
- 'org-mode-hook
- (lambda ()
-   (setq-local electric-pair-inhibit-predicate
-               `(lambda (c)
-                  (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
-#+end_src
-
 * Export
 *** org-export-in-background
 Export in the background, export results can be retrieved with =M-x
