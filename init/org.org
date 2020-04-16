@@ -220,7 +220,7 @@ Align all visible tags in the buffer.
 			(add-hook 'org-mode-hook #'org-setup-<>-syntax-fix)
 		#+end_src
 
-** PostScript
+** Postscript
 *** Add paper type
 Collins Organiser Refill size.
 		#+begin_src emacs-lisp
