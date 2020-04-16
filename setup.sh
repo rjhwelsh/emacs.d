@@ -147,8 +147,8 @@ test() {
 				/usr/bin/emacs --debug-init \
 				--batch --no-window-system \
 				-l ./.emacs.d/init.el \
-				> ../test/blank.log 2>&1
-		cat ../test/blank.log
+				2>&1 |\
+			tee ../test/blank.log
 
 		echo "Now testing each emacs config..."
 		[ -n "$@" ] && FILES="$@"
@@ -165,8 +165,8 @@ test() {
 					--batch --no-window-system \
 					-l ./.emacs.d/init.el \
 					2>&1 |\
-				grep -vF -f ../test/blank.log > ../test/"$INIT".log
-			cat ../test/"$INIT".log
+				grep -vF -f ../test/blank.log |\
+				tee ../test/"$INIT".log
 			echo "Finished ($INIT)..."
 		done
 	}
