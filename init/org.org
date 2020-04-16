@@ -84,7 +84,6 @@ Assign todo kwd NEXT; to the next sibling headline which is a todo entry.
 * Setup
 For a minimal =.emacs= for =org-mode=, see [[http://orgmode.org/worg/org-faq.html#minimal-emacs][here]].
 #+BEGIN_SRC emacs-lisp
-(require 'org-install)
 (require 'org-agenda)
 #+END_SRC
 Enable extension modules for org-mode
