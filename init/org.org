@@ -897,7 +897,7 @@ Use C-c C-x C-c to access.
 
 org-agenda-columns-add-appointments-to-effort-sum adds appointment times to
 effort sums for the day.
-* Structural
+* Move
 ** Capture
 See [[info:org#Capture%20templates][Capture templates]] for more information.
 #+begin_src emacs-lisp
