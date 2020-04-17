@@ -5,35 +5,6 @@
 #+STARTUP: content
 
 * Display
-** Workgroups
- Workgroups provides defined layouts for Emacs.
- ( https://github.com/tlh/workgroups.el )
-	#+BEGIN_SRC emacs-lisp
-		(use-package "workgroups" :defer t
-			:config
-			(require 'workgroups)
-			(workgroups-mode 1)
-			(setq wg-morph-on nil)
-			(setq wg-prefix-key (kbd "C-c w"))
-			(wg-load "~/.emacs.d/workgroups" )
-			:ensure t
-			:diminish workgroups-mode)
-	#+END_SRC
-
- Keybindings:
- Use the following with <prefix> ;
-		+ C-c w :: <prefix>
-		+ c :: wg-create-workgroup
-		+ A :: wg-rename-workgroup
-		+ v :: wg-switch-to-workgroup
-		+ n/p :: next/prev workgroup
-		+ 0-9 :: switch thru positions in list
-		+ w :: wg-toggle-morph (animation)
-		+ C-s/l :: save / load workgroup
-		+ k :: kill workgroup
-		+ ,/. :: move left/right in group listing
-		+ ? :: wg-help
-
 ** Themes
  Use the =diff-hl= package to highlight changed-and-uncommitted lines when
  programming.
