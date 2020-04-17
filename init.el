@@ -79,29 +79,36 @@
 			 "init"
 			 rjh/local-config-repo ))
 
-(defun rjh/load (dir ext)
-  "Generates rjh/load functions"
-	(lambda (orgfile)
-		(org-babel-load-file
-		 (expand-file-name (concat orgfile ext) dir)
-		 t)
-		)
-	)
+(defun rjh/load (dir)
+  "Generates rjh/load functions
+     dir - load directory"
+	(lambda (file)
+		(let ((orgfile (expand-file-name (concat orgfile ".org") dir)))
+			(if (file-readable-p orgfile)
+					(progn
+						(org-babel-load-file orgfile t)
+						)
+				(progn
+					(display-warning
+					 'rjh
+					 (format-message "%s does not exist!" orgfile)
+					 :warning
+					 ))
+				))
+		))
 
 ;; Functions to load config
 (defun rjh/load-init (orgfile)
 	"Use org-babel-load-file to load init/orgfile in rjh/local-config-repo"
-	(let ((dir rjh/local-init-dir)
-				(ext ".org"))
+	(let ((dir rjh/local-init-dir))
 		(message "Loading init/%s ..." orgfile)
-		(funcall (rjh/load dir ext) orgfile)))
+		(funcall (rjh/load dir) orgfile)))
 
 (defun rjh/load-private (orgfile)
 	"Use org-babel-load-file to load private/orgfile"
-	(let ((dir rjh/local-private-dir)
-				(ext ".org"))
+	(let ((dir rjh/local-private-dir))
 		(message "Loading private/%s ..." orgfile)
-		(funcall (rjh/load dir ext) orgfile)))
+		(funcall (rjh/load dir) orgfile)))
 
 (defun rjh/load-env ()
 	"Loads configuration from environment variable, rjh/config-env"
@@ -115,10 +122,8 @@
 
 		;; Load private config (for each init) ...
 		(dolist (orgfile configlist)
-			(if (file-readable-p orgfile)
-					(progn
-						(rjh/load-private orgfile))
-				))
+			(rjh/load-private orgfile)
+			)
 
 		;; Load private config (overrides) ...
 		(dolist (orgfile privatelist)
