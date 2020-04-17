@@ -1,0 +1,4 @@
+* Material-theme
+#+BEGIN_SRC emacs-lisp
+	(use-package "material-theme" :ensure t :defer t)
+#+END_SRC

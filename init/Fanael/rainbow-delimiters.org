@@ -1,0 +1,11 @@
+* Rainbow-delimiters
+https://github.com/Fanael/rainbow-delimiters
+
+	#+begin_src emacs-lisp
+		(use-package "rainbow-delimiters"
+			:ensure t
+			:defer t
+			:config
+			(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+			)
+	#+end_src

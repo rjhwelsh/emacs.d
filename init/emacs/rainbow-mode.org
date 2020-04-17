@@ -1,0 +1,9 @@
+* Rainbow-mode
+This minor mode sets background color to strings that match color
+names, e.g. #0000ff is displayed in white with a blue background.
+
+https://elpa.gnu.org/packages/rainbow-mode.html
+
+#+begin_src emacs-lisp
+	(use-package rainbow-mode :ensure t :defer t)
+#+end_src

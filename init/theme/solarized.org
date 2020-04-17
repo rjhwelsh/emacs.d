@@ -1,0 +1,14 @@
+* Solarized-theme
+ #+BEGIN_SRC emacs-lisp
+	 (use-package "solarized-theme" :defer t
+		 :ensure t
+		 :config
+		 (defun hrs/apply-theme ()
+			 (setq solarized-use-variable-pitch nil)
+			 (setq solarized-height-plus-1 1.2)
+			 (setq solarized-height-plus-2 1.4)
+			 (setq solarized-height-plus-3 1.7)
+			 (setq solarized-height-plus-4 2.0)
+			 (setq solarized-high-contrast-mode-line t)
+			 (load-theme 'solarized-dark t)))
+ #+END_SRC

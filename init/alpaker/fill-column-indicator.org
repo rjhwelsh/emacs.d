@@ -1,0 +1,23 @@
+#+PROPERTY: header-args    :results silent
+#+STARTUP: content
+
+* Fill-column-indicator
+An Emacs minor mode that graphically indicates the fill column.
+https://github.com/alpaker/fill-column-indicator
+
+#+begin_quote
+Many modern editors and IDEs can graphically indicate the location of the fill
+column by drawing a thin line (in design parlance, a "rule") down the length of
+the editing window. Fill-column-indicator implements this facility in Emacs.
+#+end_quote
+
+	#+begin_src emacs-lisp
+		(use-package "fill-column-indicator"
+			:ensure t
+			:defer t
+			:init
+			(require 'fill-column-indicator)
+			)
+	#+end_src
+
+Use =fci-mode= to toggle indication.

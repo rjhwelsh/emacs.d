@@ -1,0 +1,8 @@
+* Htmlize
+https://github.com/hniksic/emacs-htmlize
+#+begin_src emacs-lisp
+	(use-package "htmlize"
+		:ensure t
+		:defer t
+		)
+#+end_src
