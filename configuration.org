@@ -580,31 +580,6 @@ Emacs will look credentials up in =$HOME/.authinfo.gpg=.
 	 (add-to-list 'auto-mode-alist '(".*mutt.*-[0-9-]*" . message-mode))
  #+END_SRC
 
-** Address-book
- BBDB, The insidious big brother database.
- #+BEGIN_SRC emacs-lisp
-	 (use-package bbdb :defer t
-		 :ensure t
-		 :init
-		 (require 'bbdb)
-		 (setq bbdb-file "~/.bbdb/bbdb"
-					 bbdb-phone-style nil)
-		 (bbdb-initialize 'message)
-		 (bbdb-insinuate-message)
-		 )
- #+END_SRC
-
- BBDB vcard import/export.
- Use =bbdb-vcard-import-file= to import a vcard file.
- And =bbdb-vcard-export-file= to export a vcard file.
- #+BEGIN_SRC emacs-lisp
-	 (use-package bbdb-vcard :defer t
-	   :requires bbdb
-		 :ensure t
-		 :init
-		 (require 'bbdb-vcard)
-		 (setq bbdb-vcard-directory "~/.bbdb"))
- #+END_SRC
 
 * Financial
 ** Ledger
