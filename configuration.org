@@ -606,38 +606,13 @@ Emacs will look credentials up in =$HOME/.authinfo.gpg=.
 		 (setq bbdb-vcard-directory "~/.bbdb"))
  #+END_SRC
 
-** Calendar
-	Calfw - The pretty Calendar
- For more information see the configuration file, [[file:config/calfw.org][calfw.org]].
-	 #+BEGIN_SRC emacs-lisp
-		 (use-package "calfw" :defer t
-			 :ensure t
-			 :init
-			 (rjh/load-init "calfw.org")
-			 :bind ("C-x a c" . rjh/two-week-view))
-
-		 (use-package "calfw-org" :defer t
-			 :ensure t
-			 :init
-			 (require 'calfw-org)
-			 (setq cfw:org-overwrite-default-keybinding t)) ;; Org-mode like keybindings
-
-		 (use-package "calfw-ical" :defer t
-			 :ensure t
-			 :init
-			 (require 'calfw-ical))
-
-		 (use-package "calfw-cal" :defer t
-			 :ensure t
-			 :init
-			 (require 'calfw-cal))
-	 #+END_SRC
-
+** Diary
  Diary mode configuration.
  For more details see [[file:config/diary.org][diary.org]].
  #+BEGIN_SRC emacs-lisp
 	 (rjh/load-init "diary.org")
  #+END_SRC
+
 
 * Financial
 ** Ledger

@@ -1,10 +1,35 @@
-#+TITLE: Calfw Package Config
-#+AUTHOR: Roger J. H. Welsh
-#+EMAIL: rjhwelsh@gmail.com
+#+TITLE: Calfw
+#+PROPERTY: header-args    :results silent
+#+STARTUP: content
 
 * Calfw
  This provides a very fancy calendar, which can be used in conjunction with
  org-agendas, ics files and more. More information can be found [[https://github.com/kiwanami/emacs-calfw][here]].
+* Packages
+	 #+BEGIN_SRC emacs-lisp
+		 (use-package "calfw" :defer t
+			 :ensure t
+			 :init
+			 (rjh/load-init "calfw.org")
+			 :bind ("C-x a c" . rjh/two-week-view))
+
+		 (use-package "calfw-org" :defer t
+			 :ensure t
+			 :init
+			 (require 'calfw-org)
+			 (setq cfw:org-overwrite-default-keybinding t)) ;; Org-mode like keybindings
+
+		 (use-package "calfw-ical" :defer t
+			 :ensure t
+			 :init
+			 (require 'calfw-ical))
+
+		 (use-package "calfw-cal" :defer t
+			 :ensure t
+			 :init
+			 (require 'calfw-cal))
+	 #+END_SRC
+
 * Examples
  A demonstration calendar is in the example below.
  #+BEGIN_EXAMPLE
@@ -77,7 +102,7 @@ Two week agenda.
 				(interactive)
 				(cfw:open-calendar-buffer
 				 :contents-sources
-				 ( rjh/calendar-sources ); set this var in personal.org
+				 ( rjh/calendar-sources ) ; set this var in private/calfw.org
 				 :view
 				 'two-weeks
 				 ))
@@ -88,7 +113,7 @@ Week agenda.
 				(interactive)
 				(cfw:open-calendar-buffer
 				 :contents-sources
-				 ( rjh/calendar-sources ) ; set this var in personal.org
+				 ( rjh/calendar-sources ) ; set this var in private/calfw.org
 				 :view
 				 'week
 				 ))
