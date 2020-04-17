@@ -58,6 +58,11 @@
 	:ensure t)
 (setq load-prefer-newer t)
 
+;; Customization group
+(defgroup rjh nil
+	"Customizations by rjh"
+	:tag "RJH Customization")
+
 ;; Set rjh config repo location
 (setq rjh/local-config-repo "~/.emacs.d/rjh/")
 
