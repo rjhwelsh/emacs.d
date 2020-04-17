@@ -128,6 +128,7 @@ main() {
 
 test_prepare() {
 	# Links for testing:
+	# ln -srv ~/.emacs.d/private test/.emacs.d/
 	# ln -srv ~/.mu test/
 	# ln -srv ~/.mail test/
 	# ln -srv ~/.gnupg test/
