@@ -6,18 +6,6 @@
 
 * Display
 ** Themes
- Use the =diff-hl= package to highlight changed-and-uncommitted lines when
- programming.
- #+BEGIN_SRC emacs-lisp
-	 (use-package diff-hl
-		 :ensure t
-		 :init
-		 (require 'diff-hl)
-		 (add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
-		 (add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
- #+END_SRC
-
- For more on themes, checkout [[file:config/theme.org][theme.org]].
  #+BEGIN_SRC emacs-lisp
 	 (use-package "material-theme" :ensure t :defer t)
 	 (use-package "solarized-theme" :defer t
@@ -32,16 +20,12 @@
 			 (setq solarized-high-contrast-mode-line t)
 			 (load-theme 'solarized-dark t)))
 	 (use-package "fill-column-indicator" :ensure t :defer t)
-	 (rjh/load-init "theme.org")
  #+END_SRC
 
- Miscellaneous text options.
- For more info see [[file:config/text.org][text.org]].
  #+BEGIN_SRC emacs-lisp
 	 (use-package rainbow-mode :ensure t :defer t)
 	 (use-package "rainbow-delimiters" :ensure t :defer t)
 	 (use-package "htmlize" :ensure t :defer t)
-	 (rjh/load-init "text.org")
  #+END_SRC
 
 ** Fonts

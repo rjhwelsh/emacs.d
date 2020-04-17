@@ -1,0 +1,20 @@
+* Built-in :c:source:
+Configure built-in behaviours in Emacs.
+** Disable menu/scroll/toolbar
+#+BEGIN_SRC emacs-lisp
+  (tool-bar-mode 0)
+  (menu-bar-mode 0)
+  (when window-system
+    (scroll-bar-mode -1))
+#+END_SRC
+** Disable bell
+#+BEGIN_SRC emacs-lisp
+  (setq ring-bell-function 'ignore)
+#+END_SRC
+** Scroll conservatively
+Emacs usually recenters the buffer point. This changes scrolling behavior to
+only scroll as far as point goes.
+
+#+BEGIN_SRC emacs-lisp
+  (setq scroll-conservatively 100)
+#+END_SRC

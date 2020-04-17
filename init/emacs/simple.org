@@ -1,0 +1,6 @@
+* Simple
+** Auto-fill
+ Auto-fill automatically breaks up words into paragraphs.
+ #+BEGIN_SRC emacs-lisp
+ (add-hook 'text-mode-hook 'auto-fill-mode )
+ #+END_SRC

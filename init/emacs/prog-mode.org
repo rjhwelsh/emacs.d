@@ -1,0 +1,7 @@
+* Prog-mode.el
+Generic major mode for programming.
+
+** prettify-symbols-mode
+	 #+begin_src emacs-lisp
+  (global-prettify-symbols-mode t)
+	 #+end_src

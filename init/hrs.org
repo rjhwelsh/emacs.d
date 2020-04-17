@@ -1,3 +1,89 @@
 * HRS
 For reference:
 https://github.com/hrs/dotfiles/blob/master/emacs/.emacs.d/configuration.org
+
+** Custom theme
+If this code is being evaluated by =emacs --daemon=, ensure that each subsequent
+frame is themed appropriately.
+#+BEGIN_SRC emacs-lisp
+	(require 'solarized-theme)
+	(if (daemonp)
+			(add-hook 'after-make-frame-functions
+								(lambda (frame)
+									(hrs/apply-theme)))
+		(hrs/apply-theme))
+#+END_SRC
+** Text
+ I like shallow indentation, but tabs are displayed as 8 characters by default.
+ This reduces that.
+
+ #+BEGIN_SRC emacs-lisp
+   (setq-default tab-width 2)
+ #+END_SRC
+
+ Treating terms in CamelCase symbols as separate words makes editing a little
+ easier for me, so I like to use =subword-mode= everywhere.
+ #+BEGIN_SRC emacs-lisp
+   (global-subword-mode 1)
+ #+END_SRC
+
+ Compilation output goes to the =*compilation*= buffer. I rarely have that window
+ selected, so the compilation output disappears past the bottom of the window.
+ This automatically scrolls the compilation window so I can always see the
+ output.
+ #+BEGIN_SRC emacs-lisp
+   (setq compilation-scroll-output t)
+ #+END_SRC
+
+*** CSS and Sass
+ Indent 2 spaces and use =rainbow-mode= to display color-related words in the
+ color they describe.
+
+ #+BEGIN_SRC emacs-lisp
+   (add-hook 'css-mode-hook
+             (lambda ()
+               (rainbow-mode)
+               (setq css-indent-offset 2)))
+
+   (add-hook 'scss-mode-hook 'rainbow-mode)
+ #+END_SRC
+
+ Don't compile the current file every time I save.
+
+ #+BEGIN_SRC emacs-lisp
+   (setq scss-compile-at-save nil)
+ #+END_SRC
+
+*** JavaScript and CoffeeScript
+ Indent everything by 2 spaces.
+ #+BEGIN_SRC emacs-lisp
+   (setq js-indent-level 2)
+
+   (add-hook 'coffee-mode-hook
+             (lambda ()
+               (yas-minor-mode 1)
+               (setq coffee-tab-width 2)))
+ #+END_SRC
+
+*** =sh=
+ Indent with 2 spaces.
+ #+BEGIN_SRC emacs-lisp
+   (add-hook 'sh-mode-hook
+             (lambda ()
+               (setq sh-basic-offset 2
+                     sh-indentation 2)))
+ #+END_SRC
+
+*** =web-mode=
+ If I'm in =web-mode=, I'd like to:
+ - Color color-related words with =rainbow-mode=.
+ - Still be able to run RSpec tests from =web-mode= buffers.
+ - Indent everything with 2 spaces.
+
+ #+BEGIN_SRC emacs-lisp
+   (add-hook 'web-mode-hook
+             (lambda ()
+               (rainbow-mode)
+               (rspec-mode)
+               (setq web-mode-markup-indent-offset 2)))
+ #+END_SRC

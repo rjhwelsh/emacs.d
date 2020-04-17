@@ -1,0 +1,12 @@
+* Diff-hl
+ Use the =diff-hl= package to highlight changed-and-uncommitted lines when
+ programming.
+ #+BEGIN_SRC emacs-lisp
+	 (use-package diff-hl
+		 :ensure t
+		 :init
+		 (require 'diff-hl)
+		 (add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
+		 (add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode)
+		 )
+ #+END_SRC
