@@ -24,7 +24,8 @@ dep_git_clone_install() {
 	do
 
 		mkdir -vp `dirname "$CONFIGDIR"/"$DEST"/"$f"`
-		cp -iv "$D"/"$DEST"/"$f" "$CONFIGDIR"/"$DEST"/"$f"
+		[[ -e "$CONFIGDIR"/"$DEST"/"$f" ]] && echo "Warning! ""$CONFIGDIR"/"$DEST"/"$f"' already exists.' >&2
+		cp -nv "$D"/"$DEST"/"$f" "$CONFIGDIR"/"$DEST"/"$f"
 	done
 }
 
