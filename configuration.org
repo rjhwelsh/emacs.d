@@ -131,12 +131,7 @@ a separate personal.org file, which is not included my repository.
  #+END_SRC
 
 * API
-** F
- An api for working with files in Emacs lisp.
- ( https://github.com/rejeep/f.el )
- #+BEGIN_SRC emacs-lisp
-	 (use-package "f" :ensure t :defer t )
- #+END_SRC
+
 * IDEs
 ** Common
 *** Projectile

@@ -1,0 +1,6 @@
+* F
+An api for working with files in Emacs lisp.
+( https://github.com/rejeep/f.el )
+#+BEGIN_SRC emacs-lisp
+	(use-package "f" :ensure t :defer t )
+#+END_SRC
