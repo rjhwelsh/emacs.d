@@ -14,21 +14,6 @@ a separate personal.org file, which is not included my repository.
 #+END_SRC
 
 * Display
-** Mode-line
-
-*** Telephone line
-	A pretty message bar for Emacs.
-	( https://github.com/dbordak/telephone-line )
-	#+BEGIN_SRC emacs-lisp
-		(use-package telephone-line :defer t
-			:ensure t
-			:config
-			(rjh/load-init "telephone-line.org"))
-	;	 :init
-		(require 'telephone-line)
-		(telephone-line-mode 1)
-	#+END_SRC
-
 ** Workgroups
  Workgroups provides defined layouts for Emacs.
  ( https://github.com/tlh/workgroups.el )
