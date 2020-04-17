@@ -4,15 +4,6 @@
 #+PROPERTY: header-args    :results silent
 #+STARTUP: content
 
-* Personal Details
-I would like to be able to share my config with other people to ease their
-journey into emacs, as many others examples have done for me.
-At the same time I would like to keep personal information private, so I source
-a separate personal.org file, which is not included my repository.
-#+BEGIN_SRC emacs-lisp
-(org-babel-load-file "~/.emacs.d/personal.org")
-#+END_SRC
-
 * Display
 ** Workgroups
  Workgroups provides defined layouts for Emacs.
