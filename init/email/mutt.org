@@ -1,0 +1,22 @@
+* Mutt
+	[[https://www.emacswiki.org/emacs/MuttInEmacs][MuttInEmacs]] assisted in creating this configuration.
+	Uses =message-mode= to open mutt buffers.
+	#+begin_src emacs-lisp
+  (require 'message)
+	#+end_src
+
+** Open mutt buffer with message-mode
+#+BEGIN_SRC emacs-lisp
+	(add-to-list 'auto-mode-alist '(".*mutt.*-[0-9-]*" . message-mode))
+#+END_SRC
+
+** Keybinding :message_mode:
+Quick save and exit.
+#+begin_src emacs-lisp
+	(define-key message-mode-map (kbd "C-c C-c")
+		'(lambda ()
+			 "save and exit quickly"
+			 (interactive)
+			 (save-buffer)
+			 (server-edit)))
+#+end_src

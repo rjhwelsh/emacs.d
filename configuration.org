@@ -542,26 +542,8 @@ https://github.com/pezra/rspec-mode
 		 :diminish flycheck-mode
 		 :diminish flyspell-mode)
  #+END_SRC
-* Email
-** Message-mode
-Message-mode for emails.
-#+begin_src emacs-lisp
-	(require 'message)
-	(setq mail-header-separator "")
-#+end_src
 
-*** Keybinding
-Quick save and exit.
-#+begin_src emacs-lisp
-	(define-key message-mode-map (kbd "C-c C-c")
-		'(lambda ()
-			 "save and exit quickly"
-			 (interactive)
-			 (save-buffer)
-			 (server-edit)))
-#+end_src
-
-** SMTP
+* SMTP
 Default [[https://www.emacswiki.org/emacs/SendingMail][SMTP]] settings for EMACS.
 	 #+begin_src emacs-lisp
 		 (require 'smtpmail)
@@ -572,14 +554,6 @@ Send mail through emacs smtp client.
 		 (setq message-send-mail-function 'smtpmail-send-it)
 	 #+end_src
 Emacs will look credentials up in =$HOME/.authinfo.gpg=.
-
-
-** Mutt
-	 [[https://www.emacswiki.org/emacs/MuttInEmacs][MuttInEmacs]] assisted in creating this configuration.
- #+BEGIN_SRC emacs-lisp
-	 (add-to-list 'auto-mode-alist '(".*mutt.*-[0-9-]*" . message-mode))
- #+END_SRC
-
 
 * Financial
 ** Ledger
