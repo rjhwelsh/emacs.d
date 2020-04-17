@@ -142,21 +142,28 @@ respectively.
 This function reads the environment variables and loads the configuration for
 each white-space separated item.
 #+begin_src emacs-lisp
-		 (defun rjh/load-env ()
-			 "Loads configuration from environment variable, rjh/config-env"
-			 (let ((configlist (delete "" (split-string (or (getenv rjh/config-env) ""))))
-						 (privatelist (delete "" (split-string (or (getenv rjh/config-private-env) ""))))
-						 )
-				 (dolist (orgfile configlist)
-					 (format-message "Loading %s ..." orgfile)
-					 (rjh/load-init orgfile)
-					 )
+	(defun rjh/load-env ()
+		"Loads configuration from environment variable, rjh/config-env"
+		(let ((configlist (delete "" (split-string (or (getenv rjh/config-env) ""))))
+					(privatelist (delete "" (split-string (or (getenv rjh/config-private-env) ""))))
+					)
+			(dolist (orgfile configlist)
+				(format-message "Loading %s ..." orgfile)
+				(rjh/load-init orgfile)
+				)
 
-				 (dolist (orgfile privatelist)
-					 (format-message "Loading %s ..." orgfile)
-					 (rjh/load-private orgfile)
-					 )
-				 ))
+			;; Load private config (for each init) ...
+			(dolist (orgfile configlist)
+				(format-message "Loading %s ..." orgfile)
+				(if (file-readable-p orgfile)
+						(rjh/load-private orgfile)
+					))
 
-		 (rjh/load-env)
+			(dolist (orgfile privatelist)
+				(format-message "Loading %s ..." orgfile)
+				(rjh/load-private orgfile)
+				)
+			))
+
+	(rjh/load-env)
 	 #+end_src

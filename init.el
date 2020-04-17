@@ -95,11 +95,20 @@
 	(let ((configlist (delete "" (split-string (or (getenv rjh/config-env) ""))))
 				(privatelist (delete "" (split-string (or (getenv rjh/config-private-env) ""))))
 				)
+		;; Load init config
 		(dolist (orgfile configlist)
 			(format-message "Loading %s ..." orgfile)
 			(rjh/load-init orgfile)
 			)
 
+		;; Load private config (for each init) ...
+		(dolist (orgfile configlist)
+			(format-message "Loading %s ..." orgfile)
+			(if (file-readable-p orgfile)
+					(rjh/load-private orgfile)
+				))
+
+		;; Load private config (overrides) ...
 		(dolist (orgfile privatelist)
 			(format-message "Loading %s ..." orgfile)
 			(rjh/load-private orgfile)
