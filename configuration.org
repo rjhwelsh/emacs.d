@@ -606,14 +606,6 @@ Emacs will look credentials up in =$HOME/.authinfo.gpg=.
 		 (setq bbdb-vcard-directory "~/.bbdb"))
  #+END_SRC
 
-** Diary
- Diary mode configuration.
- For more details see [[file:config/diary.org][diary.org]].
- #+BEGIN_SRC emacs-lisp
-	 (rjh/load-init "diary.org")
- #+END_SRC
-
-
 * Financial
 ** Ledger
  Ledger is a cli accounting system.

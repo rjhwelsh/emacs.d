@@ -1,0 +1,5 @@
+* Diary
+Set diary file
+ #+BEGIN_SRC emacs-lisp
+ (setq diary-file "~/.emacs.d/diary")
+ #+END_SRC

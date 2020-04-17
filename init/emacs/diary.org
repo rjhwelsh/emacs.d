@@ -1,23 +1,20 @@
-#+TITLE: Diary mode config
+#+TITLE: Diary
 #+AUTHOR: Roger J. H. Welsh
 #+EMAIL: rjhwelsh@gmail.com
+#+PROPERTY: header-args    :results silent
+#+STARTUP: content
 
+* Diary
 Diary mode configuration for Emacs.
-
-Set diary file
- #+BEGIN_SRC emacs-lisp
- (setq rjh/diary diary-file )
- #+END_SRC
 
  Calendar style. Diary entries. Diary file.
  Use iso by default.
  #+BEGIN_SRC emacs-lisp
- (setq calendar-date-style 'iso
- diary-number-of-entries 1
- diary-file rjh/diary
- )
- ;; In-case calendar is already loaded..
- (calendar-set-date-style 'iso)
+	 (setq
+		calendar-date-style 'iso
+		diary-number-of-entries 1)
+	 ;; In-case calendar is already loaded..
+	 (calendar-set-date-style 'iso)
  #+END_SRC
 
  Holidays display. Most of them are American and I now source holidays from a
