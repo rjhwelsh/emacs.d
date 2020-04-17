@@ -543,18 +543,6 @@ https://github.com/pezra/rspec-mode
 		 :diminish flyspell-mode)
  #+END_SRC
 
-* SMTP
-Default [[https://www.emacswiki.org/emacs/SendingMail][SMTP]] settings for EMACS.
-	 #+begin_src emacs-lisp
-		 (require 'smtpmail)
-	 #+end_src
-Send mail through emacs smtp client.
-	 #+begin_src emacs-lisp
-		 (setq send-mail-function 'smtpmail-send-it)
-		 (setq message-send-mail-function 'smtpmail-send-it)
-	 #+end_src
-Emacs will look credentials up in =$HOME/.authinfo.gpg=.
-
 * Financial
 ** Ledger
  Ledger is a cli accounting system.
