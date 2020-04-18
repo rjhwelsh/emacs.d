@@ -1,0 +1,14 @@
+* Git-timemachine
+      Git timemachine provides a mode for traversing the git history of a file.
+      https://gitlab.com/pidu/git-timemachine
+      Use =M-x git-timemachine=, 
+       - =n/p= :: to navigate *next/prev* historic versions
+       - =w/W= :: to copy *abbreviated/full* hash
+       - =g= :: Go to nth revision
+       - =b= :: Run =magit-blame= on current visited revision
+       - =q= :: to quit.
+
+      #+BEGIN_SRC emacs-lisp
+	(use-package "git-timemachine" :ensure t :defer t)
+      #+END_SRC
+

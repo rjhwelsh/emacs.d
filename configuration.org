@@ -50,24 +50,6 @@
 		(ecb-layout-name "left8"))
 	#+END_SRC
 
-*** Git
-	I use =magit= for git integration.
-	The following key-bindings are for global convenience.
-	Use =C-x g ?= to get a quick command listing.
-	#+BEGIN_SRC emacs-lisp
-		(use-package magit :defer t
-			:ensure t
-			:pin melpa-stable
-			:bind (("C-x g" . magit-status)
-						 ("C-x M-g" . magit-dispatch-popup)))
-	#+END_SRC
-
-	Git time-machine provides a mode for traversing the git history of a file.
-	Use =M-x git-timemachine=, =np= to navigate and =q= to quit.
-	#+BEGIN_SRC emacs-lisp
-		(use-package "git-timemachine" :ensure t :defer t)
-	#+END_SRC
-
 ** Languages
 *** Openscad
 	Openscad is parametric 3d solid modeller.

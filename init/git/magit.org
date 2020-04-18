@@ -1,0 +1,12 @@
+* Magit 
+      I use =magit= for git integration.
+      https://magit.vc/
+      The following key-bindings are for global convenience.
+      Use =C-x g ?= to get a quick command listing.
+      #+BEGIN_SRC emacs-lisp
+	      (use-package magit :defer t
+		      :ensure t
+		      :pin melpa-stable
+		      :bind (("C-x g" . magit-status)
+					       ("C-x M-g" . magit-dispatch-popup)))
+      #+END_SRC
