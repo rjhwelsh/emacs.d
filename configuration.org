@@ -386,29 +386,6 @@ https://github.com/pezra/rspec-mode
 		 )
  #+END_SRC
 
-* Files
-** Finding files
- The following commands will help you when locating files.
- Use =M-x= to run a command in Emacs.
-     - find-file :: Opens up a file buffer
-										( =C-x C-f= )
-		 - find-dired :: Opens up a directory buffer.
-		 - find-name-dired :: Finds files matching a pattern.
-		 - find-grep-dired :: Finds files containing a pattern.
-
- In any of the =dired= buffers you can perform certain actions.
- For example to start a =query-replace-regexp=, hit the =Q= key.
-
- For more information, hit =?= inside any =dired= buffer.
- And =h= for more advanced help.
-
-** Backups
- Setup file backup behaviour for Emacs.
- For more see [[file:config/backup.org][backup.org]].
- #+BEGIN_SRC emacs-lisp
-	 (rjh/load-init "backup.org")
- #+END_SRC
-
 ** Recentf
  Save recent files list between sessions.
 

@@ -4,6 +4,10 @@
 #+STARTUP: content
 
 * Files
+** Finding and opening files
+ Use =M-x= to run a command in Emacs.
+     - find-file :: Opens up a file buffer ( =C-x C-f= )
+
 ** Backup
 *** Backup cache
   I would prefer backup to have versioned backups in a home cache though. This

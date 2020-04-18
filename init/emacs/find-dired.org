@@ -1,0 +1,13 @@
+* Find-dired
+Opens a dired-buffer for the specified files.
+
+Use =M-x= to run a command in Emacs.
+    - find-dired :: Opens up a directory buffer.
+    - find-name-dired :: Finds files matching a pattern.
+    - find-grep-dired :: Finds files containing a pattern.
+
+In any of the =dired= buffers you can perform certain actions.
+For example to start a =query-replace-regexp=, hit the =Q= key.
+
+For more information, hit =?= inside any =dired= buffer.
+And =h= for more advanced help.
