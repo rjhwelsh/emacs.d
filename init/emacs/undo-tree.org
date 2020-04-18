@@ -1,0 +1,24 @@
+* Undo-tree
+http://www.dr-qubit.org/undo-tree.html
+http://www.dr-qubit.org/git/undo-tree.git
+ 
+Most undo systems work linearly, tracking only undo/redo. 
+This package works with the Emacs undo system, which tracks a branching set of changes. 
+
+By default =C-/= will undo.
+Now =C-S-/= will redo.
+=C-x u= will provide a visual undo tree which can be navigated with the arrow
+keys. Type =q= to exit.
+
+See [[http://pragmaticemacs.com/emacs/advanced-undoredo-with-undo-tree/][here]] for examples.
+
+#+BEGIN_SRC emacs-lisp
+	(use-package "undo-tree" :defer t
+		:ensure t
+		:init
+		(global-undo-tree-mode 1)
+		(defalias 'redo 'undo-tree-redo)
+		(global-set-key (kbd "C-S-/") 'redo))
+#+END_SRC
+
+
