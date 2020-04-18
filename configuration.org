@@ -6,12 +6,6 @@
 
 * IDEs
 ** Languages
-*** Jinja 2
-	Jinja2 is a modern and designer-friendly templating language for Python, modelled after Django's templates.
-	#+BEGIN_SRC emacs-lisp
-	(use-package "jinja2-mode" :ensure t :defer t)
-	#+END_SRC
-
 *** C :C:Cpp:
 **** Compile command
 Setup to compile standalone c programs.

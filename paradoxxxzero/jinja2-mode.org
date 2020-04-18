@@ -1,0 +1,9 @@
+* Jinja2-mode
+https://github.com/paradoxxxzero/jinja2-mode
+https://jinja.palletsprojects.com/en/2.11.x/
+
+Jinja2 is a modern and designer-friendly templating language for
+Python, modelled after Django's templates.
+#+BEGIN_SRC emacs-lisp
+  (use-package "jinja2-mode" :ensure t :defer t)
+#+END_SRC
