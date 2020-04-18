@@ -30,26 +30,6 @@
 			:diminish projectile-mode)
 	#+END_SRC
 
-*** ECB
-	ECB - The Emacs code browser.
-
-	After running =ecb-activate=, use the prefix =C-c .= for ECB commands.
-	See =C-c . ?= for bindings, see the [[info:ecb][ECB info page]] for the detailed guide.
-	For a compile window use =C-c . \=
-
-	For more information, see http://ecb.sourceforge.net/.
-
-	#+BEGIN_SRC emacs-lisp
-		(use-package "ecb" :defer t
-		:init
-		(require 'ecb)
-		(setq tree-buffer-enable-xemacs-image-bug-hack nil)
-		:ensure t
-		:custom
-		(ecb-primary-secondary-mouse-buttons (quote mouse-1--mouse-2))
-		(ecb-layout-name "left8"))
-	#+END_SRC
-
 ** Languages
 *** Openscad
 	Openscad is parametric 3d solid modeller.
