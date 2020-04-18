@@ -4,6 +4,7 @@
 * Yasnippet
 Yasnippet provides a templating engine for Emacs.
 For more details, see [[http://joaotavora.github.io/yasnippet/][documentation.]]
+https://github.com/joaotavora/yasnippet/
 
 N.B. For html tags use emmet-mode instead of yasnippet.
 
@@ -42,7 +43,7 @@ N.B. For html tags use emmet-mode instead of yasnippet.
 				 :isearch t
 				 )))
 
-		(setq yas/prompt-functions '(yas/popup-isearch-prompt yas/no-prompt))
+		(setq yas-prompt-functions '(yas/popup-isearch-prompt yas/no-prompt))
 
 
 
