@@ -1,0 +1,11 @@
+* graphviz-dot-mode
+https://ppareit.github.io/graphviz-dot-mode/
+https://github.com/ppareit/graphviz-dot-mode
+ #+BEGIN_SRC emacs-lisp
+   (use-package "graphviz-dot-mode" 
+     :ensure t 
+     :defer t
+     :config
+     (setq graphviz-dot-view-command "xdot %s"))
+ #+END_SRC
+

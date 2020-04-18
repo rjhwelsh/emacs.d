@@ -1,0 +1,5 @@
+* gnuplot
+https://github.com/emacsorphanage/gnuplot
+ #+BEGIN_SRC emacs-lisp
+   (use-package "gnuplot" :ensure t :defer t)
+ #+END_SRC

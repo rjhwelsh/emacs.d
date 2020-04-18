@@ -327,14 +327,5 @@ https://github.com/pezra/rspec-mode
 	 (rjh/load-init "latex.org")
  #+END_SRC
 
-** Graph
- Some packages for graphing.
- #+BEGIN_SRC emacs-lisp
-		 (use-package "gnuplot" :ensure t :defer t)
-		 (use-package "graphviz-dot-mode" :ensure t :defer t
-			 :config
-			 (setq graphviz-dot-view-command "xdot %s"))
- #+END_SRC
-
 
 
