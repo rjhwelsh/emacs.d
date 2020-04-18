@@ -1,0 +1,19 @@
+* Inf-ruby :ruby:
+https://github.com/nonsequitur/inf-ruby
+
+Run a Ruby process in a buffer
+inf-ruby provides a REPL buffer connected to a Ruby subprocess.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package "inf-ruby" :defer t
+    :init
+    (autoload 'inf-ruby-minor-mode "inf-ruby" "Run an inferior Ruby process" t)
+    :hook ((ruby-mode . inf-ruby-minor-mode))
+    :ensure t)
+#+END_SRC
+
+Keybindings:
+    - =C-c C-s= Launch inf-ruby process
+    - =C-c C-r= Push (highlighted) ruby code to IRB.
+    - =C-c M-r= Run selected code, then go to IRB buffer.
+

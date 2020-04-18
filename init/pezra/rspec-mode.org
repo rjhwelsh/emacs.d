@@ -1,0 +1,16 @@
+* rspec-mode :ruby:
+https://rspec.info/
+https://github.com/pezra/rspec-mode
+
+RSpec mode provides some convenience functions for dealing with RSpec.
+Required for web-mode, ctemplate operation.
+
+#+begin_src emacs-lisp
+  (use-package "rspec-mode"
+    :ensure t
+    )
+#+end_src
+
+
+
+

@@ -1,0 +1,21 @@
+* Ruby-test-mode :ruby:
+https://github.com/ruby-test-mode/ruby-test-mode
+Emacs minor mode for Behaviour and Test Driven Development in Ruby.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package "ruby-test-mode" :defer t
+    :ensure t
+    :hook ruby-mode
+    :diminish ruby-test-mode
+    :init
+    (require 'ruby-test-mode)
+    ;; Hook to close tests with 'q'
+    (add-hook 'compilation-finish-functions
+	      (lambda (buf strg)
+		(switch-to-buffer-other-window "*compilation*")
+		(read-only-mode)
+		(goto-char (point-max))
+		(local-set-key (kbd "q")
+			       (lambda () (interactive) (quit-restore-window))))))
+
+#+END_SRC

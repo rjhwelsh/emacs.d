@@ -1,0 +1,27 @@
+* Seeing-is-believing :ruby:
+https://github.com/JoshCheek/seeing_is_believing
+https://github.com/jcinnamond/seeing-is-believing
+
+First install the gem.
+#+BEGIN_EXAMPLE sh
+gem install seeing_is_believing
+#+END_EXAMPLE
+
+Now install the Emacs packages.
+#+BEGIN_SRC emacs-lisp
+  (use-package "seeing-is-believing" :defer t
+    :init
+    (require 'seeing-is-believing)
+    :hook ruby-mode
+    :ensure t
+    :diminish seeing-is-believing
+    :custom
+    (seeing-is-believing-prefix "C-."))
+#+END_SRC
+
+The following keybindings are useful:
+    - =C-. s= - Run for entire file
+    - =C-. c= - Clear output
+    - =C-. t= - Tag a line to be "targeted"
+    - =C-. x= - Run only the "tagged" lines.
+

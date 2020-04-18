@@ -1,0 +1,22 @@
+* Jdee :Java:
+https://github.com/jdee-emacs/jdee
+https://github.com/jdee-emacs/jdee-server
+http://jdee.sourceforge.net/jdedoc/html/jde-ug/jde-ug.html
+
+JDEE - Java Development Environment for Emacs
+
+The jdee-server should be installed on your system, before using jdee.
+Point the =jdee-server-dir= variable in Emacs to the directory
+containing the jar, =jdee-bundle.jar= (jdee-server).
+
+Use =M-x jdee-mode= to invoke jdee.
+
+For more documentation, please see
+#+BEGIN_SRC emacs-lisp
+  (use-package "jdee" 
+    :defer t
+    :ensure t
+    :config
+    ;; Use the current working directory as a classpath for java projects.
+    (setq jdee-global-classpath '("."))) 
+#+END_SRC

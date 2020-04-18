@@ -1,0 +1,12 @@
+* Elisp-ruby-electric :ruby:
+https://github.com/ruby/elisp-ruby-electric
+https://github.com/ruby/elisp
+
+Auto-close paired syntax elements with electric mode.
+#+BEGIN_SRC emacs-lisp
+  (use-package "ruby-electric" :defer t
+    :hook ((ruby-mode . ruby-electric-mode))
+    :ensure t
+    :diminish ruby-electric-mode )
+#+END_SRC
+

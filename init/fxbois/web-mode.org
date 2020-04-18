@@ -1,0 +1,38 @@
+* web-mode :hbs:
+http://web-mode.org/
+
+An emacs mode for editing web templates.
+- smart indentation (according to the context : HTML, code, JavaScript
+  or CSS)
+- compatibility with many template engines : php, jsp, gsp (grails),
+  asp / asp.net ajax (atlas), django / twig / jinja(2) / erlydtl
+  (zotonic) / selmer, erb, ejs, freemarker, velocity, cheetah, smarty,
+  ctemplate / mustache / hapax / handlebars / meteor / blaze /
+  ember.js / velvet, blade (laravel), knockoutjs, go template (revel),
+  razor/play, dust, closure (soy), underscore.js, template-toolkit,
+  liquid (jekyll), angular.js, web2py, mako (pylons), reactjs (jsx),
+  mojolicious, elixir (erlang), thymeleaf, cl-emb, heist, archibus,
+  xoops, hero, spip
+
+#+begin_src emacs-lisp
+  (use-package "web-mode"
+    :requires rspec-mode
+    :defer t
+    :ensure t
+    :config
+    (setq web-mode-engines-alist
+	  '(("ctemplate" . "\\.hbs\\'"))
+	  )
+    :init
+    (require 'web-mode)
+    (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
+    :hook
+    ((web-mode . (lambda () 
+		   (electric-pair-mode -1)))
+     )
+    )
+#+end_src
+
+
+
+

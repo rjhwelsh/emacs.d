@@ -1,0 +1,14 @@
+* Compile
+[[info:emacs#Compilation][info:emacs#Compilation]]
+** Compile command
+[[help:compile-command]]
+Setup to compile standalone c programs.
+#+begin_src emacs-lisp
+  (setq compile-command '(concat
+			  "cc "
+			  (buffer-file-name)
+			  " -o "
+			  (file-name-base (buffer-file-name))
+			  ".out"
+			  ))
+#+end_src

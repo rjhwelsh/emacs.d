@@ -1,0 +1,8 @@
+* Ruby elisp :ruby:
+https://github.com/ruby/elisp
+Elisp files for the ruby language 
+
+** Getting-started-with-emacs-for-ruby :worace:
+https://github.com/worace
+https://github.com/worace/dotfiles/blob/master/emacs/init.el
+https://worace.works/2016/06/07/getting-started-with-emacs-for-ruby/

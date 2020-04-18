@@ -1,8 +1,9 @@
 #+PROPERTY: header-args    :results silent
 #+STARTUP: content
 
-* Jdee
+* Jdee :Java:
 The jdee (Java Development Environment for Emacs) server (.jar) location.
+(=jdee-bundle.jar=)
 #+BEGIN_SRC emacs-lisp
-	(setq jdee-server-dir "~/.emacs.d/jdee-server/target")
+  (setq jdee-server-dir "~/.emacs.d/jdee-server/target")
 #+END_SRC
