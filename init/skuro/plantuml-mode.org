@@ -1,0 +1,17 @@
+* Plantuml-mode
+Plantuml for uml diagramming.
+PlantUML is a java program for quickly constructing uml diagrams.
+http://plantuml.com/
+https://github.com/skuro/plantuml-mode
+
+#+BEGIN_SRC emacs-lisp
+  (use-package "plantuml-mode" 
+    :ensure t 
+    :defer t
+    :init
+    (add-to-list 'auto-mode-alist '("\\.plantuml$" . plantuml-mode))
+    (add-to-list
+     'org-src-lang-modes '("plantuml" . plantuml))
+    :config
+    (plantuml-set-output-type "svg"))
+#+END_SRC

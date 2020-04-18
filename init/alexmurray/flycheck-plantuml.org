@@ -1,0 +1,12 @@
+* Flycheck-plantuml
+https://github.com/alexmurray/flycheck-plantuml
+
+  #+begin_src emacs-lisp
+    (use-package "flycheck-plantuml" :defer t
+      :requires flycheck plantuml-mode
+      :init
+      (with-eval-after-load 'flycheck
+	(require 'flycheck-plantuml)
+	(flycheck-plantuml-setup))
+      :ensure t)
+  #+end_src

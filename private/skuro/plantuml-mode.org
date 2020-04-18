@@ -1,0 +1,11 @@
+** Plantuml
+ Plantuml for uml diagramming.
+ PlantUML is a java program for quickly constructing uml diagrams.
+ http://plantuml.com/
+ https://github.com/skuro/plantuml-mode
+
+ #+BEGIN_SRC emacs-lisp
+   (setq plantuml-jar-path "/usr/share/plantuml/lib/plantuml.jar")
+   (setq org-plantuml-jar-path plantuml-jar-path)
+ #+END_SRC
+

@@ -336,35 +336,6 @@ https://github.com/pezra/rspec-mode
 			 (setq graphviz-dot-view-command "xdot %s"))
  #+END_SRC
 
-** UML
- Plantuml for uml diagramming.
- PlantUML is a java program for quickly constructing uml diagrams.
- http://plantuml.com/
- https://github.com/skuro/plantuml-mode
-
- Flycheck is used for syntax checking.
- https://github.com/alexmurray/flycheck-plantuml
-
- #+BEGIN_SRC emacs-lisp
-	 (use-package "plantuml-mode" :ensure t :defer t
-		 :init
-		 (setq plantuml-jar-path "/usr/share/plantuml/lib/plantuml.jar")
-		 (add-to-list 'auto-mode-alist '("\\.plantuml$" . plantuml-mode))
-		 (add-to-list
-			'org-src-lang-modes '("plantuml" . plantuml))
-		 (setq org-plantuml-jar-path plantuml-jar-path)
-		 :config
-		 (plantuml-set-output-type "svg"))
-
-	 (use-package "flycheck-plantuml" :defer t
-		 :requires flycheck plantuml-mode
-		 :init
-		 (with-eval-after-load 'flycheck
-			 (require 'flycheck-plantuml)
-			 (flycheck-plantuml-setup))
-		 :ensure t)
- #+END_SRC
-
 ** Spell checker
  #+BEGIN_SRC emacs-lisp
 	 (use-package "flycheck" :ensure t :defer t
