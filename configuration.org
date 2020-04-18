@@ -336,11 +336,5 @@ https://github.com/pezra/rspec-mode
 			 (setq graphviz-dot-view-command "xdot %s"))
  #+END_SRC
 
-** Spell checker
- #+BEGIN_SRC emacs-lisp
-	 (use-package "flycheck" :ensure t :defer t
-		 :diminish flycheck-mode
-		 :diminish flyspell-mode)
- #+END_SRC
 
 
