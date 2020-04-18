@@ -319,13 +319,7 @@ https://github.com/pezra/rspec-mode
 				 :ensure t
 				 )
 		 #+end_src
-* Documentation
-** Latex
- Latex configuration.
- For more see [[file:config/latex.org][latex.org]].
- #+BEGIN_SRC emacs-lisp
-	 (rjh/load-init "latex.org")
- #+END_SRC
+
 
 
 

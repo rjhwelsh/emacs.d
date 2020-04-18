@@ -1,0 +1,23 @@
+#+AUTHOR: Roger J. H. Welsh
+#+EMAIL: rjhwelsh@gmail.com
+
+* TeX-mode
+[[info:emacs#TeX Mode][info:emacs#TeX Mode]]
+
+** TeX-PDF-mode
+ #+BEGIN_SRC emacs-lisp
+ (setq TeX-PDF-mode t)
+ #+END_SRC
+
+** Default shell 
+ Shell commands do not play particularly nice with my zsh setup, so instead use
+ =/bin/bash= as the default shell-command explicitly.
+
+ N.B. This adds a mode-hook to automatically set the shell-file-name to bash
+ every time TeX-mode is used.
+ #+BEGIN_SRC emacs-lisp
+   (add-hook 'tex-mode-hook ( 
+			     lambda ()
+				    (setq shell-file-name "/bin/bash")
+				    ))
+ #+END_SRC
