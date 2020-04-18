@@ -18,3 +18,9 @@ only scroll as far as point goes.
 #+BEGIN_SRC emacs-lisp
   (setq scroll-conservatively 100)
 #+END_SRC
+** Scalable fonts
+ Allow scalable fonts for following list of regular expressions. 
+ #+BEGIN_SRC emacs-lisp
+   (setq scalable-fonts-allowed '( "iso10646-1$" ))
+ #+END_SRC
+ .
