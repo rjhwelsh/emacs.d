@@ -4,14 +4,6 @@
 #+PROPERTY: header-args    :results silent
 #+STARTUP: content
 
-* Display
-** Fonts
- Setup font functions, mostly courtesy of Harry Schwartz.
- For more see [[file:config/fonts.org][fonts.org]].
- #+BEGIN_SRC emacs-lisp
-	 (rjh/load-init "fonts.org")
- #+END_SRC
-
 * API
 
 * IDEs
