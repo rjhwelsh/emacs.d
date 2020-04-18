@@ -1,0 +1,5 @@
+* scad-preview :openscad:
+  https://github.com/zk-phi/scad-preview is an extension for =openscad-mode=.
+  #+begin_src emacs-lisp
+     (use-package "scad-preview" :ensure t :defer t)
+  #+end_src

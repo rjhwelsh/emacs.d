@@ -6,16 +6,6 @@
 
 * IDEs
 ** Languages
-*** Openscad
-	Openscad is parametric 3d solid modeller.
-
-	scad-mode is usually provided as part of =Openscad=.
-	https://github.com/zk-phi/scad-preview is an extension.
-	#+BEGIN_SRC emacs-lisp
-	(use-package "scad-mode" :ensure t :defer t)
-	(use-package "scad-preview" :ensure t :defer t)
-	#+END_SRC
-
 *** Python
 	The Emacs Python Development Environment. This is a full featured environment
 	for python development. For introspection and analysis of Python sources, Elpy

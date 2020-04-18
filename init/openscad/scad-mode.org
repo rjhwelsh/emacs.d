@@ -1,0 +1,9 @@
+* scad-mode :openscad:
+  https://github.com/openscad/openscad/
+  https://raw.githubusercontent.com/openscad/openscad/master/contrib/scad-mode.el
+
+  Openscad is parametric 3d solid modeller.
+  scad-mode is usually provided as part of =Openscad=.
+#+BEGIN_SRC emacs-lisp
+  (use-package "scad-mode" :ensure t :defer t)
+#+END_SRC
