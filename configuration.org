@@ -4,8 +4,6 @@
 #+PROPERTY: header-args    :results silent
 #+STARTUP: content
 
-* API
-
 * IDEs
 ** Common
 *** Projectile
