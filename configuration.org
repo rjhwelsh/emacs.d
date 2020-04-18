@@ -440,20 +440,5 @@ https://github.com/pezra/rspec-mode
 		 (global-set-key (kbd "C-S-/") 'redo))
  #+END_SRC
 
-* Authentication
-=oauth= package.
-Mainly for Google authentication.
-#+BEGIN_SRC emacs-lisp
-	(use-package "oauth2" :ensure t :defer t)
-#+END_SRC
 
-Pinentry for gpg-agent
-#+BEGIN_SRC emacs-lisp
-	(use-package "pinentry" :ensure t :defer t)
-#+END_SRC
-Please ensure the following setting is enabled for =~/.gnupg/gpg-agent.conf=.
-	#+BEGIN_EXAMPLE
-	allow-emacs-pinentry
-	#+END_EXAMPLE
-This is [[https://www.gnu.org/software/emacs/manual/html_mono/epa.html#fnd-1][required]] for GnuPG 2.1.5 or later; if you do not use a graphical
-=pinentry= program.
+

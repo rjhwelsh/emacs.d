@@ -1,0 +1,5 @@
+* oauth2
+Mainly for Google authentication.
+#+BEGIN_SRC emacs-lisp
+	(use-package "oauth2" :ensure t :defer t)
+#+END_SRC
