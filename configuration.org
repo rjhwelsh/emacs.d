@@ -374,16 +374,4 @@ https://github.com/pezra/rspec-mode
 		 :diminish flyspell-mode)
  #+END_SRC
 
-* Financial
-** Ledger
- Ledger is a cli accounting system.
- See [[https://www.ledger-cli.org/3.0/doc/ledger-mode.html][here]] for more details.
- #+BEGIN_SRC emacs-lisp
-	 (use-package "ledger-mode" :defer t
-		 :ensure t
-		 :init
-		 (add-to-list 'auto-mode-alist '("\\.ledger$" . ledger-mode))
-		 )
- #+END_SRC
-
 
