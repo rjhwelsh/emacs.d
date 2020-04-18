@@ -1,0 +1,8 @@
+* Harry Schwartz's font configuration
+Set private font configuration for use with hrs/fonts.org.
+#+BEGIN_SRC emacs-lisp
+  (setq hrs/default-font "Hermit") 
+  (setq hrs/default-font-size 8)
+  (setq hrs/current-font-size hrs/default-font-size)
+  (setq hrs/font-change-increment 1.1)
+#+END_SRC
