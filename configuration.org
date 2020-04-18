@@ -6,30 +6,6 @@
 
 * IDEs
 ** Languages
-*** Python
-	The Emacs Python Development Environment. This is a full featured environment
-	for python development. For introspection and analysis of Python sources, Elpy
-	mainly relies on Jedi. Jedi is known to have some problems coping with
-	badly-formatted Python.
-
-	For more see [[file:config/python.org][python.org]].
-
-	#+BEGIN_SRC emacs-lisp
-		(use-package "elpy" :defer t
-			:ensure t
-			:init
-			(elpy-enable)
-			(setq python-indent-offset 4)
-			:config
-			(rjh/load-init "python.org"))
-	#+END_SRC
-
-	#+BEGIN_SRC emacs-lisp
-		(use-package "company-jedi" :defer t
-			:requires company
-			:ensure t)
-	#+END_SRC
-
 *** Jinja 2
 	Jinja2 is a modern and designer-friendly templating language for Python, modelled after Django's templates.
 	#+BEGIN_SRC emacs-lisp

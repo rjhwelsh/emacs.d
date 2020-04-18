@@ -1,0 +1,15 @@
+* company-jedi
+https://jedi.readthedocs.io/en/latest/
+https://github.com/emacsorphanage/company-jedi
+
+An implementation of =jedi= for Emacs, using =company-mode=.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package "company-jedi" :defer t
+    :requires company
+    :ensure t
+    :init
+    (add-hook 'python-mode-hook (lambda ()
+				  (add-to-list 'company-backends 'company-jedi)))
+    )
+#+END_SRC

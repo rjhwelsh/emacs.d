@@ -1,0 +1,137 @@
+* elpy
+https://github.com/jorgenschaefer/elpy
+[[https://elpy.readthedocs.io/en/latest/index.html][Elpy - read the docs]]
+For python best practices, try [[http://docs.python-guide.org/en/latest/][here]].
+
+The Emacs Python Development Environment. This is a full featured environment
+for python development. 
+
+For introspection and analysis of Python sources, Elpy mainly relies
+on Jedi. Jedi is known to have some problems coping with
+badly-formatted Python.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package "elpy" :defer t
+    :ensure t
+    :init
+    (elpy-enable)
+    (setq python-indent-offset 4)
+    :config		
+    ;; Interpreter setup (default). 
+    ;; You could use Jupyter as an alternative here. ("jupyter", "console --simple-prompt" )
+    (setq python-shell-interpreter "python"
+	  python-shell-interpreter-args "-i")
+    ;; Set up a dedicated python shell for each buffer. 
+    (setq elpy-dedicated-shells nil)
+    )
+#+END_SRC
+
+** Dependencies
+ To install the requirements of elpy, run one of the following; and/or equivalent
+ for your system.
+ #+BEGIN_EXAMPLE sh
+ pip install jedi flake8 autopep8
+ emerge -av dev-python/jedi dev-python/flake8 dev-python/autopep8
+ #+END_EXAMPLE
+
+** Notes
+*** Configuration and virtual environments
+  In order to use all the features of elpy, the following will provide more
+  instructions on what needs to be installed. Be aware that this uses your
+  currently selected virtual env. For more about virtual envs, [[https://realpython.com/blog/python/python-virtual-environments-a-primer/][click here]] and
+  [[https://docs.python.org/3/library/venv.html][here]].
+  #+BEGIN_EXAMPLE
+  M-x elpy-config RET
+  #+END_EXAMPLE
+
+  Every project and virtual env get it's own RPC process, and is present in the
+  buffer lists. You can see them with.
+  #+BEGIN_EXAMPLE
+  M-x list-process
+  C-x C-b
+  #+END_EXAMPLE
+
+  A useful RPC process command
+	 - =M-x elpy-rpc-restart= :: Close all running RPC processes and re-start them
+	on demand with current settings.
+
+  Elpy has full support for Python's virtual envs. Every RPC process is associated
+  with a specific virtual env and completions are done based on that environment.
+  Outside of this, elpy allows a single global virtual env which can be changed
+  whenever you like.
+
+  Some venv commands.
+  #+BEGIN_EXAMPLE
+  M-x pyvenv-workon
+  M-x pyvenv-activate
+  M-x pyvenv-deactivate
+  #+END_EXAMPLE
+
+*** Navigation
+ Movement is natural emacs. Though there are some additional python-mode specific moves.
+  - =C-M-f= :: Move across a whole expression.
+  - =C-M-k= :: Delete expression after point.
+  - =C-M-d= :: Move down parentheses.
+  - =C-M-u= :: Move up parentheses.
+  - =C-up/down= :: Move up/down same indentation level.
+  - =C-left/right= :: Move left/right across indentation levels.
+  - =M-<direction>= :: Move region.
+
+*** Integrated Development Environment
+**** Projects
+ Elpy supports the notion of projects, a related collection of files under a
+ common directory. This common directory is called project root.
+  Some keys are:
+	 - =C-cf= :: elpy-find-file
+	 - =C-cs= :: elpy-rgrep-symbol
+	 - =M-TAB= :: elpy-company-backend
+	 - =M-.= :: elpy-goto-definition; Go to the location where the identifier at
+              point is defined. Mileage may vary.
+	 - =C-x 4 M-.= :: elpy-goto-definition-other-window
+	 - =M-*=, =M-,= :: pop-tag-mark, go to the last place M-. was used.
+	 - =C-co= :: elpy-occur-definitions, search the buffer for a list of definitions
+							 of classes and functions.
+	 - =M-?= :: Find references to the identifier at point.
+
+**** Shell buffer
+		 - =C-cz= :: elpy-shell-switch-to-shell, Switch to a buffer with a python
+		interpreter, running one if necessary.
+		 - =C-ck= :: elpy-shell-kill, Kills the current shell.
+		 - =C-cK= :: elpy-shell-kill-all
+
+**** Evaluation
+ Basic evaluation, shell send statement.
+		 - =C-cy= :: Send ___ to python shell and keep point position.
+			 - =e= :: current statement
+			 - =f= :: function definition
+			 - =c= :: class definition
+			 - =s= :: top-level statement
+			 - =g= :: group of python statements, (delimited by whitespace/newlines)
+			 - =w= :: cell
+			 - =r= :: region
+			 - =b= :: buffer
+
+ Variations on the above include.
+  - =C-cy C-= :: Send ___ to python shell and step.
+  - =C-cy S-= :: Send ___ to python shell, keep point, and switch to python shell buffer.
+  - =C-cy CS-= :: Send ___ to python shell, step and switch.
+
+**** Syntax
+  - =C-cn= :: elpy-flymake-next-error
+  - =C-cp= :: elpy-flymake-previous-error
+  - =C-cv= :: elpy-check
+
+**** Documentation
+  - =C-cd= :: elpy-doc , try and find documentation for symbol on point. Use a
+              prefix to specify manually.
+
+**** Testing
+  - =C-ct= :: elpy-test , Start a test run. This uses the currently configured
+              test runner to discover and run tests.
+  - =M-x elpy-set-test-runner= :: This changes the current test-runner.
+
+**** Refactoring
+		 - =C-ce= :: edit all occurences of symbol at point at once.
+		 - =C-cr f= :: format code using available formatter.(e.g. autopep8, yapf).
+		 - =C-cr r= :: run the elpy refactoring interface for python code ( uses rope
+                 package).
