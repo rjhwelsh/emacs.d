@@ -5,21 +5,6 @@
 #+STARTUP: content
 
 * IDEs
-** Common
-*** Projectile
-	Projectile is a project interaction library for Emacs.
-	For more about the project, see [[https://projectile.readthedocs.io/en/latest/][the docs]] or [[https://github.com/bbatsov/projectile][the source.]]
-
-	#+BEGIN_SRC emacs-lisp
-		(use-package "projectile" :defer t
-			:init
-			(projectile-mode +1)
-			(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-			(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-			:ensure t
-			:diminish projectile-mode)
-	#+END_SRC
-
 ** Languages
 *** Openscad
 	Openscad is parametric 3d solid modeller.

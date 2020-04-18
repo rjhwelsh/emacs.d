@@ -1,0 +1,15 @@
+* Projectile
+https://github.com/bbatsov/projectile
+https://projectile.readthedocs.io/en/latest/
+
+Projectile is a project interaction library for Emacs.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package "projectile" :defer t
+    :init
+    (projectile-mode +1)
+    (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+    :ensure t
+    :diminish projectile-mode)
+#+END_SRC
