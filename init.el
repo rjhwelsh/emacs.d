@@ -62,22 +62,10 @@
 (add-to-list 'load-path "~/.emacs.d/rjh")
 (load "rjh")
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ecb-layout-name "left8")
- '(ecb-primary-secondary-mouse-buttons (quote mouse-1--mouse-2))
- '(package-selected-packages
-   (quote
-    (crux yasnippet-snippets xah-fly-keys workgroups which-key web-mode use-package undo-tree telephone-line solarized-theme seeing-is-believing scad-preview ruby-test-mode ruby-electric rtags rspec-mode rainbow-mode rainbow-delimiters projectile pinentry pamparam org-plus-contrib org-edna org-caldav org-bullets oauth2 material-theme magit ledger-mode jinja2-mode jdee irony-eldoc inf-ruby htmlize helm graphviz-dot-mode gnuplot git-timemachine flycheck-plantuml flycheck-irony fill-column-indicator f ess elpy ecb diminish diff-hl deft company-jedi company-irony calfw-org calfw-ical calfw-cal calfw bbdb-vcard auto-compile aggressive-indent)))
- '(seeing-is-believing-prefix "C-."))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(org-tag ((t (:background "gray6" :foreground "white smoke" :slant oblique :weight bold :height 0.8)))))
+;; Load customizations from file
+(setq custom-file "~/.emacs.d/custom.el")
+(if (file-exists-p custom-file)
+    (load custom-file))
 
+;; Loads configuration based on environment variables
 (rjh/load-env)
