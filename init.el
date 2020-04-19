@@ -58,80 +58,9 @@
 	:ensure t)
 (setq load-prefer-newer t)
 
-;; Customization group
-(defgroup rjh nil
-	"Customizations by rjh"
-	:tag "RJH Customization")
-
-;; Set rjh config repo location
-(setq rjh/local-config-repo "~/.emacs.d/rjh/")
-
-;; Set environment variable to parse for configuration files
-(setq rjh/config-env "EMACS_CONFIG")
-(setq rjh/config-private-env "EMACS_CONFIG_PRIVATE")
-
-;; Location of private configuration files
-(setq rjh/local-private-dir "~/.emacs.d/private")
-
-;; Load config methods
-(setq rjh/local-init-dir
-			(expand-file-name
-			 "init"
-			 rjh/local-config-repo ))
-
-(defun rjh/load (dir)
-  "Generates rjh/load functions
-     dir - load directory"
-	(lambda (file)
-		(let ((orgfile (expand-file-name (concat orgfile ".org") dir)))
-			(if (file-readable-p orgfile)
-					(progn
-						(org-babel-load-file orgfile t)
-						)
-				(progn
-					(display-warning
-					 'rjh
-					 (format-message "%s does not exist!" orgfile)
-					 :warning
-					 ))
-				))
-		))
-
-;; Functions to load config
-(defun rjh/load-init (orgfile)
-	"Use org-babel-load-file to load init/orgfile in rjh/local-config-repo"
-	(let ((dir rjh/local-init-dir))
-		(message "Loading init/%s ..." orgfile)
-		(funcall (rjh/load dir) orgfile)))
-
-(defun rjh/load-private (orgfile)
-	"Use org-babel-load-file to load private/orgfile"
-	(let ((dir rjh/local-private-dir))
-		(message "Loading private/%s ..." orgfile)
-		(funcall (rjh/load dir) orgfile)))
-
-(defun rjh/load-env ()
-	"Loads configuration from environment variable, rjh/config-env"
-	(let ((configlist (delete "" (split-string (or (getenv rjh/config-env) ""))))
-				(privatelist (delete "" (split-string (or (getenv rjh/config-private-env) ""))))
-				)
-		;; Load init config
-		(dolist (orgfile configlist)
-			(rjh/load-init orgfile)
-			)
-
-		;; Load private config (for each init) ...
-		(dolist (orgfile configlist)
-			(rjh/load-private orgfile)
-			)
-
-		;; Load private config (overrides) ...
-		(dolist (orgfile privatelist)
-			(rjh/load-private orgfile)
-			)
-		))
-
-(rjh/load-env)
+;; Add rjh repository elisp
+(add-to-list 'load-path "~/.emacs.d/rjh")
+(load "rjh")
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -150,3 +79,5 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(org-tag ((t (:background "gray6" :foreground "white smoke" :slant oblique :weight bold :height 0.8)))))
+
+(rjh/load-env)
