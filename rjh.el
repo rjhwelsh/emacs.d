@@ -39,7 +39,7 @@
   ;; else, if it exists, use default location 
   ;; else, ask user to pick a location
   (rjh/prompt-for-directory
-   (or nil ;; (file-name-directory load-file-name)
+   (or (file-name-directory load-file-name)
        "~/.emacs.d/rjh")
    ;; Prompt if directory does not exist
    "Set location of rjhwelsh/emacs.d repo:"
