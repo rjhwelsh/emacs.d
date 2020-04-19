@@ -59,8 +59,16 @@
 (setq load-prefer-newer t)
 
 ;; Add rjh repository elisp
-(add-to-list 'load-path "~/.emacs.d/rjh")
-(load "rjh")
+(let* ((repo "~/.emacs.d/rjh")
+       ;; Prompt if directory does not exist
+       (repo (if (file-exists-p repo)
+		 repo
+	       (read-directory-name "Please specify location of rjhwelsh/emacs.d repo:")
+	       ))
+       )
+  ;; Load rjh.el  
+  (load (expand-file-name "rjh.el" repo))
+  )
 
 ;; Load customizations from file
 (setq custom-file "~/.emacs.d/custom.el")
