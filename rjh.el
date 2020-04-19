@@ -25,6 +25,17 @@
   "Customizations by rjh"
   :tag "rjh config customization")
 
+(defcustom rjh/config-env "EMACS_CONFIG"
+  "Set environment variable to parse for rjh/init configuration files"
+  :type '(string)
+  :group 'rjh
+  )
+(defcustom rjh/config-private-env "EMACS_CONFIG_PRIVATE"
+  "Set environment variable to parse for private configuration files"
+  :type '(string)
+  :group 'rjh
+  )
+
 (defun rjh/prompt-for-directory (dir prompt)
   "Prompts for a directory location, if it does not exist."
     ;; Prompt if directory does not exist
@@ -46,17 +57,6 @@
    )
   "Set location of rjhwelsh/emacs.d repo"
   :type '(directory)
-  :group 'rjh
-  )
-
-(defcustom rjh/config-env "EMACS_CONFIG"
-  "Set environment variable to parse for rjh/init configuration files"
-  :type '(string)
-  :group 'rjh
-  )
-(defcustom rjh/config-private-env "EMACS_CONFIG_PRIVATE"
-  "Set environment variable to parse for private configuration files"
-  :type '(string)
   :group 'rjh
   )
 
