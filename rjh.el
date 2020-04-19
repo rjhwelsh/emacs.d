@@ -1,4 +1,4 @@
-;;; rjh.el --- Loading functions for rjh's org conf files -*- lexical-binding: t; -*-
+;;; rjh.el --- Loading functions for rjh's org conf files -*- lexical-binding: nil; -*-
 
 ;; Copyright (C) 2020 rjhwelsh
 ;;
@@ -61,6 +61,7 @@
     ))
 
 ;; Functions to load config
+;; (requires dynamic scoping) 
 (defun rjh/load-init (orgfile)
   "Use org-babel-load-file to load init/orgfile in rjh/local-config-repo"
   (let ((dir rjh/local-init-dir))
