@@ -60,17 +60,24 @@
   :group 'rjh
   )
 
-(defcustom rjh/local-private-dir "~/.emacs.d/private"
+(defcustom rjh/local-private-dir 
+  (rjh/prompt-for-directory
+   "~/.emacs.d/private"
+   "Set location of rjh/local-private-dir:"
+   )
   "Directory path for private configuration files"
   :type '(directory)
   :group 'rjh
   )
 
 (defcustom rjh/local-init-dir
-      (expand-file-name
-       "init"
-       rjh/local-config-repo )
-      "Directory path for rjh/init configuration files"
+  (rjh/prompt-for-directory
+   (expand-file-name
+    "init"
+    rjh/local-config-repo )
+   "Set location of rjh/local-init-dir:"
+   )
+  "Directory path for rjh/init configuration files"
   :type '(directory)
   :group 'rjh
   )
