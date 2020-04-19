@@ -3,11 +3,11 @@
 (mapcar
  #'(lambda (arg) (delete arg load-path))
  (remove nil
-				 (mapcar
-					#'(lambda (arg)
-							(if (string-match-p "org$" arg) arg nil))
-					load-path
-					)))
+	 (mapcar
+	  #'(lambda (arg)
+	      (if (string-match-p "org$" arg) arg nil))
+	  load-path
+	  )))
 
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
@@ -40,10 +40,10 @@
   (require 'use-package))
 
 (use-package "diminish"
-	:ensure t
-	:init
-	(require 'diminish)
-	)
+  :ensure t
+  :init
+  (require 'diminish)
+  )
 (require 'bind-key)
 
 ;; Follow symlinks
@@ -54,8 +54,8 @@
 
 ;; Auto-compile
 (use-package auto-compile
-	:config (auto-compile-on-load-mode)
-	:ensure t)
+  :config (auto-compile-on-load-mode)
+  :ensure t)
 (setq load-prefer-newer t)
 
 ;; Add rjh repository elisp
@@ -70,8 +70,8 @@
  '(ecb-layout-name "left8")
  '(ecb-primary-secondary-mouse-buttons (quote mouse-1--mouse-2))
  '(package-selected-packages
-	 (quote
-		(crux yasnippet-snippets xah-fly-keys workgroups which-key web-mode use-package undo-tree telephone-line solarized-theme seeing-is-believing scad-preview ruby-test-mode ruby-electric rtags rspec-mode rainbow-mode rainbow-delimiters projectile pinentry pamparam org-plus-contrib org-edna org-caldav org-bullets oauth2 material-theme magit ledger-mode jinja2-mode jdee irony-eldoc inf-ruby htmlize helm graphviz-dot-mode gnuplot git-timemachine flycheck-plantuml flycheck-irony fill-column-indicator f ess elpy ecb diminish diff-hl deft company-jedi company-irony calfw-org calfw-ical calfw-cal calfw bbdb-vcard auto-compile aggressive-indent)))
+   (quote
+    (crux yasnippet-snippets xah-fly-keys workgroups which-key web-mode use-package undo-tree telephone-line solarized-theme seeing-is-believing scad-preview ruby-test-mode ruby-electric rtags rspec-mode rainbow-mode rainbow-delimiters projectile pinentry pamparam org-plus-contrib org-edna org-caldav org-bullets oauth2 material-theme magit ledger-mode jinja2-mode jdee irony-eldoc inf-ruby htmlize helm graphviz-dot-mode gnuplot git-timemachine flycheck-plantuml flycheck-irony fill-column-indicator f ess elpy ecb diminish diff-hl deft company-jedi company-irony calfw-org calfw-ical calfw-cal calfw bbdb-vcard auto-compile aggressive-indent)))
  '(seeing-is-believing-prefix "C-."))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
