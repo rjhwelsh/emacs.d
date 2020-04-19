@@ -63,7 +63,7 @@
        ;; Prompt if directory does not exist
        (repo (if (file-exists-p repo)
 		 repo
-	       (read-directory-name "Please specify location of rjhwelsh/emacs.d repo:")
+	       (read-directory-name "Set location of rjhwelsh/emacs.d repo:")
 	       ))
        )
   ;; Load rjh.el  
