@@ -25,7 +25,17 @@
   "Customizations by rjh"
   :tag "rjh config customization")
 
-(defcustom rjh/local-config-repo "~/.emacs.d/rjh/"
+(defcustom rjh/local-config-repo
+  ;; Use load-file-name as basis for repo
+  ;; else, if it exists, use default location 
+  ;; else, ask user to pick a location
+  (let* ((repo (or (file-name-directory load-file-name)
+		   "~/.emacs.d/rjh")))
+    ;; Prompt if directory does not exist
+    (if (file-exists-p repo)
+	repo
+      (read-directory-name "Please specify location of rjhwelsh/emacs.d repo:")
+      ))
   "Set rjh config repo location"
   :type '(directory)
   :group 'rjh
