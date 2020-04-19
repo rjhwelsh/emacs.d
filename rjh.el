@@ -21,26 +21,41 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-;; Customization group
 (defgroup rjh nil
   "Customizations by rjh"
   :tag "rjh config customization")
 
-;; Set rjh config repo location
-(setq rjh/local-config-repo "~/.emacs.d/rjh/")
+(defcustom rjh/local-config-repo "~/.emacs.d/rjh/"
+  "Set rjh config repo location"
+  :type '(directory)
+  :group 'rjh
+  )
 
-;; Set environment variable to parse for configuration files
-(setq rjh/config-env "EMACS_CONFIG")
-(setq rjh/config-private-env "EMACS_CONFIG_PRIVATE")
+(defcustom rjh/config-env "EMACS_CONFIG"
+  "Set environment variable to parse for rjh/init configuration files"
+  :type '(string)
+  :group 'rjh
+  )
+(defcustom rjh/config-private-env "EMACS_CONFIG_PRIVATE"
+  "Set environment variable to parse for private configuration files"
+  :type '(string)
+  :group 'rjh
+  )
 
-;; Location of private configuration files
-(setq rjh/local-private-dir "~/.emacs.d/private")
+(defcustom rjh/local-private-dir "~/.emacs.d/private"
+  "Directory path for private configuration files"
+  :type '(directory)
+  :group 'rjh
+  )
 
-;; Load config methods
-(setq rjh/local-init-dir
+(defcustom rjh/local-init-dir
       (expand-file-name
        "init"
-       rjh/local-config-repo ))
+       rjh/local-config-repo )
+      "Directory path for rjh/init configuration files"
+  :type '(directory)
+  :group 'rjh
+  )
 
 (defun rjh/load (dir)
   "Generates rjh/load functions
