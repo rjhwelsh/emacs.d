@@ -112,6 +112,17 @@
 	))
     ))
 
+;; Functions to list available config
+(defun rjh/list-conf (dir)
+  "Lists available config files in directory"
+  (mapcar
+   (lambda (string)
+     (substring
+      string
+      (+ (length (expand-file-name dir)) 1)
+      (- (length string) 4)))
+   (directory-files-recursively dir ".*\.org$")))
+
 ;; Functions to load config
 ;; (requires dynamic scoping) 
 (defun rjh/load-init (conf)
