@@ -137,10 +137,7 @@
 		 :conf conf))
 	 )
     (message "Loading init/%s ..." conf)
-    (funcall (rjh/load-base dir) conf props))
-  ;; Also load private/conf
-  (rjh/load-private conf)
-  )
+    (funcall (rjh/load-base dir) conf props)))
 
 (defun rjh/load-private (conf)
   "Use org-babel-load-file to load private/conf"
@@ -181,6 +178,7 @@ plist requires the following values, for each entry:
     (rjh/load-config-plist-list
      (append
       (rjh/config-plist-list-from-env rjh/config-env 'rjh/load-init)
+      (rjh/config-plist-list-from-env rjh/config-env 'rjh/load-private)
       (rjh/config-plist-list-from-env rjh/config-private-env 'rjh/load-private)))))
 
 (defun rjh/load-custom()
