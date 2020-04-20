@@ -123,7 +123,7 @@
 		 :loadf loadf
 		 :dirsym dirsym
 		 :dir dir
-		 :file basename))
+		 :conf basename))
 	 )
     (message "Loading init/%s ..." basename)
     (funcall (rjh/load-base dir) basename props))
@@ -140,7 +140,7 @@
 		 :loadf loadf
 		 :dirsym dirsym
 		 :dir dir
-		 :file basename))
+		 :conf basename))
 	 )
     (message "Loading private/%s ..." basename)
     (funcall (rjh/load-base dir) basename props)))
