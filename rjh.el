@@ -82,7 +82,7 @@
   :group 'rjh
   )
 
-(defcustom rjh/config-plist-list
+(defcustom rjh/config
   '()
   "A list of plists describing rjh configuration files to load"
   :type '(list)
@@ -90,8 +90,8 @@
   )
 
 ;; Variables
-(defvar rjh/loaded-config-plist-list '()
-  "A list of each loaded configuration properties")
+(defvar rjh/config-loaded '()
+  "A list of plists describing each loaded configuration")
 
 (defun rjh/load-base (dir)
   "Generates rjh/load functions
@@ -101,7 +101,7 @@
       (if (file-readable-p orgfile)
 	  (progn
 	    (org-babel-load-file orgfile t)
-	    (add-to-list 'rjh/loaded-config-plist-list props t)
+	    (add-to-list 'rjh/config-loaded props t)
 	    )
 	(progn
 	  (display-warning
@@ -127,7 +127,7 @@
 	 )
     (message "Loading init/%s ..." conf)
     (funcall (rjh/load-base dir) conf props))
-  ;; Load private/conf
+  ;; Also load private/conf
   (rjh/load-private conf)
   )
 
