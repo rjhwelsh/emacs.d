@@ -82,6 +82,10 @@
   :group 'rjh
   )
 
+;; Variables
+(defvar rjh/loaded-config-plist-list '()
+  "A list of each loaded configuration properties")
+
 (defun rjh/load (dir)
   "Generates rjh/load functions
      dir - load directory"
