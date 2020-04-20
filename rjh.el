@@ -172,4 +172,11 @@ plist requires the following values, for each entry:
       (rjh/config-plist-list-from-env rjh/config-env 'rjh/load-init)
       (rjh/config-plist-list-from-env rjh/config-private-env 'rjh/load-private)))))
 
+(defun rjh/load-custom()
+  "Loads configuration from customization variable, rjh/config"
+  (rjh/load-config-plist-list rjh/config))
+
+(defun rjh/save-custom()
+  "Saves current configuration to customization variable, rjh/config"
+  (customize-save-variable 'rjh/config rjh/config-loaded))
 
