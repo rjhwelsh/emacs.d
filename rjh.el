@@ -113,8 +113,8 @@
     ))
 
 ;; Functions to list available config
-(defun rjh/list-conf (dir)
-  "Lists available config files in directory"
+(defun rjh/config-list (dir)
+  "Lists available config options in directory"
   (mapcar
    (lambda (string)
      (substring
