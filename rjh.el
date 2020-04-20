@@ -101,7 +101,7 @@
       (if (file-readable-p orgfile)
 	  (progn
 	    (org-babel-load-file orgfile t)
-	    (add-to-list 'rjh/loaded-config-plist-list props)
+	    (add-to-list 'rjh/loaded-config-plist-list props t)
 	    )
 	(progn
 	  (display-warning
