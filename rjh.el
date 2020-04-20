@@ -114,8 +114,8 @@
 
 ;; Functions to load config
 ;; (requires dynamic scoping) 
-(defun rjh/load-init (basename)
-  "Use org-babel-load-file to load init/basename in rjh/local-config-repo"
+(defun rjh/load-init (conf)
+  "Use org-babel-load-file to load init/conf in rjh/local-config-repo"
   (let* ((dir rjh/local-init-dir)
 	 (loadf 'rjh/load-init)
 	 (dirsym 'rjh/load-init-dir)
@@ -123,16 +123,16 @@
 		 :loadf loadf
 		 :dirsym dirsym
 		 :dir dir
-		 :conf basename))
+		 :conf conf))
 	 )
-    (message "Loading init/%s ..." basename)
-    (funcall (rjh/load-base dir) basename props))
-  ;; Load private/basename
-  (rjh/load-private basename)
+    (message "Loading init/%s ..." conf)
+    (funcall (rjh/load-base dir) conf props))
+  ;; Load private/conf
+  (rjh/load-private conf)
   )
 
-(defun rjh/load-private (basename)
-  "Use org-babel-load-file to load private/basename"
+(defun rjh/load-private (conf)
+  "Use org-babel-load-file to load private/conf"
   (let* ((dir rjh/local-private-dir)
 	 (loadf 'rjh/load-private)
 	 (dirsym 'rjh/load-private-dir)
@@ -140,10 +140,10 @@
 		 :loadf loadf
 		 :dirsym dirsym
 		 :dir dir
-		 :conf basename))
+		 :conf conf))
 	 )
-    (message "Loading private/%s ..." basename)
-    (funcall (rjh/load-base dir) basename props)))
+    (message "Loading private/%s ..." conf)
+    (funcall (rjh/load-base dir) conf props)))
 
 (defun rjh/load-env ()
   "Loads configuration from environment variable, rjh/config-env"
