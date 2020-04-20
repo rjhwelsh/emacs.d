@@ -166,16 +166,10 @@ plist requires the following values, for each entry:
 
 (defun rjh/load-env ()
   "Loads configuration from environment variable, rjh/config-env"
-  (let ((configlist (delete "" (split-string (or (getenv rjh/config-env) ""))))
-	(privatelist (delete "" (split-string (or (getenv rjh/config-private-env) ""))))
-	)
-    ;; Load init config
-    (dolist (conf configlist)
-      (rjh/load-init conf)
-      )
+  (progn
+    (rjh/load-config-plist-list
+     (append
+      (rjh/config-plist-list-from-env rjh/config-env 'rjh/load-init)
+      (rjh/config-plist-list-from-env rjh/config-private-env 'rjh/load-private)))))
 
-    ;; Load private config (overrides) ...
-    (dolist (conf privatelist)
-      (rjh/load-private conf)
-      )
-    ))
+
