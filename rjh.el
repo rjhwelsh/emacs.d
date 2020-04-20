@@ -82,6 +82,13 @@
   :group 'rjh
   )
 
+(defcustom rjh/config-plist-list
+  '()
+  "A list of plists describing rjh configuration files to load"
+  :type '(list)
+  :group 'rjh
+  )
+
 ;; Variables
 (defvar rjh/loaded-config-plist-list '()
   "A list of each loaded configuration properties")
