@@ -145,6 +145,17 @@
     (message "Loading private/%s ..." conf)
     (funcall (rjh/load-base dir) conf props)))
 
+(defun rjh/load-config-plist-list (config-plist-list)
+  "Loads configuration from config-plist-list
+plist requires the following values, for each entry:
+    :loadf The loading function
+    :conf  The org config file"
+  (dolist (config-plist config-plist-list)
+    (funcall
+     (plist-get config-plist :loadf)
+     (plist-get config-plist :conf)
+     )))
+
 (defun rjh/load-env ()
   "Loads configuration from environment variable, rjh/config-env"
   (let ((configlist (delete "" (split-string (or (getenv rjh/config-env) ""))))
