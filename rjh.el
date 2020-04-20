@@ -126,7 +126,10 @@
 		 :file basename))
 	 )
     (message "Loading init/%s ..." basename)
-    (funcall (rjh/load-base dir) basename props)))
+    (funcall (rjh/load-base dir) basename props))
+  ;; Load private/basename
+  (rjh/load-private basename)
+  )
 
 (defun rjh/load-private (basename)
   "Use org-babel-load-file to load private/basename"
@@ -148,17 +151,12 @@
 	(privatelist (delete "" (split-string (or (getenv rjh/config-private-env) ""))))
 	)
     ;; Load init config
-    (dolist (orgfile configlist)
-      (rjh/load-init orgfile)
-      )
-
-    ;; Load private config (for each init) ...
-    (dolist (orgfile configlist)
-      (rjh/load-private orgfile)
+    (dolist (conf configlist)
+      (rjh/load-init conf)
       )
 
     ;; Load private config (overrides) ...
-    (dolist (orgfile privatelist)
-      (rjh/load-private orgfile)
+    (dolist (conf privatelist)
+      (rjh/load-private conf)
       )
     ))
