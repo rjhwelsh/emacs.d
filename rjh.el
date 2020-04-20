@@ -93,7 +93,7 @@
 (defvar rjh/loaded-config-plist-list '()
   "A list of each loaded configuration properties")
 
-(defun rjh/load (dir)
+(defun rjh/load-base (dir)
   "Generates rjh/load functions
      dir - load directory"
   (lambda (base props)
@@ -126,7 +126,7 @@
 		 :file basename))
 	 )
     (message "Loading init/%s ..." basename)
-    (funcall (rjh/load dir) basename props)))
+    (funcall (rjh/load-base dir) basename props)))
 
 (defun rjh/load-private (basename)
   "Use org-babel-load-file to load private/basename"
@@ -140,7 +140,7 @@
 		 :file basename))
 	 )
     (message "Loading private/%s ..." basename)
-    (funcall (rjh/load dir) basename props)))
+    (funcall (rjh/load-base dir) basename props)))
 
 (defun rjh/load-env ()
   "Loads configuration from environment variable, rjh/config-env"
