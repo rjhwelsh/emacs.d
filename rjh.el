@@ -89,11 +89,12 @@
 (defun rjh/load (dir)
   "Generates rjh/load functions
      dir - load directory"
-  (lambda (file)
-    (let ((orgfile (expand-file-name (concat orgfile ".org") dir)))
+  (lambda (base props)
+    (let ((orgfile (expand-file-name (concat base ".org") dir)))
       (if (file-readable-p orgfile)
 	  (progn
 	    (org-babel-load-file orgfile t)
+	    (add-to-list 'rjh/loaded-config-plist-list props)
 	    )
 	(progn
 	  (display-warning
@@ -106,17 +107,24 @@
 
 ;; Functions to load config
 ;; (requires dynamic scoping) 
-(defun rjh/load-init (orgfile)
-  "Use org-babel-load-file to load init/orgfile in rjh/local-config-repo"
-  (let ((dir rjh/local-init-dir))
-    (message "Loading init/%s ..." orgfile)
-    (funcall (rjh/load dir) orgfile)))
+(defun rjh/load-init (basename)
+  "Use org-babel-load-file to load init/basename in rjh/local-config-repo"
+  (let* ((dir rjh/local-init-dir)
+	 (loadf 'rjh/load-init)
+	 (props (list :loadf loadf :dir dir :file basename))
+	 )
+    (message "Loading init/%s ..." basename)
+    (funcall (rjh/load dir) basename props)
+    ))
 
-(defun rjh/load-private (orgfile)
-  "Use org-babel-load-file to load private/orgfile"
-  (let ((dir rjh/local-private-dir))
-    (message "Loading private/%s ..." orgfile)
-    (funcall (rjh/load dir) orgfile)))
+(defun rjh/load-private (basename)
+  "Use org-babel-load-file to load private/basename"
+  (let* ((dir rjh/local-private-dir)
+	 (loadf 'rjh/load-private)
+	 (props (list :loadf loadf :dir dir :file basename))
+	 )
+    (message "Loading private/%s ..." basename)
+    (funcall (rjh/load dir) basename props)))
 
 (defun rjh/load-env ()
   "Loads configuration from environment variable, rjh/config-env"
