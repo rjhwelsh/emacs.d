@@ -189,3 +189,28 @@ plist requires the following values, for each entry:
   "Saves current configuration to customization variable, rjh/config"
   (customize-save-variable 'rjh/config rjh/config-loaded))
 
+;; Interactive functions
+(defun rjh/load (conf)
+  "Load configuration file/s
+Will attempt to load configuration file(s) from:
+ rjh/local-init-dir
+ rjh/local-private-dir"
+  (interactive
+   (list
+    (completing-read
+     "Select config: "
+     (completion-table-with-cache 'rjh/config-completion-function t)
+     nil
+     t)))
+  (rjh/load-init conf)
+  (rjh/load-private conf)
+  )
+
+;; Completion
+(defun rjh/config-completion-function (string)
+  "Return a list of strings completion table for loading config"
+  (append
+   (rjh/config-list rjh/local-init-dir)
+   (rjh/config-list rjh/local-private-dir))
+  )
+
