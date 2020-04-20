@@ -156,6 +156,14 @@ plist requires the following values, for each entry:
      (plist-get config-plist :conf)
      )))
 
+(defun rjh/config-plist-list-from-env (env loadf)
+  "Reads config-plist-list from environment variable
+    env - environment variable name
+    loadf - the loading function for each conf"
+  (let ((conf-list (delete "" (split-string (or (getenv env) "")))))
+    (mapcar
+     (lambda (conf) (list :loadf loadf :conf conf)) conf-list)))
+
 (defun rjh/load-env ()
   "Loads configuration from environment variable, rjh/config-env"
   (let ((configlist (delete "" (split-string (or (getenv rjh/config-env) ""))))
