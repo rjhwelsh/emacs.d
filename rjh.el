@@ -93,11 +93,15 @@
 (defvar rjh/config-loaded '()
   "A list of plists describing each loaded configuration")
 
+(defun rjh/config-file-path (base dir)
+  "Converts conf to a path, using dir, and base"
+  (expand-file-name (concat base ".org") dir))
+
 (defun rjh/load-base (dir)
   "Generates rjh/load functions
      dir - load directory"
   (lambda (base props)
-    (let ((orgfile (expand-file-name (concat base ".org") dir)))
+    (let ((orgfile (rjh/config-file-path base dir)))
       (if (file-readable-p orgfile)
 	  (progn
 	    (org-babel-load-file orgfile t)
