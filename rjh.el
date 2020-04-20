@@ -111,17 +111,26 @@
   "Use org-babel-load-file to load init/basename in rjh/local-config-repo"
   (let* ((dir rjh/local-init-dir)
 	 (loadf 'rjh/load-init)
-	 (props (list :loadf loadf :dir dir :file basename))
+	 (dirsym 'rjh/load-init-dir)
+	 (props (list
+		 :loadf loadf
+		 :dirsym dirsym
+		 :dir dir
+		 :file basename))
 	 )
     (message "Loading init/%s ..." basename)
-    (funcall (rjh/load dir) basename props)
-    ))
+    (funcall (rjh/load dir) basename props)))
 
 (defun rjh/load-private (basename)
   "Use org-babel-load-file to load private/basename"
   (let* ((dir rjh/local-private-dir)
 	 (loadf 'rjh/load-private)
-	 (props (list :loadf loadf :dir dir :file basename))
+	 (dirsym 'rjh/load-private-dir)
+	 (props (list
+		 :loadf loadf
+		 :dirsym dirsym
+		 :dir dir
+		 :file basename))
 	 )
     (message "Loading private/%s ..." basename)
     (funcall (rjh/load dir) basename props)))
