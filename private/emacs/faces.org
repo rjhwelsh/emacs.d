@@ -1,0 +1,11 @@
+* Faces
+Personalized settings for faces.
+
+** Font
+Set font and size.
+#+begin_src emacs-lisp
+  (set-frame-font "Liberation Mono-12" 
+		  t ;; KEEP-SIZE : Try to keep frame size (in pixels) fixed 
+		  t) ;; FRAMES : t = apply to all frames
+#+end_src
+

@@ -1,0 +1,13 @@
+* Faces 
+** Fonts
+   Function to dynamically try out a font.
+   #+begin_src emacs-lisp
+     (defun rjh/try-out-font (fontdesc)
+       (interactive
+	(list 
+	 (completing-read
+	  "Select font: "
+	  (mapcar (lambda (string) (caddr (split-string string "-"))) (x-list-fonts "*"))
+	 )))
+       (set-face-attribute 'default nil :font fontdesc))
+   #+end_src
