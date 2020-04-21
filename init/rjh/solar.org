@@ -8,1087 +8,1087 @@ Provide sunrise/sunset functions for sexp expressions in diary and org-mode
 
 These functions build on the following.
 #+begin_src emacs-lisp
-(require 'solar)
-(require 'org)
-(require 'org-agenda)
-(require 'ox-icalendar)
-(require 'icalendar)
+  (require 'solar)
+  (require 'org)
+  (require 'org-agenda)
+  (require 'ox-icalendar)
+  (require 'icalendar)
 #+end_src
 
 * Daylight
 ** current-hour
-Function to return the current hour
-#+begin_src emacs-lisp
-	(defun current-hour (&optional time zone)
-		"Return the current hour, as a float relative to time and zone"
-		(require 'cal-dst) ;; ;TODO: Add dst zone relative to current time / date
-		(let* ((time (or time (current-time)))
-					 (zone (or zone (current-time-zone)))
-					 (dtime (decode-time time zone))
-					 (sec (car dtime))
-					 (min (cadr dtime))
-					 (hour (caddr dtime)))
-			(cons
-			 (+ (/ (float sec) 3600)
-					(/ (float min) 60)
-					(float hour))
-			 (cdr zone))))
-#+end_src
+   Function to return the current hour
+   #+begin_src emacs-lisp
+     (defun current-hour (&optional time zone)
+       "Return the current hour, as a float relative to time and zone"
+       (require 'cal-dst) ;; ;TODO: Add dst zone relative to current time / date
+       (let* ((time (or time (current-time)))
+	      (zone (or zone (current-time-zone)))
+	      (dtime (decode-time time zone))
+	      (sec (car dtime))
+	      (min (cadr dtime))
+	      (hour (caddr dtime)))
+	 (cons
+	  (+ (/ (float sec) 3600)
+	     (/ (float min) 60)
+	     (float hour))
+	  (cdr zone))))
+   #+end_src
 ** calendar-offset-date
-	 #+begin_src emacs-lisp
-		 (defun calendar-offset-date (date &optional offset)
-			 "Offset the gregorian date by OFFSET number of days"
-			 (let ((offset (or offset 0)))
-				 (calendar-gregorian-from-absolute
-					(+ offset (calendar-absolute-from-gregorian date))
-					)))
-	 #+end_src
+   #+begin_src emacs-lisp
+     (defun calendar-offset-date (date &optional offset)
+       "Offset the gregorian date by OFFSET number of days"
+       (let ((offset (or offset 0)))
+	 (calendar-gregorian-from-absolute
+	  (+ offset (calendar-absolute-from-gregorian date))
+	  )))
+   #+end_src
 
 ** solar-remaining-daylight
-#+begin_src emacs-lisp
-	(defun solar-remaining-daylight (date &optional nolocation)
-		"Calculate the amount of daylight hours remaining"
-		(let* ((l (solar-sunrise-sunset date))
-					 (c (current-hour))
-					 (ss (cadr l))
-					 (sr (car l))
-					 (current (car c))
-					 (sunset (car ss))
-					 (sunrise (car sr))
-					 (timezones (list (cadr c) (cadr ss))))
-			;; (if (not (apply 'equal timezones)) (error "Timezones are not compatible! %s" timezones))
-			(if (equal date (calendar-current-date))
-					(if (and (<= current sunset) (>= current sunrise))
-							(- sunset current))
-				(if (> (calendar-absolute-from-gregorian date)
-							 (calendar-absolute-from-gregorian (calendar-current-date)))
-						(- sunset sunrise)
-					))))
-#+end_src
+   #+begin_src emacs-lisp
+     (defun solar-remaining-daylight (date &optional nolocation)
+       "Calculate the amount of daylight hours remaining"
+       (let* ((l (solar-sunrise-sunset date))
+	      (c (current-hour))
+	      (ss (cadr l))
+	      (sr (car l))
+	      (current (car c))
+	      (sunset (car ss))
+	      (sunrise (car sr))
+	      (timezones (list (cadr c) (cadr ss))))
+	 ;; (if (not (apply 'equal timezones)) (error "Timezones are not compatible! %s" timezones))
+	 (if (equal date (calendar-current-date))
+	     (if (and (<= current sunset) (>= current sunrise))
+		 (- sunset current))
+	   (if (> (calendar-absolute-from-gregorian date)
+		  (calendar-absolute-from-gregorian (calendar-current-date)))
+	       (- sunset sunrise)
+	     ))))
+   #+end_src
 
 ** solar-remaining-night
-	 #+begin_src emacs-lisp
-		 (defun solar-remaining-night (date &optional nolocation)
-			 "Calculate the amount of hours remaining until next sunrise"
-			 (let* ((l (solar-sunrise-sunset date))
-							(l2 (solar-sunrise-sunset (calendar-offset-date date 1)))
-							(c (current-hour))
-							(ss (cadr l))
-							(current (car c))
-							(sunset (car ss))
+   #+begin_src emacs-lisp
+     (defun solar-remaining-night (date &optional nolocation)
+       "Calculate the amount of hours remaining until next sunrise"
+       (let* ((l (solar-sunrise-sunset date))
+	      (l2 (solar-sunrise-sunset (calendar-offset-date date 1)))
+	      (c (current-hour))
+	      (ss (cadr l))
+	      (current (car c))
+	      (sunset (car ss))
 
-							(today? (equal date (calendar-current-date)))
-							(after-today? (> (calendar-absolute-from-gregorian date)
-									(calendar-absolute-from-gregorian (calendar-current-date))))
-							(after-sunset? (> current sunset))
+	      (today? (equal date (calendar-current-date)))
+	      (after-today? (> (calendar-absolute-from-gregorian date)
+			       (calendar-absolute-from-gregorian (calendar-current-date))))
+	      (after-sunset? (> current sunset))
 
-							(sr (car (if (or after-sunset? after-today?) l2 l)))
-							(sunrise (+ (car sr) (if (or after-sunset? after-today?) 24.0 0)))
+	      (sr (car (if (or after-sunset? after-today?) l2 l)))
+	      (sunrise (+ (car sr) (if (or after-sunset? after-today?) 24.0 0)))
 
-							(timezones (list (cadr c) (cadr sr))))
-				 ;; (if (not (apply 'equal timezones)) (error "Timezones are not compatible! %s" timezones))
-				 (if today?
-						 (if (and (<= current sunrise) (>= current sunset))
-								 (- sunrise current))
-					 (if after-today?
-							 (- sunrise sunset)
-						 ))))
-	 #+end_src
+	      (timezones (list (cadr c) (cadr sr))))
+	 ;; (if (not (apply 'equal timezones)) (error "Timezones are not compatible! %s" timezones))
+	 (if today?
+	     (if (and (<= current sunrise) (>= current sunset))
+		 (- sunrise current))
+	   (if after-today?
+	       (- sunrise sunset)
+	     ))))
+   #+end_src
 
 * Sunrise
-	#+begin_src emacs-lisp
-		(defun solar-sunrise-string (date &optional offset nolocation)
-			"String of *local* time of sunrise and daylight on Gregorian DATE.
-			Optional OFFSET non-nil means offset by this number of hours (float)
-							 NOLOCATION non-nil means do not print the location"
-			(let* ((l (solar-sunrise-sunset date))
-						(o (or offset 0))
-						(sr (car l))
-						(sr2 (if sr (cons (+ (car sr) o) (cdr sr))))
-						(daylight (solar-remaining-daylight date)))
-				(format
-				 "%s %s"
-				 (if sr2
-						 (concat (apply 'solar-time-string sr2) " Sunrise")
-					 "no sunrise")
-				 (concat (if daylight (format "(%s hrs daylight)" (solar-daylight daylight)))))))
+  #+begin_src emacs-lisp
+    (defun solar-sunrise-string (date &optional offset nolocation)
+      "String of *local* time of sunrise and daylight on Gregorian DATE.
+	    Optional OFFSET non-nil means offset by this number of hours (float)
+					     NOLOCATION non-nil means do not print the location"
+      (let* ((l (solar-sunrise-sunset date))
+	     (o (or offset 0))
+	     (sr (car l))
+	     (sr2 (if sr (cons (+ (car sr) o) (cdr sr))))
+	     (daylight (solar-remaining-daylight date)))
+	(format
+	 "%s %s"
+	 (if sr2
+	     (concat (apply 'solar-time-string sr2) " Sunrise")
+	   "no sunrise")
+	 (concat (if daylight (format "(%s hrs daylight)" (solar-daylight daylight)))))))
 
-		(defun diary-sunrise (&optional offset)
-			"Local time of sunrise as a diary entry.
-			Accurate to a few seconds."
-			(or (and calendar-latitude calendar-longitude calendar-time-zone)
-					(solar-setup))
-			(solar-sunrise-string date offset))
-	#+end_src
+    (defun diary-sunrise (&optional offset)
+      "Local time of sunrise as a diary entry.
+	    Accurate to a few seconds."
+      (or (and calendar-latitude calendar-longitude calendar-time-zone)
+	  (solar-setup))
+      (solar-sunrise-string date offset))
+  #+end_src
 
 * Sunset
-	#+begin_src emacs-lisp
-		(defun solar-sunset-string (date &optional offset nolocation)
-			"String of *local* time of sunset and daylight on Gregorian DATE.
-					Optional OFFSET non-nil means offset by this number of hours (float)
-									 NOLOCATION non-nil means do not print the location"
-			(let* ((l (solar-sunrise-sunset date))
-						 (o (or offset 0))
-						 (ss (cadr l))
-						 (ss2 (if ss (cons (+ (car ss) o) (cdr ss))))
-						 (night (solar-remaining-night date)))
-				(format
-				 "%s %s"
-				 (if ss2
-						 (concat (apply 'solar-time-string ss2) " Sunset" )
-					 "no sunset")
-				 (concat (if night (format "(%s hrs 'til dawn)" (solar-daylight night)))))))
+  #+begin_src emacs-lisp
+    (defun solar-sunset-string (date &optional offset nolocation)
+      "String of *local* time of sunset and daylight on Gregorian DATE.
+			    Optional OFFSET non-nil means offset by this number of hours (float)
+							     NOLOCATION non-nil means do not print the location"
+      (let* ((l (solar-sunrise-sunset date))
+	     (o (or offset 0))
+	     (ss (cadr l))
+	     (ss2 (if ss (cons (+ (car ss) o) (cdr ss))))
+	     (night (solar-remaining-night date)))
+	(format
+	 "%s %s"
+	 (if ss2
+	     (concat (apply 'solar-time-string ss2) " Sunset" )
+	   "no sunset")
+	 (concat (if night (format "(%s hrs 'til dawn)" (solar-daylight night)))))))
 
-		(defun diary-sunset (&optional offset)
-			"Local time of sunset as a diary entry.
-			Accurate to a few seconds."
-			(or (and calendar-latitude calendar-longitude calendar-time-zone)
-					(solar-setup))
-			(solar-sunset-string date offset))
-	#+end_src
+    (defun diary-sunset (&optional offset)
+      "Local time of sunset as a diary entry.
+	    Accurate to a few seconds."
+      (or (and calendar-latitude calendar-longitude calendar-time-zone)
+	  (solar-setup))
+      (solar-sunset-string date offset))
+  #+end_src
 
 * Patch :org:org:agenda:
-Add a patch to allow times to be defined with sexp-expressions.
-Time is defined in the string portion returned by the sexp.
-The time must be at the start of the string.
+  Add a patch to allow times to be defined with sexp-expressions.
+  Time is defined in the string portion returned by the sexp.
+  The time must be at the start of the string.
 
 ** org.el
 *** org-time-from-sexp :NEW:
-Define function to obtain time from sexp expressions.
-#+begin_src emacs-lisp
-	(defun org-time-from-sexp (s d)
-		"Convert Org timestamp S, as a sexp-string, into a time string for date D.
-							Return nil if S is no valid time string found"
-		(require 'diary-lib)
-		(let* ((result (diary-sexp-entry s "" d))
-					 (txt
-						(cond
-						 ((and (stringp result)
-									 (not (string-blank-p result)))
-							result)
-						 ((and (consp result)
-									 (stringp (cdr result))
-									 (not (string-blank-p (cdr result))))
-							(cdr result))
-						 (t nil)))
-					 (ts
-						(if txt
-								(format "%04d"
-												(diary-entry-time txt)))))
-			(if ts
-					(progn
-						(string-match "\\(..\\)\\(..\\)" ts)
-						(concat
-						 (match-string 1 ts)
-						 ":"
-						 (match-string 2 ts))
-						)
-				)))
-#+end_src
+    Define function to obtain time from sexp expressions.
+    #+begin_src emacs-lisp
+      (defun org-time-from-sexp (s d)
+	"Convert Org timestamp S, as a sexp-string, into a time string for date D.
+						      Return nil if S is no valid time string found"
+	(require 'diary-lib)
+	(let* ((result (diary-sexp-entry s "" d))
+	       (txt
+		(cond
+		 ((and (stringp result)
+		       (not (string-blank-p result)))
+		  result)
+		 ((and (consp result)
+		       (stringp (cdr result))
+		       (not (string-blank-p (cdr result))))
+		  (cdr result))
+		 (t nil)))
+	       (ts
+		(if txt
+		    (format "%04d"
+			    (diary-entry-time txt)))))
+	  (if ts
+	      (progn
+		(string-match "\\(..\\)\\(..\\)" ts)
+		(concat
+		 (match-string 1 ts)
+		 ":"
+		 (match-string 2 ts))
+		)
+	    )))
+    #+end_src
 *** org-timestamp-from-sexp :NEW:
-		Calculates the next occurence of sexp, or nil if it is beyond
-		org-sexp-max-future-days.
-		Compare use of function to [[help:icalendar--convert-sexp-to-ical][icalendar--convert-sexp-to-ical]]
-		#+begin_src emacs-lisp
-			(defun org-timestamp-from-sexp ( sexp &optional start )
-				"Convert SEXP to an org timestamp. Enumerate for org-sexp-enumeration-days
-					(alias for icalendar-export-sexp-enumeration-days).
+    Calculates the next occurence of sexp, or nil if it is beyond
+    org-sexp-max-future-days.
+    Compare use of function to [[help:icalendar--convert-sexp-to-ical][icalendar--convert-sexp-to-ical]]
+    #+begin_src emacs-lisp
+      (defun org-timestamp-from-sexp ( sexp &optional start )
+	"Convert SEXP to an org timestamp. Enumerate for org-sexp-enumeration-days
+		      (alias for icalendar-export-sexp-enumeration-days).
 
-					SEXP is a generic diary sexp expression
+		      SEXP is a generic diary sexp expression
 
-					Optional argument START determines the first day of the enumeration, given
-					as a time value, in the same format as returned by `current-time'
+		      Optional argument START determines the first day of the enumeration, given
+		      as a time value, in the same format as returned by `current-time'
 
-					See icalendar--convert-sexp-to-ical"
+		      See icalendar--convert-sexp-to-ical"
 
-				(progn
-					(require 'icalendar)
-					(let ((now (or start (current-time))))
-						(delete nil
-										(mapcar
-										 (lambda (offset)
-											 (let* ((day (decode-time (time-add now
-																													(seconds-to-time
-																													 (* offset 60 60 24)))))
-															(d (nth 3 day))
-															(m (nth 4 day))
-															(y (nth 5 day))
-															(se (diary-sexp-entry sexp "" (list m d y)))
-															(see (cond ((stringp se) se)
-																				 ((consp se) (cdr se))
-																				 (t nil))))
-												 (cond ((null see)
-																nil)
-															 ((stringp see)
-																(let* ((ts (diary-entry-time see))
-																			 (hhmm (if (>= ts 0) (format "%04d" ts)))
-																			 (org-ts
-																				(if hhmm
-																						(progn
-																							(string-match "\\(..\\)\\(..\\)" hhmm)
-																							(let* ((sec 0)
-																										 (min (string-to-number (match-string 2 hhmm)))
-																										 (hour (string-to-number (match-string 1 hhmm)))
-																										 (next (encode-time sec min hour d m y)))
-																								(org-timestamp-from-time next t)))
-																					(let ((next (encode-time 0 0 0 d m y)))
-																						(org-timestamp-from-time next)))))
-																	(let
-																			((p-alist '((:minute-start . :minute-end)
-																									(:hour-start . :hour-end)
-																									(:day-start . :day-end)
-																									(:month-start . :month-end)
-																									(:year-start . :year-end)
-																									)))
-																		;; Copy start times over to end times
-																		(dolist (p-cell p-alist)
-																			(org-element-put-property org-ts
-																																(cdr p-cell)
-																																(org-element-property
-																																 (car p-cell) org-ts)))
-																		org-ts
-																		))) ;; END OF LET* ((ts (appears to match with (cond
-															 ((error "Unsupported Sexp-entry: %s"
-																			 sexp)))))
-										 (number-sequence
-											0 (- icalendar-export-sexp-enumeration-days 1))))
-						)))
-		#+end_src
+	(progn
+	  (require 'icalendar)
+	  (let ((now (or start (current-time))))
+	    (delete nil
+		    (mapcar
+		     (lambda (offset)
+		       (let* ((day (decode-time (time-add now
+							  (seconds-to-time
+							   (* offset 60 60 24)))))
+			      (d (nth 3 day))
+			      (m (nth 4 day))
+			      (y (nth 5 day))
+			      (se (diary-sexp-entry sexp "" (list m d y)))
+			      (see (cond ((stringp se) se)
+					 ((consp se) (cdr se))
+					 (t nil))))
+			 (cond ((null see)
+				nil)
+			       ((stringp see)
+				(let* ((ts (diary-entry-time see))
+				       (hhmm (if (>= ts 0) (format "%04d" ts)))
+				       (org-ts
+					(if hhmm
+					    (progn
+					      (string-match "\\(..\\)\\(..\\)" hhmm)
+					      (let* ((sec 0)
+						     (min (string-to-number (match-string 2 hhmm)))
+						     (hour (string-to-number (match-string 1 hhmm)))
+						     (next (encode-time sec min hour d m y)))
+						(org-timestamp-from-time next t)))
+					  (let ((next (encode-time 0 0 0 d m y)))
+					    (org-timestamp-from-time next)))))
+				  (let
+				      ((p-alist '((:minute-start . :minute-end)
+						  (:hour-start . :hour-end)
+						  (:day-start . :day-end)
+						  (:month-start . :month-end)
+						  (:year-start . :year-end)
+						  )))
+				    ;; Copy start times over to end times
+				    (dolist (p-cell p-alist)
+				      (org-element-put-property org-ts
+								(cdr p-cell)
+								(org-element-property
+								 (car p-cell) org-ts)))
+				    org-ts
+				    ))) ;; END OF LET* ((ts (appears to match with (cond
+			       ((error "Unsupported Sexp-entry: %s"
+				       sexp)))))
+		     (number-sequence
+		      0 (- icalendar-export-sexp-enumeration-days 1))))
+	    )))
+    #+end_src
 *** org-time-string-to-absolute :DOC:
-		This function is used to obtain the date from sexps in org-agenda.el
-		Also known as _org-agenda--timestamp-to-absolute_ in org-agenda.el
-		Uses variables s, current.
-		Where
-- s :: timestamp/sexp (excluding <>) e.g. %%(diary-sunrise)
-- current :: (calendar-absolute-from-gregorian date)
+    This function is used to obtain the date from sexps in org-agenda.el
+    Also known as _org-agenda--timestamp-to-absolute_ in org-agenda.el
+    Uses variables s, current.
+    Where
+    - s :: timestamp/sexp (excluding <>) e.g. %%(diary-sunrise)
+    - current :: (calendar-absolute-from-gregorian date)
 
-Match any day with a sunrise
-#+begin_example emacs-lisp
-(calendar-gregorian-from-absolute (org-time-string-to-absolute "%%(diary-sunrise)" (calendar-absolute-from-gregorian (calendar-current-date))))
-#+end_example
+    Match any day with a sunrise
+    #+begin_example emacs-lisp
+    (calendar-gregorian-from-absolute (org-time-string-to-absolute "%%(diary-sunrise)" (calendar-absolute-from-gregorian (calendar-current-date))))
+    #+end_example
 
-Match 3rd Sunday of the month
-#+begin_example emacs-lisp
-(calendar-gregorian-from-absolute (org-time-string-to-absolute "%%(diary-float t 0 3)" (calendar-absolute-from-gregorian (calendar-current-date))))
-#+end_example
+    Match 3rd Sunday of the month
+    #+begin_example emacs-lisp
+    (calendar-gregorian-from-absolute (org-time-string-to-absolute "%%(diary-float t 0 3)" (calendar-absolute-from-gregorian (calendar-current-date))))
+    #+end_example
 
-Match any past/future 4th Sunday of the month (regular timestamp)
-#+begin_example emacs-lisp
-(calendar-gregorian-from-absolute (org-time-string-to-absolute "<2020-02-01 Sat 12:49 ++7d>" (calendar-absolute-from-gregorian (calendar-current-date)) 'past))
-(calendar-gregorian-from-absolute (org-time-string-to-absolute "<2020-02-01 Sat 12:49 ++7d>" (calendar-absolute-from-gregorian (calendar-current-date)) 'future))
-#+end_example
+    Match any past/future 4th Sunday of the month (regular timestamp)
+    #+begin_example emacs-lisp
+    (calendar-gregorian-from-absolute (org-time-string-to-absolute "<2020-02-01 Sat 12:49 ++7d>" (calendar-absolute-from-gregorian (calendar-current-date)) 'past))
+    (calendar-gregorian-from-absolute (org-time-string-to-absolute "<2020-02-01 Sat 12:49 ++7d>" (calendar-absolute-from-gregorian (calendar-current-date)) 'future))
+    #+end_example
 
-Doing this with sexps, does not work for obvious reasons. (Halting problem)
+    Doing this with sexps, does not work for obvious reasons. (Halting problem)
 *** org-sexp-enumeration-days :notimplemented:
-		Variable defining the maximum number of days into the future into which
-		sexps should be calculated
-		This variable already exists in [[help:icalendar-export-sexp-enumeration-days][icalendar-export-sexp-enumeration-days]]
+    Variable defining the maximum number of days into the future into which
+    sexps should be calculated
+    This variable already exists in [[help:icalendar-export-sexp-enumeration-days][icalendar-export-sexp-enumeration-days]]
 ** org-agenda.el patches
-Patch org-agenda.el to allow sexp to calculate times.
+   Patch org-agenda.el to allow sexp to calculate times.
 
 *** org-agenda-get-scheduled
 **** Patch
-#+begin_example emacs-lisp
- 										 (level (make-string (org-reduced-level (org-outline-level))
- 																				 ?\s))
- 										 (head (buffer-substring (point) (line-end-position)))
-+										 (sexp-time
-+											(if sexp?
-+													(org-time-from-sexp
-+													 (replace-regexp-in-string "^%%" "" s)
-+													 (calendar-gregorian-from-absolute current))))
-										 (time
-											(cond
-											 ;; No time of day designation if it is only a
-											 ;; reminder, except for habits, which always show
-											 ;; the time of day.  Habits are an exception
-											 ;; because if there is a time of day, that is
-											 ;; interpreted to mean they should usually happen
-											 ;; then, even if doing the habit was missed.
-											 ((and
-												 (not habitp)
-												 (/= current schedule)
-												 (/= current repeat))
-												nil)
-											 ((string-match " \\([012]?[0-9]:[0-9][0-9]\\)" s)
-												(concat (substring s (match-beginning 1)) " "))
-+											 (sexp-time
-+												(concat sexp-time " "))
-											 (t 'time)))
-#+end_example
+     #+begin_example emacs-lisp
+										      (level (make-string (org-reduced-level (org-outline-level))
+																				      ?\s))
+										      (head (buffer-substring (point) (line-end-position)))
+     +										 (sexp-time
+     +											(if sexp?
+     +													(org-time-from-sexp
+     +													 (replace-regexp-in-string "^%%" "" s)
+     +													 (calendar-gregorian-from-absolute current))))
+										      (time
+											     (cond
+											      ;; No time of day designation if it is only a
+											      ;; reminder, except for habits, which always show
+											      ;; the time of day.  Habits are an exception
+											      ;; because if there is a time of day, that is
+											      ;; interpreted to mean they should usually happen
+											      ;; then, even if doing the habit was missed.
+											      ((and
+												      (not habitp)
+												      (/= current schedule)
+												      (/= current repeat))
+												     nil)
+											      ((string-match " \\([012]?[0-9]:[0-9][0-9]\\)" s)
+												     (concat (substring s (match-beginning 1)) " "))
+     +											 (sexp-time
+     +												(concat sexp-time " "))
+											      (t 'time)))
+     #+end_example
 **** Source
-#+begin_src emacs-lisp
-	(defun org-agenda-get-scheduled (&optional deadlines with-hour)
-		"Return the scheduled information for agenda display.
-	Optional argument DEADLINES is a list of deadline items to be
-	displayed in agenda view.  When WITH-HOUR is non-nil, only return
-	scheduled items with an hour specification like [h]h:mm."
-		(let* ((props (list 'org-not-done-regexp org-not-done-regexp
-												'org-todo-regexp org-todo-regexp
-												'org-complex-heading-regexp org-complex-heading-regexp
-												'done-face 'org-agenda-done
-												'mouse-face 'highlight
-												'help-echo
-												(format "mouse-2 or RET jump to Org file %s"
-																(abbreviate-file-name buffer-file-name))))
-					 (regexp (if with-hour
-											 org-scheduled-time-hour-regexp
-										 org-scheduled-time-regexp))
-					 (today (org-today))
-					 (todayp (org-agenda-today-p date)) ; DATE bound by calendar.
-					 (current (calendar-absolute-from-gregorian date))
-					 (deadline-pos
-						(mapcar (lambda (d)
-											(let ((m (get-text-property 0 'org-hd-marker d)))
-												(and m (marker-position m))))
-										deadlines))
-					 scheduled-items)
-			(goto-char (point-min))
-			(while (re-search-forward regexp nil t)
-				(catch :skip
-					(unless (save-match-data (org-at-planning-p)) (throw :skip nil))
-					(org-agenda-skip)
-					(let* ((s (match-string 1))
-								 (pos (1- (match-beginning 1)))
-								 (todo-state (save-match-data (org-get-todo-state)))
-								 (donep (member todo-state org-done-keywords))
-								 (sexp? (string-prefix-p "%%" s))
-								 ;; SCHEDULE is the scheduled date for the entry.  It is
-								 ;; either the bare date or the last repeat, according
-								 ;; to `org-agenda-prefer-last-repeat'.
-								 (schedule
-									(cond
-									 (sexp? (org-agenda--timestamp-to-absolute s current))
-									 ((or (eq org-agenda-prefer-last-repeat t)
-												(member todo-state org-agenda-prefer-last-repeat))
-										(org-agenda--timestamp-to-absolute
-										 s today 'past (current-buffer) pos))
-									 (t (org-agenda--timestamp-to-absolute s))))
-								 ;; REPEAT is the future repeat closest from CURRENT,
-								 ;; according to `org-agenda-show-future-repeats'. If
-								 ;; the latter is nil, or if the time stamp has no
-								 ;; repeat part, default to SCHEDULE.
-								 (repeat
-									(cond
-									 (sexp? schedule)
-									 ((<= current today) schedule)
-									 ((not org-agenda-show-future-repeats) schedule)
-									 (t
-										(let ((base (if (eq org-agenda-show-future-repeats 'next)
-																		(1+ today)
-																	current)))
-											(org-agenda--timestamp-to-absolute
-											 s base 'future (current-buffer) pos)))))
-								 (diff (- current schedule))
-								 (warntime (get-text-property (point) 'org-appt-warntime))
-								 (pastschedp (< schedule today))
-								 (futureschedp (> schedule today))
-								 (habitp (and (fboundp 'org-is-habit-p) (org-is-habit-p)))
-								 (suppress-delay
-									(let ((deadline (and org-agenda-skip-scheduled-delay-if-deadline
-																			 (org-entry-get nil "DEADLINE"))))
-										(cond
-										 ((not deadline) nil)
-										 ;; The current item has a deadline date, so
-										 ;; evaluate its delay time.
-										 ((integerp org-agenda-skip-scheduled-delay-if-deadline)
-											;; Use global delay time.
-											(- org-agenda-skip-scheduled-delay-if-deadline))
-										 ((eq org-agenda-skip-scheduled-delay-if-deadline
-													'post-deadline)
-											;; Set delay to no later than DEADLINE.
-											(min (- schedule
-															(org-agenda--timestamp-to-absolute deadline))
-													 org-scheduled-delay-days))
-										 (t 0))))
-								 (ddays
-									(cond
-									 ;; Nullify delay when a repeater triggered already
-									 ;; and the delay is of the form --Xd.
-									 ((and (string-match-p "--[0-9]+[hdwmy]" s)
-												 (> schedule (org-agenda--timestamp-to-absolute s)))
-										0)
-									 (suppress-delay
-										(let ((org-scheduled-delay-days suppress-delay))
-											(org-get-wdays s t t)))
-									 (t (org-get-wdays s t)))))
-						;; Display scheduled items at base date (SCHEDULE), today if
-						;; scheduled before the current date, and at any repeat past
-						;; today.  However, skip delayed items and items that have
-						;; been displayed for more than `org-scheduled-past-days'.
-						(unless (and todayp
-												 habitp
-												 (bound-and-true-p org-habit-show-all-today))
-							(when (or (and (> ddays 0) (< diff ddays))
-												(> diff (or (and habitp org-habit-scheduled-past-days)
-																		org-scheduled-past-days))
-												(> schedule current)
-												(and (/= current schedule)
-														 (/= current today)
-														 (/= current repeat)))
-								(throw :skip nil)))
-						;; Possibly skip done tasks.
-						(when (and donep
-											 (or org-agenda-skip-scheduled-if-done
-													 (/= schedule current)))
-							(throw :skip nil))
-						;; Skip entry if it already appears as a deadline, per
-						;; `org-agenda-skip-scheduled-if-deadline-is-shown'.  This
-						;; doesn't apply to habits.
-						(when (pcase org-agenda-skip-scheduled-if-deadline-is-shown
-										((guard
-											(or (not (memq (line-beginning-position 0) deadline-pos))
-													habitp))
-										 nil)
-										(`repeated-after-deadline
-										 (let ((deadline (time-to-days
-																			(org-get-deadline-time (point)))))
-											 (and (<= schedule deadline) (> current deadline))))
-										(`not-today pastschedp)
-										(`t t)
-										(_ nil))
-							(throw :skip nil))
-						;; Skip habits if `org-habit-show-habits' is nil, or if we
-						;; only show them for today.  Also skip done habits.
-						(when (and habitp
-											 (or donep
-													 (not (bound-and-true-p org-habit-show-habits))
-													 (and (not todayp)
-																(bound-and-true-p
-																 org-habit-show-habits-only-for-today))))
-							(throw :skip nil))
-						(save-excursion
-							(re-search-backward "^\\*+[ \t]+" nil t)
-							(goto-char (match-end 0))
-							(let* ((category (org-get-category))
-										 (inherited-tags
-											(or (eq org-agenda-show-inherited-tags 'always)
-													(and (listp org-agenda-show-inherited-tags)
-															 (memq 'agenda org-agenda-show-inherited-tags))
-													(and (eq org-agenda-show-inherited-tags t)
-															 (or (eq org-agenda-use-tag-inheritance t)
-																	 (memq 'agenda
-																				 org-agenda-use-tag-inheritance)))))
-										 (tags (org-get-tags nil (not inherited-tags)))
-										 (level (make-string (org-reduced-level (org-outline-level))
-																				 ?\s))
-										 (head (buffer-substring (point) (line-end-position)))
-										 (sexp-time
-											(if sexp?
-													(org-time-from-sexp
-													 (replace-regexp-in-string "^%%" "" s)
-													 (calendar-gregorian-from-absolute current))))
-										 (time
-											(cond
-											 ;; No time of day designation if it is only a
-											 ;; reminder, except for habits, which always show
-											 ;; the time of day.  Habits are an exception
-											 ;; because if there is a time of day, that is
-											 ;; interpreted to mean they should usually happen
-											 ;; then, even if doing the habit was missed.
-											 ((and
-												 (not habitp)
-												 (/= current schedule)
-												 (/= current repeat))
-												nil)
-											 ((string-match " \\([012]?[0-9]:[0-9][0-9]\\)" s)
-												(concat (substring s (match-beginning 1)) " "))
-											 (sexp-time
-												(concat sexp-time " "))
-											 (t 'time)))
-										 (item
-											(org-agenda-format-item
-											 (pcase-let ((`(,first ,past) org-agenda-scheduled-leaders))
-												 ;; Show a reminder of a past scheduled today.
-												 (if (and todayp pastschedp)
-														 (format past diff)
-													 first))
-											 head level category tags time nil habitp))
-										 (face (cond ((and (not habitp) pastschedp)
-																	'org-scheduled-previously)
-																 ((and habitp futureschedp)
-																	'org-agenda-done)
-																 (todayp 'org-scheduled-today)
-																 (t 'org-scheduled)))
-										 (habitp (and habitp (org-habit-parse-todo))))
-								(org-add-props item props
-									'undone-face face
-									'face (if donep 'org-agenda-done face)
-									'org-marker (org-agenda-new-marker pos)
-									'org-hd-marker (org-agenda-new-marker (line-beginning-position))
-									'type (if pastschedp "past-scheduled" "scheduled")
-									'date (if pastschedp schedule date)
-									'ts-date schedule
-									'warntime warntime
-									'level level
-									'priority (if habitp (org-habit-get-priority habitp)
-															(+ 99 diff (org-get-priority item)))
-									'org-habit-p habitp
-									'todo-state todo-state)
-								(push item scheduled-items))))))
-			(nreverse scheduled-items)))
-#+end_src
+     #+begin_src emacs-lisp
+       (defun org-agenda-get-scheduled (&optional deadlines with-hour)
+	 "Return the scheduled information for agenda display.
+       Optional argument DEADLINES is a list of deadline items to be
+       displayed in agenda view.  When WITH-HOUR is non-nil, only return
+       scheduled items with an hour specification like [h]h:mm."
+	 (let* ((props (list 'org-not-done-regexp org-not-done-regexp
+			     'org-todo-regexp org-todo-regexp
+			     'org-complex-heading-regexp org-complex-heading-regexp
+			     'done-face 'org-agenda-done
+			     'mouse-face 'highlight
+			     'help-echo
+			     (format "mouse-2 or RET jump to Org file %s"
+				     (abbreviate-file-name buffer-file-name))))
+		(regexp (if with-hour
+			    org-scheduled-time-hour-regexp
+			  org-scheduled-time-regexp))
+		(today (org-today))
+		(todayp (org-agenda-today-p date)) ; DATE bound by calendar.
+		(current (calendar-absolute-from-gregorian date))
+		(deadline-pos
+		 (mapcar (lambda (d)
+			   (let ((m (get-text-property 0 'org-hd-marker d)))
+			     (and m (marker-position m))))
+			 deadlines))
+		scheduled-items)
+	   (goto-char (point-min))
+	   (while (re-search-forward regexp nil t)
+	     (catch :skip
+	       (unless (save-match-data (org-at-planning-p)) (throw :skip nil))
+	       (org-agenda-skip)
+	       (let* ((s (match-string 1))
+		      (pos (1- (match-beginning 1)))
+		      (todo-state (save-match-data (org-get-todo-state)))
+		      (donep (member todo-state org-done-keywords))
+		      (sexp? (string-prefix-p "%%" s))
+		      ;; SCHEDULE is the scheduled date for the entry.  It is
+		      ;; either the bare date or the last repeat, according
+		      ;; to `org-agenda-prefer-last-repeat'.
+		      (schedule
+		       (cond
+			(sexp? (org-agenda--timestamp-to-absolute s current))
+			((or (eq org-agenda-prefer-last-repeat t)
+			     (member todo-state org-agenda-prefer-last-repeat))
+			 (org-agenda--timestamp-to-absolute
+			  s today 'past (current-buffer) pos))
+			(t (org-agenda--timestamp-to-absolute s))))
+		      ;; REPEAT is the future repeat closest from CURRENT,
+		      ;; according to `org-agenda-show-future-repeats'. If
+		      ;; the latter is nil, or if the time stamp has no
+		      ;; repeat part, default to SCHEDULE.
+		      (repeat
+		       (cond
+			(sexp? schedule)
+			((<= current today) schedule)
+			((not org-agenda-show-future-repeats) schedule)
+			(t
+			 (let ((base (if (eq org-agenda-show-future-repeats 'next)
+					 (1+ today)
+				       current)))
+			   (org-agenda--timestamp-to-absolute
+			    s base 'future (current-buffer) pos)))))
+		      (diff (- current schedule))
+		      (warntime (get-text-property (point) 'org-appt-warntime))
+		      (pastschedp (< schedule today))
+		      (futureschedp (> schedule today))
+		      (habitp (and (fboundp 'org-is-habit-p) (org-is-habit-p)))
+		      (suppress-delay
+		       (let ((deadline (and org-agenda-skip-scheduled-delay-if-deadline
+					    (org-entry-get nil "DEADLINE"))))
+			 (cond
+			  ((not deadline) nil)
+			  ;; The current item has a deadline date, so
+			  ;; evaluate its delay time.
+			  ((integerp org-agenda-skip-scheduled-delay-if-deadline)
+			   ;; Use global delay time.
+			   (- org-agenda-skip-scheduled-delay-if-deadline))
+			  ((eq org-agenda-skip-scheduled-delay-if-deadline
+			       'post-deadline)
+			   ;; Set delay to no later than DEADLINE.
+			   (min (- schedule
+				   (org-agenda--timestamp-to-absolute deadline))
+				org-scheduled-delay-days))
+			  (t 0))))
+		      (ddays
+		       (cond
+			;; Nullify delay when a repeater triggered already
+			;; and the delay is of the form --Xd.
+			((and (string-match-p "--[0-9]+[hdwmy]" s)
+			      (> schedule (org-agenda--timestamp-to-absolute s)))
+			 0)
+			(suppress-delay
+			 (let ((org-scheduled-delay-days suppress-delay))
+			   (org-get-wdays s t t)))
+			(t (org-get-wdays s t)))))
+		 ;; Display scheduled items at base date (SCHEDULE), today if
+		 ;; scheduled before the current date, and at any repeat past
+		 ;; today.  However, skip delayed items and items that have
+		 ;; been displayed for more than `org-scheduled-past-days'.
+		 (unless (and todayp
+			      habitp
+			      (bound-and-true-p org-habit-show-all-today))
+		   (when (or (and (> ddays 0) (< diff ddays))
+			     (> diff (or (and habitp org-habit-scheduled-past-days)
+					 org-scheduled-past-days))
+			     (> schedule current)
+			     (and (/= current schedule)
+				  (/= current today)
+				  (/= current repeat)))
+		     (throw :skip nil)))
+		 ;; Possibly skip done tasks.
+		 (when (and donep
+			    (or org-agenda-skip-scheduled-if-done
+				(/= schedule current)))
+		   (throw :skip nil))
+		 ;; Skip entry if it already appears as a deadline, per
+		 ;; `org-agenda-skip-scheduled-if-deadline-is-shown'.  This
+		 ;; doesn't apply to habits.
+		 (when (pcase org-agenda-skip-scheduled-if-deadline-is-shown
+			 ((guard
+			   (or (not (memq (line-beginning-position 0) deadline-pos))
+			       habitp))
+			  nil)
+			 (`repeated-after-deadline
+			  (let ((deadline (time-to-days
+					   (org-get-deadline-time (point)))))
+			    (and (<= schedule deadline) (> current deadline))))
+			 (`not-today pastschedp)
+			 (`t t)
+			 (_ nil))
+		   (throw :skip nil))
+		 ;; Skip habits if `org-habit-show-habits' is nil, or if we
+		 ;; only show them for today.  Also skip done habits.
+		 (when (and habitp
+			    (or donep
+				(not (bound-and-true-p org-habit-show-habits))
+				(and (not todayp)
+				     (bound-and-true-p
+				      org-habit-show-habits-only-for-today))))
+		   (throw :skip nil))
+		 (save-excursion
+		   (re-search-backward "^\\*+[ \t]+" nil t)
+		   (goto-char (match-end 0))
+		   (let* ((category (org-get-category))
+			  (inherited-tags
+			   (or (eq org-agenda-show-inherited-tags 'always)
+			       (and (listp org-agenda-show-inherited-tags)
+				    (memq 'agenda org-agenda-show-inherited-tags))
+			       (and (eq org-agenda-show-inherited-tags t)
+				    (or (eq org-agenda-use-tag-inheritance t)
+					(memq 'agenda
+					      org-agenda-use-tag-inheritance)))))
+			  (tags (org-get-tags nil (not inherited-tags)))
+			  (level (make-string (org-reduced-level (org-outline-level))
+					      ?\s))
+			  (head (buffer-substring (point) (line-end-position)))
+			  (sexp-time
+			   (if sexp?
+			       (org-time-from-sexp
+				(replace-regexp-in-string "^%%" "" s)
+				(calendar-gregorian-from-absolute current))))
+			  (time
+			   (cond
+			    ;; No time of day designation if it is only a
+			    ;; reminder, except for habits, which always show
+			    ;; the time of day.  Habits are an exception
+			    ;; because if there is a time of day, that is
+			    ;; interpreted to mean they should usually happen
+			    ;; then, even if doing the habit was missed.
+			    ((and
+			      (not habitp)
+			      (/= current schedule)
+			      (/= current repeat))
+			     nil)
+			    ((string-match " \\([012]?[0-9]:[0-9][0-9]\\)" s)
+			     (concat (substring s (match-beginning 1)) " "))
+			    (sexp-time
+			     (concat sexp-time " "))
+			    (t 'time)))
+			  (item
+			   (org-agenda-format-item
+			    (pcase-let ((`(,first ,past) org-agenda-scheduled-leaders))
+			      ;; Show a reminder of a past scheduled today.
+			      (if (and todayp pastschedp)
+				  (format past diff)
+				first))
+			    head level category tags time nil habitp))
+			  (face (cond ((and (not habitp) pastschedp)
+				       'org-scheduled-previously)
+				      ((and habitp futureschedp)
+				       'org-agenda-done)
+				      (todayp 'org-scheduled-today)
+				      (t 'org-scheduled)))
+			  (habitp (and habitp (org-habit-parse-todo))))
+		     (org-add-props item props
+		       'undone-face face
+		       'face (if donep 'org-agenda-done face)
+		       'org-marker (org-agenda-new-marker pos)
+		       'org-hd-marker (org-agenda-new-marker (line-beginning-position))
+		       'type (if pastschedp "past-scheduled" "scheduled")
+		       'date (if pastschedp schedule date)
+		       'ts-date schedule
+		       'warntime warntime
+		       'level level
+		       'priority (if habitp (org-habit-get-priority habitp)
+				   (+ 99 diff (org-get-priority item)))
+		       'org-habit-p habitp
+		       'todo-state todo-state)
+		     (push item scheduled-items))))))
+	   (nreverse scheduled-items)))
+     #+end_src
 
 
 *** org-agenda-get-timestamps
 **** Patch
-#+begin_example emacs-lisp
- 							(let* ((pos (match-beginning 0))
- 										 (repeat (match-string 1))
- 										 (sexp-entry (match-string 3))
-+										 (sexp-time (if sexp-entry
-+										 							 (org-time-from-sexp sexp-entry
-+																											 (calendar-gregorian-from-absolute current))))
--										 (time-stamp (if (or repeat sexp-entry) (match-string 0)
-+										 (time-stamp (if (or repeat sexp-entry)
-+										  								(or (and sexp-time (concat sexp-time " "))
-+																					(match-string 0))
- 																		(save-excursion
- 																			(goto-char pos)
- 																			(looking-at org-ts-regexp-both)
- 																			(match-string 0))))
-#+end_example
+     #+begin_example emacs-lisp
+							     (let* ((pos (match-beginning 0))
+										      (repeat (match-string 1))
+										      (sexp-entry (match-string 3))
+     +										 (sexp-time (if sexp-entry
+     +										 							 (org-time-from-sexp sexp-entry
+     +																											 (calendar-gregorian-from-absolute current))))
+     -										 (time-stamp (if (or repeat sexp-entry) (match-string 0)
+     +										 (time-stamp (if (or repeat sexp-entry)
+     +										  								(or (and sexp-time (concat sexp-time " "))
+     +																					(match-string 0))
+																		     (save-excursion
+																			     (goto-char pos)
+																			     (looking-at org-ts-regexp-both)
+																			     (match-string 0))))
+     #+end_example
 
 **** Source
-		#+begin_src emacs-lisp
-			(defun org-agenda-get-timestamps (&optional deadlines)
-				"Return the date stamp information for agenda display.
-			Optional argument DEADLINES is a list of deadline items to be
-			displayed in agenda view."
-				(let* ((props (list 'face 'org-agenda-calendar-event
-														'org-not-done-regexp org-not-done-regexp
-														'org-todo-regexp org-todo-regexp
-														'org-complex-heading-regexp org-complex-heading-regexp
-														'mouse-face 'highlight
-														'help-echo
-														(format "mouse-2 or RET jump to Org file %s"
-																		(abbreviate-file-name buffer-file-name))))
-							 (current (calendar-absolute-from-gregorian date))
-							 (today (org-today))
-							 (deadline-position-alist
-								(mapcar (lambda (d)
-													(let ((m (get-text-property 0 'org-hd-marker d)))
-														(and m (marker-position m))))
-												deadlines))
-							 ;; Match time-stamps set to current date, time-stamps with
-							 ;; a repeater, and S-exp time-stamps.
-							 (regexp
-								(concat
-								 (if org-agenda-include-inactive-timestamps "[[<]" "<")
-								 (regexp-quote
-									(substring
-									 (format-time-string
-										(car org-time-stamp-formats)
-										(encode-time	; DATE bound by calendar
-										 0 0 0 (nth 1 date) (car date) (nth 2 date)))
-									 1 11))
-								 "\\|\\(<[0-9]+-[0-9]+-[0-9]+[^>\n]+?\\+[0-9]+[hdwmy]>\\)"
-								 "\\|\\(<%%\\(([^>\n]+)\\)>\\)"))
-							 timestamp-items)
-					(goto-char (point-min))
-					(while (re-search-forward regexp nil t)
-						;; Skip date ranges, scheduled and deadlines, which are handled
-						;; specially.  Also skip time-stamps before first headline as
-						;; there would be no entry to add to the agenda.  Eventually,
-						;; ignore clock entries.
-						(catch :skip
-							(save-match-data
-								(when (or (org-at-date-range-p)
-													(org-at-planning-p)
-													(org-before-first-heading-p)
-													(and org-agenda-include-inactive-timestamps
-															 (org-at-clock-log-p)))
-									(throw :skip nil))
-								(org-agenda-skip))
-							(let* ((pos (match-beginning 0))
-										 (repeat (match-string 1))
-										 (sexp-entry (match-string 3))
-										 (sexp-time (if sexp-entry
-																		(org-time-from-sexp sexp-entry
-																												(calendar-gregorian-from-absolute current))))
-										 (time-stamp (if (or repeat sexp-entry)
-																		 (or (and sexp-time (concat sexp-time " "))
-																				 (match-string 0))
-																	 (save-excursion
-																		 (goto-char pos)
-																		 (looking-at org-ts-regexp-both)
-																		 (match-string 0))))
-										 (todo-state (org-get-todo-state))
-										 (warntime (get-text-property (point) 'org-appt-warntime))
-										 (done? (member todo-state org-done-keywords)))
-								;; Possibly skip done tasks.
-								(when (and done? org-agenda-skip-timestamp-if-done)
-									(throw :skip t))
-								;; S-exp entry doesn't match current day: skip it.
-								(when (and sexp-entry (not (org-diary-sexp-entry sexp-entry "" date)))
-									(throw :skip nil))
-								(when repeat
-									(let* ((past
-													;; A repeating time stamp is shown at its base
-													;; date and every repeated date up to TODAY.  If
-													;; `org-agenda-prefer-last-repeat' is non-nil,
-													;; however, only the last repeat before today
-													;; (inclusive) is shown.
-													(org-agenda--timestamp-to-absolute
-													 repeat
-													 (if (or (> current today)
-																	 (eq org-agenda-prefer-last-repeat t)
-																	 (member todo-state org-agenda-prefer-last-repeat))
-															 today
-														 current)
-													 'past (current-buffer) pos))
-												 (future
-													;;  Display every repeated date past TODAY
-													;;  (exclusive) unless
-													;;  `org-agenda-show-future-repeats' is nil.  If
-													;;  this variable is set to `next', only display
-													;;  the first repeated date after TODAY
-													;;  (exclusive).
-													(cond
-													 ((<= current today) past)
-													 ((not org-agenda-show-future-repeats) past)
-													 (t
-														(let ((base (if (eq org-agenda-show-future-repeats 'next)
-																						(1+ today)
-																					current)))
-															(org-agenda--timestamp-to-absolute
-															 repeat base 'future (current-buffer) pos))))))
-										(when (and (/= current past) (/= current future))
-											(throw :skip nil))))
-								(save-excursion
-									(re-search-backward org-outline-regexp-bol nil t)
-									;; Possibly skip time-stamp when a deadline is set.
-									(when (and org-agenda-skip-timestamp-if-deadline-is-shown
-														 (assq (point) deadline-position-alist))
-										(throw :skip nil))
-									(let* ((category (org-get-category pos))
-												 (inherited-tags
-													(or (eq org-agenda-show-inherited-tags 'always)
-															(and (consp org-agenda-show-inherited-tags)
-																	 (memq 'agenda org-agenda-show-inherited-tags))
-															(and (eq org-agenda-show-inherited-tags t)
-																	 (or (eq org-agenda-use-tag-inheritance t)
-																			 (memq 'agenda
-																						 org-agenda-use-tag-inheritance)))))
-												 (tags (org-get-tags nil (not inherited-tags)))
-												 (level (make-string (org-reduced-level (org-outline-level))
-																						 ?\s))
-												 (head (and (looking-at "\\*+[ \t]+\\(.*\\)")
-																		(match-string 1)))
-												 (inactive? (= (char-after pos) ?\[))
-												 (habit? (and (fboundp 'org-is-habit-p) (org-is-habit-p)))
-												 (item
-													(org-agenda-format-item
-													 (and inactive? org-agenda-inactive-leader)
-													 head level category tags time-stamp org-ts-regexp habit?)))
-										(org-add-props item props
-											'priority (if habit?
-																		(org-habit-get-priority (org-habit-parse-todo))
-																	(org-get-priority item))
-											'org-marker (org-agenda-new-marker pos)
-											'org-hd-marker (org-agenda-new-marker)
-											'date date
-											'level level
-											'ts-date (if repeat (org-agenda--timestamp-to-absolute repeat)
-																 current)
-											'todo-state todo-state
-											'warntime warntime
-											'type "timestamp")
-										(push item timestamp-items))))
-							(when org-agenda-skip-additional-timestamps-same-entry
-								(outline-next-heading))))
-					(nreverse timestamp-items)))
-		#+end_src
+     #+begin_src emacs-lisp
+       (defun org-agenda-get-timestamps (&optional deadlines)
+	 "Return the date stamp information for agenda display.
+       Optional argument DEADLINES is a list of deadline items to be
+       displayed in agenda view."
+	 (let* ((props (list 'face 'org-agenda-calendar-event
+			     'org-not-done-regexp org-not-done-regexp
+			     'org-todo-regexp org-todo-regexp
+			     'org-complex-heading-regexp org-complex-heading-regexp
+			     'mouse-face 'highlight
+			     'help-echo
+			     (format "mouse-2 or RET jump to Org file %s"
+				     (abbreviate-file-name buffer-file-name))))
+		(current (calendar-absolute-from-gregorian date))
+		(today (org-today))
+		(deadline-position-alist
+		 (mapcar (lambda (d)
+			   (let ((m (get-text-property 0 'org-hd-marker d)))
+			     (and m (marker-position m))))
+			 deadlines))
+		;; Match time-stamps set to current date, time-stamps with
+		;; a repeater, and S-exp time-stamps.
+		(regexp
+		 (concat
+		  (if org-agenda-include-inactive-timestamps "[[<]" "<")
+		  (regexp-quote
+		   (substring
+		    (format-time-string
+		     (car org-time-stamp-formats)
+		     (encode-time	; DATE bound by calendar
+		      0 0 0 (nth 1 date) (car date) (nth 2 date)))
+		    1 11))
+		  "\\|\\(<[0-9]+-[0-9]+-[0-9]+[^>\n]+?\\+[0-9]+[hdwmy]>\\)"
+		  "\\|\\(<%%\\(([^>\n]+)\\)>\\)"))
+		timestamp-items)
+	   (goto-char (point-min))
+	   (while (re-search-forward regexp nil t)
+	     ;; Skip date ranges, scheduled and deadlines, which are handled
+	     ;; specially.  Also skip time-stamps before first headline as
+	     ;; there would be no entry to add to the agenda.  Eventually,
+	     ;; ignore clock entries.
+	     (catch :skip
+	       (save-match-data
+		 (when (or (org-at-date-range-p)
+			   (org-at-planning-p)
+			   (org-before-first-heading-p)
+			   (and org-agenda-include-inactive-timestamps
+				(org-at-clock-log-p)))
+		   (throw :skip nil))
+		 (org-agenda-skip))
+	       (let* ((pos (match-beginning 0))
+		      (repeat (match-string 1))
+		      (sexp-entry (match-string 3))
+		      (sexp-time (if sexp-entry
+				     (org-time-from-sexp sexp-entry
+							 (calendar-gregorian-from-absolute current))))
+		      (time-stamp (if (or repeat sexp-entry)
+				      (or (and sexp-time (concat sexp-time " "))
+					  (match-string 0))
+				    (save-excursion
+				      (goto-char pos)
+				      (looking-at org-ts-regexp-both)
+				      (match-string 0))))
+		      (todo-state (org-get-todo-state))
+		      (warntime (get-text-property (point) 'org-appt-warntime))
+		      (done? (member todo-state org-done-keywords)))
+		 ;; Possibly skip done tasks.
+		 (when (and done? org-agenda-skip-timestamp-if-done)
+		   (throw :skip t))
+		 ;; S-exp entry doesn't match current day: skip it.
+		 (when (and sexp-entry (not (org-diary-sexp-entry sexp-entry "" date)))
+		   (throw :skip nil))
+		 (when repeat
+		   (let* ((past
+			   ;; A repeating time stamp is shown at its base
+			   ;; date and every repeated date up to TODAY.  If
+			   ;; `org-agenda-prefer-last-repeat' is non-nil,
+			   ;; however, only the last repeat before today
+			   ;; (inclusive) is shown.
+			   (org-agenda--timestamp-to-absolute
+			    repeat
+			    (if (or (> current today)
+				    (eq org-agenda-prefer-last-repeat t)
+				    (member todo-state org-agenda-prefer-last-repeat))
+				today
+			      current)
+			    'past (current-buffer) pos))
+			  (future
+			   ;;  Display every repeated date past TODAY
+			   ;;  (exclusive) unless
+			   ;;  `org-agenda-show-future-repeats' is nil.  If
+			   ;;  this variable is set to `next', only display
+			   ;;  the first repeated date after TODAY
+			   ;;  (exclusive).
+			   (cond
+			    ((<= current today) past)
+			    ((not org-agenda-show-future-repeats) past)
+			    (t
+			     (let ((base (if (eq org-agenda-show-future-repeats 'next)
+					     (1+ today)
+					   current)))
+			       (org-agenda--timestamp-to-absolute
+				repeat base 'future (current-buffer) pos))))))
+		     (when (and (/= current past) (/= current future))
+		       (throw :skip nil))))
+		 (save-excursion
+		   (re-search-backward org-outline-regexp-bol nil t)
+		   ;; Possibly skip time-stamp when a deadline is set.
+		   (when (and org-agenda-skip-timestamp-if-deadline-is-shown
+			      (assq (point) deadline-position-alist))
+		     (throw :skip nil))
+		   (let* ((category (org-get-category pos))
+			  (inherited-tags
+			   (or (eq org-agenda-show-inherited-tags 'always)
+			       (and (consp org-agenda-show-inherited-tags)
+				    (memq 'agenda org-agenda-show-inherited-tags))
+			       (and (eq org-agenda-show-inherited-tags t)
+				    (or (eq org-agenda-use-tag-inheritance t)
+					(memq 'agenda
+					      org-agenda-use-tag-inheritance)))))
+			  (tags (org-get-tags nil (not inherited-tags)))
+			  (level (make-string (org-reduced-level (org-outline-level))
+					      ?\s))
+			  (head (and (looking-at "\\*+[ \t]+\\(.*\\)")
+				     (match-string 1)))
+			  (inactive? (= (char-after pos) ?\[))
+			  (habit? (and (fboundp 'org-is-habit-p) (org-is-habit-p)))
+			  (item
+			   (org-agenda-format-item
+			    (and inactive? org-agenda-inactive-leader)
+			    head level category tags time-stamp org-ts-regexp habit?)))
+		     (org-add-props item props
+		       'priority (if habit?
+				     (org-habit-get-priority (org-habit-parse-todo))
+				   (org-get-priority item))
+		       'org-marker (org-agenda-new-marker pos)
+		       'org-hd-marker (org-agenda-new-marker)
+		       'date date
+		       'level level
+		       'ts-date (if repeat (org-agenda--timestamp-to-absolute repeat)
+				  current)
+		       'todo-state todo-state
+		       'warntime warntime
+		       'type "timestamp")
+		     (push item timestamp-items))))
+	       (when org-agenda-skip-additional-timestamps-same-entry
+		 (outline-next-heading))))
+	   (nreverse timestamp-items)))
+     #+end_src
 
 ** ox-icalendar.el patches
-Warning! sexps must be in the headline in order to be interpreted.
+   Warning! sexps must be in the headline in order to be interpreted.
 *** org-icalendar-entry
 **** Patch
-#+begin_example emacs-lisp
-																(org-element-map
- 																		(cons (org-element-property :title entry)
- 																					(org-element-contents inside))
--																		'diary-sexp
--																	(lambda (sexp)
--																		(org-icalendar-transcode-diary-sexp
--																		 (org-element-property :value sexp)
--																		 (format "DS%d-%s" (cl-incf counter) uid)
--																		 summary))
-+																		'timestamp
-+																	(lambda (ts)
-+																		(when (let ((type (org-element-property :type ts)))
-+																						(cl-case (plist-get info :with-timestamps)
-+																							(active (memq type '(diary)))
-+																							(inactive (memq type '(diary)))
-+																							((t) t)))
-+																			(let ((uid (format "%d-%s" (cl-incf counter) uid)))
-+																				;; (org-icalendar--vevent
-+																				;; entry ts uid summary loc desc cat tz class)
-+																				(message (format "%s" (org-element-property :raw-value ts)))
-+																				(org-icalendar--vevent
-+																				 entry ts uid summary loc desc cat tz class)
-+																				)))
-																	info nil (and (eq type 'headline) 'inlinetask))
- 																"")))))
- 							;; If ENTRY is a headline, call current function on every
-#+end_example
+     #+begin_example emacs-lisp
+																     (org-element-map
+																		     (cons (org-element-property :title entry)
+																					     (org-element-contents inside))
+     -																		'diary-sexp
+     -																	(lambda (sexp)
+     -																		(org-icalendar-transcode-diary-sexp
+     -																		 (org-element-property :value sexp)
+     -																		 (format "DS%d-%s" (cl-incf counter) uid)
+     -																		 summary))
+     +																		'timestamp
+     +																	(lambda (ts)
+     +																		(when (let ((type (org-element-property :type ts)))
+     +																						(cl-case (plist-get info :with-timestamps)
+     +																							(active (memq type '(diary)))
+     +																							(inactive (memq type '(diary)))
+     +																							((t) t)))
+     +																			(let ((uid (format "%d-%s" (cl-incf counter) uid)))
+     +																				;; (org-icalendar--vevent
+     +																				;; entry ts uid summary loc desc cat tz class)
+     +																				(message (format "%s" (org-element-property :raw-value ts)))
+     +																				(org-icalendar--vevent
+     +																				 entry ts uid summary loc desc cat tz class)
+     +																				)))
+																	     info nil (and (eq type 'headline) 'inlinetask))
+																     "")))))
+							     ;; If ENTRY is a headline, call current function on every
+     #+end_example
 **** Source
-		 #+begin_src emacs-lisp
-			 (defun org-icalendar-entry (entry contents info)
-				 "Transcode ENTRY element into iCalendar format.
+     #+begin_src emacs-lisp
+       (defun org-icalendar-entry (entry contents info)
+	 "Transcode ENTRY element into iCalendar format.
 
-			 ENTRY is either a headline or an inlinetask.  CONTENTS is
-			 ignored.  INFO is a plist used as a communication channel.
+       ENTRY is either a headline or an inlinetask.  CONTENTS is
+       ignored.  INFO is a plist used as a communication channel.
 
-			 This function is called on every headline, the section below
-			 it (minus inlinetasks) being its contents.  It tries to create
-			 VEVENT and VTODO components out of scheduled date, deadline date,
-			 plain timestamps, diary sexps.  It also calls itself on every
-			 inlinetask within the section."
-				 (unless (org-element-property :footnote-section-p entry)
-					 (let* ((type (org-element-type entry))
-									;; Determine contents really associated to the entry.  For
-									;; a headline, limit them to section, if any.  For an
-									;; inlinetask, this is every element within the task.
-									(inside
-									 (if (eq type 'inlinetask)
-											 (cons 'org-data (cons nil (org-element-contents entry)))
-										 (let ((first (car (org-element-contents entry))))
-											 (and (eq (org-element-type first) 'section)
-														(cons 'org-data
-																	(cons nil (org-element-contents first))))))))
-						 (concat
-							(let ((todo-type (org-element-property :todo-type entry))
-										(uid (or (org-element-property :ID entry) (org-id-new)))
-										(summary (org-icalendar-cleanup-string
-															(or (org-element-property :SUMMARY entry)
-																	(org-export-data
-																	 (org-element-property :title entry) info))))
-										(loc (org-icalendar-cleanup-string
-													(org-export-get-node-property
-													 :LOCATION entry
-													 (org-property-inherit-p "LOCATION"))))
-										(class (org-icalendar-cleanup-string
-														(org-export-get-node-property
-														 :CLASS entry
-														 (org-property-inherit-p "CLASS"))))
-										;; Build description of the entry from associated section
-										;; (headline) or contents (inlinetask).
-										(desc
-										 (org-icalendar-cleanup-string
-											(or (org-element-property :DESCRIPTION entry)
-													(let ((contents (org-export-data inside info)))
-														(cond
-														 ((not (org-string-nw-p contents)) nil)
-														 ((wholenump org-icalendar-include-body)
-															(let ((contents (org-trim contents)))
-																(substring
-																 contents 0 (min (length contents)
-																								 org-icalendar-include-body))))
-														 (org-icalendar-include-body (org-trim contents)))))))
-										(cat (org-icalendar-get-categories entry info))
-										(tz (org-export-get-node-property
-												 :TIMEZONE entry
-												 (org-property-inherit-p "TIMEZONE"))))
-								(concat
-								 ;; Events: Delegate to `org-icalendar--vevent' to generate
-								 ;; "VEVENT" component from scheduled, deadline, or any
-								 ;; timestamp in the entry.
-								 (let ((deadline (org-element-property :deadline entry))
-											 (use-deadline (plist-get info :icalendar-use-deadline)))
-									 (and deadline
-												(pcase todo-type
-													(`todo (or (memq 'event-if-todo-not-done use-deadline)
-																		 (memq 'event-if-todo use-deadline)))
-													(`done (memq 'event-if-todo use-deadline))
-													(_ (memq 'event-if-not-todo use-deadline)))
-												(org-icalendar--vevent
-												 entry deadline (concat "DL-" uid)
-												 (concat "DL: " summary) loc desc cat tz class)))
-								 (let ((scheduled (org-element-property :scheduled entry))
-											 (use-scheduled (plist-get info :icalendar-use-scheduled)))
-									 (and scheduled
-												(pcase todo-type
-													(`todo (or (memq 'event-if-todo-not-done use-scheduled)
-																		 (memq 'event-if-todo use-scheduled)))
-													(`done (memq 'event-if-todo use-scheduled))
-													(_ (memq 'event-if-not-todo use-scheduled)))
-												(org-icalendar--vevent
-												 entry scheduled (concat "SC-" uid)
-												 (concat "S: " summary) loc desc cat tz class)))
-								 ;; When collecting plain timestamps from a headline and its
-								 ;; title, skip inlinetasks since collection will happen once
-								 ;; ENTRY is one of them.
-								 (let ((counter 0))
-									 (mapconcat
-										#'identity
-										(org-element-map (cons (org-element-property :title entry)
-																					 (org-element-contents inside))
-												'timestamp
-											(lambda (ts)
-												(when (let ((type (org-element-property :type ts)))
-																(cl-case (plist-get info :with-timestamps)
-																	(active (memq type '(active active-range)))
-																	(inactive (memq type '(inactive inactive-range)))
-																	((t) t)))
-													(let ((uid (format "TS%d-%s" (cl-incf counter) uid)))
-														(org-icalendar--vevent
-														 entry ts uid summary loc desc cat tz class))))
-											info nil (and (eq type 'headline) 'inlinetask))
-										""))
-								 ;; Task: First check if it is appropriate to export it.  If
-								 ;; so, call `org-icalendar--vtodo' to transcode it into
-								 ;; a "VTODO" component.
-								 (when (and todo-type
-														(cl-case (plist-get info :icalendar-include-todo)
-															(all t)
-															(unblocked
-															 (and (eq type 'headline)
-																		(not (org-icalendar-blocked-headline-p
-																					entry info))))
-															((t) (eq todo-type 'todo))))
-									 (org-icalendar--vtodo entry uid summary loc desc cat tz class))
-								 ;; Diary-sexp: Collect every diary-sexp element within ENTRY
-								 ;; and its title, and transcode them.  If ENTRY is
-								 ;; a headline, skip inlinetasks: they will be handled
-								 ;; separately.
-								 (when org-icalendar-include-sexps
-									 (let ((counter 0))
-										 (mapconcat #'identity
-																(org-element-map
-																		(cons (org-element-property :title entry)
-																					(org-element-contents inside))
-																		'timestamp
-																	(lambda (ts)
-																		(when (let ((type (org-element-property :type ts)))
-																						(cl-case (plist-get info :with-timestamps)
-																							(active (memq type '(diary)))
-																							(inactive (memq type '(diary)))
-																							((t) t)))
-																			(let ((uid (format "%d-%s" (cl-incf counter) uid)))
-																				;; (org-icalendar--vevent
-																				;; entry ts uid summary loc desc cat tz class)
-																				(message (format "%s" (org-element-property :raw-value ts)))
-																				(org-icalendar--vevent
-																				 entry ts uid summary loc desc cat tz class)
-																				)))
-																	info nil (and (eq type 'headline) 'inlinetask))
-																"")))))
-							;; If ENTRY is a headline, call current function on every
-							;; inlinetask within it.  In agenda export, this is independent
-							;; from the mark (or lack thereof) on the entry.
-							(when (eq type 'headline)
-								(mapconcat #'identity
-													 (org-element-map inside 'inlinetask
-														 (lambda (task) (org-icalendar-entry task nil info))
-														 info) ""))
-							;; Don't forget components from inner entries.
-							contents))))
-		 #+end_src
+       This function is called on every headline, the section below
+       it (minus inlinetasks) being its contents.  It tries to create
+       VEVENT and VTODO components out of scheduled date, deadline date,
+       plain timestamps, diary sexps.  It also calls itself on every
+       inlinetask within the section."
+	 (unless (org-element-property :footnote-section-p entry)
+	   (let* ((type (org-element-type entry))
+		  ;; Determine contents really associated to the entry.  For
+		  ;; a headline, limit them to section, if any.  For an
+		  ;; inlinetask, this is every element within the task.
+		  (inside
+		   (if (eq type 'inlinetask)
+		       (cons 'org-data (cons nil (org-element-contents entry)))
+		     (let ((first (car (org-element-contents entry))))
+		       (and (eq (org-element-type first) 'section)
+			    (cons 'org-data
+				  (cons nil (org-element-contents first))))))))
+	     (concat
+	      (let ((todo-type (org-element-property :todo-type entry))
+		    (uid (or (org-element-property :ID entry) (org-id-new)))
+		    (summary (org-icalendar-cleanup-string
+			      (or (org-element-property :SUMMARY entry)
+				  (org-export-data
+				   (org-element-property :title entry) info))))
+		    (loc (org-icalendar-cleanup-string
+			  (org-export-get-node-property
+			   :LOCATION entry
+			   (org-property-inherit-p "LOCATION"))))
+		    (class (org-icalendar-cleanup-string
+			    (org-export-get-node-property
+			     :CLASS entry
+			     (org-property-inherit-p "CLASS"))))
+		    ;; Build description of the entry from associated section
+		    ;; (headline) or contents (inlinetask).
+		    (desc
+		     (org-icalendar-cleanup-string
+		      (or (org-element-property :DESCRIPTION entry)
+			  (let ((contents (org-export-data inside info)))
+			    (cond
+			     ((not (org-string-nw-p contents)) nil)
+			     ((wholenump org-icalendar-include-body)
+			      (let ((contents (org-trim contents)))
+				(substring
+				 contents 0 (min (length contents)
+						 org-icalendar-include-body))))
+			     (org-icalendar-include-body (org-trim contents)))))))
+		    (cat (org-icalendar-get-categories entry info))
+		    (tz (org-export-get-node-property
+			 :TIMEZONE entry
+			 (org-property-inherit-p "TIMEZONE"))))
+		(concat
+		 ;; Events: Delegate to `org-icalendar--vevent' to generate
+		 ;; "VEVENT" component from scheduled, deadline, or any
+		 ;; timestamp in the entry.
+		 (let ((deadline (org-element-property :deadline entry))
+		       (use-deadline (plist-get info :icalendar-use-deadline)))
+		   (and deadline
+			(pcase todo-type
+			  (`todo (or (memq 'event-if-todo-not-done use-deadline)
+				     (memq 'event-if-todo use-deadline)))
+			  (`done (memq 'event-if-todo use-deadline))
+			  (_ (memq 'event-if-not-todo use-deadline)))
+			(org-icalendar--vevent
+			 entry deadline (concat "DL-" uid)
+			 (concat "DL: " summary) loc desc cat tz class)))
+		 (let ((scheduled (org-element-property :scheduled entry))
+		       (use-scheduled (plist-get info :icalendar-use-scheduled)))
+		   (and scheduled
+			(pcase todo-type
+			  (`todo (or (memq 'event-if-todo-not-done use-scheduled)
+				     (memq 'event-if-todo use-scheduled)))
+			  (`done (memq 'event-if-todo use-scheduled))
+			  (_ (memq 'event-if-not-todo use-scheduled)))
+			(org-icalendar--vevent
+			 entry scheduled (concat "SC-" uid)
+			 (concat "S: " summary) loc desc cat tz class)))
+		 ;; When collecting plain timestamps from a headline and its
+		 ;; title, skip inlinetasks since collection will happen once
+		 ;; ENTRY is one of them.
+		 (let ((counter 0))
+		   (mapconcat
+		    #'identity
+		    (org-element-map (cons (org-element-property :title entry)
+					   (org-element-contents inside))
+			'timestamp
+		      (lambda (ts)
+			(when (let ((type (org-element-property :type ts)))
+				(cl-case (plist-get info :with-timestamps)
+				  (active (memq type '(active active-range)))
+				  (inactive (memq type '(inactive inactive-range)))
+				  ((t) t)))
+			  (let ((uid (format "TS%d-%s" (cl-incf counter) uid)))
+			    (org-icalendar--vevent
+			     entry ts uid summary loc desc cat tz class))))
+		      info nil (and (eq type 'headline) 'inlinetask))
+		    ""))
+		 ;; Task: First check if it is appropriate to export it.  If
+		 ;; so, call `org-icalendar--vtodo' to transcode it into
+		 ;; a "VTODO" component.
+		 (when (and todo-type
+			    (cl-case (plist-get info :icalendar-include-todo)
+			      (all t)
+			      (unblocked
+			       (and (eq type 'headline)
+				    (not (org-icalendar-blocked-headline-p
+					  entry info))))
+			      ((t) (eq todo-type 'todo))))
+		   (org-icalendar--vtodo entry uid summary loc desc cat tz class))
+		 ;; Diary-sexp: Collect every diary-sexp element within ENTRY
+		 ;; and its title, and transcode them.  If ENTRY is
+		 ;; a headline, skip inlinetasks: they will be handled
+		 ;; separately.
+		 (when org-icalendar-include-sexps
+		   (let ((counter 0))
+		     (mapconcat #'identity
+				(org-element-map
+				    (cons (org-element-property :title entry)
+					  (org-element-contents inside))
+				    'timestamp
+				  (lambda (ts)
+				    (when (let ((type (org-element-property :type ts)))
+					    (cl-case (plist-get info :with-timestamps)
+					      (active (memq type '(diary)))
+					      (inactive (memq type '(diary)))
+					      ((t) t)))
+				      (let ((uid (format "%d-%s" (cl-incf counter) uid)))
+					;; (org-icalendar--vevent
+					;; entry ts uid summary loc desc cat tz class)
+					(message (format "%s" (org-element-property :raw-value ts)))
+					(org-icalendar--vevent
+					 entry ts uid summary loc desc cat tz class)
+					)))
+				  info nil (and (eq type 'headline) 'inlinetask))
+				"")))))
+	      ;; If ENTRY is a headline, call current function on every
+	      ;; inlinetask within it.  In agenda export, this is independent
+	      ;; from the mark (or lack thereof) on the entry.
+	      (when (eq type 'headline)
+		(mapconcat #'identity
+			   (org-element-map inside 'inlinetask
+			     (lambda (task) (org-icalendar-entry task nil info))
+			     info) ""))
+	      ;; Don't forget components from inner entries.
+	      contents))))
+     #+end_src
 *** org-icalendar--vevent
 **** Patch
-#+begin_example emacs-lisp
-			 Return VEVENT component as a string."
-- 				 (org-icalendar-fold-string
- 					(if (eq (org-element-property :type timestamp) 'diary)
--							(org-icalendar-transcode-diary-sexp
--							 (org-element-property :raw-value timestamp) uid summary)
-+						 (let ((counter 0))
-+							 (apply 'concat
-+											(mapcar (lambda (ts)
-+																(let ((uid (format "DS%d-%s" (cl-incf counter) uid)))
-+																	(org-icalendar--vevent entry ts uid summary location description categories timezone class)
-+																	))
-+															(org-timestamp-from-sexp
-+															 (substring (org-element-property :raw-value timestamp) 3 -1))
-+															)))
-+					 (org-icalendar-fold-string
- 						(concat "BEGIN:VEVENT\n"
- 										(org-icalendar-dtstamp) "\n"
- 										"UID:" uid "\n"
-#+end_example
+     #+begin_example emacs-lisp
+			      Return VEVENT component as a string."
+     - 				 (org-icalendar-fold-string
+					     (if (eq (org-element-property :type timestamp) 'diary)
+     -							(org-icalendar-transcode-diary-sexp
+     -							 (org-element-property :raw-value timestamp) uid summary)
+     +						 (let ((counter 0))
+     +							 (apply 'concat
+     +											(mapcar (lambda (ts)
+     +																(let ((uid (format "DS%d-%s" (cl-incf counter) uid)))
+     +																	(org-icalendar--vevent entry ts uid summary location description categories timezone class)
+     +																	))
+     +															(org-timestamp-from-sexp
+     +															 (substring (org-element-property :raw-value timestamp) 3 -1))
+     +															)))
+     +					 (org-icalendar-fold-string
+						     (concat "BEGIN:VEVENT\n"
+										     (org-icalendar-dtstamp) "\n"
+										     "UID:" uid "\n"
+     #+end_example
 **** Source
-		 #+begin_src emacs-lisp
-			 (defun org-icalendar--vevent
-					 (entry timestamp uid summary location description categories timezone class)
-				 "Create a VEVENT component.
+     #+begin_src emacs-lisp
+       (defun org-icalendar--vevent
+	   (entry timestamp uid summary location description categories timezone class)
+	 "Create a VEVENT component.
 
-			 ENTRY is either a headline or an inlinetask element.  TIMESTAMP
-			 is a timestamp object defining the date-time of the event.  UID
-			 is the unique identifier for the event.  SUMMARY defines a short
-			 summary or subject for the event.  LOCATION defines the intended
-			 venue for the event.  DESCRIPTION provides the complete
-			 description of the event.  CATEGORIES defines the categories the
-			 event belongs to.  TIMEZONE specifies a time zone for this event
-			 only.  CLASS contains the visibility attribute.  Three of them
-			 (\"PUBLIC\", \"CONFIDENTIAL\", and \"PRIVATE\") are predefined, others
-			 should be treated as \"PRIVATE\" if they are unknown to the iCalendar server.
+       ENTRY is either a headline or an inlinetask element.  TIMESTAMP
+       is a timestamp object defining the date-time of the event.  UID
+       is the unique identifier for the event.  SUMMARY defines a short
+       summary or subject for the event.  LOCATION defines the intended
+       venue for the event.  DESCRIPTION provides the complete
+       description of the event.  CATEGORIES defines the categories the
+       event belongs to.  TIMEZONE specifies a time zone for this event
+       only.  CLASS contains the visibility attribute.  Three of them
+       (\"PUBLIC\", \"CONFIDENTIAL\", and \"PRIVATE\") are predefined, others
+       should be treated as \"PRIVATE\" if they are unknown to the iCalendar server.
 
-							Return VEVENT component as a string."
-				 (if (eq (org-element-property :type timestamp) 'diary)
-						 (let ((counter 0))
-							 (apply 'concat
-											(mapcar (lambda (ts)
-																(let ((uid (format "DS%d-%s" (cl-incf counter) uid)))
-																	(org-icalendar--vevent entry ts uid summary location description categories timezone class)
-																	))
-															(org-timestamp-from-sexp
-															 (substring (org-element-property :raw-value timestamp) 3 -1))
-															)))
-					 (org-icalendar-fold-string
-						(concat "BEGIN:VEVENT\n"
-										(org-icalendar-dtstamp) "\n"
-										"UID:" uid "\n"
-										(org-icalendar-convert-timestamp timestamp "DTSTART" nil timezone) "\n"
-										(org-icalendar-convert-timestamp timestamp "DTEND" t timezone) "\n"
-										;; RRULE.
-										(when (org-element-property :repeater-type timestamp)
-											(format "RRULE:FREQ=%s;INTERVAL=%d\n"
-															(cl-case (org-element-property :repeater-unit timestamp)
-																(hour "HOURLY") (day "DAILY") (week "WEEKLY")
-																(month "MONTHLY") (year "YEARLY"))
-															(org-element-property :repeater-value timestamp)))
-										"SUMMARY:" summary "\n"
-										(and (org-string-nw-p location) (format "LOCATION:%s\n" location))
-										(and (org-string-nw-p class) (format "CLASS:%s\n" class))
-										(and (org-string-nw-p description)
-												 (format "DESCRIPTION:%s\n" description))
-										"CATEGORIES:" categories "\n"
-										;; VALARM.
-										(org-icalendar--valarm entry timestamp summary)
-										"END:VEVENT"))))
-		 #+end_src
+				      Return VEVENT component as a string."
+	 (if (eq (org-element-property :type timestamp) 'diary)
+	     (let ((counter 0))
+	       (apply 'concat
+		      (mapcar (lambda (ts)
+				(let ((uid (format "DS%d-%s" (cl-incf counter) uid)))
+				  (org-icalendar--vevent entry ts uid summary location description categories timezone class)
+				  ))
+			      (org-timestamp-from-sexp
+			       (substring (org-element-property :raw-value timestamp) 3 -1))
+			      )))
+	   (org-icalendar-fold-string
+	    (concat "BEGIN:VEVENT\n"
+		    (org-icalendar-dtstamp) "\n"
+		    "UID:" uid "\n"
+		    (org-icalendar-convert-timestamp timestamp "DTSTART" nil timezone) "\n"
+		    (org-icalendar-convert-timestamp timestamp "DTEND" t timezone) "\n"
+		    ;; RRULE.
+		    (when (org-element-property :repeater-type timestamp)
+		      (format "RRULE:FREQ=%s;INTERVAL=%d\n"
+			      (cl-case (org-element-property :repeater-unit timestamp)
+				(hour "HOURLY") (day "DAILY") (week "WEEKLY")
+				(month "MONTHLY") (year "YEARLY"))
+			      (org-element-property :repeater-value timestamp)))
+		    "SUMMARY:" summary "\n"
+		    (and (org-string-nw-p location) (format "LOCATION:%s\n" location))
+		    (and (org-string-nw-p class) (format "CLASS:%s\n" class))
+		    (and (org-string-nw-p description)
+			 (format "DESCRIPTION:%s\n" description))
+		    "CATEGORIES:" categories "\n"
+		    ;; VALARM.
+		    (org-icalendar--valarm entry timestamp summary)
+		    "END:VEVENT"))))
+     #+end_src
 ** icalendar.el patches
 *** icalendar-export-region
 **** Patch
-		 #+begin_example emacs-lisp
-                                      (cdr contents-n-summary))))
-                       (setq result (concat result header contents alarm
-                                            "\nEND:VEVENT")))
+     #+begin_example emacs-lisp
+			  (cdr contents-n-summary))))
+	   (setq result (concat result header contents alarm
+				"\nEND:VEVENT")))
 -                    (if (consp cns-cons-or-list)
 -                        (list cns-cons-or-list)
 -                      cns-cons-or-list)))
 +                    (if (consp (car cns-cons-or-list))
 +												cns-cons-or-list
 +											(list cns-cons-or-list))))
-           ;; handle errors
-           (error
-            (setq found-error t)
-		 #+end_example
+;; handle errors
+(error
+(setq found-error t)
+     #+end_example
 **** Source
-		 #+begin_src emacs-lisp
-(defun icalendar-export-region (min max ical-filename)
-  "Export region in diary file to iCalendar format.
-All diary entries in the region from MIN to MAX in the current buffer are
-converted to iCalendar format.  The result is appended to the file
-ICAL-FILENAME.
-This function attempts to return t if something goes wrong.  In this
-case an error string which describes all the errors and problems is
-written into the buffer `*icalendar-errors*'."
-  (interactive "r
-FExport diary data into iCalendar file: ")
-  (let ((result "")
-        (start 0)
-        (entry-main "")
-        (entry-rest "")
-	(entry-full "")
-        (header "")
-        (contents-n-summary)
-        (contents)
-        (alarm)
-        (found-error nil)
-        (nonmarker (concat "^" (regexp-quote diary-nonmarking-symbol)
-                           "?"))
-        (other-elements nil)
-        (cns-cons-or-list nil))
-    ;; prepare buffer with error messages
-    (save-current-buffer
-      (set-buffer (get-buffer-create "*icalendar-errors*"))
-      (erase-buffer))
+     #+begin_src emacs-lisp
+       (defun icalendar-export-region (min max ical-filename)
+	 "Export region in diary file to iCalendar format.
+       All diary entries in the region from MIN to MAX in the current buffer are
+       converted to iCalendar format.  The result is appended to the file
+       ICAL-FILENAME.
+       This function attempts to return t if something goes wrong.  In this
+       case an error string which describes all the errors and problems is
+       written into the buffer `*icalendar-errors*'."
+	 (interactive "r
+       FExport diary data into iCalendar file: ")
+	 (let ((result "")
+	       (start 0)
+	       (entry-main "")
+	       (entry-rest "")
+	       (entry-full "")
+	       (header "")
+	       (contents-n-summary)
+	       (contents)
+	       (alarm)
+	       (found-error nil)
+	       (nonmarker (concat "^" (regexp-quote diary-nonmarking-symbol)
+				  "?"))
+	       (other-elements nil)
+	       (cns-cons-or-list nil))
+	   ;; prepare buffer with error messages
+	   (save-current-buffer
+	     (set-buffer (get-buffer-create "*icalendar-errors*"))
+	     (erase-buffer))
 
-    ;; here we go
-    (save-excursion
-      (goto-char min)
-      (while (re-search-forward
-              ;; possibly ignore hidden entries beginning with "&"
-              (if icalendar-export-hidden-diary-entries
-                  "^\\([^ \t\n#].+\\)\\(\\(\n[ \t].*\\)*\\)"
-                "^\\([^ \t\n&#].+\\)\\(\\(\n[ \t].*\\)*\\)") max t)
-        (setq entry-main (match-string 1))
-        (if (match-beginning 2)
-            (setq entry-rest (match-string 2))
-          (setq entry-rest ""))
-	(setq entry-full (concat entry-main entry-rest))
+	   ;; here we go
+	   (save-excursion
+	     (goto-char min)
+	     (while (re-search-forward
+		     ;; possibly ignore hidden entries beginning with "&"
+		     (if icalendar-export-hidden-diary-entries
+			 "^\\([^ \t\n#].+\\)\\(\\(\n[ \t].*\\)*\\)"
+		       "^\\([^ \t\n&#].+\\)\\(\\(\n[ \t].*\\)*\\)") max t)
+	       (setq entry-main (match-string 1))
+	       (if (match-beginning 2)
+		   (setq entry-rest (match-string 2))
+		 (setq entry-rest ""))
+	       (setq entry-full (concat entry-main entry-rest))
 
-        (condition-case error-val
-            (progn
-              (setq cns-cons-or-list
-                    (icalendar--convert-to-ical nonmarker entry-main))
-              (setq other-elements (icalendar--parse-summary-and-rest
-				    entry-full))
-              (mapc (lambda (contents-n-summary)
-                      (setq contents (concat (car contents-n-summary)
-                                             "\nSUMMARY:"
-                                             (cdr contents-n-summary)))
-                      (let ((cla (cdr (assoc 'cla other-elements)))
-                            (des (cdr (assoc 'des other-elements)))
-                            (loc (cdr (assoc 'loc other-elements)))
-                            (org (cdr (assoc 'org other-elements)))
-                            (sta (cdr (assoc 'sta other-elements)))
-                            (sum (cdr (assoc 'sum other-elements)))
-                            (url (cdr (assoc 'url other-elements)))
-                            (uid (cdr (assoc 'uid other-elements))))
-                        (if cla
-                            (setq contents (concat contents "\nCLASS:" cla)))
-                        (if des
-                            (setq contents (concat contents "\nDESCRIPTION:"
-                                                   des)))
-                        (if loc
-                            (setq contents (concat contents "\nLOCATION:" loc)))
-                        (if org
-                            (setq contents (concat contents "\nORGANIZER:"
-                                                   org)))
-                        (if sta
-                            (setq contents (concat contents "\nSTATUS:" sta)))
-                        ;;(if sum
-                        ;;    (setq contents (concat contents "\nSUMMARY:" sum)))
-                        (if url
-                            (setq contents (concat contents "\nURL:" url)))
+	       (condition-case error-val
+		   (progn
+		     (setq cns-cons-or-list
+			   (icalendar--convert-to-ical nonmarker entry-main))
+		     (setq other-elements (icalendar--parse-summary-and-rest
+					   entry-full))
+		     (mapc (lambda (contents-n-summary)
+			     (setq contents (concat (car contents-n-summary)
+						    "\nSUMMARY:"
+						    (cdr contents-n-summary)))
+			     (let ((cla (cdr (assoc 'cla other-elements)))
+				   (des (cdr (assoc 'des other-elements)))
+				   (loc (cdr (assoc 'loc other-elements)))
+				   (org (cdr (assoc 'org other-elements)))
+				   (sta (cdr (assoc 'sta other-elements)))
+				   (sum (cdr (assoc 'sum other-elements)))
+				   (url (cdr (assoc 'url other-elements)))
+				   (uid (cdr (assoc 'uid other-elements))))
+			       (if cla
+				   (setq contents (concat contents "\nCLASS:" cla)))
+			       (if des
+				   (setq contents (concat contents "\nDESCRIPTION:"
+							  des)))
+			       (if loc
+				   (setq contents (concat contents "\nLOCATION:" loc)))
+			       (if org
+				   (setq contents (concat contents "\nORGANIZER:"
+							  org)))
+			       (if sta
+				   (setq contents (concat contents "\nSTATUS:" sta)))
+			       ;;(if sum
+			       ;;    (setq contents (concat contents "\nSUMMARY:" sum)))
+			       (if url
+				   (setq contents (concat contents "\nURL:" url)))
 
-                        (setq header (concat "\nBEGIN:VEVENT\nUID:"
-                                             (or uid
-                                                 (icalendar--create-uid
-                                                  entry-full contents))))
-                        (setq alarm (icalendar--create-ical-alarm
-                                     (cdr contents-n-summary))))
-                      (setq result (concat result header contents alarm
-                                           "\nEND:VEVENT")))
-                    (if (consp (car cns-cons-or-list))
-												cns-cons-or-list
-											(list cns-cons-or-list))))
-          ;; handle errors
-          (error
-           (setq found-error t)
-           (save-current-buffer
-             (set-buffer (get-buffer-create "*icalendar-errors*"))
-             (insert (format-message "Error in line %d -- %s: `%s'\n"
-                                     (count-lines (point-min) (point))
-                                     error-val
-                                     entry-main))))))
+			       (setq header (concat "\nBEGIN:VEVENT\nUID:"
+						    (or uid
+							(icalendar--create-uid
+							 entry-full contents))))
+			       (setq alarm (icalendar--create-ical-alarm
+					    (cdr contents-n-summary))))
+			     (setq result (concat result header contents alarm
+						  "\nEND:VEVENT")))
+			   (if (consp (car cns-cons-or-list))
+			       cns-cons-or-list
+			     (list cns-cons-or-list))))
+		 ;; handle errors
+		 (error
+		  (setq found-error t)
+		  (save-current-buffer
+		    (set-buffer (get-buffer-create "*icalendar-errors*"))
+		    (insert (format-message "Error in line %d -- %s: `%s'\n"
+					    (count-lines (point-min) (point))
+					    error-val
+					    entry-main))))))
 
-      ;; we're done, insert everything into the file
-      (save-current-buffer
-        (let ((coding-system-for-write 'utf-8))
-          (set-buffer (find-file ical-filename))
-          (goto-char (point-max))
-          (insert "BEGIN:VCALENDAR")
-          (insert "\nPRODID:-//Emacs//NONSGML icalendar.el//EN")
-          (insert "\nVERSION:2.0")
-          (insert result)
-          (insert "\nEND:VCALENDAR\n")
-          ;; save the diary file
-          (save-buffer)
-          (unless found-error
-            (bury-buffer)))))
-    found-error))
-		 #+end_src
+	     ;; we're done, insert everything into the file
+	     (save-current-buffer
+	       (let ((coding-system-for-write 'utf-8))
+		 (set-buffer (find-file ical-filename))
+		 (goto-char (point-max))
+		 (insert "BEGIN:VCALENDAR")
+		 (insert "\nPRODID:-//Emacs//NONSGML icalendar.el//EN")
+		 (insert "\nVERSION:2.0")
+		 (insert result)
+		 (insert "\nEND:VCALENDAR\n")
+		 ;; save the diary file
+		 (save-buffer)
+		 (unless found-error
+		   (bury-buffer)))))
+	   found-error))
+     #+end_src
