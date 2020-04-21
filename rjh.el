@@ -116,6 +116,12 @@
 	))
     ))
 
+(defun rjh/config-exists-p (conf dir)
+  "Returns whether config exists in directory"
+  (if (file-readable-p
+       (rjh/config-file-path conf dir))
+      t))
+
 ;; Functions to list available config
 (defun rjh/config-list (dir)
   "Lists available config options in directory"
