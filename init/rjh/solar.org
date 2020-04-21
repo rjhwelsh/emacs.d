@@ -11,8 +11,15 @@ These functions build on the following.
   (require 'solar)
   (require 'org)
   (require 'org-agenda)
+  (require 'org-habit)
   (require 'ox-icalendar)
   (require 'icalendar)
+#+end_src
+
+* Dummy variables
+Prevent warnings in the byte compiler
+#+begin_src emacs-lisp
+(defvar date)
 #+end_src
 
 * Daylight
