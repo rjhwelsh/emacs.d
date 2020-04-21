@@ -90,6 +90,10 @@
   )
 
 ;; Variables
+(defvar rjh/config-sym-list
+  (list :init :private)
+  "A list of all conf symbol keys (in order of searching)")
+
 (defvar rjh/local-dir-plist
   (list
    :init rjh/local-init-dir
@@ -121,9 +125,9 @@
       (- (length string) 4)))
    (directory-files-recursively dir ".*\.org$")))
 
-
-(defun rjh/config-load (sym conf)
-  "Loads config CONF for sym SYM"
+(defun rjh/config-load-sym (sym conf)
+  "Loads config CONF for sym SYM
+Returns nil if conf does not exist"
   (let* ((dir (plist-get rjh/local-dir-plist sym))
 	 (props (list
 		 :sym sym
@@ -136,14 +140,35 @@
 	  (org-babel-load-file orgfile t)
 	  (add-to-list 'rjh/config-loaded props t)
 	  )
-      (progn
-	(display-warning
-	 'rjh
-	 (format-message "%s does not exist!" orgfile)
-	 :warning
-	 ))
+      nil
       ))
   )
+
+(defun rjh/config-load-search-syms (conf &rest syms)
+  "Loads config CONF,
+If syms is nil, will search and load first config found
+If syms is specified, will load for config for each sym"
+  (let ((symlist (or syms rjh/config-sym-list))
+	(loadall (if syms t nil))
+	)
+    (while
+	(and symlist
+	     (progn
+	       (let ((sym (car symlist)))
+		 (setq symlist (cdr symlist))
+		 (if (rjh/config-load-sym sym conf)
+		     loadall ;; Continue loading if t..
+		   (progn
+		     (display-warning
+		      'rjh
+		      (format-message "%s%s does not exist!" conf sym)
+		      :warning
+		      )
+		     t ;; Continue attempting to load
+		     ))
+		 )
+	       )))
+    ))
 
 (defun rjh/load-config-plist-list (config-plist-list)
   "Loads configuration from config-plist-list
@@ -152,7 +177,7 @@ plist requires the following values, for each entry:
     :conf  The org config file"
   (dolist (config-plist config-plist-list)
     (funcall
-     'rjh/config-load
+     'rjh/config-load-sym
      (plist-get config-plist :sym)
      (plist-get config-plist :conf)
      )))
@@ -195,8 +220,8 @@ Will attempt to load configuration file(s) from:
      (completion-table-with-cache 'rjh/config-completion-function t)
      nil
      t)))
-  (rjh/config-load :init conf)
-  (rjh/config-load :private conf)
+  (rjh/config-load-sym :init conf)
+  (rjh/config-load-sym :private conf)
   )
 
 ;; Completion
