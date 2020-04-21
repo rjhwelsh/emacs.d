@@ -177,9 +177,9 @@ plist requires the following values, for each entry:
     :conf  The org config file"
   (dolist (config-plist config-plist-list)
     (funcall
-     'rjh/config-load-sym
-     (plist-get config-plist :sym)
+     'rjh/config-load-search-syms
      (plist-get config-plist :conf)
+     (plist-get config-plist :sym)
      )))
 
 (defun rjh/config-plist-list-from-env (env sym)
@@ -220,8 +220,7 @@ Will attempt to load configuration file(s) from:
      (completion-table-with-cache 'rjh/config-completion-function t)
      nil
      t)))
-  (rjh/config-load-sym :init conf)
-  (rjh/config-load-sym :private conf)
+  (apply 'rjh/config-load-search-syms conf rjh/config-sym-list)
   )
 
 ;; Completion
