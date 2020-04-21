@@ -1,0 +1,9 @@
+* Avy
+https://github.com/abo-abo/avy
+avy is a GNU Emacs package for jumping to visible text using a char-based decision tree.
+
+  #+begin_src emacs-lisp
+    (use-package avy
+      :pin melpa
+      :ensure t)
+  #+end_src

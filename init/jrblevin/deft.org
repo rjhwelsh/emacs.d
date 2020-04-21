@@ -1,0 +1,15 @@
+* Deft
+https://github.com/jrblevin/deft 
+
+Deft is an Emacs mode for quickly browsing, filtering, and editing
+directories of plain text notes, inspired by Notational Velocity.
+
+#+begin_src emacs-lisp
+   (use-package deft
+     :ensure t
+     :init
+     (setq deft-default-extension "org")
+     (setq deft-directory "~/.emacs.d/deft")
+     (setq deft-auto-save-interval 60.0)
+     )
+#+end_src
