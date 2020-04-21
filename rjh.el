@@ -100,28 +100,10 @@
 (defvar rjh/config-loaded '()
   "A list of plists describing each loaded configuration")
 
-(defun rjh/config-file-path (base dir)
+;; Functions
+(defun rjh/config-file-path (conf dir)
   "Converts conf to a path, using dir, and base"
-  (expand-file-name (concat base ".org") dir))
-
-(defun rjh/load-base (dir)
-  "Generates rjh/load functions
-     dir - load directory"
-  (lambda (base props)
-    (let ((orgfile (rjh/config-file-path base dir)))
-      (if (file-readable-p orgfile)
-	  (progn
-	    (org-babel-load-file orgfile t)
-	    (add-to-list 'rjh/config-loaded props t)
-	    )
-	(progn
-	  (display-warning
-	   'rjh
-	   (format-message "%s does not exist!" orgfile)
-	   :warning
-	   ))
-	))
-    ))
+  (expand-file-name (concat conf ".org") dir))
 
 (defun rjh/config-exists-p (conf dir)
   "Returns whether config exists in directory"
@@ -129,7 +111,6 @@
        (rjh/config-file-path conf dir))
       t))
 
-;; Functions to list available config
 (defun rjh/config-list (dir)
   "Lists available config options in directory"
   (mapcar
@@ -140,35 +121,29 @@
       (- (length string) 4)))
    (directory-files-recursively dir ".*\.org$")))
 
-;; Functions to load config
-;; (requires dynamic scoping) 
-(defun rjh/load-init (conf)
-  "Use org-babel-load-file to load init/conf in rjh/local-config-repo"
-  (let* ((dir rjh/local-init-dir)
-	 (loadf 'rjh/load-init)
-	 (dirsym 'rjh/load-init-dir)
-	 (props (list
-		 :loadf loadf
-		 :dirsym dirsym
-		 :dir dir
-		 :conf conf))
-	 )
-    (message "Loading init/%s ..." conf)
-    (funcall (rjh/load-base dir) conf props)))
 
-(defun rjh/load-private (conf)
-  "Use org-babel-load-file to load private/conf"
-  (let* ((dir rjh/local-private-dir)
-	 (loadf 'rjh/load-private)
-	 (dirsym 'rjh/load-private-dir)
+(defun rjh/config-load (sym conf)
+  "Loads config CONF for sym SYM"
+  (let* ((dir (plist-get rjh/local-dir-plist sym))
 	 (props (list
-		 :loadf loadf
-		 :dirsym dirsym
-		 :dir dir
+		 :sym sym
 		 :conf conf))
+	 (orgfile (rjh/config-file-path conf dir))
 	 )
-    (message "Loading private/%s ..." conf)
-    (funcall (rjh/load-base dir) conf props)))
+    (message "Searching for %s%s ..." conf (symbol-name sym))
+    (if (rjh/config-exists-p conf dir)
+	(progn
+	  (org-babel-load-file orgfile t)
+	  (add-to-list 'rjh/config-loaded props t)
+	  )
+      (progn
+	(display-warning
+	 'rjh
+	 (format-message "%s does not exist!" orgfile)
+	 :warning
+	 ))
+      ))
+  )
 
 (defun rjh/load-config-plist-list (config-plist-list)
   "Loads configuration from config-plist-list
@@ -177,26 +152,27 @@ plist requires the following values, for each entry:
     :conf  The org config file"
   (dolist (config-plist config-plist-list)
     (funcall
-     (plist-get config-plist :loadf)
+     'rjh/config-load
+     (plist-get config-plist :sym)
      (plist-get config-plist :conf)
      )))
 
-(defun rjh/config-plist-list-from-env (env loadf)
+(defun rjh/config-plist-list-from-env (env sym)
   "Reads config-plist-list from environment variable
     env - environment variable name
     loadf - the loading function for each conf"
   (let ((conf-list (delete "" (split-string (or (getenv env) "")))))
     (mapcar
-     (lambda (conf) (list :loadf loadf :conf conf)) conf-list)))
+     (lambda (conf) (list :sym sym :conf conf)) conf-list)))
 
 (defun rjh/load-env ()
   "Loads configuration from environment variable, rjh/config-env"
   (progn
     (rjh/load-config-plist-list
      (append
-      (rjh/config-plist-list-from-env rjh/config-env 'rjh/load-init)
-      (rjh/config-plist-list-from-env rjh/config-env 'rjh/load-private)
-      (rjh/config-plist-list-from-env rjh/config-private-env 'rjh/load-private)))))
+      (rjh/config-plist-list-from-env rjh/config-env :init)
+      (rjh/config-plist-list-from-env rjh/config-env :private)
+      (rjh/config-plist-list-from-env rjh/config-private-env :init)))))
 
 (defun rjh/load-custom ()
   "Loads configuration from customization variable, rjh/config"
@@ -219,8 +195,8 @@ Will attempt to load configuration file(s) from:
      (completion-table-with-cache 'rjh/config-completion-function t)
      nil
      t)))
-  (rjh/load-init conf)
-  (rjh/load-private conf)
+  (rjh/config-load :init conf)
+  (rjh/config-load :private conf)
   )
 
 ;; Completion
@@ -228,6 +204,7 @@ Will attempt to load configuration file(s) from:
   "Return a list of strings completion table for loading config"
   (append
    (rjh/config-list rjh/local-init-dir)
-   (rjh/config-list rjh/local-private-dir))
+   (rjh/config-list rjh/local-private-dir)
+   )
   )
 
