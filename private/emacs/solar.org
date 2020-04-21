@@ -1,0 +1,9 @@
+* Solar
+Private data for calculating solar events in your area.
+
+#+begin_src emacs-lisp
+  (require 'solar)
+  (setq calendar-location-name ""
+	calendar-latitude 0
+	calendar-longitude 0)
+#+end_src
