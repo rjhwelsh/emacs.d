@@ -477,6 +477,11 @@
       (setq org-tags-column 0)
     #+end_src
 
+    Set tag column formatting for agenda.
+    #+begin_src emacs-lisp
+      (setq org-agenda-tags-column -80)
+    #+end_src
+
 ** Views
 *** Agenda Files
     Store the list of agenda files in ...
