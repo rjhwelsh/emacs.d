@@ -1,0 +1,14 @@
+* Emacs-calfw
+ Private calendar setup.
+
+#+BEGIN_SRC emacs-lisp
+  (defun my/calendar-sources ()
+    (list
+     (cfw:ical-create-source "Default" "~/.calendar/default.ics" "Green" )  ; Default Calendar
+     (cfw:org-create-source "Blue" )  ; Agenda Calendar
+     (cfw:cal-create-source "Orange") ; diary source
+     )
+    )
+#+END_SRC
+
+*Warning!* cfw will not raise an error if the calendar file does not exist.

@@ -1,119 +1,136 @@
-#+TITLE: Calfw
 #+PROPERTY: header-args    :results silent
 #+STARTUP: content
+* Emacs-calfw
+  https://github.com/kiwanami/emacs-calfw
+  This provides a fancy calendar, which can be used in conjunction with
+  org-agendas, ics files and more. 
 
-* Calfw
- This provides a very fancy calendar, which can be used in conjunction with
- org-agendas, ics files and more. More information can be found [[https://github.com/kiwanami/emacs-calfw][here]].
-* Packages
-	 #+BEGIN_SRC emacs-lisp
-		 (use-package "calfw" :defer t
-			 :ensure t
-			 :config
-			 ;; Calendar Views
-			 ;; Two week agenda.
+** Dummy function
+Set this variable in =private/=. 
+#+begin_src emacs-lisp
+  (defun my/calendar-sources ()) ;; Set this in private
+#+end_src
 
-			(defun rjh/two-week-view ()
-				(interactive)
-				(cfw:open-calendar-buffer
-				 :contents-sources
-				 ( rjh/calendar-sources ) ; set this var in private/calfw.org
-				 :view
-				 'two-weeks
-				 ))
-
-		        ;; Week agenda.
-			(defun rjh/week-view ()
-				(interactive)
-				(cfw:open-calendar-buffer
-				 :contents-sources
-				 ( rjh/calendar-sources ) ; set this var in private/calfw.org
-				 :view
-				 'week
-				 ))
-
-
-			 :bind ("C-x a c" . rjh/two-week-view))
-
-		 (use-package "calfw-org" :defer t
-			 :ensure t
-			 :init
-			 (require 'calfw-org)
-			 (setq cfw:org-overwrite-default-keybinding t)) ;; Org-mode like keybindings
-
-		 (use-package "calfw-ical" :defer t
-			 :ensure t
-			 :init
-			 (require 'calfw-ical))
-
-		 (use-package "calfw-cal" :defer t
-			 :ensure t
-			 :init
-			 (require 'calfw-cal))
-	 #+END_SRC
-
-* Examples
- A demonstration calendar is in the example below.
- #+BEGIN_EXAMPLE
- (defun my-open-calendar ()
-	 (interactive)
-	 (cfw:open-calendar-buffer
-		:contents-sources
-		(list
-		 (cfw:org-create-source "Green")  ; orgmode source
-		 (cfw:howm-create-source "Blue")  ; howm source
-		 (cfw:cal-create-source "Orange") ; diary source
-		 (cfw:ical-create-source "Moon" "~/moon.ics" "Gray")  ; ICS source1
-		 (cfw:ical-create-source "gcal" "https://..../basic.ics" "IndianRed") ; google calendar ICS
-		)))
- #+END_EXAMPLE
-
- Fancy Grid settings; various examples.
-These are set in the package configuration above.
- #+BEGIN_EXAMPLE
- ;; Default setting
- (setq cfw:fchar-junction ?+
-			 cfw:fchar-vertical-line ?|
-			 cfw:fchar-horizontal-line ?-
-			 cfw:fchar-left-junction ?+
-			 cfw:fchar-right-junction ?+
-			 cfw:fchar-top-junction ?+
-			 cfw:fchar-top-left-corner ?+
-			 cfw:fchar-top-right-corner ?+ )
-
- ;; Unicode characters
- (setq cfw:fchar-junction ?╋
-			 cfw:fchar-vertical-line ?┃
-			 cfw:fchar-horizontal-line ?━
-			 cfw:fchar-left-junction ?┣
-			 cfw:fchar-right-junction ?┫
-			 cfw:fchar-top-junction ?┯
-			 cfw:fchar-top-left-corner ?┏
-			 cfw:fchar-top-right-corner ?┓)
-
- ;; Another unicode chars
- (setq cfw:fchar-junction ?╬
-			 cfw:fchar-vertical-line ?║
-			 cfw:fchar-horizontal-line ?═
-			 cfw:fchar-left-junction ?╠
-			 cfw:fchar-right-junction ?╣
-			 cfw:fchar-top-junction ?╦
-			 cfw:fchar-top-left-corner ?╔
-			 cfw:fchar-top-right-corner ?╗)
- #+END_EXAMPLE
-
-* Character bars
-Here I use unicode.
+** Packages
 #+BEGIN_SRC emacs-lisp
-	;; Unicode characters
-	(setq cfw:fchar-junction ?╋
-				cfw:fchar-vertical-line ?┃
-				cfw:fchar-horizontal-line ?━
-				cfw:fchar-left-junction ?┣
-				cfw:fchar-right-junction ?┫
-				cfw:fchar-top-junction ?┯
-				cfw:fchar-top-left-corner ?┏
-				cfw:fchar-top-right-corner ?┓
-				cfw:render-line-breaker 'cfw:render-line-breaker-none)
+  (use-package "calfw" :defer t
+    :ensure t
+    :config
+    ;; Calendar Views
+    ;; Two week agenda.
+    (defun my/two-week-view ()
+      (interactive)
+      (cfw:open-calendar-buffer
+       :contents-sources
+       ( my/calendar-sources )
+       :view
+       'two-weeks
+       ))
+
+    ;; Week agenda.
+    (defun my/one-week-view ()
+      (interactive)
+      (cfw:open-calendar-buffer
+       :contents-sources
+       ( my/calendar-sources )
+       :view
+       'week
+       ))
+
+    (defun my/one-month-view ()
+      (interactive)
+      (cfw:open-calendar-buffer
+       :contents-sources
+       ( my/calendar-sources ) 
+       :view
+       'month
+       ))
+
+
+    :bind (("C-x c 1" . my/one-week-view)
+	   ("C-x c 2" . my/two-week-view)
+	   ("C-x c 3" . my/one-month-view)
+	   )
+    )
+
+  (use-package "calfw-org" :defer t
+    :ensure t
+    :init
+    (require 'calfw-org)
+    (setq cfw:org-overwrite-default-keybinding t)) ;; Org-mode like keybindings
+
+  (use-package "calfw-ical" :defer t
+    :ensure t
+    :init
+    (require 'calfw-ical))
+
+  (use-package "calfw-cal" :defer t
+    :ensure t
+    :init
+    (require 'calfw-cal))
 #+END_SRC
 
+** Examples
+  A demonstration calendar is in the example below.
+  #+BEGIN_EXAMPLE
+  (defun my-open-calendar ()
+	  (interactive)
+	  (cfw:open-calendar-buffer
+		 :contents-sources
+		 (list
+		  (cfw:org-create-source "Green")  ; orgmode source
+		  (cfw:howm-create-source "Blue")  ; howm source
+		  (cfw:cal-create-source "Orange") ; diary source
+		  (cfw:ical-create-source "Moon" "~/moon.ics" "Gray")  ; ICS source1
+		  (cfw:ical-create-source "gcal" "https://..../basic.ics" "IndianRed") ; google calendar ICS
+		 )))
+  #+END_EXAMPLE
+
+  Fancy Grid settings; various examples.
+ These are set in the package configuration above.
+  #+BEGIN_EXAMPLE
+  ;; Default setting
+  (setq cfw:fchar-junction ?+
+			  cfw:fchar-vertical-line ?|
+			  cfw:fchar-horizontal-line ?-
+			  cfw:fchar-left-junction ?+
+			  cfw:fchar-right-junction ?+
+			  cfw:fchar-top-junction ?+
+			  cfw:fchar-top-left-corner ?+
+			  cfw:fchar-top-right-corner ?+ )
+
+  ;; Unicode characters
+  (setq cfw:fchar-junction ?╋
+			  cfw:fchar-vertical-line ?┃
+			  cfw:fchar-horizontal-line ?━
+			  cfw:fchar-left-junction ?┣
+			  cfw:fchar-right-junction ?┫
+			  cfw:fchar-top-junction ?┯
+			  cfw:fchar-top-left-corner ?┏
+			  cfw:fchar-top-right-corner ?┓)
+
+  ;; Another unicode chars
+  (setq cfw:fchar-junction ?╬
+			  cfw:fchar-vertical-line ?║
+			  cfw:fchar-horizontal-line ?═
+			  cfw:fchar-left-junction ?╠
+			  cfw:fchar-right-junction ?╣
+			  cfw:fchar-top-junction ?╦
+			  cfw:fchar-top-left-corner ?╔
+			  cfw:fchar-top-right-corner ?╗)
+  #+END_EXAMPLE
+
+** Character bars
+ Here I use unicode.
+ #+BEGIN_SRC emacs-lisp
+	 ;; Unicode characters
+	 (setq cfw:fchar-junction ?╋
+				 cfw:fchar-vertical-line ?┃
+				 cfw:fchar-horizontal-line ?━
+				 cfw:fchar-left-junction ?┣
+				 cfw:fchar-right-junction ?┫
+				 cfw:fchar-top-junction ?┯
+				 cfw:fchar-top-left-corner ?┏
+				 cfw:fchar-top-right-corner ?┓
+				 cfw:render-line-breaker 'cfw:render-line-breaker-none)
+ #+END_SRC
