@@ -1,0 +1,7 @@
+* Paren
+Display highlighting on matching parentheses.
+
+#+begin_src emacs-lisp
+  (show-paren-mode t)
+  (setq show-paren-style 'expression)
+#+end_src
