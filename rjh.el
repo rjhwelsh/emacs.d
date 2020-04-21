@@ -90,6 +90,13 @@
   )
 
 ;; Variables
+(defvar rjh/local-dir-plist
+  (list
+   :init rjh/local-init-dir
+   :private rjh/local-private-dir
+   )
+  "A plist of local dir to load configuration from")
+
 (defvar rjh/config-loaded '()
   "A list of plists describing each loaded configuration")
 
