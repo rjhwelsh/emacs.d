@@ -18,7 +18,8 @@ A client/server indexer for c/c++/objc[++] with integration for Emacs based on c
       (define-key c-mode-base-map (kbd "M-?") 'rtags-display-summary)
       (rtags-enable-standard-keybindings)
 
-      (setq rtags-use-helm t)
+      ;; (setq rtags-use-helm t)
+
       ;; Shutdown rdm when leaving emacs.
       (add-hook 'kill-emacs-hook 'rtags-quit-rdm)
       (add-hook 'c-mode-hook 'rtags-start-process-unless-running)
