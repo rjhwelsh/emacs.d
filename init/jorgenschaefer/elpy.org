@@ -21,8 +21,6 @@ badly-formatted Python.
     ;; You could use Jupyter as an alternative here. ("jupyter", "console --simple-prompt" )
     (setq python-shell-interpreter "python"
 	  python-shell-interpreter-args "-i")
-    ;; Set up a dedicated python shell for each buffer. 
-    (setq elpy-dedicated-shells nil)
     )
 #+END_SRC
 
