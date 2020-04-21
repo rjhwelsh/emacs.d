@@ -50,6 +50,7 @@ dep_options() {
 	    "all")
 		dep_sensible;
 		dep_zetteldeft;
+		dep_org_gantt;
 		BREAK="1"
 		;;
 	    "sensible-defaults")
