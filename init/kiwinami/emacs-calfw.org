@@ -70,69 +70,43 @@ Set this variable in =private/=.
     (require 'calfw-cal))
 #+END_SRC
 
-** Examples
-  A demonstration calendar is in the example below.
-  #+BEGIN_EXAMPLE
-  (defun my-open-calendar ()
-	  (interactive)
-	  (cfw:open-calendar-buffer
-		 :contents-sources
-		 (list
-		  (cfw:org-create-source "Green")  ; orgmode source
-		  (cfw:howm-create-source "Blue")  ; howm source
-		  (cfw:cal-create-source "Orange") ; diary source
-		  (cfw:ical-create-source "Moon" "~/moon.ics" "Gray")  ; ICS source1
-		  (cfw:ical-create-source "gcal" "https://..../basic.ics" "IndianRed") ; google calendar ICS
-		 )))
-  #+END_EXAMPLE
-
 ** Grid settings
   Fancy Grid settings; various examples.
- These are set in the package configuration above.
-#+BEGIN_EXAMPLE
-;; Default setting
+  Set these in private.
+#+BEGIN_SRC emacs-lisp
+  ;; Default setting
+  (defun cfw:set-grid-style (style) 
+    (cond
+     ((not style)
+      (setq cfw:fchar-junction ?+
+	    cfw:fchar-vertical-line ?|
+	    cfw:fchar-horizontal-line ?-
+	    cfw:fchar-left-junction ?+
+	    cfw:fchar-right-junction ?+
+	    cfw:fchar-top-junction ?+
+	    cfw:fchar-top-left-corner ?+
+	    cfw:fchar-top-right-corner ?+ ))
 
-(setq cfw:fchar-junction ?+
-  cfw:fchar-vertical-line ?|
-  cfw:fchar-horizontal-line ?-
-  cfw:fchar-left-junction ?+
-  cfw:fchar-right-junction ?+
-  cfw:fchar-top-junction ?+
-  cfw:fchar-top-left-corner ?+
-  cfw:fchar-top-right-corner ?+ )
+     ;; Unicode characters
+     ((= style 1)
+      (setq cfw:fchar-junction ?╋
+	    cfw:fchar-vertical-line ?┃
+	    cfw:fchar-horizontal-line ?━
+	    cfw:fchar-left-junction ?┣
+	    cfw:fchar-right-junction ?┫
+	    cfw:fchar-top-junction ?┯
+	    cfw:fchar-top-left-corner ?┏
+	    cfw:fchar-top-right-corner ?┓))
 
-;; Unicode characters
-(setq cfw:fchar-junction ?╋
-  cfw:fchar-vertical-line ?┃
-  cfw:fchar-horizontal-line ?━
-  cfw:fchar-left-junction ?┣
-  cfw:fchar-right-junction ?┫
-  cfw:fchar-top-junction ?┯
-  cfw:fchar-top-left-corner ?┏
-  cfw:fchar-top-right-corner ?┓)
-
-;; Another unicode chars
-(setq cfw:fchar-junction ?╬
-  cfw:fchar-vertical-line ?║
-  cfw:fchar-horizontal-line ?═
-  cfw:fchar-left-junction ?╠
-  cfw:fchar-right-junction ?╣
-  cfw:fchar-top-junction ?╦
-  cfw:fchar-top-left-corner ?╔
-  cfw:fchar-top-right-corner ?╗)
-#+END_EXAMPLE
-
-** Character bars
- Here I use unicode.
- #+BEGIN_EXAMPLE emacs-lisp
-   ;; Unicode characters
-   (setq cfw:fchar-junction ?╋
-	 cfw:fchar-vertical-line ?┃
-	 cfw:fchar-horizontal-line ?━
-	 cfw:fchar-left-junction ?┣
-	 cfw:fchar-right-junction ?┫
-	 cfw:fchar-top-junction ?┯
-	 cfw:fchar-top-left-corner ?┏
-	 cfw:fchar-top-right-corner ?┓
-	 cfw:render-line-breaker 'cfw:render-line-breaker-none)
- #+END_EXAMPLE
+     ;; Another unicode chars
+     ((= style 2)
+      (setq cfw:fchar-junction ?╬
+	    cfw:fchar-vertical-line ?║
+	    cfw:fchar-horizontal-line ?═
+	    cfw:fchar-left-junction ?╠
+	    cfw:fchar-right-junction ?╣
+	    cfw:fchar-top-junction ?╦
+	    cfw:fchar-top-left-corner ?╔
+	    cfw:fchar-top-right-corner ?╗))
+     ))
+#+END_SRC

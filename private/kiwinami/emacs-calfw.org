@@ -1,6 +1,7 @@
 * Emacs-calfw
  Private calendar setup.
 
+** Calendar sources
 #+BEGIN_SRC emacs-lisp
   (defun my/calendar-sources ()
     (list
@@ -12,3 +13,31 @@
 #+END_SRC
 
 *Warning!* cfw will not raise an error if the calendar file does not exist.
+
+** Grid style
+   Style can be nil, 1 or 2.
+   #+begin_src emacs-lisp
+     (cfw:set-grid-style 2)
+   #+end_src
+
+** Line breaks
+  #+BEGIN_SRC emacs-lisp
+    (setq cfw:render-line-breaker 'cfw:render-line-breaker-none)
+  #+END_SRC
+
+** Examples
+   You can also create your own calendar function.
+   A demonstration calendar is in the example below.
+  #+BEGIN_EXAMPLE emacs-lisp
+  (defun my-open-calendar ()
+	  (interactive)
+	  (cfw:open-calendar-buffer
+		 :contents-sources
+		 (list
+		  (cfw:org-create-source "Green")  ; orgmode source
+		  (cfw:howm-create-source "Blue")  ; howm source
+		  (cfw:cal-create-source "Orange") ; diary source
+		  (cfw:ical-create-source "Moon" "~/moon.ics" "Gray")  ; ICS source1
+		  (cfw:ical-create-source "gcal" "https://..../basic.ics" "IndianRed") ; google calendar ICS
+		 )))
+  #+END_EXAMPLE
