@@ -109,6 +109,15 @@
   "Converts conf to a path, using dir, and base"
   (expand-file-name (concat conf ".org") dir))
 
+(defun rjh/config-file-path-from-spec (spec)
+  "Converts conf spec to a path"
+  (let* ((args (rjh/config-spec-to-arg spec))
+	 (conf (car args))
+	 (sym (cadr args))
+	 (dir (plist-get rjh/local-dir-plist sym))
+	 )
+    (rjh/config-file-path conf dir)))
+
 (defun rjh/config-exists-p (conf dir)
   "Returns whether config exists in directory"
   (if (file-readable-p
