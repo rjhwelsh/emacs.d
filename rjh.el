@@ -84,7 +84,7 @@
 
 (defcustom rjh/config
   '()
-  "A list of plists describing rjh configuration files to load"
+  "A list of config specs describing rjh configuration files to load"
   :type '(list)
   :group 'rjh
   )
@@ -102,7 +102,7 @@
   "A plist of local dir to load configuration from")
 
 (defvar rjh/config-loaded '()
-  "A list of plists describing each loaded configuration")
+  "A list of specs describing each loaded configuration")
 
 ;; Functions
 (defun rjh/config-file-path (conf dir)
@@ -130,16 +130,14 @@
   "Loads config CONF for sym SYM
 Returns nil if conf does not exist"
   (let* ((dir (plist-get rjh/local-dir-plist sym))
-	 (props (list
-		 :sym sym
-		 :conf conf))
+	 (spec (rjh/config-arg-to-spec conf sym))
 	 (orgfile (rjh/config-file-path conf dir))
 	 )
     (message "Searching for %s%s ..." conf (symbol-name sym))
     (if (rjh/config-exists-p conf dir)
 	(progn
 	  (org-babel-load-file orgfile t)
-	  (add-to-list 'rjh/config-loaded props t)
+	  (add-to-list 'rjh/config-loaded spec t)
 	  )
       nil
       ))
@@ -171,7 +169,7 @@ If syms is specified, will load for config for each sym"
 	       )))
     ))
 
-(defun rjh/sym-abbrev-to-arg (spec)
+(defun rjh/config-spec-to-arg (spec)
   "Converts a conf spec to arguments for rjh/config-load-search-syms"
   (let* ((strings (split-string spec ":"))
 	 (conf (car strings))
@@ -181,43 +179,33 @@ If syms is specified, will load for config for each sym"
     )
   )
 
-(defun rjh/arg-to-sym-abbrev (conf &optional sym)
+(defun rjh/config-arg-to-spec (conf &optional sym)
   "Converts CONF, SYM arguments to a conf spec for rjh/load"
   (concat conf (symbol-name sym))
   )
 
-(defun rjh/load-config-plist-list (config-plist-list)
-  "Loads configuration from config-plist-list
-plist requires the following values, for each entry:
-    :loadf The loading function
-    :conf  The org config file"
-  (dolist (config-plist config-plist-list)
-    (funcall
-     'rjh/config-load-search-syms
-     (plist-get config-plist :conf)
-     (plist-get config-plist :sym)
-     )))
-
-(defun rjh/config-plist-list-from-env (env sym)
-  "Reads config-plist-list from environment variable
+(defun rjh/config-spec-list-from-env (env sym)
+  "Reads config-spec from environment variable
     env - environment variable name
-    loadf - the loading function for each conf"
+    sym - the associated symbol"
   (let ((conf-list (delete "" (split-string (or (getenv env) "")))))
     (mapcar
-     (lambda (conf) (list :sym sym :conf conf)) conf-list)))
+     (lambda (conf) (rjh/config-arg-to-spec conf sym)) conf-list)))
 
 (defun rjh/load-env ()
   "Loads configuration from environment variable, rjh/config-env"
-  (progn
-    (rjh/load-config-plist-list
-     (append
-      (rjh/config-plist-list-from-env rjh/config-env :init)
-      (rjh/config-plist-list-from-env rjh/config-env :private)
-      (rjh/config-plist-list-from-env rjh/config-private-env :init)))))
+  (dolist (spec
+	   (append
+	    (rjh/config-spec-list-from-env rjh/config-env :init)
+	    (rjh/config-spec-list-from-env rjh/config-env :private)
+	    (rjh/config-spec-list-from-env rjh/config-private-env :init))
+	   )
+    (rjh/load spec)))
 
 (defun rjh/load-custom ()
   "Loads configuration from customization variable, rjh/config"
-  (rjh/load-config-plist-list rjh/config))
+  (dolist (spec rjh/config)
+    (rjh/load spec)))
 
 (defun rjh/save-custom ()
   "Saves current configuration to customization variable, rjh/config"
@@ -233,7 +221,7 @@ plist requires the following values, for each entry:
      (completion-table-with-cache 'rjh/config-completion-function t)
      nil
      t)))
-  (apply 'rjh/config-load-search-syms (rjh/sym-abbrev-to-arg spec))
+  (apply 'rjh/config-load-search-syms (rjh/config-spec-to-arg spec))
   )
 
 ;; Completion
@@ -244,7 +232,7 @@ plist requires the following values, for each entry:
 	  (lambda (sym)
 	    (mapcar
 	     (lambda (conf)
-	       (rjh/arg-to-sym-abbrev conf sym))
+	       (rjh/config-arg-to-spec conf sym))
 	     (rjh/config-list sym)))
 	  rjh/config-sym-list)))
 
