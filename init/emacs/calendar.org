@@ -1,0 +1,10 @@
+* Calendar
+This collection of functions implements a calendar window.
+
+  #+begin_src emacs-lisp
+    (use-package calendar :ensure t
+	  :init
+	  ;; Set calendar date-style
+	  (calendar-set-date-style (quote iso))
+	  )
+  #+end_src

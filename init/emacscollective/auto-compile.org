@@ -1,0 +1,12 @@
+* Auto-compile
+https://github.com/emacscollective/auto-compile
+Automatically compile Emacs Lisp libraries 
+
+#+begin_src emacs-lisp
+  ;; Auto-compile
+  (use-package auto-compile
+    :init 
+    (auto-compile-on-load-mode)
+    :ensure t)
+  (setq load-prefer-newer t)
+#+end_src

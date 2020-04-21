@@ -34,29 +34,16 @@
 
 ;; Org is now bootstrapped
 
+;; Most configurations use use-package 
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 (eval-when-compile
   (require 'use-package))
-
-(use-package "diminish"
-  :ensure t
-  :init
-  (require 'diminish)
-  )
 (require 'bind-key)
 
 ;; Follow symlinks
+(require 'vc)
 (setq vc-follow-symlinks t)
-
-;; Set calendar date-style
-(calendar-set-date-style (quote iso))
-
-;; Auto-compile
-(use-package auto-compile
-  :config (auto-compile-on-load-mode)
-  :ensure t)
-(setq load-prefer-newer t)
 
 ;; Add rjh repository elisp
 (let* ((repo "~/.emacs.d/rjh")
