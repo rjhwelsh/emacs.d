@@ -115,15 +115,16 @@
        (rjh/config-file-path conf dir))
       t))
 
-(defun rjh/config-list (dir)
-  "Lists available config options in directory"
-  (mapcar
-   (lambda (string)
-     (substring
-      string
-      (+ (length (expand-file-name dir)) 1)
-      (- (length string) 4)))
-   (directory-files-recursively dir ".*\.org$")))
+(defun rjh/config-list (sym)
+  "Lists available config options for sym."
+  (let ((dir (plist-get rjh/local-dir-plist sym)))
+    (mapcar
+     (lambda (string)
+       (substring
+	string
+	(+ (length (expand-file-name dir)) 1)
+	(- (length string) 4)))
+     (directory-files-recursively dir ".*\.org$"))))
 
 (defun rjh/config-load-sym (sym conf)
   "Loads config CONF for sym SYM
@@ -170,6 +171,21 @@ If syms is specified, will load for config for each sym"
 	       )))
     ))
 
+(defun rjh/sym-abbrev-to-arg (spec)
+  "Converts a conf spec to arguments for rjh/config-load-search-syms"
+  (let* ((strings (split-string spec ":"))
+	 (conf (car strings))
+	 (sym (intern (concat ":" (cadr strings))))
+	 )
+    (list conf sym)
+    )
+  )
+
+(defun rjh/arg-to-sym-abbrev (conf &optional sym)
+  "Converts CONF, SYM arguments to a conf spec for rjh/load"
+  (concat conf (symbol-name sym))
+  )
+
 (defun rjh/load-config-plist-list (config-plist-list)
   "Loads configuration from config-plist-list
 plist requires the following values, for each entry:
@@ -208,11 +224,8 @@ plist requires the following values, for each entry:
   (customize-save-variable 'rjh/config rjh/config-loaded))
 
 ;; Interactive functions
-(defun rjh/load (conf)
-  "Load configuration file/s
-Will attempt to load configuration file(s) from:
- rjh/local-init-dir
- rjh/local-private-dir"
+(defun rjh/load (spec)
+  "Load configuration spec"
   (interactive
    (list
     (completing-read
@@ -220,15 +233,18 @@ Will attempt to load configuration file(s) from:
      (completion-table-with-cache 'rjh/config-completion-function t)
      nil
      t)))
-  (apply 'rjh/config-load-search-syms conf rjh/config-sym-list)
+  (apply 'rjh/config-load-search-syms (rjh/sym-abbrev-to-arg spec))
   )
 
 ;; Completion
 (defun rjh/config-completion-function (string)
   "Return a list of strings completion table for loading config"
-  (append
-   (rjh/config-list rjh/local-init-dir)
-   (rjh/config-list rjh/local-private-dir)
-   )
-  )
+  (apply 'append
+	 (mapcar
+	  (lambda (sym)
+	    (mapcar
+	     (lambda (conf)
+	       (rjh/arg-to-sym-abbrev conf sym))
+	     (rjh/config-list sym)))
+	  rjh/config-sym-list)))
 
