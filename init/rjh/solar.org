@@ -4,7 +4,7 @@
 #+PROPERTY: header-args    :results silent
 
 Provide sunrise/sunset functions for sexp expressions in diary and org-mode
-(agenda view).
+(agenda view). This re-writes functions for =solar.el=.
 
 These functions build on the following.
 #+begin_src emacs-lisp
@@ -158,7 +158,7 @@ These functions build on the following.
     #+begin_src emacs-lisp
       (defun org-time-from-sexp (s d)
 	"Convert Org timestamp S, as a sexp-string, into a time string for date D.
-						      Return nil if S is no valid time string found"
+      Return nil if S is no valid time string found"
 	(require 'diary-lib)
 	(let* ((result (diary-sexp-entry s "" d))
 	       (txt
@@ -289,32 +289,32 @@ These functions build on the following.
 *** org-agenda-get-scheduled
 **** Patch
      #+begin_example emacs-lisp
-										      (level (make-string (org-reduced-level (org-outline-level))
-																				      ?\s))
-										      (head (buffer-substring (point) (line-end-position)))
-     +										 (sexp-time
-     +											(if sexp?
-     +													(org-time-from-sexp
-     +													 (replace-regexp-in-string "^%%" "" s)
-     +													 (calendar-gregorian-from-absolute current))))
-										      (time
-											     (cond
-											      ;; No time of day designation if it is only a
-											      ;; reminder, except for habits, which always show
-											      ;; the time of day.  Habits are an exception
-											      ;; because if there is a time of day, that is
-											      ;; interpreted to mean they should usually happen
-											      ;; then, even if doing the habit was missed.
-											      ((and
-												      (not habitp)
-												      (/= current schedule)
-												      (/= current repeat))
-												     nil)
-											      ((string-match " \\([012]?[0-9]:[0-9][0-9]\\)" s)
-												     (concat (substring s (match-beginning 1)) " "))
-     +											 (sexp-time
-     +												(concat sexp-time " "))
-											      (t 'time)))
+                (level (make-string (org-reduced-level (org-outline-level))
+                          ?\s))
+                (head (buffer-substring (point) (line-end-position)))
+     +           (sexp-time
+     +           (if sexp?
+     +             (org-time-from-sexp
+     +              (replace-regexp-in-string "^%%" "" s)
+     +              (calendar-gregorian-from-absolute current))))
+                (time
+                (cond
+                 ;; No time of day designation if it is only a
+                 ;; reminder, except for habits, which always show
+                 ;; the time of day.  Habits are an exception
+                 ;; because if there is a time of day, that is
+                 ;; interpreted to mean they should usually happen
+                 ;; then, even if doing the habit was missed.
+                 ((and
+                  (not habitp)
+                  (/= current schedule)
+                  (/= current repeat))
+                 nil)
+                 ((string-match " \\([012]?[0-9]:[0-9][0-9]\\)" s)
+                 (concat (substring s (match-beginning 1)) " "))
+     +            (sexp-time
+     +            (concat sexp-time " "))
+                 (t 'time)))
      #+end_example
 **** Source
      #+begin_src emacs-lisp
@@ -533,20 +533,20 @@ These functions build on the following.
 *** org-agenda-get-timestamps
 **** Patch
      #+begin_example emacs-lisp
-							     (let* ((pos (match-beginning 0))
-										      (repeat (match-string 1))
-										      (sexp-entry (match-string 3))
-     +										 (sexp-time (if sexp-entry
-     +										 							 (org-time-from-sexp sexp-entry
-     +																											 (calendar-gregorian-from-absolute current))))
-     -										 (time-stamp (if (or repeat sexp-entry) (match-string 0)
-     +										 (time-stamp (if (or repeat sexp-entry)
-     +										  								(or (and sexp-time (concat sexp-time " "))
-     +																					(match-string 0))
-																		     (save-excursion
-																			     (goto-char pos)
-																			     (looking-at org-ts-regexp-both)
-																			     (match-string 0))))
+            (let* ((pos (match-beginning 0))
+                (repeat (match-string 1))
+                (sexp-entry (match-string 3))
+     +           (sexp-time (if sexp-entry
+     +                   (org-time-from-sexp sexp-entry
+     +                            (calendar-gregorian-from-absolute current))))
+     -           (time-stamp (if (or repeat sexp-entry) (match-string 0)
+     +           (time-stamp (if (or repeat sexp-entry)
+     +                    (or (and sexp-time (concat sexp-time " "))
+     +                     (match-string 0))
+                       (save-excursion
+                        (goto-char pos)
+                        (looking-at org-ts-regexp-both)
+                        (match-string 0))))
      #+end_example
 
 **** Source
@@ -705,32 +705,32 @@ These functions build on the following.
 *** org-icalendar-entry
 **** Patch
      #+begin_example emacs-lisp
-																     (org-element-map
-																		     (cons (org-element-property :title entry)
-																					     (org-element-contents inside))
-     -																		'diary-sexp
-     -																	(lambda (sexp)
-     -																		(org-icalendar-transcode-diary-sexp
-     -																		 (org-element-property :value sexp)
-     -																		 (format "DS%d-%s" (cl-incf counter) uid)
-     -																		 summary))
-     +																		'timestamp
-     +																	(lambda (ts)
-     +																		(when (let ((type (org-element-property :type ts)))
-     +																						(cl-case (plist-get info :with-timestamps)
-     +																							(active (memq type '(diary)))
-     +																							(inactive (memq type '(diary)))
-     +																							((t) t)))
-     +																			(let ((uid (format "%d-%s" (cl-incf counter) uid)))
-     +																				;; (org-icalendar--vevent
-     +																				;; entry ts uid summary loc desc cat tz class)
-     +																				(message (format "%s" (org-element-property :raw-value ts)))
-     +																				(org-icalendar--vevent
-     +																				 entry ts uid summary loc desc cat tz class)
-     +																				)))
-																	     info nil (and (eq type 'headline) 'inlinetask))
-																     "")))))
-							     ;; If ENTRY is a headline, call current function on every
+                     (org-element-map
+                       (cons (org-element-property :title entry)
+                          (org-element-contents inside))
+     -                  'diary-sexp
+     -                 (lambda (sexp)
+     -                  (org-icalendar-transcode-diary-sexp
+     -                   (org-element-property :value sexp)
+     -                   (format "DS%d-%s" (cl-incf counter) uid)
+     -                   summary))
+     +                  'timestamp
+     +                 (lambda (ts)
+     +                  (when (let ((type (org-element-property :type ts)))
+     +                      (cl-case (plist-get info :with-timestamps)
+     +                       (active (memq type '(diary)))
+     +                       (inactive (memq type '(diary)))
+     +                       ((t) t)))
+     +                   (let ((uid (format "%d-%s" (cl-incf counter) uid)))
+     +                    ;; (org-icalendar--vevent
+     +                    ;; entry ts uid summary loc desc cat tz class)
+     +                    (message (format "%s" (org-element-property :raw-value ts)))
+     +                    (org-icalendar--vevent
+     +                     entry ts uid summary loc desc cat tz class)
+     +                    )))
+                      info nil (and (eq type 'headline) 'inlinetask))
+                     "")))))
+            ;; If ENTRY is a headline, call current function on every
      #+end_example
 **** Source
      #+begin_src emacs-lisp
@@ -888,24 +888,24 @@ These functions build on the following.
 *** org-icalendar--vevent
 **** Patch
      #+begin_example emacs-lisp
-			      Return VEVENT component as a string."
-     - 				 (org-icalendar-fold-string
-					     (if (eq (org-element-property :type timestamp) 'diary)
-     -							(org-icalendar-transcode-diary-sexp
-     -							 (org-element-property :raw-value timestamp) uid summary)
-     +						 (let ((counter 0))
-     +							 (apply 'concat
-     +											(mapcar (lambda (ts)
-     +																(let ((uid (format "DS%d-%s" (cl-incf counter) uid)))
-     +																	(org-icalendar--vevent entry ts uid summary location description categories timezone class)
-     +																	))
-     +															(org-timestamp-from-sexp
-     +															 (substring (org-element-property :raw-value timestamp) 3 -1))
-     +															)))
-     +					 (org-icalendar-fold-string
-						     (concat "BEGIN:VEVENT\n"
-										     (org-icalendar-dtstamp) "\n"
-										     "UID:" uid "\n"
+         Return VEVENT component as a string."
+     -      (org-icalendar-fold-string
+          (if (eq (org-element-property :type timestamp) 'diary)
+     -       (org-icalendar-transcode-diary-sexp
+     -        (org-element-property :raw-value timestamp) uid summary)
+     +       (let ((counter 0))
+     +        (apply 'concat
+     +           (mapcar (lambda (ts)
+     +                (let ((uid (format "DS%d-%s" (cl-incf counter) uid)))
+     +                 (org-icalendar--vevent entry ts uid summary location description categories timezone class)
+     +                 ))
+     +               (org-timestamp-from-sexp
+     +                (substring (org-element-property :raw-value timestamp) 3 -1))
+     +               )))
+     +      (org-icalendar-fold-string
+           (concat "BEGIN:VEVENT\n"
+               (org-icalendar-dtstamp) "\n"
+               "UID:" uid "\n"
      #+end_example
 **** Source
      #+begin_src emacs-lisp
@@ -962,15 +962,15 @@ These functions build on the following.
 *** icalendar-export-region
 **** Patch
      #+begin_example emacs-lisp
-			  (cdr contents-n-summary))))
-	   (setq result (concat result header contents alarm
-				"\nEND:VEVENT")))
+     (cdr contents-n-summary))))
+    (setq result (concat result header contents alarm
+    "\nEND:VEVENT")))
 -                    (if (consp cns-cons-or-list)
 -                        (list cns-cons-or-list)
 -                      cns-cons-or-list)))
 +                    (if (consp (car cns-cons-or-list))
-+												cns-cons-or-list
-+											(list cns-cons-or-list))))
++            cns-cons-or-list
++           (list cns-cons-or-list))))
 ;; handle errors
 (error
 (setq found-error t)
