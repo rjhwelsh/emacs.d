@@ -1258,30 +1258,34 @@ Startup with all headlines showing. =content=
 Checklists did not render as I would like them, I think this makes
 them far more prettier in html.
 #+BEGIN_SRC emacs-lisp
+(require 'ox-html)
 (setq org-html-checkbox-type 'html)
 #+END_SRC
 * Export
-** Smart quotes
-	Translate regular ol' straight quotes to typographically-correct curly quotes
-	when exporting.
 
-	#+BEGIN_SRC emacs-lisp
-		(setq org-export-with-smart-quotes t)
-	#+END_SRC
+** Smart quotes
+Translate regular ol' straight quotes to typographically-correct curly quotes
+when exporting.
+
+#+BEGIN_SRC emacs-lisp
+  (require 'ox)
+  (setq org-export-with-smart-quotes t)
+#+END_SRC
 
 ** Images
-	Set image sizes to their natural size.
-	#+BEGIN_SRC emacs-lisp
-		(setq org-latex-image-default-width "")
-	#+END_SRC
+Set image sizes to their natural size.
+#+BEGIN_SRC emacs-lisp
+  (require 'ox-latex)
+  (setq org-latex-image-default-width "")
+#+END_SRC
 
-	Set org-mode images to whatever size you like.
-	E.g. Using =#+ATTR_ORG: :width 100=.
-	Be aware you will require imagemagick6 support for this.
-	(Imagemagick7 has made some changes which are currently incompatible [2018-05-17]).
-	#+BEGIN_SRC emacs-lisp
-		(setq org-image-actual-width nil)
-	#+END_SRC
+Set org-mode images to whatever size you like.
+E.g. Using =#+ATTR_ORG: :width 100=.
+Be aware you will require imagemagick6 support for this.
+(Imagemagick7 has made some changes which are currently incompatible [2018-05-17]).
+#+BEGIN_SRC emacs-lisp
+  (setq org-image-actual-width nil)
+#+END_SRC
 
 ** HTML
 
@@ -1301,3 +1305,4 @@ of every exported HTML document.
 					 icalendar-export-sexp-enumerate-all t
 					 )
 	 #+end_src
+
