@@ -505,7 +505,7 @@
     Prefix format
     #+begin_src emacs-lisp
       (setq org-agenda-prefix-format
-	    '((agenda . "%-12t%-12s ")
+	    '((agenda . "%?-12t%?-12s ")
 	      (todo .   "%12:c ")
 	      (tags .   "%12:c ")
 	      (search . "%12:c%b "))
