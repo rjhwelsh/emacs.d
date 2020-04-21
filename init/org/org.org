@@ -393,7 +393,6 @@ facilitate better short-term planning and turnover.
  #+BEGIN_SRC emacs-lisp
 	 (defun rjh/org-tags-expire-headline ( expiration-tags )
 		 "Removes all expiration tags from headline."
-		 (let ((newtagslist (org-get-tags)))
 			 (unless (null newtagslist)
 				 (dolist (element expiration-tags)
 					 (when (member element newtagslist)
@@ -432,6 +431,7 @@ Tags expiration for a region of an org buffer.
 		(dolist (element rjh/org-tags-expiration-tags)
 			(org-change-tag-in-region start end element 'off)))
 #+END_SRC
+	 (let ((newtagslist (org-get-tags nil t)))
 
 **** org-agenda
 		 These are functions to remove expiration tags in the =org-agenda=.
