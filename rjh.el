@@ -230,8 +230,31 @@ If syms is specified, will load for config for each sym"
      (completion-table-with-cache 'rjh/config-completion-function t)
      nil
      t)))
-  (apply 'rjh/config-load-search-syms (rjh/config-spec-to-arg spec))
-  )
+  (apply 'rjh/config-load-search-syms (rjh/config-spec-to-arg spec)))
+
+(defun rjh/edit (spec)
+  "Edit configuration org file"
+  (interactive
+   (list
+    (completing-read
+     "Select config: "
+     (completion-table-with-cache 'rjh/config-completion-function t)
+     nil
+     t)))
+  (find-file (rjh/config-file-path-from-spec spec)))
+
+(defun rjh/save (spec)
+  "Save (append) configuration spec to customizations"
+  (interactive
+   (list
+    (completing-read
+     "Select config: "
+     (completion-table-with-cache 'rjh/config-completion-function t)
+     nil
+     t)))
+  (customize-save-variable
+   'rjh/config
+   (reverse (cons spec (reverse rjh/config)))))
 
 ;; Completion
 (defun rjh/config-completion-function (string)
