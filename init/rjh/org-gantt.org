@@ -6,11 +6,11 @@
 ** About
  https://github.com/swillner/org-gantt
  Org-gantt uses pgfgantt to create gantt charts in pdf exports.
- *This package will require manual installation.*
+ *This package will require a manual installation.*
 
 ** Load org-gantt
  #+BEGIN_SRC emacs-lisp
- (load-file "~/.emacs.d/org-gantt.el")
+ (load-file "~/.emacs.d/org-gantt/org-gantt.el")
  #+END_SRC
  This depends on org-mode, so ensure org-mode is active before importing.
 
