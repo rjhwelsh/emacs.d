@@ -39,172 +39,181 @@ dep_zetteldeft() {
 	dep_git_clone_install https://github.com/EFLS/zetteldeft zetteldeft zetteldeft.el
 }
 
+dep_org_gantt() {
+    # Install org-gantt
+    dep_git_clone_install https://github.com/swillner/org-gantt org-gantt org-gantt.el
+}
+
 dep_options() {
-	for dep in "$@"; do
-		case $dep in
-			"all")
-				dep_sensible;
-				dep_zetteldeft;
-				BREAK="1"
-				;;
-			"sensible-defaults")
-				dep_sensible;
-				;;
-			"zetteldeft")
-				dep_zetteldeft;
-				;;
-			"quit")
-				BREAK="1"
-				;;
-			*)
-				echo "Invalid entry."
-				BREAK="1"
-				;;
-		esac
-	done
+    for dep in "$@"; do
+	case $dep in
+	    "all")
+		dep_sensible;
+		dep_zetteldeft;
+		BREAK="1"
+		;;
+	    "sensible-defaults")
+		dep_sensible;
+		;;
+	    "zetteldeft")
+		dep_zetteldeft;
+		;;
+	    "org-gantt")
+		dep_org_gantt;
+		;;
+	    "quit")
+		BREAK="1"
+		;;
+	    *)
+		echo "Invalid entry."
+		BREAK="1"
+		;;
+	esac
+    done
 }
 
 dep_install() {
-	CONFIGDIR="$1"
-	shift
+    CONFIGDIR="$1"
+    shift
 
-	# Create a directory for storing third-party deps
-	D="$LOCALREPO/deps"
-	mkdir -vp "$D"
+    # Create a directory for storing third-party deps
+    D="$LOCALREPO/deps"
+    mkdir -vp "$D"
 
-	if [ -n "$1" ];
-	then
-		dep_options "$@";
-	else
-		select dep in all \
-										sensible-defaults \
-										zetteldeft \
-										quit
-		do
-			dep_options $dep;
-			if [ -n "$BREAK" ]; then
-				break
-			fi
-		done
-	fi
+    if [ -n "$1" ];
+    then
+	dep_options "$@";
+    else
+	select dep in all \
+			  sensible-defaults \
+			  zetteldeft \
+			  org-gantt \
+			  quit
+	do
+	    dep_options $dep;
+	    if [ -n "$BREAK" ]; then
+		break
+	    fi
+	done
+    fi
 }
 
 new_install() {
-	CONFIGDIR="$1"
-	shift
-	CPCMD="$1"
+    CONFIGDIR="$1"
+    shift
+    CPCMD="$1"
 
-	# Create and install into directory.
-	echo "Preparing to copy files:"
-	ls $LOCALREPO/{init.el,workgroups,agenda-files}
+    # Create and install into directory.
+    echo "Preparing to copy files:"
+    ls $LOCALREPO/{init.el,workgroups,agenda-files}
 
-	${CPCMD} \
-		 $LOCALREPO/{init.el,workgroups,agenda-files} \
-		 $CONFIGDIR
+    ${CPCMD} \
+	$LOCALREPO/{init.el,workgroups,agenda-files} \
+	$CONFIGDIR
 
-	# link to repo inside config dir (or set repo location in init.el)
-	[[ ! -d "$CONFIGDIR"/"$REPOLINK" ]] && ln -srv "$LOCALREPO" "$CONFIGDIR"/"$REPOLINK"
+    # link to repo inside config dir (or set repo location in init.el)
+    [[ ! -d "$CONFIGDIR"/"$REPOLINK" ]] && ln -srv "$LOCALREPO" "$CONFIGDIR"/"$REPOLINK"
 
-	mkdir -v $CONFIGDIR/{org,snippet,private}
+    mkdir -v $CONFIGDIR/{org,snippet,private}
 
 }
 
 main() {
-	CONFIGDIR="$1"
-	shift
-	[ -z "$1" ] && CPCMD="cp -nv" || CPCMD="$1"
-	mkdir -v ${CONFIGDIR}
+    CONFIGDIR="$1"
+    shift
+    [ -z "$1" ] && CPCMD="cp -nv" || CPCMD="$1"
+    mkdir -v ${CONFIGDIR}
 
-	echo "LOCALREPO=${LOCALREPO}"
-	echo "CONFIGDIR=${CONFIGDIR}"
-	echo "CPCMD=${CPCMD}"
+    echo "LOCALREPO=${LOCALREPO}"
+    echo "CONFIGDIR=${CONFIGDIR}"
+    echo "CPCMD=${CPCMD}"
 
-	pushd "$LOCALREPO"
-	patch_config
-	# dep_install "$CONFIGDIR"
-	new_install "$CONFIGDIR" "$CPCMD"
-	popd
+    pushd "$LOCALREPO"
+    patch_config
+    # dep_install "$CONFIGDIR"
+    new_install "$CONFIGDIR" "$CPCMD"
+    popd
 }
 
 test_prepare() {
-	# Links for testing:
-	# ln -srv ~/.emacs.d/private test/.emacs.d/
-	# ln -srv ~/.mu test/
-	# ln -srv ~/.mail test/
-	# ln -srv ~/.gnupg test/
-	# ln -srv ~/.authinfo.gpg test/
+    # Links for testing:
+    # ln -srv ~/.emacs.d/private test/.emacs.d/
+    # ln -srv ~/.mu test/
+    # ln -srv ~/.mail test/
+    # ln -srv ~/.gnupg test/
+    # ln -srv ~/.authinfo.gpg test/
 
-	# Faux home
-	HOME="$LOCALREPO/test"
+    # Faux home
+    HOME="$LOCALREPO/test"
 
-	# Cleanup any old tests
-	mkdir -v "$HOME"
+    # Cleanup any old tests
+    mkdir -v "$HOME"
 
-	# Install into faux home directory
-	main "$HOME/.emacs.d" "cp -fv"
-	dep_install "$HOME/.emacs.d" all
+    # Install into faux home directory
+    main "$HOME/.emacs.d" "cp -fv"
+    dep_install "$HOME/.emacs.d" all
 }
 
 test() {
-	test_prepare
-	# Run emacs with faux home
-	pushd "$HOME"
-	{
-		echo "Test blank configuration ..."
-		env HOME="$HOME" EMACS_CONFIG="" \
-				/usr/bin/emacs --debug-init \
-				--batch --no-window-system \
-				-l ./.emacs.d/init.el \
-				2>&1 |\
-			tee ../test/blank.log
+    test_prepare
+    # Run emacs with faux home
+    pushd "$HOME"
+    {
+	echo "Test blank configuration ..."
+	env HOME="$HOME" EMACS_CONFIG="" \
+	    /usr/bin/emacs --debug-init \
+	    --batch --no-window-system \
+	    -l ./.emacs.d/init.el \
+	    2>&1 |\
+	    tee ../test/blank.log
 
-		echo "Now testing each emacs config..."
-		[ -n "$@" ] && FILES="$@"
-		[ -z "$@" ]	&& FILES=`find ../init -iname '*.org' -printf "%p "|\
+	echo "Now testing each emacs config..."
+	[ -n "$@" ] && FILES="$@"
+	[ -z "$@" ]	&& FILES=`find ../init -iname '*.org' -printf "%p "|\
 										sed 's|\.org||g'|\
 										sed 's|\.\./init/||g'`;
 
-		for INIT in ${FILES}
-		do
-			echo "Testing ($INIT) ..."
-			mkdir -vp `dirname ../test/"$INIT".log`
-			env HOME="$HOME" EMACS_CONFIG="$INIT" \
-					/usr/bin/emacs --debug-init \
-					--batch --no-window-system \
-					-l ./.emacs.d/init.el \
-					2>&1 |\
-				grep -vF -f ../test/blank.log |\
-				tee ../test/"$INIT".log
-			echo "Finished ($INIT)..."
-		done
-	}
-	popd
+	for INIT in ${FILES}
+	do
+	    echo "Testing ($INIT) ..."
+	    mkdir -vp `dirname ../test/"$INIT".log`
+	    env HOME="$HOME" EMACS_CONFIG="$INIT" \
+		/usr/bin/emacs --debug-init \
+		--batch --no-window-system \
+		-l ./.emacs.d/init.el \
+		2>&1 |\
+		grep -vF -f ../test/blank.log |\
+		tee ../test/"$INIT".log
+	    echo "Finished ($INIT)..."
+	done
+    }
+    popd
 }
 
 test_interactive() {
-	test_prepare
-	pushd "$HOME"
-	{
-		# Run emacs interactively (after testing all config files)
-		env HOME="$HOME" EMACS_CONFIG="$*" /usr/bin/emacs --debug-init
-	}
-	popd
+    test_prepare
+    pushd "$HOME"
+    {
+	# Run emacs interactively (after testing all config files)
+	env HOME="$HOME" EMACS_CONFIG="$*" /usr/bin/emacs --debug-init
+    }
+    popd
 }
 
 cleanup() {
-	rm -rfv "$LOCALREPO/test"
-	rm -rfv "$LOCALREPO/deps"
+    rm -rfv "$LOCALREPO/test"
+    rm -rfv "$LOCALREPO/deps"
 }
 
 usage() {
-	echo "$0 [-htic]"
-	echo "Setup/test emacs configuration"
-	echo " -c, --clean      Cleanup Tests"
-	echo " -t, --test [config1 .. configN] Test configuration"
-	echo " -T, --test-interactive [config1 .. configN]"
-	echo " -d, --install-deps Install third-party dependencies"
-	echo " -i, --install    Install (GNU Linux)"
-	echo " -h, --help       Show this help"
+    echo "$0 [-htic]"
+    echo "Setup/test emacs configuration"
+    echo " -c, --clean      Cleanup Tests"
+    echo " -t, --test [config1 .. configN] Test configuration"
+    echo " -T, --test-interactive [config1 .. configN]"
+    echo " -d, --install-deps Install third-party dependencies"
+    echo " -i, --install    Install (GNU Linux)"
+    echo " -h, --help       Show this help"
 }
 
 [[ "$1" == "-h" || "$1" == "--help" ]] && usage && exit 0
