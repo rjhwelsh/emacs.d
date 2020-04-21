@@ -483,6 +483,10 @@ Store the list of agenda files in ...
 #+BEGIN_SRC emacs-lisp
   (setq org-agenda-files "~/.emacs.d/agenda-files" )
 #+END_SRC
+*** Include diary entries
+#+begin_src emacs-lisp
+  (setq org-agenda-include-diary t)
+#+end_src
 *** Sorting Strategy
 Sorting strategy.
 #+BEGIN_SRC emacs-lisp
@@ -808,6 +812,7 @@ Take up current window when called.
 #+BEGIN_SRC emacs-lisp
 (setq org-agenda-window-setup 'current-window)
 #+END_SRC
+
 ** Stuck Projects
 1. Match projects as
 	 1. Any LEVEL 1 headline

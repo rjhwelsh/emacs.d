@@ -1,10 +1,18 @@
 * Calendar
-This collection of functions implements a calendar window.
-
+Configuration options for calendar, diary, holidays and other Emacs date functions.
+ - Use iso calendar.
+ - Display diary entries, according to day of the week
+ - Remove all holiday data
+ - Toggle appointment checking (reminders)
+ - Diary hook, to sort entries by time of day
   #+begin_src emacs-lisp
     (use-package calendar :ensure t
 	  :init
 	  ;; Set calendar date-style
 	  (calendar-set-date-style (quote iso))
+	  (setq diary-number-of-entries [1 2 2 2 2 4 1])
+	  (setq calendar-holidays nil)
+	  (appt-activate)
+	  (add-hook 'diary-list-entries-hook 'diary-sort-entries t)
 	  )
   #+end_src
