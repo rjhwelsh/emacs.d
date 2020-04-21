@@ -221,6 +221,18 @@ If syms is specified, will load for config for each sym"
   (customize-save-variable 'rjh/config rjh/config-loaded))
 
 ;; Interactive functions
+(defun rjh/use (spec)
+  "Use configuration spec; which means, only load if it has not already been loaded
+Primarily for primitive configuration dependencies in init/"
+  (interactive
+   (list
+    (completing-read
+     "Select config: "
+     (completion-table-with-cache 'rjh/config-completion-function t)
+     nil
+     t)))
+  (unless (member spec rjh/config-loaded) (rjh/load spec)))
+
 (defun rjh/load (spec)
   "Load configuration spec"
   (interactive
