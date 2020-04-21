@@ -6,13 +6,17 @@ Configuration options for calendar, diary, holidays and other Emacs date functio
  - Toggle appointment checking (reminders)
  - Diary hook, to sort entries by time of day
   #+begin_src emacs-lisp
+    (require 'diary-lib)
+    (require 'holidays)
+
     (use-package calendar :ensure t
-	  :init
-	  ;; Set calendar date-style
-	  (calendar-set-date-style (quote iso))
-	  (setq diary-number-of-entries [1 2 2 2 2 4 1])
-	  (setq calendar-holidays nil)
-	  (appt-activate)
-	  (add-hook 'diary-list-entries-hook 'diary-sort-entries t)
-	  )
+      :init
+      ;; Set calendar date-style
+      (calendar-set-date-style (quote iso))
+      (setq diary-number-of-entries [1 2 2 2 2 4 1])
+      (setq calendar-holidays nil)
+      (appt-activate)
+      (add-hook 'diary-list-entries-hook 'diary-sort-entries t)
+      )
   #+end_src
+
