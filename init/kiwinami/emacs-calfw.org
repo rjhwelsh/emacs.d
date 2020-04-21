@@ -86,51 +86,53 @@ Set this variable in =private/=.
 		 )))
   #+END_EXAMPLE
 
+** Grid settings
   Fancy Grid settings; various examples.
  These are set in the package configuration above.
-  #+BEGIN_EXAMPLE
-  ;; Default setting
-  (setq cfw:fchar-junction ?+
-			  cfw:fchar-vertical-line ?|
-			  cfw:fchar-horizontal-line ?-
-			  cfw:fchar-left-junction ?+
-			  cfw:fchar-right-junction ?+
-			  cfw:fchar-top-junction ?+
-			  cfw:fchar-top-left-corner ?+
-			  cfw:fchar-top-right-corner ?+ )
+#+BEGIN_EXAMPLE
+;; Default setting
 
-  ;; Unicode characters
-  (setq cfw:fchar-junction ?╋
-			  cfw:fchar-vertical-line ?┃
-			  cfw:fchar-horizontal-line ?━
-			  cfw:fchar-left-junction ?┣
-			  cfw:fchar-right-junction ?┫
-			  cfw:fchar-top-junction ?┯
-			  cfw:fchar-top-left-corner ?┏
-			  cfw:fchar-top-right-corner ?┓)
+(setq cfw:fchar-junction ?+
+  cfw:fchar-vertical-line ?|
+  cfw:fchar-horizontal-line ?-
+  cfw:fchar-left-junction ?+
+  cfw:fchar-right-junction ?+
+  cfw:fchar-top-junction ?+
+  cfw:fchar-top-left-corner ?+
+  cfw:fchar-top-right-corner ?+ )
 
-  ;; Another unicode chars
-  (setq cfw:fchar-junction ?╬
-			  cfw:fchar-vertical-line ?║
-			  cfw:fchar-horizontal-line ?═
-			  cfw:fchar-left-junction ?╠
-			  cfw:fchar-right-junction ?╣
-			  cfw:fchar-top-junction ?╦
-			  cfw:fchar-top-left-corner ?╔
-			  cfw:fchar-top-right-corner ?╗)
-  #+END_EXAMPLE
+;; Unicode characters
+(setq cfw:fchar-junction ?╋
+  cfw:fchar-vertical-line ?┃
+  cfw:fchar-horizontal-line ?━
+  cfw:fchar-left-junction ?┣
+  cfw:fchar-right-junction ?┫
+  cfw:fchar-top-junction ?┯
+  cfw:fchar-top-left-corner ?┏
+  cfw:fchar-top-right-corner ?┓)
+
+;; Another unicode chars
+(setq cfw:fchar-junction ?╬
+  cfw:fchar-vertical-line ?║
+  cfw:fchar-horizontal-line ?═
+  cfw:fchar-left-junction ?╠
+  cfw:fchar-right-junction ?╣
+  cfw:fchar-top-junction ?╦
+  cfw:fchar-top-left-corner ?╔
+  cfw:fchar-top-right-corner ?╗)
+#+END_EXAMPLE
 
 ** Character bars
  Here I use unicode.
- #+BEGIN_SRC emacs-lisp
-	 ;; Unicode characters
-	 (setq cfw:fchar-junction ?╋
-				 cfw:fchar-vertical-line ?┃
-				 cfw:fchar-horizontal-line ?━
-				 cfw:fchar-left-junction ?┣
-				 cfw:fchar-right-junction ?┫
-				 cfw:fchar-top-junction ?┯
-				 cfw:fchar-top-left-corner ?┏
-				 cfw:fchar-top-right-corner ?┓
-				 cfw:render-line-breaker 'cfw:render-line-breaker-none)
- #+END_SRC
+ #+BEGIN_EXAMPLE emacs-lisp
+   ;; Unicode characters
+   (setq cfw:fchar-junction ?╋
+	 cfw:fchar-vertical-line ?┃
+	 cfw:fchar-horizontal-line ?━
+	 cfw:fchar-left-junction ?┣
+	 cfw:fchar-right-junction ?┫
+	 cfw:fchar-top-junction ?┯
+	 cfw:fchar-top-left-corner ?┏
+	 cfw:fchar-top-right-corner ?┓
+	 cfw:render-line-breaker 'cfw:render-line-breaker-none)
+ #+END_EXAMPLE
