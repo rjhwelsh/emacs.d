@@ -9,8 +9,30 @@
 	 #+BEGIN_SRC emacs-lisp
 		 (use-package "calfw" :defer t
 			 :ensure t
-			 :init
-			 (rjh/load-init "calfw.org")
+			 :config
+			 ;; Calendar Views
+			 ;; Two week agenda.
+
+			(defun rjh/two-week-view ()
+				(interactive)
+				(cfw:open-calendar-buffer
+				 :contents-sources
+				 ( rjh/calendar-sources ) ; set this var in private/calfw.org
+				 :view
+				 'two-weeks
+				 ))
+
+		        ;; Week agenda.
+			(defun rjh/week-view ()
+				(interactive)
+				(cfw:open-calendar-buffer
+				 :contents-sources
+				 ( rjh/calendar-sources ) ; set this var in private/calfw.org
+				 :view
+				 'week
+				 ))
+
+
 			 :bind ("C-x a c" . rjh/two-week-view))
 
 		 (use-package "calfw-org" :defer t
@@ -95,26 +117,3 @@ Here I use unicode.
 				cfw:render-line-breaker 'cfw:render-line-breaker-none)
 #+END_SRC
 
-* Calendar Views
-Two week agenda.
- #+BEGIN_SRC emacs-lisp
-			(defun rjh/two-week-view ()
-				(interactive)
-				(cfw:open-calendar-buffer
-				 :contents-sources
-				 ( rjh/calendar-sources ) ; set this var in private/calfw.org
-				 :view
-				 'two-weeks
-				 ))
- #+END_SRC
-Week agenda.
- #+BEGIN_SRC emacs-lisp
-			(defun rjh/week-view ()
-				(interactive)
-				(cfw:open-calendar-buffer
-				 :contents-sources
-				 ( rjh/calendar-sources ) ; set this var in private/calfw.org
-				 :view
-				 'week
-				 ))
- #+END_SRC
