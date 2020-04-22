@@ -3,17 +3,6 @@
 * xah-fly-keys
 https://github.com/xahlee/xah-fly-keys
 
-Define and disable =control=, =meta= keys for xah-fly-keys.
-#+begin_src emacs-lisp
-  (defvar xah-fly-use-meta-key)
-  (defvar xah-fly-use-control-key)
-
-  ;; Disable control and meta variations
-  ;; *Must be before require statement*
-  (setq xah-fly-use-meta-key nil)
-  (setq xah-fly-use-control-key nil)
-#+end_src
-
 Install, and setup the package.
 #+BEGIN_SRC emacs-lisp
   (use-package "xah-fly-keys"
@@ -24,7 +13,12 @@ Install, and setup the package.
 	   )
 
     :init
-    (require 'xah-fly-keys)
+    (require 'xah-fly-keys) ;; PATCHED .. 
+
+    ;; Define and disable =control=, =meta= keys for xah-fly-keys.
+    (setq xah-fly-use-meta-key nil)
+    (setq xah-fly-use-control-key nil)
+    (xah-fly-set-keys)
     (xah-fly-keys-set-layout "colemak")
 
     ;; Add highlight hooks
@@ -36,9 +30,18 @@ Install, and setup the package.
 	   (xah-fly-insert-mode-activate . my-highlight-line-off))
     )
 #+END_SRC
-
+** Gut keybindings
 You can gut all the bindings in a keymap with the following:
 (Useful if xah-fly-keys has clobbered your bindings with =(require 'xah-fly-keys)=)
 #+begin_example emacs-lisp
 (setf (cdr xah-fly-key-map) nil)
+#+end_example
+** Patch
+Encapsulate =;; setting keys= in a function. 
+Required for to define and disable =control=, =meta= keys for xah-fly-keys.
+#+begin_example emacs-lisp
+(defun xah-fly-set-keys () 
+  "Set control, meta, etc keys"
+  ...
+)
 #+end_example
