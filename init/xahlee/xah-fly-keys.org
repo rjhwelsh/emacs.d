@@ -2,29 +2,43 @@
 #+STARTUP: content
 * xah-fly-keys
 https://github.com/xahlee/xah-fly-keys
+
+Define and disable =control=, =meta= keys for xah-fly-keys.
+#+begin_src emacs-lisp
+  (defvar xah-fly-use-meta-key)
+  (defvar xah-fly-use-control-key)
+
+  ;; Disable control and meta variations
+  ;; *Must be before require statement*
+  (setq xah-fly-use-meta-key nil)
+  (setq xah-fly-use-control-key nil)
+#+end_src
+
+Install, and setup the package.
 #+BEGIN_SRC emacs-lisp
-	(use-package "xah-fly-keys"
-		:ensure t
-		:bind (
-					 ("<f5>" . xah-fly-command-mode-activate)
-					 ("<f6>" . xah-fly-insert-mode-activate)
-					 )
+  (use-package "xah-fly-keys"
+    :ensure t
+    :bind (
+	   ("<f5>" . xah-fly-command-mode-activate)
+	   ("<f6>" . xah-fly-insert-mode-activate)
+	   )
 
-		:init
-		;; Disable control and meta variations
-		;; *Must be before require statement*
-		(setq xah-fly-use-meta-key nil)
-		(setq xah-fly-use-control-key nil)
+    :init
+    (require 'xah-fly-keys)
+    (xah-fly-keys-set-layout "colemak")
 
-		(require 'xah-fly-keys)
-		(xah-fly-keys-set-layout "colemak")
+    ;; Add highlight hooks
+    (defun my-highlight-line-on () (global-hl-line-mode 1))
+    (defun my-highlight-line-off () (global-hl-line-mode 0))
 
-		;; Add highlight hooks
-		(defun my-highlight-line-on () (global-hl-line-mode 1))
-		(defun my-highlight-line-off () (global-hl-line-mode 0))
-
-		:hook (
-					 (xah-fly-command-mode-activate . my-highlight-line-on)
-					 (xah-fly-insert-mode-activate . my-highlight-line-off))
-		)
+    :hook (
+	   (xah-fly-command-mode-activate . my-highlight-line-on)
+	   (xah-fly-insert-mode-activate . my-highlight-line-off))
+    )
 #+END_SRC
+
+You can gut all the bindings in a keymap with the following:
+(Useful if xah-fly-keys has clobbered your bindings with =(require 'xah-fly-keys)=)
+#+begin_example emacs-lisp
+(setf (cdr xah-fly-key-map) nil)
+#+end_example
