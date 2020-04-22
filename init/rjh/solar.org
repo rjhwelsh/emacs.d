@@ -16,6 +16,14 @@ These functions build on the following.
   (require 'icalendar)
 #+end_src
 
+
+* Note on exporting to ics
+In order to export diary sexps to ics. 
+Currently, you need to allow export of *all* timestamps.
+#+begin_example emacs-lisp
+(setq org-icalendar-with-timestamps t)
+#+end_example
+
 * Dummy variables
 Prevent warnings in the byte compiler
 #+begin_src emacs-lisp
