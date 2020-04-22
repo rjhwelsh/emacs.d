@@ -1,0 +1,8 @@
+* Solar
+Private settings.
+
+Enable export of all timestamps. 
+#+begin_src emacs-lisp
+(setq org-icalendar-with-timestamps t)
+(rjh/use "emacs/solar:private")
+#+end_src
