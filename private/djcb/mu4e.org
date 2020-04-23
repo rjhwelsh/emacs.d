@@ -3,7 +3,7 @@ Mailbox settings
 ** Base
 Use base email setup.
 #+begin_src emacs-lisp
-  (rjh/use "my/email")
+  (rjh/use "my/email:private")
 #+end_src
 ** Directories
 Set mail directory locations.
