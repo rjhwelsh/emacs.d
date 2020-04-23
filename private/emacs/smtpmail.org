@@ -3,7 +3,7 @@ Private SMTP settings.
 For sending email.
 #+begin_src emacs-lisp
   (require 'smtpmail)
-
+  (rjh/use "my/contact:private") ;; Acquire user-mail-address
   (setq smtpmail-default-smtp-server "" ; SMTP server
 	  smtpmail-smtp-server         "" ; SMTP server
 	  smtpmail-stream-type         'ssl ; Use, ssl (SSL/TLS), starttls, or plain (unencrypted) 
