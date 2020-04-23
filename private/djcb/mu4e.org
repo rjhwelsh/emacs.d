@@ -1,0 +1,60 @@
+* mu4e
+Mailbox settings
+** Base
+Use base email setup.
+#+begin_src emacs-lisp
+  (rjh/use "my/email")
+#+end_src
+** Directories
+Set mail directory locations.
+#+begin_src emacs-lisp
+  (setq mu4e-maildir my/maildir
+	mu4e-sent-folder   my/sent-folder
+	mu4e-drafts-folder my/drafts-folder
+	mu4e-refile-folder my/refile-folder
+	mu4e-trash-folder  my/trash-folder
+	mu4e-compose-signature my/compose-signature)
+#+end_src
+** Contexts
+Setup mu4e [[https://www.djcbsoftware.nl/code/mu/mu4e/Contexts-example.html][contexts]]. 
+
+This allows you to use more than one email account with mu4e, or
+different settings depending the location of the email in your
+=mu4e-maildir=.
+
+#+begin_src emacs-lisp
+  (setq mu4e-contexts
+	`(
+	;; Replace settings below as appropriate
+	;; Change "prefix" according to the section in your mailbox
+
+	;; Section BEGIN
+	  ,(make-mu4e-context
+	    :name "prefix"
+	    :match-func
+	    (lambda (msg)
+	      (when msg
+		(string-prefix-p "/prefix" (mu4e-message-field msg :maildir))
+		))
+	    :vars '(
+		    ;; Uncomment vars below to use them in a selected context
+
+		    ;; (mu4e-sent-folder . "/prefix/Sent Mail")
+		    ;; (mu4e-drafts-folder . "/prefix/Drafts")
+		    ;; (mu4e-refile-folder . "/prefix/INBOX")
+		    ;; (mu4e-trash-folder . "/prefix/Trash")
+		    ;; 
+		    ;; (user-mail-address . "USERNAME@gmail.com")
+		    ;; 
+		    ;; (smtpmail-default-smtp-server . "smtp.gmail.com")
+		    ;; (smtpmail-smtp-server         . "smtp.gmail.com")
+		    ;; (smtpmail-stream-type         . ssl)
+		    ;; (smtpmail-smtp-service        . 465)
+		    ;; 
+		    ;; (mu4e-compose-signature . my/compose-signature)
+
+		    ))
+	;; Section END
+	;; Add new sections below, if required
+	  ))
+#+end_src
