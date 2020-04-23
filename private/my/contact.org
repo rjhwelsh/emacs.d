@@ -1,20 +1,14 @@
-#+TITLE: Personal Information
-#+AUTHOR: Roger J. H. Welsh
-#+EMAIL: rjhwelsh@gmail.com
 #+PROPERTY: header-args    :results silent
 #+STARTUP: content
 
-* Personal Contact Information
+* Contact
 Personal contact information:
 #+BEGIN_SRC emacs-lisp
-	(setq user-full-name ""
-				user-mail-address ""
-				calendar-location-name ""
-				calendar-latitude 0
-				calendar-longitude 0
-				rjh/user-postal-address ""
-				rjh/user-mobile ""
-				rjh/user-phone ""
-				rjh/user-fax ""
-				)
+  (setq user-full-name ""
+	user-mail-address ""
+	my/user-postal-address ""
+	my/user-mobile ""
+	my/user-phone ""
+	my/user-fax ""
+	)
 #+END_SRC
