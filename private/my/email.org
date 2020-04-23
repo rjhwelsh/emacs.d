@@ -1,0 +1,11 @@
+* Email
+Base setup variables for email.
+
+#+begin_src emacs-lisp
+(defvar my/maildir "~/.mail"       )
+(defvar my/sent-folder "/sent"	   )
+(defvar my/drafts-folder "/drafts" )
+(defvar my/refile-folder "/refile" )
+(defvar my/trash-folder "/trash"   )
+(defvar my/compose-signature user-full-name)
+#+end_src
