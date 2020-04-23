@@ -1,0 +1,9 @@
+* smtpmail
+Private SMTP settings.
+For sending email.
+#+begin_src emacs-lisp
+  (setq smtpmail-default-smtp-server "" ; SMTP server
+	smtpmail-smtp-server         "" ; SMTP server
+	smtpmail-stream-type         ssl ; Use, ssl (SSL/TLS), starttls, or plain (unencrypted) 
+	smtpmail-smtp-service        25) ; Port number
+#+end_src
