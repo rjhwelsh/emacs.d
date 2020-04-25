@@ -7,5 +7,7 @@
  #+BEGIN_SRC emacs-lisp
    (setq plantuml-jar-path "/usr/share/plantuml/lib/plantuml.jar")
    (setq org-plantuml-jar-path plantuml-jar-path)
+   (setq plantuml-default-exec-mode 'jar)
+   (plantuml-set-output-type "svg")
  #+END_SRC
 

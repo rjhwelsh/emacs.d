@@ -12,6 +12,6 @@ https://github.com/skuro/plantuml-mode
     (add-to-list 'auto-mode-alist '("\\.plantuml$" . plantuml-mode))
     (add-to-list
      'org-src-lang-modes '("plantuml" . plantuml))
-    :config
-    (plantuml-set-output-type "svg"))
+    )
 #+END_SRC
+
