@@ -62,8 +62,9 @@
 (if (file-exists-p custom-file)
     (load custom-file))
 
+;; Loads configuration based on environment variables
+(rjh/load-env)
+
 ;; Load configuration based on customization values
 (rjh/load-custom)
 
-;; Loads configuration based on environment variables
-(rjh/load-env)
