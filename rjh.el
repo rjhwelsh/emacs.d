@@ -104,6 +104,9 @@
 (defvar rjh/config-loaded '()
   "A list of specs describing each loaded configuration")
 
+(defvar rjh/config-error '()
+  "A list of specs describing each configuration that loaded with errors.")
+
 ;; Functions
 (defun rjh/config-file-path (conf dir)
   "Converts conf to a path, using dir, and base"
@@ -244,7 +247,14 @@ Primarily for primitive configuration dependencies in init/"
      (completion-table-with-cache 'rjh/config-completion-function t)
      nil
      t)))
-  (apply 'rjh/config-load-search-syms (rjh/config-spec-to-arg spec)))
+  (condition-case ex ;; Catch any exceptions with config
+      (apply 'rjh/config-load-search-syms (rjh/config-spec-to-arg spec))
+    ('error
+     (message (format "Caught exception: [%s]" ex))
+     (add-to-list 'rjh/config-error spec t) ;; Add any config errors to list
+     )
+    )
+  )
 
 (defun rjh/edit (spec)
   "Edit configuration org file"
