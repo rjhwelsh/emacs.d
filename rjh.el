@@ -213,11 +213,13 @@ If syms is specified, will load for config for each sym"
 
 (defun rjh/load-custom ()
   "Loads configuration from customization variable, rjh/config"
+  (interactive)
   (dolist (spec rjh/config)
     (rjh/load spec)))
 
 (defun rjh/save-custom ()
   "Saves current configuration to customization variable, rjh/config"
+  (interactive)
   (customize-save-variable 'rjh/config rjh/config-loaded))
 
 ;; Interactive functions
