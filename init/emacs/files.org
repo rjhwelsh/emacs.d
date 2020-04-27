@@ -10,7 +10,15 @@
 
 ** Backup
 https://stackoverflow.com/questions/151945/how-do-i-control-how-emacs-makes-backup-files
-https://anirudhsasikumar.net/blog/2005.01.21.html
+
+*** Disabling backups completely
+Below is an example snippet to disable backups completely. 
+#+begin_example emacs-lisp
+;; disable backup
+(setq backup-inhibited t)
+;; disable auto save
+(setq auto-save-default nil)
+#+end_example
 
 *** Backup variables
   Backup cache locations.
@@ -22,7 +30,6 @@ https://anirudhsasikumar.net/blog/2005.01.21.html
   #+END_SRC
 
 *** Backup files =~=
-
 **** Backup directory
 #+begin_src emacs-lisp
   (setq 
@@ -71,22 +78,53 @@ https://anirudhsasikumar.net/blog/2005.01.21.html
    )
 #+end_src
 
+*** Sensitive-minor-mode
+https://anirudhsasikumar.net/blog/2005.01.21.html 
+
+This mode handles disabling backups for sensitive files. 
+
+Disable backups/auto-saves for the following file regexps by appending
+them to =auto-mode-alist=.
+#+begin_src emacs-lisp
+  (setq auto-mode-alist 
+	(append 
+	 (list
+	   '("\\.gpg$" . sensitive-minor-mode)
+	   '("\\.vcf$" . sensitive-minor-mode)
+	   '("/etc/" . sensitive-minor-mode)
+	   )
+	 auto-mode-alist))
+#+end_src
 
 
-*** Security detail
-  Unfortunately, previous configuration is also backing up and versioning files I
-  would rather not have backed up and versioned; including decrypting encrypted
-  files. Hopefully the following will circumvent this.
+After evaluating the below snippet, using =M-x sensitive= will disable
+backups and auto-save in the current buffer.
 
-  #+BEGIN_SRC emacs-lisp
-  (defvar backup-inhibit-file-name-regexp "\\(/dev/shm\\|.*\\.plstore\\)"
-    "Files whose full path matches this regular expression will not be backed up.")
-  (defun regexp-backup-enable-predicate (filename)
-    "Disable backups for files whose name matches `backup-inhibit-file-name-regexp'.
-  Also call `normal-backup-enable-predicate'."
-    (save-match-data
-      (and (not (string-match backup-inhibit-file-name-regexp filename))
-       (normal-backup-enable-predicate filename))))
-  (setq backup-enable-predicate 'regexp-backup-enable-predicate)
-  #+END_SRC
+#+begin_src emacs-lisp
+(define-minor-mode sensitive-minor-mode
+  "For sensitive files like password lists.
+It disables backup creation and auto saving.
+
+With no argument, this command toggles the mode.
+Non-null prefix argument turns on the mode.
+Null prefix argument turns off the mode."
+  ;; The initial value.
+  nil
+  ;; The indicator for the mode line.
+  " Sensitive"
+  ;; The minor mode bindings.
+  nil
+  (if (symbol-value sensitive-minor-mode)
+      (progn
+	;; disable backups
+	(set (make-local-variable 'backup-inhibited) t)	
+	;; disable auto-save
+	(if auto-save-default
+	    (auto-save-mode -1)))
+    ;resort to default value of backup-inhibited
+    (kill-local-variable 'backup-inhibited)
+    ;resort to default auto save setting
+    (if auto-save-default
+	(auto-save-mode 1))))
+#+end_src
 
