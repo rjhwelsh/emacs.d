@@ -71,12 +71,6 @@ https://anirudhsasikumar.net/blog/2005.01.21.html
    )
 #+end_src
 
-**** Auto save file name transforms
- #+begin_src emacs-lisp
-;; (setq
-;;     auto-save-file-name-transforms `(( ".*" ,my/emacs-backup-cache t)) ;
-;; )
- #+end_src
 
 
 *** Security detail
