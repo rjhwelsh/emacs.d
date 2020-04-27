@@ -95,22 +95,4 @@ https://anirudhsasikumar.net/blog/2005.01.21.html
        (normal-backup-enable-predicate filename))))
   (setq backup-enable-predicate 'regexp-backup-enable-predicate)
   #+END_SRC
-*** Force backup on save :DISABLED:
-  Force a backup on EVERY save, not just the first one!
-  #+BEGIN_SRC emacs-lisp
-    (defun force-backup-of-buffer ()
-      ;; Make a special "per session" backup at the first save of each
-      ;; emacs session.
-      (when (not buffer-backed-up)
-	;; Override the default parameters for per-session backups.
-	(let ((backup-directory-alist '(("" . my/emacs-backup-session )))
-	      (kept-new-versions 3))
-	  (backup-buffer)))
-      ;; Make a "per save" backup on each save.  The first save results in
-      ;; both a per-session and a per-save backup, to keep the numbering
-      ;; of per-save backups consistent.
-      (let ((buffer-backed-up nil))
-	(backup-buffer)))
-    ;; (add-hook 'before-save-hook  'force-backup-of-buffer) 
-  #+END_SRC
 
