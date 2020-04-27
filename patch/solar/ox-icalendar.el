@@ -106,18 +106,28 @@ inlinetask within the section."
 	  ;; When collecting plain timestamps from a headline and its
 	  ;; title, skip inlinetasks since collection will happen once
 	  ;; ENTRY is one of them.
+	  ;; --------------------------------(also)--------------
+	  ;; Diary-sexp: Collect every diary-sexp element within ENTRY
+	  ;; and its title, and transcode them.  If ENTRY is
+	  ;; a headline, skip inlinetasks: they will be handled
+	  ;; separately.
 	  (let ((counter 0))
 	    (mapconcat
 	     #'identity
-	     (org-element-map (cons (org-element-property :title entry)
-				    (org-element-contents inside))
+	     (org-element-map
+		 (cons (org-element-property :title entry)
+		       (org-element-contents inside))
 		 'timestamp
 	       (lambda (ts)
-		 (when (let ((type (org-element-property :type ts)))
-			 (cl-case (plist-get info :with-timestamps)
-			   (active (memq type '(active active-range)))
-			   (inactive (memq type '(inactive inactive-range)))
-			   ((t) t)))
+		 (when     ;; Regular timestamp conditions
+		     (or (let ((type (org-element-property :type ts)))
+			   (cl-case (plist-get info :with-timestamps)
+			     (active (memq type '(active active-range)))
+			     (inactive (memq type '(inactive inactive-range)))
+			     ((t) t)))
+			 ;; Diary-sexp conditions
+			 (and org-icalendar-include-sexps (memq type '(diary)))
+			 )
 		   (let ((uid (format "TS%d-%s" (cl-incf counter) uid)))
 		     (org-icalendar--vevent
 		      entry ts uid summary loc desc cat tz class))))
@@ -135,32 +145,7 @@ inlinetask within the section."
 				   entry info))))
 		       ((t) (eq todo-type 'todo))))
 	    (org-icalendar--vtodo entry uid summary loc desc cat tz class))
-	  ;; Diary-sexp: Collect every diary-sexp element within ENTRY
-	  ;; and its title, and transcode them.  If ENTRY is
-	  ;; a headline, skip inlinetasks: they will be handled
-	  ;; separately.
-	  (when org-icalendar-include-sexps
-	    (let ((counter 0))
-	      (mapconcat #'identity
-			 (org-element-map
-			     (cons (org-element-property :title entry)
-				   (org-element-contents inside))
-			     'timestamp
-			   (lambda (ts)
-			     (when (let ((type (org-element-property :type ts)))
-				     (cl-case (plist-get info :with-timestamps)
-				       (active (memq type '(diary)))
-				       (inactive (memq type '(diary)))
-				       ((t) t)))
-			       (let ((uid (format "%d-%s" (cl-incf counter) uid)))
-				 ;; (org-icalendar--vevent
-				 ;; entry ts uid summary loc desc cat tz class)
-				 (message (format "%s" (org-element-property :raw-value ts)))
-				 (org-icalendar--vevent
-				  entry ts uid summary loc desc cat tz class)
-				 )))
-			   info nil (and (eq type 'headline) 'inlinetask))
-			 "")))))
+	  ))
        ;; If ENTRY is a headline, call current function on every
        ;; inlinetask within it.  In agenda export, this is independent
        ;; from the mark (or lack thereof) on the entry.
