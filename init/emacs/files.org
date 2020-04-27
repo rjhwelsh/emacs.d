@@ -30,6 +30,12 @@ Below is an example snippet to disable backups completely.
   #+END_SRC
 
 *** Backup files =~=
+**** Make backup files
+#+begin_src emacs-lisp
+  (setq 
+   make-backup-files t 
+   )
+#+end_src
 **** Backup directory
 #+begin_src emacs-lisp
   (setq 
@@ -37,10 +43,13 @@ Below is an example snippet to disable backups completely.
    )
 #+end_src
 **** Backup by  copying
+This prevents hard-links from breaking; otherwise Emacs renames files
+when creating backups which break the inode association with any
+hard-links. See [[help:make-backup-files]].
 #+begin_src emacs-lisp
   (setq
    backup-by-copying t 
-   make-backup-files t 
+   backup-by-copying-when-linked t
    )
 #+end_src
 **** Keep versions of backups
@@ -52,6 +61,7 @@ Below is an example snippet to disable backups completely.
    delete-old-versions t
    )
 #+END_SRC
+
 *** Auto-save files =#=
     Auto-save files use hashmarks (#) and shall be written locally
     within the project directory (along with the actual files). 
