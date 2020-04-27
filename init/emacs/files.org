@@ -9,50 +9,75 @@
      - find-file :: Opens up a file buffer ( =C-x C-f= )
 
 ** Backup
-*** Backup cache
-  I would prefer backup to have versioned backups in a home cache though. This
-  provides me with some piece of mind.
+https://stackoverflow.com/questions/151945/how-do-i-control-how-emacs-makes-backup-files
+https://anirudhsasikumar.net/blog/2005.01.21.html
+
+*** Backup variables
   Backup cache locations.
   #+BEGIN_SRC emacs-lisp
     (setq
-     rjh/emacs-backup-cache "~/.cache/emacs/save"
-     rjh/emacs-backup-session "~/.cache/emacs/session"
+     my/emacs-backup-cache "~/.cache/emacs/save"
+     my/emacs-backup-session "~/.cache/emacs/session"
      )
   #+END_SRC
 
-*** Versioning and auto-save
-  #+BEGIN_SRC emacs-lisp
-    (setq vc-make-backup-files t
-	  make-backup-files t) ;; backup versioned files
-    (setq
-     backup-by-copying t  ;; don't clobber symlinks
-     delete-old-versions t
-     kept-new-versions 6
-     kept-old-versions 2
-     version-control t
-     backup-directory-alist `((".*" . ,rjh/emacs-backup-cache )) ; don't litter the filetree ; only make backups of files in homedir
-     auto-save-file-name-transforms `(( ".*" ,rjh/emacs-backup-cache t)) ;
-     )
-  #+END_SRC
+*** Backup files =~=
 
-*** Force backup on save :DISABLED:
-  Force a backup on EVERY save, not just the first one!
-  #+BEGIN_SRC emacs-lisp
-    (defun force-backup-of-buffer ()
-      ;; Make a special "per session" backup at the first save of each
-      ;; emacs session.
-      (when (not buffer-backed-up)
-	;; Override the default parameters for per-session backups.
-	(let ((backup-directory-alist '(("" . rjh/emacs-backup-session )))
-	      (kept-new-versions 3))
-	  (backup-buffer)))
-      ;; Make a "per save" backup on each save.  The first save results in
-      ;; both a per-session and a per-save backup, to keep the numbering
-      ;; of per-save backups consistent.
-      (let ((buffer-backed-up nil))
-	(backup-buffer)))
-    ;; (add-hook 'before-save-hook  'force-backup-of-buffer) 
-  #+END_SRC
+**** Backup directory
+#+begin_src emacs-lisp
+  (setq 
+   backup-directory-alist `((".*" . ,my/emacs-backup-cache )) ; don't litter the filetree ; only make backups of files in homedir
+   )
+#+end_src
+**** Backup by  copying
+#+begin_src emacs-lisp
+  (setq
+   backup-by-copying t 
+   make-backup-files t 
+   )
+#+end_src
+**** Keep versions of backups
+#+BEGIN_SRC emacs-lisp
+  (setq 
+   version-control t
+   kept-new-versions 6
+   kept-old-versions 2
+   delete-old-versions t
+   )
+#+END_SRC
+*** Auto-save files =#=
+    Auto-save files use hashmarks (#) and shall be written locally
+    within the project directory (along with the actual files). 
+
+    When the user saves the file, the auto-saved version is deleted. But
+    when the user exits the file without saving it, Emacs or the X session
+    crashes, the auto-saved files still exist.
+
+    Auto-save is nowadays disabled by default because it can slow down
+    editing when connected to a slow machine, and because many files
+    contain sensitive data.
+**** Auto save default
+#+begin_src emacs-lisp
+  (setq
+   auto-save-default t
+   )
+#+end_src
+
+**** Auto save periods
+#+begin_src emacs-lisp
+  (setq
+   auto-save-timeout 20
+   auto-save-interval 200
+   )
+#+end_src
+
+**** Auto save file name transforms
+ #+begin_src emacs-lisp
+;; (setq
+;;     auto-save-file-name-transforms `(( ".*" ,my/emacs-backup-cache t)) ;
+;; )
+ #+end_src
+
 
 *** Security detail
   Unfortunately, previous configuration is also backing up and versioning files I
@@ -70,3 +95,22 @@
        (normal-backup-enable-predicate filename))))
   (setq backup-enable-predicate 'regexp-backup-enable-predicate)
   #+END_SRC
+*** Force backup on save :DISABLED:
+  Force a backup on EVERY save, not just the first one!
+  #+BEGIN_SRC emacs-lisp
+    (defun force-backup-of-buffer ()
+      ;; Make a special "per session" backup at the first save of each
+      ;; emacs session.
+      (when (not buffer-backed-up)
+	;; Override the default parameters for per-session backups.
+	(let ((backup-directory-alist '(("" . my/emacs-backup-session )))
+	      (kept-new-versions 3))
+	  (backup-buffer)))
+      ;; Make a "per save" backup on each save.  The first save results in
+      ;; both a per-session and a per-save backup, to keep the numbering
+      ;; of per-save backups consistent.
+      (let ((buffer-backed-up nil))
+	(backup-buffer)))
+    ;; (add-hook 'before-save-hook  'force-backup-of-buffer) 
+  #+END_SRC
+

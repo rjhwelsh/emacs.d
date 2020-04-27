@@ -1,0 +1,8 @@
+* vc :vc:
+Version control driver in Emacs.
+** Make backups of version controlled files
+#+begin_src emacs-lisp
+(setq
+   vc-make-backup-files t
+)
+#+end_src
