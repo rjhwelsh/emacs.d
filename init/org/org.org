@@ -1032,6 +1032,18 @@
      (add-to-list 'org-src-lang-modes '("dot" . graphviz-dot))
    #+END_SRC
 * Display
+** Show inline images
+Show inline images when loading a new Org file.
+
+This can also be configured on a per-file basis by adding one of
+the following lines anywhere in the buffer:
+=#+STARTUP: inlineimages=
+=#+STARTUP: noinlineimages=
+
+#+begin_src emacs-lisp
+(setq org-startup-with-inline-images t)
+#+end_src
+
 ** Faces
    FACES are custom settings for font, colour, background etc.
    If you would like to modify a face that has already been loaded, you will have
