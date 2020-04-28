@@ -480,7 +480,7 @@
     #+BEGIN_SRC emacs-lisp
       (setq org-agenda-sorting-strategy
 	    '((agenda time-up deadline-up scheduled-up todo-state-down category-keep              priority-down effort-up tag-up)
-	      (todo                                    todo-state-down category-keep  deadline-up priority-down effort-up tag-up)
+	      (todo           priority-down effort-up  todo-state-down deadline-up category-keep tag-up)
 	      (tags                                    todo-state-down category-keep  deadline-up priority-down effort-up tag-up)
 	      (search         deadline-up              todo-state-down category-keep              priority-down effort-up tag-up)))
     #+END_SRC
