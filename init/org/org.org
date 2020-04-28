@@ -316,23 +316,6 @@
     #+BEGIN_SRC emacs-lisp
       (setq org-tag-alist '())
     #+END_SRC
-*** Persistent tags
-    #+begin_src emacs-lisp
-      (setq org-tag-persistent-alist
-	    '(("NEW"      )
-	      ("REFILE"   )
-	      ("ACTION"   )
-	      ("FLAGGED"  )
-	      ("VERIFY"   )
-	      ("DELEGATE" )
-	      ("EXPAND"   )
-	      ("WAITING"  )
-	      ("PROJECT"  )
-	      ("NOARCHIVE")
-	      ("DOC"      )
-	      ))
-    #+end_src
-
 *** Tag inheritance
     Inherit all tags.
     #+BEGIN_SRC emacs-lisp

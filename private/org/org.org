@@ -1,5 +1,25 @@
 * Org
+
+** Location to scan for org files
 Set the org-directory.
 #+BEGIN_SRC emacs-lisp
- (setq org-directory "~/.emacs.d/org" )
+	(setq org-directory "~/.emacs.d/org" )
 #+END_SRC
+
+** Persistent tags
+   #+begin_src emacs-lisp
+     (setq org-tag-persistent-alist
+	   '(("NEW"      )
+	     ("REFILE"   )
+	     ("ACTION"   )
+	     ("FLAGGED"  )
+	     ("REVIEW"   )
+	     ("DELEGATE" )
+	     ("EXPAND"   )
+	     ("WAITING"  )
+	     ("PROJECT"  )
+	     ("NOARCHIVE")
+	     ("DOC"      )
+	     ))
+   #+end_src
+
