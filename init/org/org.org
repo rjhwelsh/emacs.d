@@ -92,6 +92,10 @@
       '(org-load-modules-maybe t))
   #+END_SRC
 
+** Use private variables
+#+begin_src emacs-lisp
+  (rjh/use "org/org:private")
+#+end_src
 ** Application Defaults
    Default application associations.
    #+BEGIN_SRC emacs-lisp
@@ -1210,7 +1214,6 @@ the following lines anywhere in the buffer:
 	      ("NEW" . org-magenta)
 	      ))
     #+END_SRC
-
 ** Misc
    I like seeing a little downward-pointing arrow instead of the usual ellipsis
    (=...=) that org displays when there's stuff under a header.
