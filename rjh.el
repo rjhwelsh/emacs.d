@@ -132,10 +132,11 @@
   (let ((dir (plist-get rjh/local-dir-plist sym)))
     (mapcar
      (lambda (string)
-       (substring
-	string
-	(+ (length (expand-file-name dir)) 1)
-	(- (length string) 4)))
+       (let* ((ld (+ (length (expand-file-name dir)) 1))
+	      (exp-string (expand-file-name string))
+	      (lf (- (length exp-string) 4))
+	      )
+	 (substring exp-string ld lf)))
      (directory-files-recursively dir ".*\.org$"))))
 
 (defun rjh/config-load-sym (sym conf)
