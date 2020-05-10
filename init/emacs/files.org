@@ -101,7 +101,8 @@ them to =auto-mode-alist=.
 	 (list
 	   '("\\.gpg$" . sensitive-minor-mode)
 	   '("\\.vcf$" . sensitive-minor-mode)
-	   '("/etc/" . sensitive-minor-mode)
+	   '("/etc/" . sensitive-minor-mode) 
+	   '("private" . sensitive-minor-mode) 
 	   )
 	 auto-mode-alist))
 #+end_src
