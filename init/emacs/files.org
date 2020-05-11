@@ -125,14 +125,14 @@ This mode handles disabling backups for sensitive files.
 Disable backups/auto-saves for the following file regexps by appending
 them to =auto-mode-alist=.
 #+begin_src emacs-lisp
-  (setq auto-mode-alist 
+  (setq auto-minor-mode-alist 
 	(append 
 	 (list
 	   '("\\.gpg$" . sensitive-minor-mode)
 	   '("\\.vcf$" . sensitive-minor-mode)
 	   '("/etc/" . sensitive-minor-mode)
 	   )
-	 auto-mode-alist))
+	 auto-minor-mode-alist))
 #+end_src
 
 
