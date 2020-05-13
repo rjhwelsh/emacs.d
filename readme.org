@@ -7,6 +7,11 @@ This a blanked version of my configuration files for Emacs.
  - Configuration can be selectively loaded through a customization setting.
  - Or by specifying it through an environmental variable.
 
+Or rather my messy notes on Emacs configuration. ;)
+
+Packages are usually setup to be automatically installed through elpa,
+melpa or melpa-stable, mainly with [[https://github.com/jwiegley/use-package][use-package]].
+
 * Before you start
 ** Emacs Version
    This configuration was tested on Emacs 27.0.
