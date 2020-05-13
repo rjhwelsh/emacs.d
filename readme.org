@@ -133,6 +133,8 @@ See [[https://elpa.gnu.org/packages/gnu-elpa-keyring-update.html][gnu-elpa-keyri
 Using bash and gnupg.
 #+begin_src sh
 gpg --homedir ~/.emacs.d/elpa/gnupg --receive-keys 066DAFCB81E42C40
+gpg --homedir ~/.emacs.d/elpa/gnupg \
+          --quick-set-expire 474F05837FBDEF9B 1y
 #+end_src
 
 Alternatively, you can turn signature-verification off.
