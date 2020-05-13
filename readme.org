@@ -81,9 +81,15 @@ the next time you start Emacs.
 Use =M-x rjh/edit= to edit a configuration file, this will open the
 org-file for editing.
 
-Each config has a post-fix =:init= or =:private=.
+Each configuration has a *post-fix* =:init= or =:private=.
  - =:init= :: refers to configuration provided from my repository.
  - =:private= :: refers to configuration that should be kept separate for privacy reasons. 
+
+For example, =djcb/mu4e:init= is configuration available in the [[file:init/djcb/mu4e.org][init]]
+directory.  
+
+/=rjh.el= allows you to change the location of =init= and
+=private= directories through customization variables/
 
 ** private directory
 Private configuration is used in the same way as the init configuration previous.
@@ -95,6 +101,8 @@ You can also create your own org-file configuration, and add it to this location
 
 ** environment variables
 Environment variables can be set to load a particular sequence of configuration.
+
+/Leave out the configuration *post-fix* when using environment variables./
 
 The current options are: 
     - EMACS_CONFIG :: Loads configuration from the =init= directory,
