@@ -70,7 +70,8 @@ default configuration to work.
 * Loading configuration segments
 ** init directory
 A list of browsable org-files which are sourced for configuration are
-available in the [[file:init][init]] directory.
+available in the [[file:init][init]] directory. Each org-file represents
+configuration for a particular Emacs application.
 
 Use =M-x rjh/load= to load a configuration file in Emacs. Pressing
 =<TAB>= will auto-complete to an available option.
