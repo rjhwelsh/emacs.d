@@ -15,134 +15,114 @@ This a blanked version of my configuration files for Emacs.
    This should be noted in the configuration org file.
    Feel free to browse around (it should work in your web-browser).
    Some examples, include sensible-defaults, zetteldeft, org-gantt and jdee-server.
+** Setup script
+A setup script is provided for quick installation on linux.
+*Warning! This may overwrite your current emacs.d configuration files*
+   #+begin_src sh
+./setup.sh --help # Show help 
+./setup.sh --install # Install base configuration, link to repository
+./setup.sh --install-deps # Install some third-party applications (elisp only)
+   #+end_src
 
 * Installation
-To install the emacs.d setup, you will need to do the following.
-These instructions, assume you will clone the repo to =~/emacs.d= .
-*You can clone directly to your .emacs.d directory, but this is not recommended.*
-
 ** Quick install on Linux
 Clone the repository to your desired location and run =./setup.sh=.
+The install process will symlink =~/.emacs.d/rjh= to =$LOCALREPO=.
+
+*Warning! This may overwrite your current emacs.d configuration files*
 #+BEGIN_SRC sh
-	export LOCALREPO=~/emacs.d
-	git clone https://github.com/rjhwelsh/emacs.d $LOCALREPO &&
-		cd $LOCALREPO &&
-		./setup.sh -i
+ export LOCALREPO=~/emacs.d/
+ git clone https://github.com/rjhwelsh/emacs.d $LOCALREPO &&
+ cd $LOCALREPO &&
+ ./setup.sh -i
 #+END_SRC
 
-** Basic Linux guidelines
- Set the following locations as variables; note these *will* be different on
- Windows.
- #+BEGIN_SRC sh
- export LOCALREPO=~/emacs.d
- export CONFIGDIR=~/.emacs.d
- #+END_SRC
+** Manual install
+This install deviates from =setup.sh= slightly, but it should work for most systems.
+Report an issue if it doesn't.
 
- Clone my repository.
- #+BEGIN_SRC sh
- git clone https://github.com/rjhwelsh/emacs.d $LOCALREPO
- #+END_SRC
+Clone repository.
+   #+begin_example sh
+git clone https://github.com/rjhwelsh/emacs.d ~/.emacs.d/rjh # clone repository
+   #+end_example
 
- Create the .emacs.d config directory (if it does not exist).
- #+BEGIN_SRC sh
- mkdir -vp $CONFIGDIR
- #+END_SRC
+If you have cloned the repository to an alternative location, copy over rjh.el.
+This will prompt for customization options on startup. 
+#+begin_example sh
+mkdir -v ~/.emacs.d/rjh &&
+cp -v ~/$ALTERNATE_LOCATION/rjh.el ~/.emacs.d/rjh/rjh.el              # replace init.el
+#+end_example
 
- Copy over essential configuration options, and create base directories for
- (some) modules.
- #+BEGIN_SRC sh
- cp -v $LOCALREPO/{init.el,configuration.org,personal.org,workgroups,agenda-files} $CONFIGDIR
- mkdir -vp $CONFIGDIR/{org,snippets}
- #+END_SRC
+Replace init.el in your =.emacs.d= directory with the one from the repository.
+   #+begin_example sh
+cp -v ~/.emacs.d/rjh/init.el ~/.emacs.d/init.el              # replace init.el
+   #+end_example
 
-** personal.org - Required config
-*** rjh/load-config-repo
-	Make sure that =personal.org= in the =$CONFIGDIR= uses the correct
-	load-config-repo; i.e. the location of your =$LOCALREPO=.
+Create some blank files, and base directories that should exist, for
+default configuration to work.
+#+begin_example sh
+ mkdir -vp ~/.emacs.d/{org,snippets,private}
+ touch ~/.emacs.d/agenda-files
+#+end_example
 
-	Open this in your second-favourite editor and fix "~/emacs.d" to be the same as
-	your $CONFIGDIR.
-	#+BEGIN_EXAMPLE file:
-	(setq rjh/local-config-repo "~/emacs.d") ; Set to $CONFIGDIR
-	#+END_EXAMPLE
+* Loading configuration segments
+** init directory
+A list of browsable org-files which are sourced for configuration are
+available in the [[file:init][init]] directory.
 
-*** hrs/default-font
-	You will also need to select a font.
-	I like to use Hermit, but it is not all that common.
-	Change "Hermit" to your preferred system font. (Like "DejaVuSans", or "Inconsolata")
+Use =M-x rjh/load= to load a configuration file in Emacs. Pressing
+=<TAB>= will auto-complete to an available option.
 
-	#+BEGIN_EXAMPLE file:personal.org
-	(setq hrs/default-font "Hermit")
-	#+END_EXAMPLE
+Use =M-x rjh/save= to save a configuration file, to automatically load
+the next time you start Emacs.
 
-	After setting up any additional dependencies from below, starting up emacs will
-	automatically download and install packages from melpa according to the default
-	configuration.
+Use =M-x rjh/edit= to edit a configuration file, this will open the
+org-file for editing.
 
-* Configuration
+Each config has a post-fix =:init= or =:private=.
+ - =:init= :: refers to configuration provided from my repository.
+ - =:private= :: refers to configuration that should be kept separate for privacy reasons. 
 
-** configuration.org
- The [[file:configuration.org][configuration.org]] in your .emacs.d (emacs config) directory, acts as the
- centre of operations for adjusting your configuration.
+** private directory
+Private configuration is used in the same way as the init configuration previous.
 
- If you find anything you dislike, you can comment it out with =;=.
- #+BEGIN_EXAMPLE emacs-lisp
-	; (use-package evil
-	; 	:ensure t)
-	(use-package good
-	    :ensure t)
- #+END_EXAMPLE
+Blank configuration templates are available in the [[file:private][private]] directory.  
+Copy them over to =~/.emacs.d/private/= and they will be available for loading. 
 
- Large configurations are separated into other org-files that you may load using
- the =rjh/load-config= function. Here =org.org= is my configuration for
- =org-mode=. =org-mode-plus-contrib= is a prerequisite that is built into the
- =init.el= file, before =init.el= calls =configuration.org=.
-#+BEGIN_SRC emacs-lisp
-	(rjh/load-config "org.org")
-#+END_SRC
+You can also create your own org-file configuration, and add it to this location.
 
- The main goal of this project is to provide documented configuration, to quickly
- get a newbie to Emacs up and running quickly.
+** environment variables
+Environment variables can be set to load a particular sequence of configuration.
 
-** personal.org
-Use [[file:personal.org][personal.org]] in your .emacs.d (emacs config) directory for all your
-personal configuration. Personal configuration, is anything you might want to
-keep private and separate from the rest of your config.
+The current options are: 
+    - EMACS_CONFIG :: Loads configuration from the =init= directory,
+      and then from the =private= directory
+    - EMACS_CONFIG_PRIVATE :: Loads configuration from =private=
+      directory only
 
-I created this so that I could share the joys of my config file, without being
-loose with my own personal details. It also serves well as a config file for
-matters of personal taste (Chrome, Firefox, IE, for example).
+For example, this loads extra configuration for mu4e; 
+#+begin_example sh
+/usr/bin/env EMACS_CONFIG="djcb/mu4e emacs/smtpmail" /usr/bin/emacs
+#+end_example
 
-The file is mostly self-explanatory. use it to setup variables describing:
- 1. Your name
- 2. email address
- 3. Calendar location
- 4. Contact Information
- 5. Default font
- 6. Default web-browser
- 7. Anything else you wouldn't want to necessarily share.
+Customization configuration, set using =rjh/save= or
+=rjh/save-custom=, is loaded after any environment variable
+configurations.
 
-* Updating
-	To update configuration modules from my repo, use a git pull.
-#+BEGIN_EXAMPLE sh
-cd $LOCALREPO
-git pull
-#+END_EXAMPLE
+Environment variables allow for breaking up and testing different and
+sometimes incompatible configuration options.
 
-* Extra notes
- * If git is not installed on your system, you may get some errors when you
-   start-up; comment out the =git= module in =configuration.org= to fix.
-* Further Reading
+* Some reference configurations
 The emacs tutorial and info pages are a useful resource.
  =C-h t= and =C-h i= respectively.
 
 The following emacs configurations, provided inspiration, and useful content.
-			 1. [[https://github.com/hrs/dotfiles/blob/master/emacs/.emacs.d/configuration.org][Harry Schwartz's config]]
-			 2. [[https://ogbe.net/emacsconfig.html][Dennis Ogbe Emacs config]]
-			 3. [[http://doc.norang.ca/org-mode.html][Bernt Hansen comprehensive org]]
-			 4. [[http://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua's Emacs config]]
+    1. [[https://github.com/hrs/dotfiles/blob/master/emacs/.emacs.d/configuration.org][Harry Schwartz's config]]
+    2. [[https://ogbe.net/emacsconfig.html][Dennis Ogbe Emacs config]]
+    3. [[http://doc.norang.ca/org-mode.html][Bernt Hansen comprehensive org]]
+    4. [[http://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua's Emacs config]]
 
 And don't forget to checkout the emacs wiki.
  - https://www.emacswiki.org/
 
-May the lisp be with you.
+All the best!
