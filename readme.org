@@ -20,6 +20,14 @@ melpa or melpa-stable, mainly with [[https://github.com/jwiegley/use-package][us
    This should be noted in the specific configuration org file.
    Some examples, include sensible-defaults, zetteldeft, org-gantt and jdee-server.
 
+** Relies on =org-plus-contrib= package
+Uses =org-plus-contrib= as a base package, mainly because the
+particular org-mode anyone decides to use, needs to be loaded before
+any of the =.org= configuration files can be loaded.
+
+My primary [[file:init/org/org.org][org-mode]] configuration relies on some of the =contrib=
+org-mode packages.
+
 ** Setup script
 A setup script is provided for quick installation on linux.
 
