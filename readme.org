@@ -33,7 +33,7 @@ The install process will symlink =~/.emacs.d/rjh= to =$LOCALREPO=.
 
 *Warning! This may overwrite your current emacs.d configuration files*
 #+BEGIN_SRC sh
- export LOCALREPO=~/emacs.d/
+ export LOCALREPO=~/rjh.emacs.d/
  git clone https://github.com/rjhwelsh/emacs.d $LOCALREPO &&
  cd $LOCALREPO &&
  ./setup.sh -i
