@@ -1,4 +1,11 @@
 * Startup
+** Inhibit-startup-screen
+Do not display start up screen.
+   #+begin_src emacs-lisp
+(setq inhibit-startup-screen t)
+   #+end_src
+
+** Examples
 [[info:elisp#Starting Up][info:elisp#Starting Up]]
 Start up configuration example.
  - Use =initial-buffer-choice= as default buffer
@@ -20,3 +27,4 @@ Hacked together for @MyriaCore. ;)
 ;; (add-hook 'window-setup-hook 'my/startup)
 (add-hook 'emacs-startup-hook 'my/startup)
 #+end_example
+
