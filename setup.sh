@@ -113,7 +113,7 @@ new_install() {
 	$CONFIGDIR
 
     # link to repo inside config dir (or set repo location in init.el)
-    [[ ! -d "$CONFIGDIR"/"$REPOLINK" ]] && ln -srv "$LOCALREPO" "$CONFIGDIR"/"$REPOLINK"
+    [[ ! -e "$CONFIGDIR"/"$REPOLINK" ]] && ln -srv "$LOCALREPO" "$CONFIGDIR"/"$REPOLINK"
 
     mkdir -v $CONFIGDIR/{org,snippet,private}
 
