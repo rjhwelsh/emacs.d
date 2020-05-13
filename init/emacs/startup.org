@@ -1,0 +1,22 @@
+* Startup
+[[info:elisp#Starting Up][info:elisp#Starting Up]]
+Start up configuration example.
+ - Use =initial-buffer-choice= as default buffer
+ - Switch to file, single window if specified
+ - Use =neotree-dir= to open directories, instead of =dired=
+
+Hacked together for @MyriaCore. ;)
+
+#+begin_example emacs-lisp
+(setq initial-buffer-choice "*Dashboard*")
+(setq find-directory-functions '(neotree-dir))
+
+(defun my/startup ()
+  "My startup functions"
+  (other-window 1)
+  (delete-other-windows)
+  )
+
+;; (add-hook 'window-setup-hook 'my/startup)
+(add-hook 'emacs-startup-hook 'my/startup)
+#+end_example
