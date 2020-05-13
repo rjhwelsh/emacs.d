@@ -1,0 +1,23 @@
+* mml-sec
+A package with security functions for MML documents
+#+begin_src emacs-lisp
+(require 'mml-sec)
+#+end_src
+
+** Do not cache passphrase inside emacs
+   #+begin_src emacs-lisp
+     (setq mml-secure-cache-passphrase nil)
+   #+end_src
+
+** mml-secure-message-*
+ Use the sender name to sign messages with.
+ Use the following for signing/encryption.
+     - C-c RET c p :: mml-secure-message-encrypt-pgpmime 
+     - C-c RET s p :: mml-secure-message-sign-pgpmime
+     - C-c RET C-e :: mml-secure-message-sign-encrypt
+
+   #+begin_src emacs-lisp
+  (setq mml-secure-openpgp-sign-with-sender t)
+   #+end_src
+
+ See [[info:message#Security][info:message#Security]] for more information.
