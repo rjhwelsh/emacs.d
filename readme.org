@@ -123,6 +123,23 @@ configurations.
 Environment variables allow for breaking up and testing different and
 sometimes incompatible configuration options.
 
+* Issues
+** Gnu elpa key-ring update
+The first time updating the package repositories, you may need to
+udate the gnu-elpa-keyring manually.  
+
+See [[https://elpa.gnu.org/packages/gnu-elpa-keyring-update.html][gnu-elpa-keyring-update]] for info.
+
+Using bash and gnupg.
+#+begin_src sh
+gpg --homedir ~/.emacs.d/elpa/gnupg --receive-keys 066DAFCB81E42C40
+#+end_src
+
+Alternatively, you can turn signature-verification off.
+#+begin_src emacs-lisp
+(setq package-check-signature nil)
+#+end_src
+
 * Some reference configurations
 The emacs tutorial and info pages are a useful resource.
  =C-h t= and =C-h i= respectively.
