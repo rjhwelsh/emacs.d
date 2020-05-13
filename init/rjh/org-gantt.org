@@ -8,6 +8,14 @@
  Org-gantt uses pgfgantt to create gantt charts in pdf exports.
  *This package will require a manual installation.*
 
+** 3rd-party elisp
+How to install 3rd party elisp, using bash, git.
+   #+begin_example sh
+ git clone https://github.com/swillner/org-gantt ~/org-gantt
+ mkdir -vp ~/.emacs.d/org-gantt
+ cp -v ~/org-gantt/org-gantt.el ~/.emacs.d/org-gantt/org-gantt.el
+   #+end_example
+
 ** Load org-gantt
  #+BEGIN_SRC emacs-lisp
  (load-file "~/.emacs.d/org-gantt/org-gantt.el")
