@@ -2,7 +2,15 @@
 https://github.com/EFLS/zetteldeft
 https://www.eliasstorms.net/zetteldeft/
 Zettelkasten note-taking using deft and avy.
+** 3rd party elisp install example
+How to install using bash, git.
+#+begin_example sh
+git clone https://github.com/hrs/zetteldeft.el ~/zetteldeft
+mkdir -vp ~/.emacs.d/zetteldeft
+cp -v ~/zetteldeft/zetteldeft.el ~/.emacs.d/zetteldeft/zetteldeft.el
+#+end_example
 
+** Package setup
 #+BEGIN_SRC emacs-lisp
   (use-package zetteldeft
     :load-path "~/.emacs.d/zetteldeft"

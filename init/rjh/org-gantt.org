@@ -3,7 +3,6 @@
 #+EMAIL: rjhwelsh@gmail.com
 
 * Org-gantt
-** About
  https://github.com/swillner/org-gantt
  Org-gantt uses pgfgantt to create gantt charts in pdf exports.
  *This package will require a manual installation.*

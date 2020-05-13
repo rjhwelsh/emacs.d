@@ -2,6 +2,16 @@
 #+STARTUP: content
 * Harry's sensible-defaults.el
 You can find this file, [[https://github.com/hrs/sensible-defaults.el][here]].
+
+** 3rd party elisp install example
+How to install using bash, git.
+#+begin_example sh
+git clone https://github.com/hrs/sensible-defaults.el ~/sensible-defaults
+mkdir -vp ~/.emacs.d/sensible-defaults
+cp -v ~/sensible-defaults/sensible-defaults.el ~/.emacs.d/sensible-defaults/sensible-defaults.el
+#+end_example
+
+** Sensible settings
 #+BEGIN_SRC emacs-lisp
 	(load-file "~/.emacs.d/sensible-defaults.el/sensible-defaults.el")
 ;Settings
