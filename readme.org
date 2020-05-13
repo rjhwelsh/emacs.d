@@ -68,10 +68,24 @@ mkdir -v ~/.emacs.d/rjh &&
 cp -v ~/$ALTERNATE_LOCATION/rjh.el ~/.emacs.d/rjh/rjh.el             # add rjh.el
 #+end_example
 
-Replace init.el in your =.emacs.d= directory with the one from the repository.
+You can test it out the =init.el= without installing it.
+#+begin_example sh
+emacs -q -l ~/.emacs.d/rjh/init.el    # Standalone testing
+#+end_example
+
+To install permanently, you can replace =init.el= in your =.emacs.d=
+directory with the one from the repository.  Alternatively, you can
+simply call =rjh/init.el= from your =init.el=.
+
+Example, replacement.
    #+begin_example sh
 cp -v ~/.emacs.d/rjh/init.el ~/.emacs.d/init.el              # replace init.el
    #+end_example
+
+Example, calling =rjh/init.el=.
+#+begin_example emacs-lisp
+(load "~/.emacs.d/rjh/init.el")    ;; Add this to the start of your init.el
+#+end_example
 
 Create some blank files, and base directories that should exist, for
 default configuration to work.
