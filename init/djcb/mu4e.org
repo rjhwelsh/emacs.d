@@ -51,3 +51,11 @@ Automatic line breaks when reading mail.
 #+begin_src emacs-lisp
   (add-hook 'mu4e-view-mode-hook 'visual-line-mode)
 #+end_src
+* mml-secure-message
+Use the sender name to sign messages with.
+
+  #+begin_src emacs-lisp
+ (setq mml-secure-openpgp-sign-with-sender t)
+  #+end_src
+
+See [[info:message#Security][info:message#Security]] for more information.
