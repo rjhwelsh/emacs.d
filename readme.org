@@ -50,7 +50,7 @@ If you have cloned the repository to an alternative location, copy over rjh.el.
 This will prompt for customization options on startup. 
 #+begin_example sh
 mkdir -v ~/.emacs.d/rjh &&
-cp -v ~/$ALTERNATE_LOCATION/rjh.el ~/.emacs.d/rjh/rjh.el              # replace init.el
+cp -v ~/$ALTERNATE_LOCATION/rjh.el ~/.emacs.d/rjh/rjh.el             # add rjh.el
 #+end_example
 
 Replace init.el in your =.emacs.d= directory with the one from the repository.
