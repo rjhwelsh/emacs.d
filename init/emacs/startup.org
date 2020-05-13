@@ -15,7 +15,7 @@ Start up configuration example.
 Hacked together for @MyriaCore. ;)
 
 #+begin_example emacs-lisp
-(setq initial-buffer-choice "*Dashboard*")
+(setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
 (setq find-directory-functions '(neotree-dir))
 
 (defun my/startup ()
