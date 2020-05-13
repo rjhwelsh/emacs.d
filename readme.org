@@ -1,39 +1,20 @@
-#+TITLE: README for Emacs configuration
+#+TITLE: Emacs configuration
 #+AUTHOR: Roger J. H. Welsh
 #+email: rjhwelsh@gmail.com
 
 * What is this?
-This a blanked version of my own personal configuration for Emacs.
-* Dependencies
+This a blanked version of my configuration files for Emacs.
+ - Configuration can be selectively loaded through a customization setting.
+ - Or by specifying it through an environmental variable.
+
+* Before you start
 ** Emacs Version
- Emacs version 24.5 or higher is required.
-** Sensible-defaults.el
- You will have to manually install Harry's package below in order to be able to use my
- configuration.
-
-	* [[https://github.com/hrs][Harry R. Schwartz's]] , [[https://github.com/hrs/sensible-defaults.el][sensible-defaults.el]].
-
- Install instructions.
- #+BEGIN_SRC sh
- git clone https://github.com/hrs/sensible-defaults.el ~/sensible-defaults.el
- cp -v ~/sensible-defaults.el/sensible-defaults.el ~/.emacs.d/sensible-defaults.el
- #+END_SRC
-
-** org-gantt.el
-The org-gantt.org module depends on org-gantt.el.
- * https://github.com/HeyFlash/emacs-stuff , [[https://github.com/HeyFlash/emacs-stuff/blob/master/experiments/org-gantt.el][org-gantt.el]]
-
-Install instructions.
-#+BEGIN_SRC sh
-git clone https://github.com/HeyFlash/emacs-stuff ~/emacs-stuff
-cp -v ~/emacs-stuff/experiments/org-gantt.el ~/.emacs.d/org-gantt.el
-#+END_SRC
-
-** jdee-server
-If you are looking to develop in Java using JDEE (Java Development Environment
-for Emacs), then there is a "soft" dependency on the jdee-server for some functions.
-For more about installing this, read more [[https://github.com/jdee-emacs/jdee-server][here]].
-Jdee-server itself depends on Maven-3.
+   This configuration was tested on Emacs 27.0.
+** Some configuration settings depend on 3rd party applications
+   A non-exhaustive list is below.
+   This should be noted in the configuration org file.
+   Feel free to browse around (it should work in your web-browser).
+   Some examples, include sensible-defaults, zetteldeft, org-gantt and jdee-server.
 
 * Installation
 To install the emacs.d setup, you will need to do the following.
