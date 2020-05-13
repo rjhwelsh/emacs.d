@@ -106,10 +106,10 @@ new_install() {
 
     # Create and install into directory.
     echo "Preparing to copy files:"
-    ls $LOCALREPO/{init.el,workgroups,agenda-files}
+    ls $LOCALREPO/{init.el,agenda-files}
 
     ${CPCMD} \
-	$LOCALREPO/{init.el,workgroups,agenda-files} \
+	$LOCALREPO/{init.el,agenda-files} \
 	$CONFIGDIR
 
     # link to repo inside config dir (or set repo location in init.el)
