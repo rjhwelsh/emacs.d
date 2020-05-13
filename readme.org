@@ -10,14 +10,16 @@ This a blanked version of my configuration files for Emacs.
 * Before you start
 ** Emacs Version
    This configuration was tested on Emacs 27.0.
+
 ** Some configuration settings depend on 3rd party applications
-   A non-exhaustive list is below.
-   This should be noted in the configuration org file.
-   Feel free to browse around (it should work in your web-browser).
+   This should be noted in the specific configuration org file.
    Some examples, include sensible-defaults, zetteldeft, org-gantt and jdee-server.
+
 ** Setup script
 A setup script is provided for quick installation on linux.
+
 *Warning! This may overwrite your current emacs.d configuration files*
+
    #+begin_src sh
 ./setup.sh --help # Show help 
 ./setup.sh --install # Install base configuration, link to repository
