@@ -31,7 +31,7 @@ dep_git_clone_install() {
 
 dep_sensible() {
 	# Install Harry's sensible defaults
-	dep_git_clone_install https://github.com/hrs/sensible-defaults.el sensible-defaults.el sensible-defaults.el
+    dep_git_clone_install https://github.com/hrs/sensible-defaults.el sensible-defaults sensible-defaults.el
 }
 
 dep_zetteldeft() {
