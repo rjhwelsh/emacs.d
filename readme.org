@@ -28,29 +28,25 @@ any of the =.org= configuration files can be loaded.
 My primary [[file:init/org/org.org][org-mode]] configuration relies on some of the =contrib=
 org-mode packages.
 
-** Setup script
-A setup script is provided for quick installation on linux.
+* Installation
+** Quick install
+Clone the repository to your desired location and run =./setup.sh=.
+The install process will symlink =~/.emacs.d/rjh= to =$LOCALREPO=.
 
-*Warning! This may overwrite your current emacs.d configuration files*
+*Warning! This may overwrite some of your current emacs.d configuration files*
 
+#+BEGIN_SRC sh
+ export LOCALREPO=~/rjh.emacs.d/
+ git clone https://github.com/rjhwelsh/emacs.d $LOCALREPO &&
+ pushd $LOCALREPO 
+#+END_SRC
+
+A setup script is provided for quick installation using =bash=.
    #+begin_src sh
 ./setup.sh --help # Show help 
 ./setup.sh --install # Install base configuration, link to repository
 ./setup.sh --install-deps # Install some third-party applications (elisp only)
    #+end_src
-
-* Installation
-** Quick install on Linux
-Clone the repository to your desired location and run =./setup.sh=.
-The install process will symlink =~/.emacs.d/rjh= to =$LOCALREPO=.
-
-*Warning! This may overwrite your current emacs.d configuration files*
-#+BEGIN_SRC sh
- export LOCALREPO=~/rjh.emacs.d/
- git clone https://github.com/rjhwelsh/emacs.d $LOCALREPO &&
- cd $LOCALREPO &&
- ./setup.sh -i
-#+END_SRC
 
 ** Manual install
 This install deviates from =setup.sh= slightly, but it should work for most systems.
