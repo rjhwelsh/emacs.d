@@ -5,13 +5,15 @@ http://jdee.sourceforge.net/jdedoc/html/jde-ug/jde-ug.html
 
 JDEE - Java Development Environment for Emacs
 
+Use =M-x jdee-mode= to invoke jdee.
+
+** 3rd party applications required
 The jdee-server should be installed on your system, before using jdee.
 Point the =jdee-server-dir= variable in Emacs to the directory
 containing the jar, =jdee-bundle.jar= (jdee-server).
 
-Use =M-x jdee-mode= to invoke jdee.
-
-For more documentation, please see
+Also, the jdee-server itself depends on Maven-3.
+** Setup
 #+BEGIN_SRC emacs-lisp
   (use-package "jdee" 
     :defer t
