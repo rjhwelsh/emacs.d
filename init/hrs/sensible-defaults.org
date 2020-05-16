@@ -13,7 +13,7 @@ cp -v ~/sensible-defaults/sensible-defaults.el ~/.emacs.d/sensible-defaults/sens
 
 ** Sensible settings
 #+BEGIN_SRC emacs-lisp
-	(load-file "~/.emacs.d/sensible-defaults.el/sensible-defaults.el")
+	(load-file "~/.emacs.d/sensible-defaults/sensible-defaults.el")
 ;Settings
 	(sensible-defaults/open-files-from-home-directory)
 	(sensible-defaults/increase-gc-threshold)
