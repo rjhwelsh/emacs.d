@@ -1,5 +1,26 @@
 #+PROPERTY: header-args    :results silent
 * Solarized-theme
+
+Automatic theme changer.
+  #+begin_src emacs-lisp
+    (defun solarized-theme-changer nil
+      "Changes solarized theme according to the time."
+      (let* (
+	     (hour (decoded-time-hour (decode-time (current-time))))
+	     (theme
+	      (or
+	       (if (< hour 7) 'solarized-zenburn)
+	       (if (< hour 9) 'solarized-light)
+	       (if (< hour 17) 'solarized-gruvbox-light)
+	       (if (< hour 19) 'solarized-gruvbox-dark)
+	       'solarized-dark
+	       )
+	      )
+	     )
+	(load-theme theme t)
+	))
+  #+end_src
+
  
  #+BEGIN_SRC emacs-lisp
    (use-package "solarized-theme" 
