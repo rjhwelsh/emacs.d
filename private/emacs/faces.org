@@ -2,10 +2,12 @@
 Personalized settings for faces.
 
 ** Font
+- Fix: tiny fonts when using daemon mode :: https://emacs.stackexchange.com/questions/35820/opening-emacsclient-n-c-opens-a-small-frame-with-small-fonts
 Set font and size.
 #+begin_src emacs-lisp
-  (set-frame-font "Liberation Mono-12" 
-		  t ;; KEEP-SIZE : Try to keep frame size (in pixels) fixed 
-		  t) ;; FRAMES : t = apply to all frames
+  (setq default-frame-alist 
+	(append
+	 '((font . "Liberation Mono-12"))
+	 default-frame-alist)) 
 #+end_src
 
