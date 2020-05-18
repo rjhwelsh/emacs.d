@@ -17,7 +17,8 @@ A package with security functions for MML documents
      - C-c RET C-e :: mml-secure-message-sign-encrypt
 
    #+begin_src emacs-lisp
-  (setq mml-secure-openpgp-sign-with-sender t)
+  (setq mml-secure-openpgp-sign-with-sender t) ;; 
+  (setq mm-sign-option 'guided)                ;; Ask for which signatures to sign with
    #+end_src
 
  See [[info:message#Security][info:message#Security]] for more information.
