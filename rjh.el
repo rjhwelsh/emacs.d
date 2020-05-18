@@ -281,6 +281,22 @@ Primarily for primitive configuration dependencies in init/"
    'rjh/config
    (reverse (cons spec (reverse rjh/config)))))
 
+(defun rjh/drop (spec)
+  "Drops configuration spec from current configuration.
+   ('rjh/config-loaded variable)
+   (Use save-custom to prevent reloading configuration on next run.)"
+  (interactive
+   (list
+    (completing-read
+     "Select config: "
+     (completion-table-with-cache 'rjh/config-completion-function t)
+     nil
+     t)))
+  (when (member spec rjh/config-loaded)
+    (progn
+      (delete spec rjh/config-loaded)
+      (message "Dropped %s" spec))))
+
 ;; Completion
 (defun rjh/config-completion-function (string)
   "Return a list of strings completion table for loading config"
