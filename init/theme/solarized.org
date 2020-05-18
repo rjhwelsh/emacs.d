@@ -1,18 +1,28 @@
+#+PROPERTY: header-args    :results silent
 * Solarized-theme
+ 
  #+BEGIN_SRC emacs-lisp
    (use-package "solarized-theme" 
      :defer t
      :ensure t
-     :config
-     (defun hrs/apply-theme ()
-       (setq solarized-use-variable-pitch nil)
-       (setq solarized-height-plus-1 1.2)
-       (setq solarized-height-plus-2 1.4)
-       (setq solarized-height-plus-3 1.7)
-       (setq solarized-height-plus-4 2.0)
-       (setq solarized-high-contrast-mode-line t)
-       (load-theme 'solarized-dark t))
      :init
-     (load-theme 'solarized-light t)
-     )
+     (load-theme 'solarized-zenburn t)
+     ;; (load-theme 'solarized-wombat-dark-theme t)
+     ;; (load-theme 'solarized-gruvbox-dark t)
+     ;; (load-theme 'solarized-gruvbox-light t)
+    )
  #+END_SRC
+ 
+Automatically change theme at 9:00AM to solarized-light.
+ #+begin_src emacs-lisp
+   (run-at-time "9:00AM" (* 24 60 60) 'load-theme 'solarized-gruvbox-light t) ;; Change theme at 9:00am
+ #+end_src
+
+Automatically change theme at 5:00PM to solarized-dark.
+Delay for 3s, to allow solarized-light to make adjustments prior.
+ #+begin_src emacs-lisp
+   (run-with-timer 
+    3 nil
+    '(lambda ()
+       (run-at-time "5:00PM" (* 24 60 60) 'load-theme 'solarized-gruvbox-dark t)))  ;; Change theme at 5:00pm
+ #+end_src
