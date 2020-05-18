@@ -38,16 +38,7 @@ Automatic theme changer.
     )
  #+END_SRC
  
-Automatically change theme at 9:00AM to solarized-light.
+Automatically change theme every hour.
  #+begin_src emacs-lisp
-   (run-at-time "9:00AM" (* 24 60 60) 'load-theme 'solarized-gruvbox-light t) ;; Change theme at 9:00am
- #+end_src
-
-Automatically change theme at 5:00PM to solarized-dark.
-Delay for 3s, to allow solarized-light to make adjustments prior.
- #+begin_src emacs-lisp
-   (run-with-timer 
-    3 nil
-    '(lambda ()
-       (run-at-time "5:00PM" (* 24 60 60) 'load-theme 'solarized-gruvbox-dark t)))  ;; Change theme at 5:00pm
+   (run-with-timer 0 (* 1 60 60) 'solarized-theme-changer) ;; Change theme every hour
  #+end_src
