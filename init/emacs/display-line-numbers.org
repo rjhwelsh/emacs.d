@@ -1,0 +1,5 @@
+* Display line numbers
+  Use =M-x display-line-numbers-mode= to toggle manually.
+
+  Otherwise, set it using the customization menu ([[help:display-line-numbers]]) for
+  a permanent change.
