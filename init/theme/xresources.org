@@ -1,0 +1,9 @@
+* Xresources-theme
+https://github.com/CQQL/xresources-theme
+#+begin_src emacs-lisp
+  (use-package "xresources-theme"
+    :ensure t
+  :init
+  (load-theme 'xresources t)
+  )
+#+end_src
