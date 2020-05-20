@@ -1,0 +1,6 @@
+* Notify.el
+https://www.emacswiki.org/emacs/notify.el
+
+#+begin_src emacs-lisp
+  (load "~/.emacs.d/emacswiki/notify.el")
+#+end_src
