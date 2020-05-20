@@ -44,4 +44,4 @@ https://www.emacswiki.org/emacs/notify.el
              text)))
 
 (add-hook 'jabber-alert-message-hooks 'notify-jabber-notify)
-#+end_src>
+#+end_src
