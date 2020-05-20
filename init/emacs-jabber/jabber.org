@@ -1,0 +1,15 @@
+#+PROPERTY: header-args    :results silent
+* Jabber
+jabber.el aims to be a minimal Jabber client.
+http://emacs-jabber.sourceforge.net/
+https://www.emacswiki.org/emacs/JabberEl
+
+  #+begin_src emacs-lisp
+    (use-package "jabber"
+      :ensure t
+      :init
+      (require 'jabber-autoloads)
+      )
+  #+end_src
+
+- =C-x C-j C-h= :: display a list of available jabber commands

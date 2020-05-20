@@ -1,0 +1,24 @@
+#+PROPERTY: header-args    :results silent
+* Jabber
+After setting up your accounts;
+ - use =M-x jabber-connect-all= to connect
+ - use =M-x jabber-switch-to-roster-buffer= to view the roster
+   A help menu is available on the roster to get started with
+ - use =M-x jabber-disconnect= to disconnect
+ - use =M-x jabber-display-roster= to display roster in other-window
+
+** Accounts
+https://www.masteringemacs.org/article/keeping-secrets-in-emacs-gnupg-auth-sources
+Use =auth-sources= to store password information.
+
+   #+begin_src emacs-lisp
+     (setq jabber-account-list nil)
+	(setq jabber-account-list
+	      (append
+	       `((,user-mail-address    ;; Uses your email address by default
+		  (:network-server  . "talk.google.com")
+;;		  (:connection-type . starttls)
+		  ))
+	       jabber-account-list)
+	      )
+   #+end_src
