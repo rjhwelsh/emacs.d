@@ -90,6 +90,9 @@ dep_options() {
 	    "org-gantt")
 		dep_org_gantt;
 		;;
+	    "emacswiki")
+		dep_emacswiki "notify.el" "emacswiki"
+		;;
 	    "quit")
 		BREAK="1"
 		;;
@@ -117,6 +120,7 @@ dep_install() {
 			  sensible-defaults \
 			  zetteldeft \
 			  org-gantt \
+			  emacswiki \
 			  quit
 	do
 	    dep_options $dep;
