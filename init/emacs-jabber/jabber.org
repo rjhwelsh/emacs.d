@@ -30,6 +30,8 @@ https://www.emacswiki.org/emacs/JabberEl
 https://www.emacswiki.org/emacs/notify.el
 
 #+begin_src emacs-lisp
+(rjh/use "emacswiki/notify:init") ;; Load notify.el
+
 (require 'notify)
 
 (defun notify-jabber-notify (from buf text proposed-alert)
