@@ -18,6 +18,9 @@ https://www.emacswiki.org/emacs/JabberEl
        jabber-backlog-days 30
        )
 
+      ;; Rebind keys for message sending / newlines
+      (define-key jabber-chat-mode-map (kbd "RET") 'newline)
+      (define-key jabber-chat-mode-map [C-return] 'jabber-chat-buffer-send)
       )
   #+end_src
 
