@@ -29,6 +29,34 @@ dep_git_clone_install() {
 	done
 }
 
+dep_wget() {
+    URL="$1"
+    shift
+    DEST="$1"
+    shift
+
+    { [ -d "$D"/"$DEST" ] || mkdir -vp "$D"/"$DEST"; } &&
+	{ pushd "$D"/"$DEST" && wget "${URL}"; popd; }
+
+    for f in "$@";
+    do
+	mkdir -vp `dirname "$CONFIGDIR"/"$DEST"/"$f"`
+	[[ -e "$CONFIGDIR"/"$DEST"/"$f" ]] && echo "Warning! ""$CONFIGDIR"/"$DEST"/"$f"' already exists.' >&2
+	cp -nv "$D"/"$DEST"/"$f" "$CONFIGDIR"/"$DEST"/"$f"
+    done
+}
+
+
+dep_emacswiki() {
+    URL="https://www.emacswiki.org/emacs/download/$1"
+    shift
+    DEST="$1"
+    shift
+    f=`basename "${URL}"`
+
+    dep_wget "${URL}" "${DEST}" "${f}"
+}
+
 dep_sensible() {
 	# Install Harry's sensible defaults
     dep_git_clone_install https://github.com/hrs/sensible-defaults.el sensible-defaults sensible-defaults.el
