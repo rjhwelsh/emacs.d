@@ -47,7 +47,7 @@
 
 (defcustom rjh/local-config-repo
   ;; Use load-file-name as basis for repo
-  ;; else, if it exists, use default location 
+  ;; else, if it exists, use default location
   ;; else, ask user to pick a location
   (rjh/prompt-for-directory
    (or (file-name-directory load-file-name)
@@ -60,7 +60,7 @@
   :group 'rjh
   )
 
-(defcustom rjh/local-private-dir 
+(defcustom rjh/local-private-dir
   (rjh/prompt-for-directory
    "~/.emacs.d/private"
    "Set location of rjh/local-private-dir:"
@@ -211,7 +211,7 @@ If syms is specified, will load for config for each sym"
 	   (append
 	    (rjh/config-spec-list-from-env rjh/config-env :init)
 	    (rjh/config-spec-list-from-env rjh/config-env :private)
-	    (rjh/config-spec-list-from-env rjh/config-private-env :init))
+	    (rjh/config-spec-list-from-env rjh/config-private-env :private))
 	   )
     (rjh/load spec)))
 
@@ -308,4 +308,3 @@ Primarily for primitive configuration dependencies in init/"
 	       (rjh/config-arg-to-spec conf sym))
 	     (rjh/config-list sym)))
 	  rjh/config-sym-list)))
-
