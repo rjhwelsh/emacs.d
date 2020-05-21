@@ -3,14 +3,29 @@
 
 Personalized settings.
 
+Setup some variables.
+#+begin_src emacs-lisp
+    ;; Define some extra variables
+    (defvar my/org-super-agenda-groups-init org-super-agenda-groups
+      "Retains the originally initialized `org-super-agenda-groups' variable.")
+
+    (defvar my/org-super-agenda-groups-private nil
+      "User-defined groups for `org-super-agenda'.")
+
+    (defvar my/org-super-agenda-groups-private-pos 1
+      "Position to insert user-defined groups into `org-super-agenda-groups'.")
+#+end_src
+
 Insert personalized settings at =pos= in =org-super-agenda-groups= list.
 #+begin_src emacs-lisp
-  (use-package "org-super-agenda-private"
+  (use-package "org-super-agenda"
     :ensure nil ;; Not an actual package
     :after org-super-agenda
     :init
-    (let ((pos 2))  ;; Set position
-      (push
+    ;; User defined groups
+    (setq
+     my/org-super-agenda-groups-private-pos 2  ;; Insert at position 2 in *-groups
+     my/org-super-agenda-groups-private
        '(
 	 ;; Set order of multiple groups at once
 	 (:order-multi (2 (:name "Shopping in town"
@@ -35,9 +50,19 @@ Insert personalized settings at =pos= in =org-super-agenda-groups= list.
 		;; with these todo keywords that e.g. have priority A would be
 		;; displayed in that group instead, because items are grouped
 		;; out in the order the groups are listed.
-		:order 9))
-       (nthcdr pos org-super-agenda-groups))) ;; Insert position at list
-    ;; N.B. This modifies the list directly
+		:order 9)))
+
+    ;; Create new org-super-groups
+    (setq org-super-agenda-groups
+	  (let
+	      ((pos my/org-super-agenda-groups-private-pos)            ;; Position to insert user defined groups
+	       (oldgroups (copy-tree my/org-super-agenda-groups-init)) ;; Copy of original groups
+	       (newgroups (reverse my/org-super-agenda-groups-private))          ;; User-defined groups to insert
+	       )
+	  (dolist (x newgroups oldgroups)
+	    (push x (nthcdr pos oldgroups)) ;; Insert position at list
+	    )
+	    ))
     )
   org-super-agenda-groups ;; Display results
 #+end_src
