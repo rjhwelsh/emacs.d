@@ -22,6 +22,7 @@ group items into sections, rather than having them all in one big list.
 		:priority>= "C"  ;; Any priority greater than C
 		:order 1
 		)
+     ;; Position 2 -> Personalized 'org-super-agenda-private config inserted here
 	 (:name "Blocked"
 		:children todo ;; Items that have todo children
 		:order 100
