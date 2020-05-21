@@ -41,3 +41,10 @@ group items into sections, rather than having them all in one big list.
 	 ))
       )
   #+end_src
+
+
+Example inserting groups into the middle of the list.
+  #+begin_example emacs-lisp
+  (let ((pos 2))  ;; Set position
+  (push newgroups (nthcdr pos org-super-agenda-groups))) ;; Insert position at list
+  #+end_example

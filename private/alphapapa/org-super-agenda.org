@@ -3,34 +3,36 @@
 
 Personalized settings.
 
+Insert personalized settings at =pos= in =org-super-agenda-groups= list.
 #+begin_src emacs-lisp
-  (setq org-super-agenda-groups
-	(append
-	 org-super-agenda-groups
-	 '(
-	   ;; Set order of multiple groups at once
-	   (:order-multi (2 (:name "Shopping in town"
-				   ;; Boolean AND group matches items that match all subgroups
-				   :and (:tag "shopping" :tag "@town"))
-			    (:name "Food-related"
-				   ;; Multiple args given in list with implicit OR
-				   :tag ("food" "dinner"))
-			    (:name "Personal"
-				   :habit t
-				   :tag "personal")
-			    (:name "Space-related (non-moon-or-planet-related)"
-				   ;; Regexps match case-insensitively on the entire entry
-				   :and (:regexp ("space" "NASA")
-						 ;; Boolean NOT also has implicit OR between selectors
-						 :not (:regexp "moon" :tag "planet")))))
-	   ;; Groups supply their own section names when none are given
-	   (:todo "WAITING" :order 8)  ; Set order of this section
-	   (:todo ("SOMEDAY" "TO-READ" "CHECK" "TO-WATCH" "WATCHING")
-		  ;; Show this group at the end of the agenda (since it has the
-		  ;; highest number). If you specified this group last, items
-		  ;; with these todo keywords that e.g. have priority A would be
-		  ;; displayed in that group instead, because items are grouped
-		  ;; out in the order the groups are listed.
-		  :order 9)))
-	)
+  (let ((pos 2))  ;; Set position
+    (push
+     '(
+       ;; Set order of multiple groups at once
+       (:order-multi (2 (:name "Shopping in town"
+			       ;; Boolean AND group matches items that match all subgroups
+			       :and (:tag "shopping" :tag "@town"))
+			(:name "Food-related"
+			       ;; Multiple args given in list with implicit OR
+			       :tag ("food" "dinner"))
+			(:name "Personal"
+			       :habit t
+			       :tag "personal")
+			(:name "Space-related (non-moon-or-planet-related)"
+			       ;; Regexps match case-insensitively on the entire entry
+			       :and (:regexp ("space" "NASA")
+					     ;; Boolean NOT also has implicit OR between selectors
+					     :not (:regexp "moon" :tag "planet")))))
+       ;; Groups supply their own section names when none are given
+       (:todo "WAITING" :order 8)  ; Set order of this section
+       (:todo ("SOMEDAY" "TO-READ" "CHECK" "TO-WATCH" "WATCHING")
+	      ;; Show this group at the end of the agenda (since it has the
+	      ;; highest number). If you specified this group last, items
+	      ;; with these todo keywords that e.g. have priority A would be
+	      ;; displayed in that group instead, because items are grouped
+	      ;; out in the order the groups are listed.
+	      :order 9))
+     (nthcdr pos org-super-agenda-groups))) ;; Insert position at list
+  ;; N.B. This modifies the list directly
+  org-super-agenda-groups ;; Display results
 #+end_src
