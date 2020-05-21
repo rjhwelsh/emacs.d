@@ -18,9 +18,14 @@ https://www.emacswiki.org/emacs/JabberEl
      )
 
     :bind (:map jabber-chat-mode-map
+		("C-S-RET" . jabber-switch-to-roster-buffer))
+    )
+
+(use-package "jabber"
+    :bind (:map jabber-chat-mode-map
 		("RET" . newline)
 		("C-RET" . jabber-chat-buffer-send))
-    )
+)
 #+end_src
 
 - =C-x C-j C-h= :: display a list of available jabber commands
