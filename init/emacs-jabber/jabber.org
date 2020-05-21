@@ -7,6 +7,7 @@ https://www.emacswiki.org/emacs/JabberEl
 #+begin_src emacs-lisp
   (use-package "jabber"
     :ensure t
+    :after dired-x ;; dired-x overrides jabber-global-keymap prefix
     :init
 
     ;; Enable history
@@ -17,15 +18,14 @@ https://www.emacswiki.org/emacs/JabberEl
      jabber-backlog-days 30
      )
 
-    :bind (:map jabber-chat-mode-map
-		("C-S-\r" . jabber-switch-to-roster-buffer))
+    :bind-keymap ("C-x C-j" . jabber-global-keymap)
     )
 
-(use-package "jabber"
+  (use-package "jabber"
     :bind (:map jabber-chat-mode-map
 		("RET" . newline)
 		("C-\r" . jabber-chat-buffer-send))
-)
+    )
 #+end_src
 
 - =C-x C-j C-h= :: display a list of available jabber commands
