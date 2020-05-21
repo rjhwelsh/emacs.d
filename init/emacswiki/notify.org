@@ -2,7 +2,7 @@
 https://www.emacswiki.org/emacs/notify.el
 
 #+begin_src emacs-lisp
-  (add-to-list 'load-path "~/.emacs.d/emacswiki")
-  (load-file "~/.emacs.d/emacswiki/notify.el")
-  ;;(require 'notify)
+  (use-package "notify"
+    :load-path "~/.emacs.d/emacswiki/"
+    )
 #+end_src
