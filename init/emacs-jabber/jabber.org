@@ -27,7 +27,7 @@ https://www.emacswiki.org/emacs/JabberEl
   (use-package "jabber"
     :bind (:map jabber-chat-mode-map
 		("RET" . newline)
-		("C-\r" . jabber-chat-buffer-send))
+		("<C-return>" . jabber-chat-buffer-send))
     )
 #+end_src
 
