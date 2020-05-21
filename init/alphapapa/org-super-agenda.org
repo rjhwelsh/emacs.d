@@ -10,7 +10,7 @@ group items into sections, rather than having them all in one big list.
       :ensure t
       :init
       (org-super-agenda-mode)
-      :config
+
       (setq org-super-agenda-groups
 	`(;; Each group has an implicit boolean OR operator between its selectors.
 	 (:name "Today"  ; Optionally specify section name
