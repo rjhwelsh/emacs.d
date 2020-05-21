@@ -1,0 +1,7 @@
+* Auth
+https://www.masteringemacs.org/article/keeping-secrets-in-emacs-gnupg-auth-sources
+#+begin_src emacs-lisp
+  (require 'auth-source)
+  (setq auth-sources
+	'((:source "~/.authinfo.gpg")))
+#+end_src
