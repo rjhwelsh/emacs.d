@@ -8,7 +8,7 @@ https://www.emacswiki.org/emacs/JabberEl
   (use-package "jabber"
     :ensure t
     :after dired-x ;; dired-x overrides jabber-global-keymap prefix
-    :init
+    :config
 
     ;; Enable history
     (setq
@@ -17,6 +17,9 @@ https://www.emacswiki.org/emacs/JabberEl
      jabber-backlog-number 40
      jabber-backlog-days 30
      )
+
+    ;; Disable avatar images in roster "-%a"
+    (setq jabber-roster-line-format " %c %-25n %u %-8s  %S")
 
     :bind-keymap ("C-x C-j" . jabber-global-keymap)
     )
