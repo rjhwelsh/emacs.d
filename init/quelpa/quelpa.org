@@ -1,0 +1,9 @@
+#+PROPERTY: header-args    :results silent
+* Quelpa
+https://github.com/quelpa/quelpa
+=quelpa= is a tool to compile and install Emacs Lisp packages locally from local or remote source code.
+
+#+begin_src emacs-lisp
+  (use-package "quelpa"
+    :ensure t)
+#+end_src
