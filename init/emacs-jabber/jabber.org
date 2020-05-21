@@ -4,25 +4,24 @@ jabber.el aims to be a minimal Jabber client.
 http://emacs-jabber.sourceforge.net/
 https://www.emacswiki.org/emacs/JabberEl
 
-  #+begin_src emacs-lisp
-    (use-package "jabber"
-      :ensure t
-      :init
-      (require 'jabber-autoloads)
+#+begin_src emacs-lisp
+  (use-package "jabber"
+    :ensure t
+    :init
 
-      ;; Enable history
-      (setq
-       jabber-history-enabled t
-       jabber-use-global-history nil
-       jabber-backlog-number 40
-       jabber-backlog-days 30
-       )
+    ;; Enable history
+    (setq
+     jabber-history-enabled t
+     jabber-use-global-history nil
+     jabber-backlog-number 40
+     jabber-backlog-days 30
+     )
 
-      ;; Rebind keys for message sending / newlines
-      (define-key jabber-chat-mode-map (kbd "RET") 'newline)
-      (define-key jabber-chat-mode-map [C-return] 'jabber-chat-buffer-send)
-      )
-  #+end_src
+    :bind (:map jabber-chat-mode-map
+		("RET" . newline)
+		("C-RET" . jabber-chat-buffer-send))
+    )
+#+end_src
 
 - =C-x C-j C-h= :: display a list of available jabber commands
 
@@ -31,8 +30,6 @@ https://www.emacswiki.org/emacs/notify.el
 
 #+begin_src emacs-lisp
 (rjh/use "emacswiki/notify:init") ;; Load notify.el
-
-(require 'notify)
 
 (defun notify-jabber-notify (from buf text proposed-alert)
   "(jabber.el hook) Notify of new Jabber chat messages via notify.el"
