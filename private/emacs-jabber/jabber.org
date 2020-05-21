@@ -22,3 +22,9 @@ Use =auth-sources= to store password information.
 	       jabber-account-list)
 	      )
    #+end_src
+
+** Enable notifications
+   This will enable cross-platform support (mac/linux, windows?) for notifications via notify.el.
+   #+begin_src emacs-lisp
+     (rjh/use "emacswiki/notify:init")
+   #+end_src
