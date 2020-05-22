@@ -957,38 +957,14 @@ https://blog.aaronbieber.com/2017/03/19/organizing-notes-with-refile.html
    You can set the variable =org-refile-target-verify-function= to a function to
    verify each headline found by the criteria above.
 
-*** Hooks
-Refile hooks to operate on entries that have just been refiled.
-(And *before* stuff has been deleted at the old location)
-#+begin_example emacs-lisp
-(add-hook org-after-refile-insert-hook (lambda (x) (message "helloworld")))
-#+end_example
-
-Display current outline-path.
-#+begin_example emacs-lisp
-(org-display-outline-path t t nil t)
-#+end_example
-
-Set property value.
-#+begin_example emacs-lisp
-(org-set-property
-    "last-refile"
-    (org-display-outline-path t t nil t)
-    )
-#+end_example
-
-Define function to set property value.
+*** Advice org-before-refile-hook
+Advice lisp function to add =org-before-refile-hook= to =org-refile=.
+See [[info:elisp#Advising Functions][info:elisp#Advising Functions]] and [[info:elisp#Advising Named Functions][info:elisp#Advising Named Functions]].
 #+begin_src emacs-lisp
-  (defun post-refile-function ()
-    "Sets last-refile property to X"
-    (org-set-property
-     "last-refile"
-     (org-display-outline-path t t nil t))
-    )
-(setq org-after-refile-insert-hook nil)
+(define-advice org-refile (:before (orig-fn &rest args))
+   "Add `org-before-refile-hook' to `org-refile'."
+    (run-hooks 'org-before-refile-insert-hook))
 #+end_src
-
-Doesn't work. ^^^^
 
 Create a hook variable to execute before =org-refile=
 #+begin_src emacs-lisp
