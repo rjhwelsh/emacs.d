@@ -981,12 +981,16 @@ The refile location, *RFLOC* should be of the form ='(nil filename nil position)
   (defun org-id-refile-to-prev ()
     "Uses `org-id-find' to find the parent of entry-at-point,
      then refiles the entry back to it's parent."
-    (let ((PPID (org-id-find                ;; Find location of org-id
-		 (org-entry-get nil "PPID") ;; Get property value at point
-		 )))
-      (org-refile nil nil
-		  (list nil (car PPID) nil (cdr PPID))  ;; RFLOC
-		  )))
+    (interactive)
+    (let* ((PPID (org-entry-get nil "PPID")) ;; Get property value at point
+	   (loc (if (string-empty-p PPID)
+		    (progn (message "PPID is empty!") nil)
+		  (org-id-find PPID)          ;; Find location of org-id
+		)))
+      (when loc
+	(org-refile nil nil
+		    (list nil (car loc) nil (cdr loc))  ;; RFLOC
+		    ))))
 #+end_src
 
 *** Hooks
