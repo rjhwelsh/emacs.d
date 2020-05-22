@@ -974,6 +974,21 @@ Create a hook variable to execute before =org-refile=
   "Hook run before `org-refile' has started to execute.")
 #+end_src
 
+*** Function org-refile-to-previous-parent
+The refile location, *RFLOC* should be of the form ='(nil filename nil position)=
+#+begin_src emacs-lisp
+  (require 'org-id)
+  (defun org-id-refile-to-prev ()
+    "Uses `org-id-find' to find the parent of entry-at-point,
+     then refiles the entry back to it's parent."
+    (let ((PPID (org-id-find                ;; Find location of org-id
+		 (org-entry-get nil "PPID") ;; Get property value at point
+		 )))
+      (org-refile nil nil
+		  (list nil (car PPID) nil (cdr PPID))  ;; RFLOC
+		  )))
+#+end_src
+
 *** Hooks
 Define function to log current outline location.
 #+begin_src emacs-lisp
