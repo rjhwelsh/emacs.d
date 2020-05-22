@@ -972,17 +972,37 @@ Create a hook variable to execute before =org-refile=
   "Hook run before `org-refile' has started to execute.")
 #+end_src
 
+*** Hooks
+Define function to log current outline location.
 #+begin_src emacs-lisp
-(setq org-before-refile-insert-hook 'post-refile-function)
+  (defun org-log-current-outline-path ()
+    "Sets last-refile property to X"
+    (let
+	((current-path (org-display-outline-path t t nil t))
+	 )
+      ;; (org-set-property "refiled-from" current-path)
+      (org-add-log-setup 'refile nil nil 'time current-path) ;; This does not work as intended
+      ))
 #+end_src
 
-Advice lisp function to add =org-before-refile-hook= to =org-refile=.
-See [[info:elisp#Advising Functions][info:elisp#Advising Functions]] and [[info:elisp#Advising Named Functions][info:elisp#Advising Named Functions]].
+Define function to set the previous parent property value, PPID for short.
 #+begin_src emacs-lisp
-(define-advice org-refile (:before (orig-fn &rest args))
-   "Add `org-before-refile-hook' to `org-refile'."
-    (run-hooks 'org-before-refile-insert-hook))
+  (defun org-set-ppid-to-current ()
+    "Sets :PPID: to the current parent's `org-id'"
+    (org-set-property "PPID"		             ;;
+		      (save-excursion	             ;;
+			(condition-case nil          ;; Catch any error
+			    (outline-up-heading 1 t) ;;
+			  (org-id-get)))))           ;;
 #+end_src
+
+Set hook to call =my/post-refile-function=.
+#+begin_src emacs-lisp
+  (setq org-before-refile-insert-hook nil) ;; Clear hook
+  ;; (add-hook 'org-before-refile-insert-hook 'org-log-current-outline-path) ;; Log outline path
+  (add-hook 'org-before-refile-insert-hook 'org-set-ppid-to-current)      ;; Set current parent's id
+#+end_src
+
 
 ** Archive
    #+begin_src emacs-lisp
