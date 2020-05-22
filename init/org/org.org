@@ -933,11 +933,13 @@
 	     (org-agenda-files :maxlevel . 2) ;; Any agenda file
 	     (ixp/org-buffer-files :level . 1))) ;; Any open org-buffer
    #+end_src
+https://blog.aaronbieber.com/2017/03/19/organizing-notes-with-refile.html
    #+begin_src emacs-lisp
      ;; Refiling options
-     (setq org-outline-path-complete-in-steps nil) ;; Nil when using helm
-     (setq org-refile-use-outline-path t)
-     (setq org-refile-allow-creating-parent-nodes 'confirm)
+     (setq org-outline-path-complete-in-steps nil) ;; Useful for autocompletion
+     (setq org-refile-use-outline-path 'file)      ;; Use filenames when refiling
+     (setq org-refile-allow-creating-parent-nodes 'confirm) ;; Allow creation of new parents
+     (setq org-log-refile 'time)
    #+END_SRC
 
    Specification is any of:
