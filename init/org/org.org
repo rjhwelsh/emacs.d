@@ -1006,11 +1006,14 @@ Define function to set the previous parent property value, PPID for short.
 #+begin_src emacs-lisp
   (defun org-set-ppid-to-current ()
     "Sets :PPID: to the current parent's `org-id'"
-    (org-set-property "PPID"		             ;;
-		      (save-excursion	             ;;
-			(condition-case nil          ;; Catch any error
-			    (outline-up-heading 1 t) ;;
-			  (org-id-get)))))           ;;
+    (org-entry-put                   ;; Set property value
+     nil
+     "PPID"		             ;; PROPERTY
+     (save-excursion	             ;; VALUE
+       (condition-case nil           ;; Catch any error whilst..
+	   (outline-up-heading 1 t)) ;; ... Going up a headline
+	 (org-id-get)                ;; Obtain org-id
+	 )))
 #+end_src
 
 Set hook to call =my/post-refile-function=.
