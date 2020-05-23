@@ -6,19 +6,20 @@ http://cachestocaches.com/2017/3/complete-guide-email-emacs-using-mu-and-/
 [[https://github.com/munen/emacs.d/#mu4e]]
 
 Enter mu4e with =M-x mu4e=.
-
+** Load-path
 Add installed mu emacs site-lisp to load-path.
 #+begin_src emacs-lisp
   (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu")
   (require 'mu4e)
 #+end_src
-
+** Kill message buffers on exit
 Kill messages on exit
 #+begin_src emacs-lisp
   (setq message-kill-buffer-on-exit t)
 #+end_src
-
+** Some options from Munen's configuration
 Some additional options gained from [[https://github.com/munen/emacs.d/#mu4e][here]].
+
 Prefer plain text for viewing emails. Always.
 #+begin_src emacs-lisp
   (setq mu4e-view-html-plaintext-ratio-heuristic most-positive-fixnum)
@@ -51,5 +52,5 @@ Automatic line breaks when reading mail.
 #+begin_src emacs-lisp
   (add-hook 'mu4e-view-mode-hook 'visual-line-mode)
 #+end_src
-
+** PGP note
 For PGP encrypted emails, see =emacs/mml-sec=.
