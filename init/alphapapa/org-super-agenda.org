@@ -16,6 +16,7 @@ group items into sections, rather than having them all in one big list.
 	 (:name "Today"  ; Optionally specify section name
 		:time-grid t  ; Items that appear on the time grid
 		:deadline "today"  ; Items that have a deadline today
+	        :todo nil     ; Match any non-todo items
 		:order 0
 		)
 	 (:name "Important"
