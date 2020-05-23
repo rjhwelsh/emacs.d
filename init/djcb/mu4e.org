@@ -54,3 +54,7 @@ Automatic line breaks when reading mail.
 #+end_src
 ** PGP note
 For PGP encrypted emails, see =emacs/mml-sec=.
+** Bookmark common searches
+#+begin_src emacs-lisp
+  (mu4e-bookmark-define "flag:flagged" "Flagged messages" ?f)
+#+end_src
