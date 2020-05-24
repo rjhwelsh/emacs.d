@@ -2,8 +2,24 @@
 #+STARTUP: content
 * xah-fly-keys
 https://github.com/xahlee/xah-fly-keys
+** Do not byte-compile
+Do not byte-compile.
+*Otherwise control/meta settings will not work*
+#+begin_src emacs-lisp
+;;; xah-fly-keys.el --- -*- no-byte-compile: t -*-
+#+end_src
+** Control/meta keybindings
+Disable control/meta keybindings.
+*This needs to happen before loading the package*
+#+begin_src emacs-lisp
+  ;; Define and disable =control=, =meta= keys for xah-fly-keys.
+  (setq xah-fly-use-meta-key nil)
+  (setq xah-fly-use-control-key nil)
+#+end_src
 
+** Setup and install package
 Install, and setup the package.
+
 #+BEGIN_SRC emacs-lisp
   (use-package "xah-fly-keys"
     :ensure t
@@ -13,13 +29,12 @@ Install, and setup the package.
 	   )
 
     :init
-    (require 'xah-fly-keys) ;; PATCHED .. 
+    (message "meta:%s" xah-fly-use-meta-key)
+    (message "ctrl:%s" xah-fly-use-control-key)
+    (require 'xah-fly-keys)
 
-    ;; Define and disable =control=, =meta= keys for xah-fly-keys.
-    (setq xah-fly-use-meta-key nil)
-    (setq xah-fly-use-control-key nil)
-    (xah-fly-set-keys)
-    (xah-fly-keys-set-layout "colemak")
+    (xah-fly-keys-set-layout 'colemak)
+    (xah-fly-keys 1)
 
     ;; Add highlight hooks
     (defun my-highlight-line-on () (global-hl-line-mode 1))
@@ -30,18 +45,10 @@ Install, and setup the package.
 	   (xah-fly-insert-mode-activate . my-highlight-line-off))
     )
 #+END_SRC
+
 ** Gut keybindings
 You can gut all the bindings in a keymap with the following:
 (Useful if xah-fly-keys has clobbered your bindings with =(require 'xah-fly-keys)=)
 #+begin_example emacs-lisp
 (setf (cdr xah-fly-key-map) nil)
-#+end_example
-** Patch
-Encapsulate =;; setting keys= in a function. 
-Required for to define and disable =control=, =meta= keys for xah-fly-keys.
-#+begin_example emacs-lisp
-(defun xah-fly-set-keys () 
-  "Set control, meta, etc keys"
-  ...
-)
 #+end_example
