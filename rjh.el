@@ -149,7 +149,7 @@ Returns nil if conf does not exist"
     (message "Searching for %s%s ..." conf (symbol-name sym))
     (if (rjh/config-exists-p conf dir)
 	(progn
-	  (org-babel-load-file orgfile t)
+	  (org-babel-load-file orgfile)
 	  (add-to-list 'rjh/config-loaded spec t)
 	  )
       nil
