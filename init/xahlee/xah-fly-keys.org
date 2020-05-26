@@ -29,8 +29,6 @@ Install, and setup the package.
 	   )
 
     :init
-    (message "meta:%s" xah-fly-use-meta-key)
-    (message "ctrl:%s" xah-fly-use-control-key)
     (require 'xah-fly-keys)
 
     (xah-fly-keys-set-layout 'colemak)
