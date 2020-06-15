@@ -22,6 +22,10 @@ Use =M-x minimap-mode= to toggle activation of the minimap.
 	))
     )
 
+#+end_src
+
+
+#+begin_src emacs-lisp
   (advice-add 'minimap-new-minimap
 	      :after
 	      'minimap-remove-line-numbers
@@ -29,13 +33,18 @@ Use =M-x minimap-mode= to toggle activation of the minimap.
 
 #+end_src
 
-#+RESULTS:
+#+begin_src emacs-lisp
+  (advice-add 'minimap-update
+	      :after
+	      'minimap-remove-line-numbers
+	      )
+
+#+end_src
 
 Remove advice
 #+begin_example emacs-lisp
 (advice-remove
- 'minimap-create-window
+ 'minimap-new-minimap
  'minimap-remove-line-numbers
 	      )
-
 #+end_example
