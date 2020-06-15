@@ -8,7 +8,12 @@ Use =M-x minimap-mode= to toggle activation of the minimap.
 #+begin_src emacs-lisp
   (use-package "minimap"
     :ensure t
-  )
+    :init
+    (setq minimap-width-fraction 0.1)
+    (setq minimap-minimum-width 15)
+    (setq minimap-recenter-type 'middle)
+    (setq minimap-window-location 'right)
+    )
 #+end_src
 
 ** Disable line-numbers display in minimap; with advice
