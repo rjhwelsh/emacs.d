@@ -1,0 +1,41 @@
+* Minimap
+
+https://github.com/dengste/minimap
+https://www.emacswiki.org/emacs/MiniMap
+
+Use =M-x minimap-mode= to toggle activation of the minimap.
+
+#+begin_src emacs-lisp
+  (use-package "minimap"
+    :ensure t
+  )
+#+end_src
+
+** Disable line-numbers display in minimap; with advice
+#+begin_src emacs-lisp
+  (defun minimap-remove-line-numbers (&rest r)
+    "Removes line numbers in minimap buffer"
+    nil
+    (progn
+      (with-current-buffer minimap-buffer-name
+	(setq display-line-numbers nil)
+	))
+    )
+
+  (advice-add 'minimap-new-minimap
+	      :after
+	      'minimap-remove-line-numbers
+	      )
+
+#+end_src
+
+#+RESULTS:
+
+Remove advice
+#+begin_example emacs-lisp
+(advice-remove
+ 'minimap-create-window
+ 'minimap-remove-line-numbers
+	      )
+
+#+end_example
