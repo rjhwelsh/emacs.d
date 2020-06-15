@@ -1,0 +1,16 @@
+#+TITLE: Lua Mode
+#+AUTHOR: Roger J. H. Welsh
+#+EMAIL: rjhwelsh@posteo.net
+
+* Lua-mode
+https://github.com/immerrr/lua-mode
+
+#+begin_src emacs-lisp
+  (use-package "lua-mode"
+    :ensure t
+    :init
+    (autoload 'lua-mode "lua-mode" "Lua editing mode." t)
+    (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
+    (add-to-list 'interpreter-mode-alist '("lua" . lua-mode))
+    )
+#+end_src
