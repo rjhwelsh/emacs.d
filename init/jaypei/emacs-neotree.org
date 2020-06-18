@@ -1,0 +1,11 @@
+* Neotree
+  https://github.com/jaypei/emacs-neotree
+  https://gitlab.com/myriacore-dotfiles/emacs/-/blob/master/init.el
+  #+begin_src emacs-lisp
+    (use-package "neotree"
+      :ensure t
+      :bind (("C-x d" . neotree-toggle))
+      :init
+      (setq find-directory-functions '(neotree-dir))
+      )
+  #+end_src
