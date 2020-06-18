@@ -13,6 +13,7 @@ Use =M-x minimap-mode= to toggle activation of the minimap.
     (setq minimap-minimum-width 15)
     (setq minimap-recenter-type 'middle)
     (setq minimap-window-location 'right)
+    (setq minimap-mode t)
     )
 #+end_src
 
