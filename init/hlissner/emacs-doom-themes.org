@@ -26,3 +26,24 @@ See =init/theme/doom-solarized= as an example.
     ;; Corrects (and improves) org-mode's native fontification.
     (doom-themes-org-config))
 #+end_src
+
+** Neotree
+   https://github.com/hlissner/emacs-doom-themes/wiki
+   Configure =neotree= with =all-the-icons= when doom-themes is enabled.
+
+Warning!
+#+begin_quote
+This requires [all-the-icons] and its fonts installed. Run all-the-icons-install-fonts to install its fonts.
+Note: this disables neo-vc-integration because the two are incompatible.
+#+end_quote
+
+#+begin_src emacs-lisp
+  (when
+      (featurep 'all-the-icons)
+    (doom-themes-neotree-config)
+    (setq
+     doom-themes-neotree-file-icons t
+     )
+    (message "Loaded doom-themes-neotree-config")
+    )
+#+end_src
