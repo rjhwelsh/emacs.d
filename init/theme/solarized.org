@@ -2,28 +2,13 @@
 * Solarized-theme
 
 Automatic theme changer.
-  #+begin_src emacs-lisp
-    (defun solarized-theme-changer nil
-      "Changes solarized theme according to the time."
-      (let* (
-	     (hour (decoded-time-hour (decode-time (current-time))))
-	     (theme
-	      (or
-	       (if (< hour 7) 'solarized-zenburn)
-	       (if (< hour 9) 'solarized-light)
-	       (if (< hour 17) 'solarized-gruvbox-light)
-	       (if (< hour 19) 'solarized-gruvbox-dark)
-	       'solarized-dark
-	       )
-	      )
-	     )
-	(load-theme theme t)
-	))
-  #+end_src
 
- 
+#+begin_src emacs-lisp
+(rjh/use "theme/theme-scheduler:init")
+#+end_src
+
  #+BEGIN_SRC emacs-lisp
-   (use-package "solarized-theme" 
+   (use-package "solarized-theme"
      :defer t
      :ensure t
      :init
@@ -35,10 +20,22 @@ Automatic theme changer.
      ;; (load-theme 'solarized-dark t)
      ;; (load-theme 'solarized-light-high-contrast t)
      ;; (load-theme 'solarized-dark-high-contrast t)
-    )
+
+     ;; Use theme scheduler
+     (setq rjh/theme-schedule-alist
+	   '(
+	     ( 0 . solarized-zenburn)
+	     ( 7 . solarized-light)
+	     (19 . solarized-dark)
+	     ( 9 . solarized-gruvbox-light)
+	     (17 . solarized-gruvbox-dark)
+	     ))
+
+     (setq rjh/theme-schedule-default
+	   'solarized-dark
+	   )
+
+     (rjh/theme-scheduler t)
+
+     )
  #+END_SRC
- 
-Automatically change theme every hour.
- #+begin_src emacs-lisp
-   (run-with-timer 0 (* 1 60 60) 'solarized-theme-changer) ;; Change theme every hour
- #+end_src

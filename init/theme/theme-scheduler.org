@@ -1,0 +1,59 @@
+#+PROPERTY: header-args    :results silent
+* Theme scheduler
+
+Changes theme based on the time of the day.
+
+Automatic theme changer.
+
+Variables
+#+begin_src emacs-lisp
+  (defvar rjh/theme-schedule-alist nil
+    "An association list of themes and hours of the day.
+     Will change theme during and after specified hour.
+
+    For example;
+    (list
+     (7 . 'solarized-light) ;; Use the light theme after 7am
+     (19 . 'solarized-dark) ;; Use the dark theme after 7pm
+      "
+	)
+
+  (defvar rjh/theme-schedule-default nil
+  "Default theme to load, if no theme matches current schedule."
+    )
+#+end_src
+
+Function
+#+begin_src emacs-lisp
+  (defun rjh/theme-scheduler (&optional repeat)
+    "Changes theme according to the time."
+    (let* (
+	   (hour
+	    (decoded-time-hour
+	     (decode-time (current-time))))
+	   (theme-alist ;;rjh/theme-schedule-alist)
+	    (sort
+	     ;; Warning ! sort is destructive,
+	     ;;    weird bug causes list to be truncated if not copied
+	     ;;    reverse also copies the list here ...
+	     (reverse rjh/theme-schedule-alist)
+	     (lambda (a b) (> (car a) (car b))))
+	    )
+	   (theme-default rjh/theme-schedule-default)
+	   (theme
+	    (alist-get hour
+		       theme-alist
+		       theme-default ;; Default if no theme matches
+		       nil
+		       '<=) ;; Finds first theme greater than or equal to the hour
+	    )
+	   )
+      (when theme
+	  (message "Changing theme to %s" (symbol-name theme))
+	  (load-theme theme t)
+	  )
+      (when repeat
+	  (run-with-timer (* 1 60 60) nil 'rjh/theme-scheduler t) ;; Change theme every hour
+	)
+      ))
+#+end_src
