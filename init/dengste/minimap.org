@@ -16,8 +16,12 @@ Use =M-x minimap-mode= to toggle activation of the minimap.
     )
 #+end_src
 
-** Disable line-numbers display in minimap; with advice
-#+begin_src emacs-lisp
+** Disable line-numbers display in minimap; with advice :example:
+Examples of adding advice to disable line-numbers in minimap.
+Advice should be considered a *last resort*; try to use an alternative if possible.
+(I.e. hooks, auto-alist, etc)
+
+#+begin_example emacs-lisp
   (defun minimap-remove-line-numbers (&rest r)
     "Removes line numbers in minimap buffer"
     nil
@@ -29,23 +33,23 @@ Use =M-x minimap-mode= to toggle activation of the minimap.
       )
     )
 
-#+end_src
+#+end_example
 
-#+begin_src emacs-lisp
+#+begin_example emacs-lisp
   (advice-add 'minimap-new-minimap
 	      :after
 	      'minimap-remove-line-numbers
 	      )
 
-#+end_src
+#+end_example
 
-#+begin_src emacs-lisp
+#+begin_example emacs-lisp
   (advice-add 'minimap-update
 	      :after
 	      'minimap-remove-line-numbers
 	      )
 
-#+end_src
+#+end_example
 
 Remove advice
 #+begin_example emacs-lisp
