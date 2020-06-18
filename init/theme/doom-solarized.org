@@ -1,0 +1,26 @@
+#+PROPERTY: header-args    :results silent
+* Doom Solarized theme
+
+Dependencies
+#+begin_src emacs-lisp
+(rjh/use "theme/theme-scheduler:init")
+(rjh/use "hlissner/emacs-doom-themes:init")
+#+end_src
+
+Automatic theme changer
+#+BEGIN_SRC emacs-lisp
+  ;; Use theme scheduler
+  (setq rjh/theme-schedule-alist
+	'(
+	  ( 7 . doom-solarized-light)
+	  (20 . doom-solarized-dark)
+	  (12 . doom-gruvbox-light)
+	  (17 . doom-gruvbox)
+	  ))
+
+  (setq rjh/theme-schedule-default
+	'doom-gruvbox
+	)
+
+  (rjh/theme-scheduler t)
+#+END_SRC

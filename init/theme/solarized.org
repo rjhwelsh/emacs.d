@@ -2,7 +2,6 @@
 * Solarized-theme
 
 Automatic theme changer.
-
 #+begin_src emacs-lisp
 (rjh/use "theme/theme-scheduler:init")
 #+end_src
