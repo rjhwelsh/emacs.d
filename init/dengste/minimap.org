@@ -22,13 +22,14 @@ Use =M-x minimap-mode= to toggle activation of the minimap.
     "Removes line numbers in minimap buffer"
     nil
     (progn
-      (with-current-buffer minimap-buffer-name
-	(setq display-line-numbers nil)
-	))
+      (when (get-buffer minimap-buffer-name) ;; check buffer exists
+	(with-current-buffer minimap-buffer-name
+	  (setq display-line-numbers nil)
+	  ))
+      )
     )
 
 #+end_src
-
 
 #+begin_src emacs-lisp
   (advice-add 'minimap-new-minimap
