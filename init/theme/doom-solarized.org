@@ -12,14 +12,16 @@ Automatic theme changer
   ;; Use theme scheduler
   (setq rjh/theme-schedule-alist
 	'(
-	  ( 7 . doom-solarized-light)
-	  (20 . doom-solarized-dark)
+	  (1  . doom-fairy-floss)
+	  (5  . doom-gruvbox-light)
+	  (7  . doom-solarized-light)
 	  (12 . doom-gruvbox-light)
 	  (17 . doom-gruvbox)
+	  (20 . doom-solarized-dark)
 	  ))
 
   (setq rjh/theme-schedule-default
-	'doom-gruvbox
+	'doom-solarized-dark
 	)
 
   (rjh/theme-scheduler t)
