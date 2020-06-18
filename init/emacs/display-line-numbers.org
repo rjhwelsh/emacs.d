@@ -1,5 +1,23 @@
 * Display line numbers
   Use =M-x display-line-numbers-mode= to toggle manually.
 
-  Otherwise, set it using the customization menu ([[help:display-line-numbers]]) for
-  a permanent change.
+** Customization notes
+  Can be set it using the customization menu ([[help:display-line-numbers]]);
+  however this can have an undesirable effect of enabling line-numbers in
+  buffers which may not work nicely with them (i.e. minimap).
+
+** Only enable line numbers for buffers with associated files
+   =auto-minor-mode-alist= only associates modes with specific files.
+   Use a "\\." to match any file with a dot in it's file path.
+
+  #+begin_src emacs-lisp
+    (rjh/use "emacs/files:init") ;; Use auto-minor-mode-alist definition from here
+
+    ;; Match any file with a "." in the filename
+    (setq auto-minor-mode-alist
+	    (append
+	     (list
+	       '("\\." . display-line-numbers-mode)
+	       )
+	     auto-minor-mode-alist))
+  #+end_src
