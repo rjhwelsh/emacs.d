@@ -1,3 +1,4 @@
+#+PROPERTY: header-args    :results silent
 * Neotree
   https://github.com/jaypei/emacs-neotree
   https://gitlab.com/myriacore-dotfiles/emacs/-/blob/master/init.el
