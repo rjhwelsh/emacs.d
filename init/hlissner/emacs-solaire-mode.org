@@ -1,0 +1,16 @@
+* Emacs Solaire Mode
+https://github.com/hlissner/emacs-solaire-mode
+=solaire-mode= is an aesthetic plugin that helps visually distinguish file-visiting
+windows from other types of windows (like popups or sidebars) by giving them a
+slightly different -- often brighter -- background.
+
+#+begin_src emacs-lisp
+  (use-package "solaire-mode"
+   :ensure t
+   :hook
+   ((change-major-mode after-revert ediff-prepare-buffer) . turn-on-solaire-mode)
+   (minibuffer-setup . solaire-mode-in-minibuffer)
+   :config
+   (solaire-global-mode +1)
+   (solaire-mode-swap-bg))
+#+end_src
