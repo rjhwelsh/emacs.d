@@ -9,17 +9,21 @@ Variables
 #+begin_src emacs-lisp
   (defvar rjh/theme-schedule-alist nil
     "An association list of themes and hours of the day.
-     Will change theme during and after specified hour.
+       Will change theme during and after specified hour.
 
-    For example;
-    (list
-     (7 . 'solarized-light) ;; Use the light theme after 7am
-     (19 . 'solarized-dark) ;; Use the dark theme after 7pm
-      "
-	)
+      For example;
+      (list
+       (7 . 'solarized-light) ;; Use the light theme after 7am
+       (19 . 'solarized-dark) ;; Use the dark theme after 7pm
+
+      ;; You can even specify a list, to add themes in sequence
+      ;; Or tweak a theme after loading it
+       (21 . '(solarized-dark 'solarized-dark-modifier-theme)) ;; Change between themes in series
+  "
+    )
 
   (defvar rjh/theme-schedule-default nil
-  "Default theme to load, if no theme matches current schedule."
+    "Default theme to load, if no theme matches current schedule."
     )
 #+end_src
 
