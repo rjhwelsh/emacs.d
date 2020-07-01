@@ -58,9 +58,15 @@ Function
 		 ) theme))) ;; Return theme
      (lambda (theme)
        (when theme
-	 (message "Changing theme to %s" (symbol-name theme))
-	 (load-theme theme t)
-	 )) ;; Load theme if a switch is detected
+	 (cond
+	  ((listp theme)
+	    (dolist (th theme)
+	    (message "Changing theme to %s" (symbol-name th))
+	    (load-theme th t)))
+	  ((symbolp theme)
+	   (message "Changing theme to %s" (symbol-name theme))
+	   (load-theme theme t))
+	 ))) ;; Load theme if a switch is detected
      )
     (when repeat
       (run-with-timer (* 1 60 60) nil 'rjh/theme-scheduler t) ;; Change theme every hour
