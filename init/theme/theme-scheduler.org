@@ -25,35 +25,44 @@ Variables
 
 Function
 #+begin_src emacs-lisp
+  (require 'async)
   (defun rjh/theme-scheduler (&optional repeat)
     "Changes theme according to the time."
-    (let* (
-	   (hour
-	    (decoded-time-hour
-	     (decode-time (current-time))))
-	   (theme-alist ;;rjh/theme-schedule-alist)
-	    (sort
-	     ;; Warning ! sort is destructive,
-	     ;;    weird bug causes list to be truncated if not copied
-	     ;;    reverse also copies the list here ...
-	     (reverse rjh/theme-schedule-alist)
-	     (lambda (a b) (> (car a) (car b))))
-	    )
-	   (theme-default rjh/theme-schedule-default)
-	   (theme
-	    (alist-get hour
-		       theme-alist
-		       theme-default ;; Default if no theme matches
-		       nil
-		       '<=) ;; Finds first theme greater than or equal to the hour
-	    )
-	   )
-      (when theme
-	  (message "Changing theme to %s" (symbol-name theme))
-	  (load-theme theme t)
-	  )
-      (when repeat
-	  (run-with-timer (* 1 60 60) nil 'rjh/theme-scheduler t) ;; Change theme every hour
-	)
+    (async-start
+     ;; Select theme asynchronously
+     `(lambda ()
+	(progn
+	  ,(async-inject-variables "\\`rjh/theme-schedule-")
+	  (let* (
+		 (hour
+		  (decoded-time-hour
+		   (decode-time (current-time))))
+		 (theme-alist ;;rjh/theme-schedule-alist)
+		  (sort
+		   ;; Warning ! sort is destructive,
+		   ;;    weird bug causes list to be truncated if not copied
+		   ;;    reverse also copies the list here ...
+		   (reverse rjh/theme-schedule-alist)
+		   (lambda (a b) (> (car a) (car b))))
+		  )
+		 (theme-default rjh/theme-schedule-default)
+
+		 ;; Finds first theme alist-pair greater than or equal to the hour
+		 (theme
+		  (alist-get hour
+			     theme-alist
+			     theme-default ;; Default if no theme matches
+			     nil
+			     '<=)
+		  )
+		 ) theme))) ;; Return theme
+     (lambda (theme)
+       (when theme
+	 (message "Changing theme to %s" (symbol-name theme))
+	 (load-theme theme t)
+	 )) ;; Load theme if a switch is detected
+     )
+    (when repeat
+      (run-with-timer (* 1 60 60) nil 'rjh/theme-scheduler t) ;; Change theme every hour
       ))
 #+end_src
