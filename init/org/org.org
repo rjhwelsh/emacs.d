@@ -898,21 +898,20 @@
    #+END_SRC
 
    Capture templates.
-   - todo :: Captures a basic todo entry.
-     - learn :: Captures a learning task.
-       Learning scheduling is spaced according to optimal spacing strategy.
-       Progress is achieved through 5 study stages,
-       Motivate; Acquire; Signify; Trigger; Exhibit; Review.
-
+   - t :: Captures a basic todo entry.
+   - n :: Captures a task to be completed today
+   - m :: Captures a meeting entry
    #+BEGIN_SRC emacs-lisp
      (setq org-capture-templates
-	   '(("t" "Todo" entry (file org-default-notes-file)
-	      "* TODO %? :NEW:\n%i\n" :clock-in t :clock-resume t :empty-lines 1)
-	     ("n" "Next Task" entry (file org-default-notes-file)
-	      "* NEXT %? \nDEADLINE: %t")
-	     ("m" "Meeting" entry (file org-default-notes-file)
-	      "* MEETING with %? :MEETING:\n\t%t" :clock-in t :clock-resume t :empty-lines 1)
-	     ))
+	   (append
+	    '(("t" "Todo" entry (file org-default-notes-file)
+	       "* TODO %? :NEW:\n%i\n" :clock-in t :clock-resume t :empty-lines 1)
+	      ("n" "Next Task" entry (file org-default-notes-file)
+	       "* NEXT %? \nDEADLINE: %t")
+	      ("m" "Meeting" entry (file org-default-notes-file)
+	       "* MEETING with %? :MEETING:\n\t%t" :clock-in t :clock-resume t :empty-lines 1)
+	      )
+	   org-capture-templates))
    #+END_SRC
 
 ** Refile
