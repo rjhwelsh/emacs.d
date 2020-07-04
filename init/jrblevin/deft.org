@@ -1,5 +1,6 @@
 * Deft
-https://github.com/jrblevin/deft 
+https://github.com/jrblevin/deft
+https://jingsi.space/post/2017/04/05/organizing-a-complex-directory-for-emacs-org-mode-and-deft/
 
 Deft is an Emacs mode for quickly browsing, filtering, and editing
 directories of plain text notes, inspired by Notational Velocity.
