@@ -14,9 +14,9 @@ Automatic theme changer
   (setq rjh/theme-schedule-alist
 	'(
 	  (1  . doom-fairy-floss)
-	  (5  . doom-gruvbox-light)
-	  (7  . doom-solarized-light)
-	  (12 . doom-gruvbox-light)
+	  (5  . '(solarized-gruvbox-light doom-gruvbox-light))
+	  (7  . '(solarized-light doom-solarized-light))
+	  (12 . '(solarized-gruvbox-light doom-gruvbox-light))
 	  (17 . '(solarized-gruvbox-dark doom-gruvbox))
 	  (20 . '(solarized-dark doom-solarized-dark))
 	  ))
