@@ -9,6 +9,7 @@ directories of plain text notes, inspired by Notational Velocity.
   (use-package deft
     :ensure t
     :init
+    (require 'deft)
     (setq deft-default-extension "org")
     (setq deft-extensions (append deft-extensions '("org_archive")))
     (setq deft-directory "~/.emacs.d/deft")
