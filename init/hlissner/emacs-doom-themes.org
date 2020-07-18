@@ -31,12 +31,18 @@ See =init/theme/doom-solarized= as an example.
    https://github.com/hlissner/emacs-doom-themes/wiki
    Configure =neotree= with =all-the-icons= when doom-themes is enabled.
 
-Warning!
+*Warning!*
 #+begin_quote
 This requires [all-the-icons] and its fonts installed. Run all-the-icons-install-fonts to install its fonts.
 Note: this disables neo-vc-integration because the two are incompatible.
 #+end_quote
 
+*Install fonts (manually)*
+#+begin_example emacs-lisp
+(all-the-icons-install-fonts)
+#+end_example
+
+Neotree config for doom-themes.
 #+begin_src emacs-lisp
   (when
       (featurep 'all-the-icons)
