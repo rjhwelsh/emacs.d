@@ -1,0 +1,8 @@
+* Gentoo-Cache
+https://gitlab.com/akater/emacs-gentoo-cache
+
+#+begin_src emacs-lisp
+(use-package gentoo-cache :ensure nil
+  :load-path "/usr/share/emacs/site-lisp/gentoo-cache"
+  :commands (gentoo-cache-get-package-names))
+#+end_src>

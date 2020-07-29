@@ -1,0 +1,9 @@
+* Anaphora
+https://github.com/rolandwalker/anaphora
+
+#+begin_src emacs-lisp
+  (use-package anaphora
+    :ensure nil
+    :load-path "/usr/share/emacs/site-lisp/anaphora"
+    )
+#+end_src>

@@ -1,0 +1,9 @@
+* Akater sh
+  https://gitlab.com/akater/elisp-akater-sh
+
+  #+begin_src emacs-lisp
+  (use-package akater-sh
+    :ensure nil
+    :load-path "/usr/share/emacs/site-lisp/akater-sh"
+    )
+  #+end_src

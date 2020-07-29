@@ -1,0 +1,13 @@
+* Akater elisp file tree
+https://gitlab.com/akater/elisp-file-tree
+
+#+begin_src emacs-lisp
+(rjh/use "akater/akater-sh:init")
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package file-tree
+    :ensure nil
+    :load-path "/usr/share/emacs/site-lisp/file-tree"
+    )
+#+end_src

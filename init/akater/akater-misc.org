@@ -1,0 +1,9 @@
+* Akater misc
+https://gitlab.com/akater/elisp-akater-misc
+(Instructions differ because it is installed by the Gentoo system)
+
+#+begin_src emacs-lisp
+  (use-package akater-misc :ensure nil
+    :load-path "/usr/share/emacs/site-lisp/akater-misc"
+    )
+#+end_src

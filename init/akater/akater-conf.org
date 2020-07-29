@@ -1,0 +1,11 @@
+* Akater conf
+
+  #+begin_src emacs-lisp
+  (use-package akater-conf
+    :ensure nil
+    :load-path "/usr/share/emacs/site-lisp/akater-conf"
+    )
+  #+end_src
+
+  #+RESULTS:
+  : t

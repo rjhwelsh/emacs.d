@@ -1,6 +1,15 @@
 * Akater's ebuild tools
 https://gitlab.com/akater/emacs-ebuild-tools
 
+Runtime-dependency.
+#+begin_src emacs-lisp
+(rjh/use "akater/akater-misc:init")
+(rjh/use "akater/file-tree:init")
+(rjh/use "akater/akater-conf:init")
+(rjh/use "rolandwalker/anaphora:init")
+(rjh/use "akater/gentoo-cache:init")
+#+end_src
+
 Suggested config.
 #+begin_src emacs-lisp
   (use-package ebuild-tools :ensure nil
@@ -13,6 +22,7 @@ Suggested config.
      )
     :custom (ebuild-tools-repositories-dir "/var/db/repos/")
     :config
+    (require 'gentoo-cache) ;; Work around missing dependency
     (defalias 'goto-ebuild 'ebuild-tools-goto-ebuild)
     (defalias 'fork-ebuild 'ebuild-tools-fork-ebuild)
     (defalias 'diff-ebuilds 'ebuild-tools-diff-ebuilds)
