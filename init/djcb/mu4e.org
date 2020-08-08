@@ -17,9 +17,23 @@ Kill messages on exit
 #+begin_src emacs-lisp
   (setq message-kill-buffer-on-exit t)
 #+end_src
-** Some options from Munen's configuration
-Some additional options gained from [[https://github.com/munen/emacs.d/#mu4e][here]].
+** PGP note
+For PGP encrypted emails, see =emacs/mml-sec=.
+** Bookmark common searches
+#+begin_src emacs-lisp
+  (mu4e-bookmark-define "flag:flagged" "Flagged messages" ?f)
+#+end_src
+** Compose Options
+Compose messages to be sent as format=flowed.
+#+begin_src emacs-lisp
+  (setq mu4e-compose-format-flowed t)
+#+end_src
 
+Add spell checking to composing emails.
+#+begin_src emacs-lisp
+  (add-hook 'mu4e-compose-mode-hook 'flyspell-mode)
+#+end_src
+** Reading Options
 Prefer plain text for viewing emails. Always.
 #+begin_src emacs-lisp
   (setq mu4e-view-html-plaintext-ratio-heuristic most-positive-fixnum)
@@ -30,31 +44,30 @@ Show full addresses in view message.
   (setq mu4e-view-show-addresses t)
 #+end_src
 
-Add an option to view in browser.
-#+begin_src emacs-lisp
-  (require 'mu4e-contrib)
-  (setq mu4e-html2text-command 'mu4e-shr2text)
-  ;;(setq mu4e-html2text-command "iconv -c -t utf-8 | pandoc -f html -t plain")
-  (add-to-list 'mu4e-view-actions '("ViewInBrowser" . mu4e-action-view-in-browser) t)
-#+end_src
-
-Compose messages to be sent as format=flowed.
-#+begin_src emacs-lisp
-  (setq mu4e-compose-format-flowed t)
-#+end_src
-
-Add spell checking to composing emails.
-#+begin_src emacs-lisp
-  (add-hook 'mu4e-compose-mode-hook 'flyspell-mode)
-#+end_src
-
 Automatic line breaks when reading mail.
 #+begin_src emacs-lisp
   (add-hook 'mu4e-view-mode-hook 'visual-line-mode)
 #+end_src
-** PGP note
-For PGP encrypted emails, see =emacs/mml-sec=.
-** Bookmark common searches
+** HTML Options
+Requires mu4e-contrib.
+   #+begin_src emacs-lisp
+     (require 'mu4e-contrib)
+   #+end_src
+
+Set conversion command.
 #+begin_src emacs-lisp
-  (mu4e-bookmark-define "flag:flagged" "Flagged messages" ?f)
+  (setq mu4e-html2text-command 'mu4e-shr2text)
+  ;;(setq mu4e-html2text-command "iconv -c -t utf-8 | pandoc -f html -t plain")
+#+end_src
+
+Add option to view in browser.
+#+begin_src emacs-lisp
+  (add-to-list 'mu4e-view-actions '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+#+end_src
+
+Do not respect html colors or fonts in Emacs.
+(This allows html messages to be colored according to your Emacs' theme.)
+#+begin_src emacs-lisp
+  (setq shr-use-colors nil)
+  (setq shr-use-fonts nil)
 #+end_src
