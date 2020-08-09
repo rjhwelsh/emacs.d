@@ -23,6 +23,14 @@ For PGP encrypted emails, see =emacs/mml-sec=.
 #+begin_src emacs-lisp
   (mu4e-bookmark-define "flag:flagged" "Flagged messages" ?f)
 #+end_src
+** Header View
+
+Disable inclusion of related messages; can be toggled when in header-view (default key = W).
+This speeds up search and filtering.
+   #+begin_src emacs-lisp
+     (setq mu4e-headers-include-related nil)
+   #+end_src
+
 ** Compose Options
 Compose messages to be sent as format=flowed.
 #+begin_src emacs-lisp
