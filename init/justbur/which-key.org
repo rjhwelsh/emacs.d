@@ -4,9 +4,22 @@
 * Which-key
 https://github.com/justbur/emacs-which-key
 #+BEGIN_SRC emacs-lisp
-	(use-package "which-key"
-		:ensure t
-		:init
-		(require 'which-key)
-		(which-key-mode))
+  (use-package "which-key"
+	  :ensure t
+	  :init
+	  (require 'which-key)
+	  (which-key-mode))
 #+END_SRC
+
+** Xah-fly-keys
+   Show xah-fly-keys on command switch.
+   #+begin_src emacs-lisp
+     (use-package "which-key"
+       :after xah-fly-keys
+       :ensure t
+       :hook (
+	      (xah-fly-command-mode-activate . which-key-show-top-level)
+	      )
+       )
+   #+end_src
+
