@@ -1,0 +1,20 @@
+* Mustache.el
+https://github.com/Wilfred/mustache.el
+a mustache templating library in Emacs Lisp
+
+#+begin_src emacs-lisp
+  (use-package "mustache" 
+    :ensure t
+    :init
+    (require 'mustache)
+    (require 'ht)
+)
+#+end_src
+
+An example:
+#+begin_example emacs-lisp
+(let ((context (ht ("name" "J. Random user"))))
+  ;; evaluates to: "Hello J. Random user!"
+  (mustache-render "Hello {{name}}!" context))
+#+end_example
+
