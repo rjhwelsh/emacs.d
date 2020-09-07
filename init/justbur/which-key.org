@@ -19,6 +19,7 @@ https://github.com/justbur/emacs-which-key
        :ensure t
        :hook (
 	      (xah-fly-command-mode-activate . which-key-show-top-level)
+	      (xah-fly-insert-mode-activate . which-key-show-top-level)
 	      )
        )
    #+end_src
