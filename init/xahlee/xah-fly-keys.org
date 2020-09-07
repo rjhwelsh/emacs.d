@@ -26,6 +26,9 @@ Install, and setup the package.
     :bind (
 	   ("<f5>" . xah-fly-insert-mode-activate)
 	   ("<f6>" . xah-fly-command-mode-activate)
+
+	   ;; Use M-x to activate command mode
+	   ("M-x" . xah-fly-command-mode-activate)
 	   )
 
     :init
