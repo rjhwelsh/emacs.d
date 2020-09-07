@@ -24,8 +24,8 @@ Install, and setup the package.
   (use-package "xah-fly-keys"
     :ensure t
     :bind (
-	   ("<f5>" . xah-fly-command-mode-activate)
-	   ("<f6>" . xah-fly-insert-mode-activate)
+	   ("<f5>" . xah-fly-insert-mode-activate)
+	   ("<f6>" . xah-fly-command-mode-activate)
 	   )
 
     :init
