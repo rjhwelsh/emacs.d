@@ -79,3 +79,9 @@ Do not respect html colors or fonts in Emacs.
   (setq shr-use-colors nil)
   (setq shr-use-fonts nil)
 #+end_src
+** Org capture integration
+https://www.djcbsoftware.nl/code/mu/mu4e/Org_002dmode-links.html
+   #+begin_src emacs-lisp
+ (define-key mu4e-headers-mode-map (kbd "C-c c") 'mu4e-org-store-and-capture)
+ (define-key mu4e-view-mode-map    (kbd "C-c c") 'mu4e-org-store-and-capture)
+   #+end_src
