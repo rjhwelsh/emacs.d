@@ -131,6 +131,7 @@
 *** Org-mode
     #+begin_src emacs-lisp
       (define-key org-mode-map "\C-ce" 'rjh/org-tags-expire)
+      (define-key org-mode-map "\C-c\M-r" 'org-id-refile-to-prev)
     #+end_src
 *** Org-agenda-mode
     #+begin_src emacs-lisp
