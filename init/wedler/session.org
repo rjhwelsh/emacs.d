@@ -1,0 +1,37 @@
+* Session
+http://emacs-session.sourceforge.net
+https://www.emacswiki.org/emacs/EmacsSession
+
+Enable session management, unlike desktop session does not visit files.
+=C-x C-/= jumps to the last change in a file.
+
+  #+begin_src emacs-lisp
+    (use-package "session"
+      :load-path "~/.emacs.d/session/"
+      :hook ((after-init . session-initialize)
+	     (after-save . session-save-session))
+      :init
+      ;; Use unique id for each session
+      (rjh/use "rjh/session:init")
+      (setq session-save-file (concat "~/.emacs.d/.session" session-id))
+
+      ;; Org-mode compatibility
+      (defun my-org-reveal-session-jump ()
+	(when (and (eq major-mode 'org-mode)
+		   (outline-invisible-p))
+	  (org-reveal)))
+      (add-hook 'session-after-jump-to-last-change-hook 'my-org-reveal-session-jump)
+
+      ;; Ensure compatibility with desktop.el
+      (setq desktop-globals-to-save '(desktop-missing-file-warning))
+
+      ;; Emacswiki tips
+      (when (require 'session nil t)
+	(add-to-list 'session-globals-exclude 'org-mark-ring))
+
+      ;; compatibility with daemon mode (save on frame-exit)
+      (add-hook 'delete-frame-functions (lambda (frame) (session-save-session t)))
+      (add-hook 'after-make-frame-functions (lambda (frame) (session-jump-to-last-change)))
+      )
+  #+end_src
+
