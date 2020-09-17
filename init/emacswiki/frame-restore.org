@@ -1,0 +1,11 @@
+* Frame-restore.el
+https://www.emacswiki.org/emacs/frame-restore.el
+Save/restore frame size & position with desktop-save.
+
+#+begin_src emacs-lisp
+  (use-package "frame-restore"
+    :load-path "~/.emacs.d/emacswiki/"
+    :init
+    (require 'frame-restore)
+    )
+#+end_src

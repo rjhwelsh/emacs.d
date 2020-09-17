@@ -92,6 +92,7 @@ dep_options() {
 		;;
 	    "emacswiki")
 		dep_emacswiki "notify.el" "emacswiki"
+		dep_emacswiki "frame-restore.el" "emacswiki"
 		;;
 	    "quit")
 		BREAK="1"
