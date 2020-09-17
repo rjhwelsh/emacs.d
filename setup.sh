@@ -10,6 +10,19 @@ patch_config() {
 	return 0
 }
 
+dep_copy_files() {
+    DEST="$1"
+    shift
+
+    for f in "$@";
+    do
+
+	mkdir -vp `dirname "$CONFIGDIR"/"$DEST"/"$f"`
+	[[ -e "$CONFIGDIR"/"$DEST"/"$f" ]] && echo "Warning! ""$CONFIGDIR"/"$DEST"/"$f"' already exists.' >&2
+	cp -nv "$D"/"$DEST"/"$f" "$CONFIGDIR"/"$DEST"/"$f"
+    done
+}
+
 dep_git_clone_install() {
 	URL="$1"
 	shift
@@ -20,13 +33,7 @@ dep_git_clone_install() {
 		{ pushd "$D"/"$DEST" && git fetch && git merge origin/master; popd; } ||\
 			git clone "$URL" "$D"/"$DEST"
 
-	for f in "$@";
-	do
-
-		mkdir -vp `dirname "$CONFIGDIR"/"$DEST"/"$f"`
-		[[ -e "$CONFIGDIR"/"$DEST"/"$f" ]] && echo "Warning! ""$CONFIGDIR"/"$DEST"/"$f"' already exists.' >&2
-		cp -nv "$D"/"$DEST"/"$f" "$CONFIGDIR"/"$DEST"/"$f"
-	done
+	dep_copy_files "$DEST" "$@"
 }
 
 dep_wget() {
@@ -38,12 +45,8 @@ dep_wget() {
     { [ -d "$D"/"$DEST" ] || mkdir -vp "$D"/"$DEST"; } &&
 	{ pushd "$D"/"$DEST" && wget "${URL}"; popd; }
 
-    for f in "$@";
-    do
-	mkdir -vp `dirname "$CONFIGDIR"/"$DEST"/"$f"`
-	[[ -e "$CONFIGDIR"/"$DEST"/"$f" ]] && echo "Warning! ""$CONFIGDIR"/"$DEST"/"$f"' already exists.' >&2
-	cp -nv "$D"/"$DEST"/"$f" "$CONFIGDIR"/"$DEST"/"$f"
-    done
+    dep_copy_files "$DEST" "$@"
+}
 }
 
 
