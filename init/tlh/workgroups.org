@@ -6,10 +6,8 @@ Workgroups provides defined layouts and window management for Emacs.
      :ensure t
 
      :hook
-     (
-      ;; Save workgroups when desktop is saved 
-      (desktop-save-hook . wg-update-and-save-all)
-      )
+     ( ;; Save workgroups when desktop is saved 
+      (kill-emacs . wg-update-and-save-all))
 
      :init
      (require 'workgroups)
