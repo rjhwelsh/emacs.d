@@ -37,8 +37,7 @@ Workgroups provides defined layouts and window management for Emacs.
      (defun wg-update-and-save-all ()
        (progn 
 	 (wg-update-all-workgroups)
-	 wg-save workgroups-file)
-       )
+	 (wg-save workgroups-file)))
 
      ;; Load workgroups if they exist
      (if 
