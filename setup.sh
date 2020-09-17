@@ -132,12 +132,13 @@ dep_install() {
     then
 	dep_options "$@";
     else
-	select dep in all \
+	select dep in quit \
+			  all \
 			  sensible-defaults \
 			  zetteldeft \
 			  org-gantt \
 			  emacswiki \
-			  quit
+			  session 
 	do
 	    dep_options $dep;
 	    if [ -n "$BREAK" ]; then
