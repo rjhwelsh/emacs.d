@@ -1,0 +1,58 @@
+* desktop.el
+ Save the Desktop, i.e.,
+	- some global variables
+ 	- the list of buffers with associated files.  For each buffer also
+		- the major mode
+		- the default directory
+		- the point
+		- the mark & mark-active
+		- buffer-read-only
+		- some local variables
+	- frame and window configuration
+
+ To use this, use customize to turn on desktop-save-mode or add the
+ following line somewhere in your init file:
+
+ #+begin_example emacs-lisp
+   (desktop-save-mode 1)
+ #+end_example
+
+ For further usage information, look at the section
+ (info "(emacs)Saving Emacs Sessions") in the GNU Emacs Manual.
+
+** Auto-save
+Does not ask to save.
+   #+begin_src emacs-lisp
+(setq desktop-save t)
+   #+end_src
+
+** Frame settings
+Restores frames into current display.
+   #+begin_src emacs-lisp
+     (setq 
+      desktop-restore-frames t
+      desktop-restore-in-current-display t
+      desktop-restore-forces-onscreen nil
+      desktop-restore-reuses-frames nil
+      desktop-save-buffer t
+      )
+   #+end_src
+
+** Multiple desktops hack
+Generate a hash from command-line arguments.
+Use same command-line arguments to load desktop.
+   #+begin_src emacs-lisp
+     (setq desktop-hash 
+	   (secure-hash 'md5 (apply 'concat command-line-args)))
+
+     (setq 
+      desktop-base-file-name (concat ".emacs.desktop" desktop-hash)
+      desktop-base-lock-name (concat ".emacs.desktop" desktop-hash ".lock")
+      )
+
+   #+end_src
+
+** Enable desktop save mode
+ #+begin_src emacs-lisp
+   (desktop-save-mode 1)
+ #+end_src
