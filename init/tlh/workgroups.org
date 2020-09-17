@@ -41,19 +41,9 @@ Workgroups provides defined layouts and window management for Emacs.
 
      ;; Load workgroups if they exist
      (if (file-exists-p workgroups-file)
-	 (progn
 	 (wg-load workgroups-file)
-	 ;; Switch to default workgroup ;; (should be 0)
-	 ;; (wg-switch-to-workgroup (wg-get-workgroup 'name "default" t) t)
-	 ;; (wg-switch-to-index 0)
-         ;; Errors out if already switched to a particular workgroup
-         ;; Seems to switch back after frame-restore, desktop.el adjustments
-	 )
-       (progn
 	 ;; ensure at least one workgroup exists
-	 (wg-create-workgroup "default")
-
-	 ))
+	 (wg-create-workgroup "default"))
 
      :diminish workgroups-mode
 )
