@@ -87,6 +87,10 @@ dep_org_gantt() {
     dep_git_clone_install https://github.com/swillner/org-gantt org-gantt org-gantt.el
 }
 
+dep_session() {
+    dep_wget_tar "https://downloads.sourceforge.net/project/emacs-session/session-2.4b.tar.gz" session "session-2.4b.tar.gz" "session.el"
+}
+
 dep_options() {
     for dep in "$@"; do
 	case $dep in
@@ -108,6 +112,9 @@ dep_options() {
 	    "emacswiki")
 		dep_emacswiki "notify.el" "emacswiki"
 		dep_emacswiki "frame-restore.el" "emacswiki"
+		;;
+	    "session")
+		dep_session;
 		;;
 	    "quit")
 		BREAK="1"
