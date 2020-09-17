@@ -41,9 +41,11 @@ Workgroups provides defined layouts and window management for Emacs.
        )
 
      ;; Load workgroups if they exist
-     (and 
-      (file-exists-p workgroups-file)
-      (wg-load workgroups-file))
+     (if 
+	 (file-exists-p workgroups-file)
+	 (wg-load workgroups-file)
+       ;; ensure at least one workgroup exists
+       (wg-create-workgroup "default"))
 
      :diminish workgroups-mode
 )
