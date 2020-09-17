@@ -2,20 +2,59 @@
 Workgroups provides defined layouts for Emacs.
 ( https://github.com/tlh/workgroups.el )
  #+BEGIN_SRC emacs-lisp
-	 (use-package "workgroups" :defer t
-		 :config
-		 (require 'workgroups)
-		 (workgroups-mode 1)
-		 (setq wg-morph-on nil)
-		 (setq wg-prefix-key (kbd "C-c w"))
-		 (wg-load "~/.emacs.d/workgroups" )
-		 :ensure t
-		 :diminish workgroups-mode)
+   (use-package "workgroups"      
+     :ensure t
+
+     :hook
+     (
+      ;; Save workgroups when desktop is saved 
+      (desktop-save-hook . wg-update-and-save-all)
+      )
+
+     :init
+     (require 'workgroups)
+
+     ;; Session identification
+     (rjh/use "rjh/session:init")
+
+     ;; Default file to save/load workgroups from  
+     (setq workgroups-file (concat "~/.emacs.d/workgroups_" session-id))
+
+     ;; Enable workgroups
+     (workgroups-mode 1)
+
+     ;; No morphing
+     (setq wg-morph-on nil)
+
+     ;; Do not query to save
+     (setq 
+      wg-query-for-save-on-emacs-exit nil
+      wg-query-for-save-on-workgroups-mode-exit nil
+      )
+
+     ;; Use default prefix
+     ;; (setq wg-prefix-key (kbd "C-c C-z"))
+
+     ;; Function to update and save everything 
+     (defun wg-update-and-save-all ()
+       (progn 
+	 (wg-update-all-workgroups)
+	 wg-save workgroups-file)
+       )
+
+     ;; Load workgroups if they exist
+     (and 
+      (file-exists-p workgroups-file)
+      (wg-load workgroups-file))
+
+     :diminish workgroups-mode
+)
  #+END_SRC
+
 
 Keybindings:
 Use the following with <prefix> ;
-	 + C-c w :: <prefix>
+	 + C-c C-z :: <prefix>
 	 + c :: wg-create-workgroup
 	 + A :: wg-rename-workgroup
 	 + v :: wg-switch-to-workgroup
@@ -26,3 +65,4 @@ Use the following with <prefix> ;
 	 + k :: kill workgroup
 	 + ,/. :: move left/right in group listing
 	 + ? :: wg-help
+	   
