@@ -39,17 +39,15 @@ Restores frames into current display.
    #+end_src
 
 ** Multiple desktops hack
-Generate a hash from command-line arguments.
-Use same command-line arguments to load desktop.
+Use =session-id= to identify unique sessions.
    #+begin_src emacs-lisp
-     (setq desktop-hash 
-	   (secure-hash 'md5 (apply 'concat command-line-args)))
+     ;; Session identification
+     (rjh/use "rjh/session:init")
 
      (setq 
-      desktop-base-file-name (concat ".emacs.desktop" desktop-hash)
-      desktop-base-lock-name (concat ".emacs.desktop" desktop-hash ".lock")
+      desktop-base-file-name (concat ".emacs.desktop" session-id)
+      desktop-base-lock-name (concat ".emacs.desktop" session-id ".lock")
       )
-
    #+end_src
 
 ** Enable desktop save mode

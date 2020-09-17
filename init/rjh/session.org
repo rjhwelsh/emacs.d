@@ -1,0 +1,8 @@
+* Session
+** Identify current session
+Uses an md5 hash to identify the current session, based on command-line-args.
+This variable is used in workgroups, desktop.el and others to identify the current session.
+   #+begin_src emacs-lisp
+     (setq session-id 
+	   (secure-hash 'md5 (apply 'concat command-line-args)))
+   #+end_src
