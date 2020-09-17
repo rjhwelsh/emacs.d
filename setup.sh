@@ -47,6 +47,18 @@ dep_wget() {
 
     dep_copy_files "$DEST" "$@"
 }
+
+dep_wget_tar() {
+    URL="$1"
+    shift
+    DEST="$1"
+    shift
+    ARCHIVE="$1"
+    shift
+
+    dep_wget "$URL" "$DEST"
+    { pushd "$D"/"$DEST" && tar -xf "${ARCHIVE}" "$@"; popd; }
+    dep_copy_files "$DEST" "$@"    
 }
 
 
