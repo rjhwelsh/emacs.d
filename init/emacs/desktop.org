@@ -32,7 +32,7 @@ Restores frames into current display.
      (setq 
       desktop-restore-frames t
       desktop-restore-in-current-display t
-      desktop-restore-forces-onscreen nil
+      desktop-restore-forces-onscreen t
       desktop-restore-reuses-frames nil
       desktop-save-buffer t
       )
