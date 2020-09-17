@@ -73,13 +73,13 @@ dep_emacswiki() {
 }
 
 dep_sensible() {
-	# Install Harry's sensible defaults
+    # Install Harry's sensible defaults
     dep_git_clone_install https://github.com/hrs/sensible-defaults.el sensible-defaults sensible-defaults.el
 }
 
 dep_zetteldeft() {
-	# Install zetteldeft
-	dep_git_clone_install https://github.com/EFLS/zetteldeft zetteldeft zetteldeft.el
+    # Install zetteldeft
+    dep_git_clone_install https://github.com/EFLS/zetteldeft zetteldeft zetteldeft.el
 }
 
 dep_org_gantt() {
