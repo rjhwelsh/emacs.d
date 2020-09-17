@@ -1,5 +1,5 @@
 * Workgroups
-Workgroups provides defined layouts for Emacs.
+Workgroups provides defined layouts and window management for Emacs.
 ( https://github.com/tlh/workgroups.el )
  #+BEGIN_SRC emacs-lisp
    (use-package "workgroups"      
