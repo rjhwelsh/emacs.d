@@ -371,10 +371,9 @@ Define function to set the previous parent property value, PPID for short.
      nil
      "PPID"		             ;; PROPERTY
      (save-excursion	             ;; VALUE
-       (condition-case nil           ;; Catch error whilst..
-	   (outline-up-heading 1 t)  ;; ... Going up a headline
-	 (t nil))                    ;; (Handle any error with above)
-	 (org-id-get)                ;; Obtain org-id
+       (ignore-errors           ;; Catch error whilst..
+	 (outline-up-heading 1 t)  ;; ... Going up a headline
+	 (org-id-get))                ;; Obtain org-id
 	 )))
 #+end_src
 
