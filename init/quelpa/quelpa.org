@@ -14,6 +14,7 @@ Add =quelpa-use-package= handler for =use-package=.
   (use-package "quelpa-use-package"
     :ensure t
     :init
+    (require 'quelpa-use-package)
     (quelpa-use-package-activate-advice) ;; Override =use-package-always-ensure=
     )
 #+end_src
