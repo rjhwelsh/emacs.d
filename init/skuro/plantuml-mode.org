@@ -9,10 +9,21 @@ https://github.com/skuro/plantuml-mode
     :ensure t 
     :defer t
     :init
-    (add-to-list 'auto-mode-alist '("\\.plantuml$" . plantuml-mode))
-    (add-to-list 'auto-mode-alist '("\\.puml$" . plantuml-mode))
-    (add-to-list
-     'org-src-lang-modes '("plantuml" . plantuml))
-    )
+      (add-to-list 'auto-mode-alist '("\\.plantuml$" . plantuml-mode))
+      (add-to-list 'auto-mode-alist '("\\.puml$" . plantuml-mode))
+      (add-to-list
+       'org-src-lang-modes '("plantuml" . plantuml))
+      ;; Possible loadpaths for plantuml binary
+      (setq plantuml-jar-path
+	  (locate-file "plantuml.jar" 
+		'("~"
+		  "/usr/share/plantuml/lib/"
+		  "/usr/share/plantuml/")))
+    (setq org-plantuml-jar-path plantuml-jar-path)
+    (setq plantuml-default-exec-mode 'jar)
+    ;; Default output type
+    (require 'plantuml-mode)
+    (plantuml-set-output-type "svg")
+  )
 #+END_SRC
 
