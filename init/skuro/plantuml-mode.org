@@ -3,6 +3,11 @@ Plantuml for uml diagramming.
 PlantUML is a java program for quickly constructing uml diagrams.
 http://plantuml.com/
 https://github.com/skuro/plantuml-mode
+** Quelpa
+#+begin_src emacs-lisp
+(rjh/use "quelpa/quelpa:init")
+#+end_src
+
 ** Fix indentation regexps
 Fix indentation regexps.
 #+begin_src emacs-lisp
@@ -91,14 +96,14 @@ Fix indentation regexps.
                                                plantuml-indent-regexp-macro-end
                                                plantuml-indent-regexp-oldif-end
                                                plantuml-indent-regexp-user-control-end))
-
 #+end_src
 ** Use-package
 #+BEGIN_SRC emacs-lisp
-  (use-package "plantuml-mode" 
-    :ensure t 
-    :defer t
-    :init
+  (use-package "plantuml-mode"
+      :quelpa (:fetcher github :repo "skuro/plantuml-mode" :upgrade t :autoremove t)
+      ;; :ensure t  
+      :defer t
+      :init
       (add-to-list 'auto-mode-alist '("\\.plantuml$" . plantuml-mode))
       (add-to-list 'auto-mode-alist '("\\.puml$" . plantuml-mode))
       (add-to-list
