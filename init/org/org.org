@@ -246,7 +246,7 @@
    + X/Y means perform X when changing *TO* state, and Y when changing *FROM* state.
    #+BEGIN_SRC emacs-lisp
      (setq org-todo-keywords
-	   '((sequence "TODO(t)" "NEXT(n)" "STARTED(s)" "WAITING(w!/!)" "|" "DONE(d!)")
+	   '((sequence "TODO(t)" "NEXT(n)" "STARTED(s!)" "WAITING(w!/!)" "|" "DONE(d!)")
 	     ))
    #+END_SRC
    + org-log-into-drawer LOGS everything into a hidden drawer, so everything looks cleaner.
