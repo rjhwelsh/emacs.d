@@ -1219,17 +1219,15 @@ the following lines anywhere in the buffer:
 *** Keywords
     #+BEGIN_SRC emacs-lisp
       (setq org-todo-keyword-faces
-	    '(("TODO" .      org-orange)
-	      ("NEXT" .      org-red)
-	      ("DONE" .      org-green)
+	    '(("TODO" .      org-yellow)
+	      ("NEXT" .      org-orange)
+	      ("STARTED" .   org-red )
 	      ("WAITING" .   org-cyan)
-	      ("INACTIVE" .  org-yellow)
-	      ("CANCELLED" . org-magenta)
-	      ("MEETING" .   org-blue)
+	      ("DONE" .      org-green)
 	      ))
     #+END_SRC
 *** Tags
-    #+BEGIN_SRC emacs-lisp
+    #+BEGIN_EXAMPLE emacs-lisp
       (setq org-tag-faces
 	    '(("PROJECT" . org-black)
 	      ("REFILE" . org-black)
@@ -1243,7 +1241,7 @@ the following lines anywhere in the buffer:
 	      ("EXPAND" . org-blue)
 	      ("NEW" . org-magenta)
 	      ))
-    #+END_SRC
+    #+END_EXAMPLE
 ** Misc
    I like seeing a little downward-pointing arrow instead of the usual ellipsis
    (=...=) that org displays when there's stuff under a header.
