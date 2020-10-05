@@ -225,15 +225,15 @@
    #+end_src
 * Agenda
 ** Keywords
-   Workflow states have been taken from gjstein.
-   See his guide [[http://cachestocaches.com/2016/9/my-workflow-org-agenda/#][here]].
+   Workflow states have been taken from gjstein/sachachua.
+   See gjstein [[http://cachestocaches.com/2016/9/my-workflow-org-agenda/#][here]].
+   See sachachua [[https://sachachua.com/blog/2007/12/emacs-getting-things-done-with-org-basic/][here]].
+
    - todo :: Indicate tasks / projects which need to get done
    - next :: Tasks which are being done "next" within a particular project
+   - started :: Tasks which have been started
    - waiting :: Tasks waiting on someone else.
      Log notes on what this is waiting on.
-   - inactive :: Signify something to come back to.
-   - cancelled :: Fizzled tasks. Add :CANCELLED: tag to task.
-   - meeting :: Indicate a meeting with someone, put in meeting notes
    - done :: Completed task
 
    For below; make the following notes:
@@ -246,8 +246,8 @@
    + X/Y means perform X when changing *TO* state, and Y when changing *FROM* state.
    #+BEGIN_SRC emacs-lisp
      (setq org-todo-keywords
-	   '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
-	     (sequence "WAITING(w!/!)" "INACTIVE(i)" "|" "CANCELLED(c!/!)" "MEETING(m!)")))
+	   '((sequence "TODO(t)" "NEXT(n)" "STARTED(s)" "WAITING(w!/!)" "|" "DONE(d!)")
+	     ))
    #+END_SRC
    + org-log-into-drawer LOGS everything into a hidden drawer, so everything looks cleaner.
    #+BEGIN_SRC emacs-lisp
@@ -256,7 +256,7 @@
 
    For group projects, put this at the top of the project line for custom keywords.
    #+BEGIN_EXAMPLE
-   #+TYP_TODO: @ROGER(r) @NAME1(1) @NAME2(2) | DONE(d)
+   #+TYP_TODO: @MYNAME(m) @NAME1(1) @NAME2(2) | DONE(d)
    #+END_EXAMPLE
 
 ** Tags
