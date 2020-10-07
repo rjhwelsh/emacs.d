@@ -8,12 +8,11 @@ Enable session management, unlike desktop session does not visit files.
   #+begin_src emacs-lisp
     (use-package "session"
       :load-path "~/.emacs.d/session/"
-      :hook (
-	     (after-init . session-initialize)
-	     (after-save . session-save-session))
+      :hook ((after-save . session-save-session))
       :init
-      ;; Reset custom session variable (set by session-initialize, if already set)
-      (custom-reset-variables '(session-use-package t nil (session)))
+      ;; Set value for session-use-package (alternative to #'session-initialize)
+      ;; (custom-set-variables '(session-use-package t))
+      (setq session-use-package t)
 
       ;; Use unique id for each session
       (rjh/use "rjh/session:init")
