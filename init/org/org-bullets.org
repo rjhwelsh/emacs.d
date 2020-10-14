@@ -1,0 +1,19 @@
+#+TITLE: Org-bullets 
+#+AUTHOR: Roger J. H. Welsh
+#+EMAIL: rjhwelsh@posteo.net
+#+PROPERTY: header-args :results silent
+#+STARTUP: content
+
+* Org-bullets
+  :LOGBOOK:
+  - Refiled on [2020-10-14 Wed 22:43]
+  :END:
+  Pretty bullets instead of a list of asterisks for headlines.
+  #+BEGIN_SRC emacs-lisp
+    (use-package "org-bullets"
+      :ensure t
+      :defer t
+      :hook (org-mode . (lambda () (org-bullets-mode t)))
+      )
+  #+END_SRC
+

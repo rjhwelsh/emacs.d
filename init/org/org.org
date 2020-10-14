@@ -26,16 +26,6 @@
      (car (file-expand-wildcards "~/.emacs.d/elpa/org-plus-contrib*" ))
      )
   #+END_SRC
-** org-bullets
-   Pretty bullets instead of a list of asterisks for headlines.
-   #+BEGIN_SRC emacs-lisp
-     (use-package "org-bullets"
-       :ensure t
-       :defer t
-       :hook (org-mode . (lambda () (org-bullets-mode t)))
-       )
-   #+END_SRC
-
 * Setup
   For a minimal =.emacs= for =org-mode=, see [[http://orgmode.org/worg/org-faq.html#minimal-emacs][here]].
   #+BEGIN_SRC emacs-lisp
