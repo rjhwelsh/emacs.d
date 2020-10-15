@@ -517,8 +517,7 @@ Tasks to Archive
       (defun org-agenda-full-view nil
        "Compilation overview generator for org-agenda-custom-commands."
 	(append
-	 `(
-	   ,(nth 3 (assoc "A" org-agenda-custom-commands)))
+	 `((agenda ""))
 	   (mapcar 'cdr
 		   (org-agenda-tag-persistent-agenda-views
 		    (append
@@ -526,8 +525,8 @@ Tasks to Archive
 		       (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp 'nottodo 'todo))
 		       )
 		     )))
-	   `(,(nth 3 (assoc "O" org-agenda-custom-commands))
-	     ,(nth 3 (assoc "S" org-agenda-custom-commands)))
+	   `((tags-todo ,org-agenda-deselect-persistent-tags)
+	     (stuck ""))
 	     ))
     #+end_src
     #+begin_src emacs-lisp
