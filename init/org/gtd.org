@@ -330,6 +330,12 @@ Standard export location for org-agenda-views
     )
 #+end_src
 
+Re-use a view defined in org-agenda-custom-commands
+#+begin_example emacs-lisp
+;; Returns the view, incl settings defined by prefix key
+ (nth 3 (assoc "A" org-agenda-custom-commands))
+#+end_example
+
 
     *Persistent tags*
     Select todo items with a specific persistent tag. *P*
