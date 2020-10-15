@@ -248,14 +248,7 @@ Primarily for primitive configuration dependencies in init/"
      (completion-table-with-cache 'rjh/config-completion-function t)
      nil
      t)))
-  (condition-case ex ;; Catch any exceptions with config
-      (apply 'rjh/config-load-search-syms (rjh/config-spec-to-arg spec))
-    ('error
-     (message (format "Caught exception: [%s]" ex))
-     (add-to-list 'rjh/config-error spec t) ;; Add any config errors to list
-     )
-    )
-  )
+  (apply 'rjh/config-load-search-syms (rjh/config-spec-to-arg spec)))
 
 (defun rjh/edit (spec)
   "Edit configuration org file"
