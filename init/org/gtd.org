@@ -453,18 +453,17 @@ Re-use a view defined in org-agenda-custom-commands
     #+begin_src emacs-lisp
       (add-to-list 'org-agenda-custom-commands
 		   `("A" "Agenda View" .
-		     `(agenda
-		       '(
-			 (org-agenda-skip-function nil)
-			 (org-agenda-span 1)
-			 (ps-print-color-p nil)
-			 (ps-left-header (list 'org-agenda-write-buffer-name))
-			 (ps-number-of-columns 1)
-			 (org-agenda-prefix-format "[ ] %?-12t%?-12s%:c")
-			 )
-		       ,(org-agenda-filename-to-export-views "agenda/agenda" '("ps" "html"))
-		       ))
-		   )
+		     (agenda ""
+		      (
+			(org-agenda-skip-function nil)
+			(org-agenda-span 1)
+			(ps-print-color-p nil)
+			(ps-left-header (list 'org-agenda-write-buffer-name))
+			(ps-number-of-columns 1)
+			(org-agenda-prefix-format "[ ] %?-12t%?-12s%:c")
+			)
+		      ,(org-agenda-filename-to-export-views "agenda/agenda" '("ps" "html"))
+		      )))
     #+end_src
 
 "Year Agenda View (ICS)"
@@ -546,28 +545,29 @@ Tasks to Archive
     #+begin_src emacs-lisp
       ;; Summary view
       (add-to-list 'org-agenda-custom-commands
-		   `("s" "Summary View"
-		     ,(org-agenda-full-view)
-		     ,(let (
-			    (summary-side-margin (* (/ 1 2.54) 72))
-			    (summary-border-file "~/.emacs.d/ps/summary_border.ps")
-			    )
-		     `((org-agenda-start-day "+1d")
-		      (org-agenda-span 3)
-		      (org-agenda-remove-tags t)
-		      (org-agenda-block-separator nil)
-		      (ps-print-color-p nil)
-		      (ps-left-header (list 'org-agenda-write-buffer-name))
-		      (ps-paper-type 'collinsorg3colA4)
-		      (ps-number-of-columns 3)
-		      (ps-print-background-image `((,summary-border-file ,(- 0 summary-side-margin) ,(- 0 ps-bottom-margin))))
-		      (ps-landscape-mode t)
-		      (ps-left-margin ,summary-side-margin)
-		      (ps-right-margin ,summary-side-margin)
-		      (ps-inter-column (* ,summary-side-margin 2))
-		      (org-agenda-prefix-format "[ ] %?-12t%?-12s%:c")))
-		     ,(org-agenda-filename-to-export-views "agenda/summary" '("ps" "html"))
-		     ))
+		   (let ((summary-side-margin (* (/ 1 2.54) 72))
+			 (summary-border-file "~/.emacs.d/ps/summary_border.ps")
+			 )
+		     `("s" "Summary View"
+		       ,(org-agenda-full-view)
+		       ((org-agenda-start-day "+1d")
+			 (org-agenda-span 3)
+			 (org-agenda-remove-tags t)
+			 (org-agenda-block-separator nil)
+			 (ps-print-color-p nil)
+			 (ps-left-header (list 'org-agenda-write-buffer-name))
+			 (ps-paper-type 'collinsorg3colA4)
+			 (ps-number-of-columns 3)
+			 (ps-print-background-image 
+			  ((,summary-border-file ,(- 0 summary-side-margin) ,(- 0 ps-bottom-margin))))
+			 (ps-landscape-mode t)
+			 (ps-left-margin ,summary-side-margin)
+			 (ps-right-margin ,summary-side-margin)
+			 (ps-inter-column (* ,summary-side-margin 2))
+			 (org-agenda-prefix-format "[ ] %?-12t%?-12s%:c")
+			 )
+		       ,(org-agenda-filename-to-export-views "agenda/summary" '("ps" "html"))
+		       )))
     #+end_src
     #+begin_src emacs-lisp
       ;; Organiser view
