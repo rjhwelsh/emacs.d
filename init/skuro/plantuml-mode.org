@@ -100,7 +100,7 @@ Fix indentation regexps.
 ** Use-package
 #+BEGIN_SRC emacs-lisp
   (use-package "plantuml-mode"
-      :quelpa (:fetcher github :repo "skuro/plantuml-mode" :upgrade t :autoremove t)
+      :quelpa (:fetcher github :repo "skuro/plantuml-mode" :upgrade nil :autoremove t)
       ;; :ensure t  
       :defer t
       :init
