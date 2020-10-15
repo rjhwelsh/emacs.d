@@ -303,9 +303,19 @@
 
     Sparse trees cannot be used in assembled views; they operate on the current
     buffer only.
-
-    #+BEGIN_SRC emacs-lisp
+ 
+    ps-print is required for exporting views
+    #+begin_src emacs-lisp
       (require 'ps-print)
+    #+end_src
+    
+    Set current custom agenda views to an empty list.
+    #+begin_src emacs-lisp
+    (setq org-agenda-custom-commands '())
+    #+end_src
+
+    
+    #+BEGIN_SRC emacs-lisp
       (let (
 	    (deselect-persistent-tags
 	     (apply
@@ -440,6 +450,7 @@
 
 	  (setq org-agenda-custom-commands
 		(append
+		 org-agenda-custom-commands ;; Add original org-agenda-custom-commands
 		 `(
 		   ("n" "Active View"
 		    ,(funcall full-view nil "agenda/" '("ps" "html"))
