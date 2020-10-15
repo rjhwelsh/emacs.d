@@ -333,140 +333,120 @@ Standard export location for org-agenda-views
 
     *Persistent tags*
     Select todo items with a specific persistent tag. *P*
+
     #+begin_src emacs-lisp
-      (let* (
-	    (persistent-tag-prefix-key "P")
-	    (tag-persistent-agenda-views
+      ;; Add a custom view for each persistent tag under a prefix
+	 (let* (
+	       (persistent-tag-prefix-key "P")
+	       (tag-persistent-agenda-views
+		   (lambda (&optional settings filename exts)
+		     (mapcar
+		      (lambda (tag)
+			`(,(car tag) . (tags
+					,(concat "+" (car tag))
+					,settings
+					,(org-agenda-filename-to-export-views (concat filename (car tag)) exts)
+					)))
+		      org-tag-persistent-alist))
+		   )
+	       (tag-persistent-agenda-commands
 		(lambda (&optional settings filename exts)
 		  (mapcar
-		   (lambda (tag)
-		     `(,(car tag) . (tags
-				     ,(concat "+" (car tag))
-				     ,settings
-				     ,(org-agenda-filename-to-export-views (concat filename (car tag)) exts)
-				     )))
-		   org-tag-persistent-alist))
-		)
-	    (tag-persistent-agenda-commands
-	     (lambda (&optional settings filename exts)
-	       (mapcar
-		(lambda (tag_arr)
-		  (let ((tag (car tag_arr)))
-		    (append
-		     `(
-		       ,(concat persistent-tag-prefix-key (substring tag 0 1)) ; PREFIX
-		       ,(format "Headlines with TAGS match: %s" tag)) ; DESCRIPTION
-		     (cdr (assoc tag (funcall tag-persistent-agenda-views settings filename exts)))
-		     )
-		    ))
-		org-tag-persistent-alist
-		)))
-	    )
-	(progn
-	  (append org-agenda-custom-commands
-		  `((,persistent-tag-prefix-key . "Todo items with specific persistent tag")) ; Prefix command
-		  (funcall tag-persistent-agenda-commands
-			   '((org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp 'nottodo 'todo))
-			     (ps-print-color-p nil)
-			     (ps-number-of-columns 1)
-			     (ps-left-header (list 'org-agenda-write-buffer-name))
-			     (org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
-			   "agenda/tag/"
-			   '("ps" "html"))
-		  )))
+		   (lambda (tag_arr)
+		     (let ((tag (car tag_arr)))
+		       (append
+			`(
+			  ,(concat persistent-tag-prefix-key (substring tag 0 1)) ; PREFIX
+			  ,(format "Headlines with TAGS match: %s" tag)) ; DESCRIPTION
+			(cdr (assoc tag (funcall tag-persistent-agenda-views settings filename exts)))
+			)
+		       ))
+		   org-tag-persistent-alist
+		   )))
+	       )
+	   (setq org-agenda-custom-commands
+	     (append 
+	      org-agenda-custom-commands
+		     `((,persistent-tag-prefix-key . "Todo items with specific persistent tag")) ; Prefix command
+		     (funcall tag-persistent-agenda-commands
+			      '((org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp 'nottodo 'todo))
+				(ps-print-color-p nil)
+				(ps-number-of-columns 1)
+				(ps-left-header (list 'org-agenda-write-buffer-name))
+				(org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
+			      "agenda/tag/"
+			      '("ps" "html"))
+		     )))
     #+end_src
 
 
     Select todo items with any persistent tag. *p*
     #+begin_src emacs-lisp
-      (let ((select-persistent-tags
-	     (apply 'concat
-		    (cdr
-		     (apply 'append
-			    (mapcar
-			     (lambda (tag)
-			       (list "|" (car tag))
-			       )
-			     org-tag-persistent-alist))
-		     ))
-	     )
-
-	    )
-	(add-to-list 'org-agenda-custom-commands
+      ;; Search for any persistent-tags
+      (setq org-agenda-select-persistent-tags
+	    (apply 'concat
+		   (cdr
+		    (apply 'append
+			   (mapcar
+			    (lambda (tag)
+			      (list "|" (car tag))
+			      )
+			    org-tag-persistent-alist))
+		    )))
+      ;; Tags tree
+      (add-to-list 'org-agenda-custom-commands
 		   `("p" "Todo items with persistent tags"
-		    tags-tree ,select-persistent-tags)
-		     ))
+		     tags-tree ,org-agenda-select-persistent-tags)
+		   )
     #+end_src
 
     Select todo items without any persistent tags. *u*
     Other tags (Export)
     #+begin_src emacs-lisp
-      (let ((deselect-persistent-tags
-	     (apply
-	      'concat
-	      (mapcar
-	       (lambda (tag)
-		 (concat "-" (car tag))
-		 )
-	       org-tag-persistent-alist)
-	      )
+      ;; Search for anything without a persistent tag
+      (setq org-agenda-deselect-persistent-tags
+	    (apply
+	     'concat
+	     (mapcar
+	      (lambda (tag)
+		(concat "-" (car tag))
+		)
+	      org-tag-persistent-alist)
 	     )
 	    )
-	(progn 
-	  (add-to-list 'org-agenda-custom-commands 
-		       `("u" "Todo items without persistent tags"
-			 tags-tree ,deselect-persistent-tags)		     
-		       ))
-
-	;; Depends on deselect-persistent-tags above
-	(let ((other-tags-view
-	       (lambda (&optional settings filename exts)
-		 `(tags-todo
-		   ,deselect-persistent-tags
-		   ,(append
-		     '(
-		       (org-agenda-overriding-header "Remaining TODO items:")
-		       (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp 'todo 'done))
-		       )
-		     settings
-		     )
-		   ,(org-agenda-filename-to-export-views filename exts)
+      ;; Tags-tree 
+      (add-to-list 'org-agenda-custom-commands 
+		   `("u" "Todo items without persistent tags"
+		     tags-tree ,org-agenda-deselect-persistent-tags)
 		   )
-		 )))
-	  (add-to-list 'org-agenda-custom-commands
-		       `("O" "Other tags (EXPORT)" .
-			 ,(funcall other-tags-view
-				   '((ps-number-of-columns 1)
-				     (ps-print-color-p nil)
-				     (ps-left-header (list 'org-agenda-write-buffer-name))
-				     (org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
-				   "agenda/tag/OTHER"
-				   '("ps" "html")))
-		       )))
+
+      ;; Export view for untagged tasks
+      (add-to-list 'org-agenda-custom-commands
+		   `("O" "Other tags (EXPORT)" .
+		     (tags-todo
+		      ,org-agenda-deselect-persistent-tags
+		      ,(append
+			'((org-agenda-overriding-header "Remaining TODO items:")
+			  (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp 'todo 'done)))
+			'((ps-number-of-columns 1)
+			  (ps-print-color-p nil)
+			  (ps-left-header (list 'org-agenda-write-buffer-name))
+			  (org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
+			)
+		      ,(org-agenda-filename-to-export-views "agenda/tag/OTHER" '("ps" "html"))
+		      )))
     #+end_src
 
  "Active view"
     #+begin_src emacs-lisp
-      (let ()
-	(add-to-list 'org-agenda-custom-commands
-		     nil
-		     ))
     #+end_src
 
 "Summary view"
     #+begin_src emacs-lisp
-      (let ()
-	(add-to-list 'org-agenda-custom-commands
-		     nil
-		     ))
     #+end_src
 
 "Organiser view"
     #+begin_src emacs-lisp
-      (let ()
-	(add-to-list 'org-agenda-custom-commands
-		     nil
-		     ))
     #+end_src
 
 "Agenda view"
