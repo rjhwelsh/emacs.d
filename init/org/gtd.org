@@ -242,22 +242,27 @@
 	    )
     #+end_src
 *** Agenda Skip Functions
-
-**** Default
+**** Global
      #+begin_src emacs-lisp
-       (setq org-agenda-skip-function-global nil)
-       (setq org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+       (setq org-agenda-skip-function-global '(org-agenda-skip-entry-if 'todo 'done))
      #+end_src
-**** built-in
+     Standard function for skipping entries
      - =(org-agenda-skip-entry-if &rest CONDITIONS)= :: Skip if any of the CONDITIONS
        are true
        - ='scheduled= :: Entry has a scheduled time.
        - ='deadline= :: Entry has a deadline.
        - ='timestamp= :: Entry has any timestamp (including deadline or scheduled)
-	 - ='todo= :: Entry todo keyword matches (accepts as argument a list of todo keywords)
-	   - ='("TODO" "DONE")= :: Matches any of TODO or DONE.
-	   - ='done= :: Matches keyword class 'done
-	   - ='todo= :: Matches keyword class 'todo
+       - ='todo= :: Entry todo keyword matches (accepts as argument a list of todo keywords)
+	 - ='("TODO" "DONE")= :: Matches any of TODO or DONE.
+	 - ='done= :: Matches keyword class 'done
+	 - ='todo= :: Matches keyword class 'todo
+**** Org-agenda-skip-function
+     Use =org-agenda-skip-function= option to define a function to skip entries. 
+     - When the function returns nil, the entry will be skipped
+     - Otherwise the function must return a position from where the search should continue
+#+begin_example el
+(let (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done)))
+#+end_example
 
 **** Skip non archive-able tasks
      A function for skipping non-archive-able tasks in the agenda-view from Bernt Hansen.
