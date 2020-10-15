@@ -55,3 +55,7 @@ Only enable desktop mode, if Emacs is NOT running as a daemon.
  #+begin_src emacs-lisp
    (unless (daemonp) (desktop-save-mode 1))
  #+end_src
+
+** Troubleshooting notes
+   If using =emacs/desktop= and =wedler/session= at the same time, ensure that =wedler/session= is loaded first.
+

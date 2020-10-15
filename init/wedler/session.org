@@ -10,6 +10,8 @@ Enable session management, unlike desktop session does not visit files.
       :load-path "~/.emacs.d/session/"
       :hook ((after-save . session-save-session))
       :init
+      (require 'session)
+
       ;; Set value for session-use-package (alternative to #'session-initialize)
       ;; (custom-set-variables '(session-use-package t))
       (setq session-use-package t)
@@ -29,12 +31,12 @@ Enable session management, unlike desktop session does not visit files.
       (setq desktop-globals-to-save '(desktop-missing-file-warning))
 
       ;; Emacswiki tips
-      (when (require 'session nil t)
-	(add-to-list 'session-globals-exclude 'org-mark-ring))
+      (add-to-list 'session-globals-exclude 'org-mark-ring)
 
       ;; compatibility with daemon mode (save on frame-exit)
       (add-hook 'delete-frame-functions (lambda (frame) (session-save-session t)))
       (add-hook 'after-make-frame-functions (lambda (frame) (session-jump-to-last-change)))
       )
   #+end_src
+
 
