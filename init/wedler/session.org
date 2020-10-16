@@ -5,6 +5,13 @@ https://www.emacswiki.org/emacs/EmacsSession
 Enable session management, unlike desktop session does not visit files.
 =C-x C-/= jumps to the last change in a file.
 
+Ensure =session-globals-exclude= exists.
+Workaround for void-variable.
+#+begin_src emacs-lisp
+  ;; (custom-set-variables '(session-globals-exclude ('org-mark-ring)))
+#+end_src
+
+
   #+begin_src emacs-lisp
     (use-package "session"
       :load-path "~/.emacs.d/session/"
@@ -18,7 +25,7 @@ Enable session management, unlike desktop session does not visit files.
 
       ;; Use unique id for each session
       (rjh/use "rjh/session:init")
-      (setq session-save-file (concat "~/.emacs.d/.session" session-id))
+      (setq session-save-file (session-state-save-path "session"))
 
       ;; Org-mode compatibility
       (defun my-org-reveal-session-jump ()
@@ -31,7 +38,7 @@ Enable session management, unlike desktop session does not visit files.
       (setq desktop-globals-to-save '(desktop-missing-file-warning))
 
       ;; Emacswiki tips
-      (add-to-list 'session-globals-exclude 'org-mark-ring)
+      ;; (add-to-list 'session-globals-exclude 'org-mark-ring)
 
       ;; compatibility with daemon mode (save on frame-exit)
       (add-hook 'delete-frame-functions (lambda (frame) (session-save-session t)))

@@ -45,8 +45,8 @@ Use =session-id= to identify unique sessions.
      (rjh/use "rjh/session:init")
 
      (setq 
-      desktop-base-file-name (concat ".emacs.desktop" session-id)
-      desktop-base-lock-name (concat ".emacs.desktop" session-id ".lock")
+      desktop-base-file-name (session-state-save-path "desktop")
+      desktop-base-lock-name (session-state-save-path "desktop.lock")
       )
    #+end_src
 

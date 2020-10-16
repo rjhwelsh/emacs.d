@@ -1,8 +1,24 @@
-* Session
+* Session state
+*This is distinct from emacs session.el to provide a general location for ALL SESSION MANAGEMENT*
 ** Identify current session
 Uses an md5 hash to identify the current session, based on command-line-args.
 This variable is used in workgroups, desktop.el and others to identify the current session.
    #+begin_src emacs-lisp
-     (setq session-id 
+     (setq session-state-id 
 	   (secure-hash 'md5 (apply 'concat command-line-args-left command-line-args)))
+     (message "Session-state-id: %s" session-state-id)
+   #+end_src
+** Set saved session-state directory
+   #+begin_src emacs-lisp
+     (setq session-state-dir "~/.emacs.d/.session-state/")
+   #+end_src
+** Generate session state file location based on mode name
+   #+begin_src emacs-lisp
+     (defun session-state-save-path (mode)
+       "Returns location of session-state save path for current session mode name"
+       (concat session-state-dir "/" session-state-id "/" mode))
+   #+end_src
+** Ensure session-state directory exists
+   #+begin_src emacs-lisp
+     (make-directory (session-state-save-path "") t)
    #+end_src

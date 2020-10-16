@@ -16,7 +16,7 @@ Workgroups provides defined layouts and window management for Emacs.
      (rjh/use "rjh/session:init")
 
      ;; Default file to save/load workgroups from  
-     (setq workgroups-file (concat "~/.emacs.d/workgroups_" session-id))
+     (setq workgroups-file (session-state-save-path "workgroups"))
 
      ;; Enable workgroups
      (workgroups-mode 1)
