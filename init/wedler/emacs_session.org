@@ -22,10 +22,6 @@ Use session_state to identify session.
       ;; Use unique id for each session
       (setq session-save-file (session-state-save-path "session"))
 
-      ;; Set value for session-use-package (alternative to #'session-initialize)
-      ;; (custom-set-variables '(session-use-package t))
-      (setq session-use-package t)
-
       ;; Org-mode compatibility
       (defun my-org-reveal-session-jump ()
 	(when (and (eq major-mode 'org-mode)
@@ -43,7 +39,21 @@ Use session_state to identify session.
       ;; compatibility with daemon mode (save on frame-exit)
       (add-hook 'delete-frame-functions (lambda (frame) (session-save-session t)))
       (add-hook 'after-make-frame-functions (lambda (frame) (session-jump-to-last-change)))
+
+      ;; Instructions from session.el comments
+      (autoload 'session-jump-to-last-change "session" nil t)
+      (autoload 'session-initialize "session" nil t)
+      ;; (autoload 'session-initialize-do "session" nil t)
+      (eval-after-load "cus-load"
+	'(progn (custom-add-load 'data 'session)
+		(custom-add-load 'session 'session)))
+
+      ;; Function instructions
+      ;; Initialize package session and read previous session file
+      ;; (add-hook 'after-init-hook 'session-initialize)
+      ;; (add-hook 'after-init-hook 'session-initialize-do)
+      (session-initialize)
+      (session-initialize-do)
       )
   #+end_src
-
 
