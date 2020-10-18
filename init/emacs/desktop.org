@@ -39,10 +39,10 @@ Restores frames into current display.
    #+end_src
 
 ** Multiple desktops hack
-Use =session-id= to identify unique sessions.
+Use session_state to identify session.
    #+begin_src emacs-lisp
      ;; Session identification
-     (rjh/use "rjh/session:init")
+     (rjh/use "rjh/session_state:init")
 
      (setq 
       desktop-base-file-name (session-state-save-path "desktop")

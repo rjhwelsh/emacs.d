@@ -1,4 +1,10 @@
 * Workgroups
+Use session_state to identify session.
+  #+begin_src emacs-lisp
+     ;; Session identification
+     (rjh/use "rjh/session_state:init")
+  #+end_src
+
 Workgroups provides defined layouts and window management for Emacs.
 ( https://github.com/tlh/workgroups.el )
  #+BEGIN_SRC emacs-lisp
@@ -12,10 +18,7 @@ Workgroups provides defined layouts and window management for Emacs.
      :init
      (require 'workgroups)
 
-     ;; Session identification
-     (rjh/use "rjh/session:init")
-
-     ;; Default file to save/load workgroups from  
+     ;; Default file to save/load workgroups from  (rjh/session_state)
      (setq workgroups-file (session-state-save-path "workgroups"))
 
      ;; Enable workgroups

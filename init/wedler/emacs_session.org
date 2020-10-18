@@ -5,27 +5,28 @@ https://www.emacswiki.org/emacs/EmacsSession
 Enable session management, unlike desktop session does not visit files.
 =C-x C-/= jumps to the last change in a file.
 
-Ensure =session-globals-exclude= exists.
-Workaround for void-variable.
+Use session_state to identify session.
 #+begin_src emacs-lisp
-  ;; (custom-set-variables '(session-globals-exclude ('org-mark-ring)))
+  (rjh/use "rjh/session_state:init")
 #+end_src
-
 
   #+begin_src emacs-lisp
     (use-package "session"
       :load-path "~/.emacs.d/session/"
       :hook ((after-save . session-save-session))
+      :if (and
+	   (fboundp 'session-state-save-path)
+	   (fboundp 'session-state-id)
+           nil
+	   )
       :init
       (require 'session)
+      ;; Use unique id for each session
+      (setq session-save-file (session-state-save-path "session"))
 
       ;; Set value for session-use-package (alternative to #'session-initialize)
       ;; (custom-set-variables '(session-use-package t))
       (setq session-use-package t)
-
-      ;; Use unique id for each session
-      (rjh/use "rjh/session:init")
-      (setq session-save-file (session-state-save-path "session"))
 
       ;; Org-mode compatibility
       (defun my-org-reveal-session-jump ()
@@ -38,7 +39,7 @@ Workaround for void-variable.
       (setq desktop-globals-to-save '(desktop-missing-file-warning))
 
       ;; Emacswiki tips
-      ;; (add-to-list 'session-globals-exclude 'org-mark-ring)
+      (add-to-list 'session-globals-exclude 'org-mark-ring)
 
       ;; compatibility with daemon mode (save on frame-exit)
       (add-hook 'delete-frame-functions (lambda (frame) (session-save-session t)))
