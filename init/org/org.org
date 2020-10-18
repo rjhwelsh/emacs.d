@@ -55,6 +55,15 @@ The base configuration for org-mode.
 	      (org-entry-put nil "RESET_CHECK_BOXES" "t"))))
      (define-key org-mode-map (kbd "C-c C-x r") 'org-toggle-reset-check-boxes-property)
    #+end_src
+*** org-learn
+    Org-learn provides super-memo spaced repetition scheduling.
+    Use =org-smart-reschedule= to re-schedule tasks based on super-memo.
+    It is assigned to =C-c m= for memorization.
+    #+begin_src emacs-lisp
+    (require 'org-learn)
+    (define-key org-mode-map "\C-cm" 'org-smart-reschedule) 
+    #+end_src
+
 ** Use private variables
 #+begin_src emacs-lisp
   (rjh/use "org/org:private")
