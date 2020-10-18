@@ -94,7 +94,7 @@ determined at POS."
       (goto-char (or pos (point)))
       (beginning-of-line)
       (if (not (looking-at org-heading-regexp))
-	  (return nil)
+	  nil
 	(save-match-data
 	  (cl-loop
 	   (if (functionp org-get-priority-function)
