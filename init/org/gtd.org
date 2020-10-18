@@ -370,6 +370,19 @@
 	   (if (org-entry-blocked-p) next-headline)))
      #+end_src
 
+**** Skip entries that have a particular file path
+A function that skips entries based on the location of the file.
+#+begin_src emacs-lisp
+  (defun org-agenda-skip-entry-if-file-path (regexp &optional inverse)
+    "Skip entry if it is in a file on path."
+  (let* ((path (buffer-file-name))
+	 (match-p (string-match regexp path)))
+    ;; Reverse match ?
+    (if inverse
+	(if (not match-p) (point-max))
+      (if (match-p) (point-max)))))
+#+end_src
+
 *** Global skip function
     #+begin_src emacs-lisp
       (setq org-agenda-skip-function-global 
