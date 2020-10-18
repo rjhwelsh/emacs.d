@@ -1,13 +1,20 @@
 * Session state
 *This is distinct from emacs session.el to provide a general location for ALL SESSION MANAGEMENT*
+** Session state command line arguments
+Capture command line arguments used. 
+   #+begin_src emacs-lisp
+(setq session-state-cli (apply 'concat command-line-args-left command-line-args))
+   #+end_src
+
 ** Identify current session
 Uses an md5 hash to identify the current session, based on command-line-args.
 This variable is used in workgroups, desktop.el and others to identify the current session.
    #+begin_src emacs-lisp
      (setq session-state-id 
-	   (secure-hash 'md5 (apply 'concat command-line-args-left command-line-args)))
+	   (secure-hash 'md5 session-state-cli))
      (message "Session-state-id: %s" session-state-id)
    #+end_src
+
 ** Set saved session-state directory
    #+begin_src emacs-lisp
      (setq session-state-dir "~/.emacs.d/.session-state/")
@@ -21,4 +28,8 @@ This variable is used in workgroups, desktop.el and others to identify the curre
 ** Ensure session-state directory exists
    #+begin_src emacs-lisp
      (make-directory (session-state-save-path "") t)
+   #+end_src
+** Write command line arguments to file
+   #+begin_src emacs-lisp
+ (write-region session-state-cli nil (session-state-save-path "cmdline"))
    #+end_src
