@@ -314,20 +314,6 @@
 	      (search         deadline-up              todo-state-down category-keep              priority-down effort-up tag-up)))
     #+END_SRC
 *** Agenda Skip Functions
-**** Global
-     #+begin_src emacs-lisp
-       (setq org-agenda-skip-function-global '(org-agenda-skip-entry-if 'todo 'done))
-     #+end_src
-     Standard function for skipping entries
-     - =(org-agenda-skip-entry-if &rest CONDITIONS)= :: Skip if any of the CONDITIONS
-       are true
-       - ='scheduled= :: Entry has a scheduled time.
-       - ='deadline= :: Entry has a deadline.
-       - ='timestamp= :: Entry has any timestamp (including deadline or scheduled)
-       - ='todo= :: Entry todo keyword matches (accepts as argument a list of todo keywords)
-	 - ='("TODO" "DONE")= :: Matches any of TODO or DONE.
-	 - ='done= :: Matches keyword class 'done
-	 - ='todo= :: Matches keyword class 'todo
 **** Org-agenda-skip-function
      Use =org-agenda-skip-function= option to define a function to skip entries. 
      - When the function returns nil, the entry will be skipped
@@ -377,6 +363,24 @@
 	   (if (org-entry-blocked-p) next-headline)))
      #+end_src
 
+*** Global skip function
+    #+begin_src emacs-lisp
+      (setq org-agenda-skip-function-global 
+	    '(or 
+	      (org-agenda-skip-entry-if 'todo 'done) ;; Skip DONE tasks
+	      (org-agenda-skip-entry-if-blocked))    ;; Skip BLOCKED tasks
+    #+end_src
+
+    Standard function for skipping entries
+    - =(org-agenda-skip-entry-if &rest CONDITIONS)= :: Skip if any of the CONDITIONS
+      are true
+      - ='scheduled= :: Entry has a scheduled time.
+      - ='deadline= :: Entry has a deadline.
+      - ='timestamp= :: Entry has any timestamp (including deadline or scheduled)
+      - ='todo= :: Entry todo keyword matches (accepts as argument a list of todo keywords)
+	- ='("TODO" "DONE")= :: Matches any of TODO or DONE.
+	- ='done= :: Matches keyword class 'done
+	- ='todo= :: Matches keyword class 'todo
 *** Custom Agenda Views
     NB =`= backquote allows evaluation of selected element in the quoted list.
     =,= is used to indicate items to be evaluated.
