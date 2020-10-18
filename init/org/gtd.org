@@ -363,6 +363,20 @@
 	       next-headline))))
      #+END_SRC
 
+**** Skip entries that are blocked
+     https://emacs.stackexchange.com/questions/14724/emacs-org-mode-how-to-make-agenda-views-of-blocked-parent-tasks
+     A function that skips any task that is blocked (because of some dependency). 
+     #+begin_src emacs-lisp
+       (defun org-agenda-skip-entry-if-blocked ()
+	 "Skip entry if it is blocked."
+	 (let ((next-headline 
+		(save-excursion
+		  (or (outline-next-heading) (point-max))))
+	       ;; Do not skip items blocked by checkboxes
+	       (org-enforce-todo-checkbox-dependencies nil))
+	   (if (org-entry-blocked-p) next-headline)))
+     #+end_src
+
 *** Custom Agenda Views
     NB =`= backquote allows evaluation of selected element in the quoted list.
     =,= is used to indicate items to be evaluated.
