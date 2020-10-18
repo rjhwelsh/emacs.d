@@ -387,8 +387,13 @@ A function that skips entries based on the location of the file.
     #+begin_src emacs-lisp
       (setq org-agenda-skip-function-global 
 	    '(or 
-	      (org-agenda-skip-entry-if 'todo 'done) ;; Skip DONE tasks
-	      (org-agenda-skip-entry-if-blocked)))    ;; Skip BLOCKED tasks
+	      ;; Skip DONE tasks
+	      (org-agenda-skip-entry-if 'todo 'done) 
+	      ;; Skip BLOCKED tasks
+	      (org-agenda-skip-entry-if-blocked)
+	      ;; Skip file PATHs
+	      (org-agenda-skip-entry-if-file-path "1action" t)
+	      ))
     #+end_src
 
     Standard function for skipping entries
