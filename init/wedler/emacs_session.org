@@ -16,11 +16,9 @@ Use session_state to identify session.
       :hook ((after-save . session-save-session))
       :if (and
 	   (fboundp 'session-state-save-path)
-	   (fboundp 'session-state-id)
-           nil
+	   (boundp 'session-state-id)
 	   )
       :init
-      (require 'session)
       ;; Use unique id for each session
       (setq session-save-file (session-state-save-path "session"))
 
@@ -39,6 +37,7 @@ Use session_state to identify session.
       (setq desktop-globals-to-save '(desktop-missing-file-warning))
 
       ;; Emacswiki tips
+      (require 'session)
       (add-to-list 'session-globals-exclude 'org-mark-ring)
 
       ;; compatibility with daemon mode (save on frame-exit)
