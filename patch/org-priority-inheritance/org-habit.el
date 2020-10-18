@@ -27,7 +27,7 @@
 (defsubst org-habit-get-priority (habit &optional moment)
   "Determine the relative priority of a habit.
 This must take into account not just urgency, but consistency as well."
-  (let ((pri 1000)
+  (let ((pri (org-get-priority))
 	(now (if moment (time-to-days moment) (org-today)))
 	(scheduled (org-habit-scheduled habit))
 	(deadline (org-habit-deadline habit)))
