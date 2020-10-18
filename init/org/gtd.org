@@ -373,7 +373,7 @@
       (setq org-agenda-skip-function-global 
 	    '(or 
 	      (org-agenda-skip-entry-if 'todo 'done) ;; Skip DONE tasks
-	      (org-agenda-skip-entry-if-blocked))    ;; Skip BLOCKED tasks
+	      (org-agenda-skip-entry-if-blocked)))    ;; Skip BLOCKED tasks
     #+end_src
 
     Standard function for skipping entries
