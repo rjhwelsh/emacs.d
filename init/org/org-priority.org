@@ -1,0 +1,20 @@
+#+TITLE: Org Priority Patch
+#+AUTHOR: Roger J. H. Welsh
+#+EMAIL: rjhwelsh@posteo.net
+
+This patch provides =org-priority= inheritance.
+* Patch
+Override org-mode functions. 
+  #+begin_src emacs-lisp
+  (load-file "~/.emacs.d/rjh/patch/org-priority-inheritance/org.el")
+  (load-file "~/.emacs.d/rjh/patch/org-priority-inheritance/org-habit.el")
+  (load-file "~/.emacs.d/rjh/patch/org-priority-inheritance/org-agenda.el")
+  #+end_src
+* Config
+Enable priority inheritance.
+  #+begin_src emacs-lisp
+    (setq 
+     org-use-priority-inheritance t
+     )
+  #+end_src
+
