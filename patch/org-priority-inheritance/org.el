@@ -24,21 +24,46 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-(defvaralias 'org-get-priority-function 'org-priority-get-priority-function)
 (defcustom org-priority-get-priority-function nil
-  "Function to extract the priority from a string.
-The string is normally the headline.  If this is nil, Org
-computes the priority from the priority cookie like [#A] in the
-headline.  It returns an integer, increasing by 1000 for each
-priority level.
+  "Function to extract the priority from current line.
+The line is always a headline.
 
-The user can set a different function here, which should take a
-string as an argument and return the numeric priority."
+If this is nil Org computes the priority of the headline from a
+priority cookie like [#A]. It returns an integer, increasing by
+1000 for each priority level (see
+`org-priority-char-to-integer').
+
+The user can set a different function here, which should process
+the current line and return one of:
+
+- an integer priority
+- nil if current line is not a header or otherwise has no
+associated priority
+- t if the `org-default-priority' should be used or the priority can be
+inherited from its parent
+
+Priority can only be inherited if `org-use-priority-inheritance' is
+non-nil."
   :group 'org-priorities
   :version "24.1"
   :type '(choice
 	  (const nil)
 	  (function)))
+
+(defcustom org-use-priority-inheritance nil
+  "Whether headline priority is inherited from its parents.
+
+If non-nil then the first explicit priority found when searching
+up the headline tree applies.  Thus a child headline can override
+its parent's priority.
+
+When nil, explicit priorities only apply to the headline they are
+given on.
+
+Regardless of setting, if no explicit priority is found then the
+default priority is used."
+  :group 'org-priorities
+  :type 'boolean)
 
 (defun org-priority-show ()
   "Show the priority of the current item.
@@ -47,26 +72,43 @@ and by additional input from the age of a schedules or deadline entry."
   (interactive)
   (let ((pri (if (eq major-mode 'org-agenda-mode)
 		 (org-get-at-bol 'priority)
-	       (save-excursion
-		 (save-match-data
-		   (beginning-of-line)
-		   (and (looking-at org-heading-regexp)
-			(org-get-priority (match-string 0))))))))
+	       (org-get-priority))))
     (message "Priority is %d" (if pri pri -1000))))
+(defun org-priority-char-to-integer (character)
+  "Convert priority CHARACTER to an integer priority."
+  (* 1000 (- org-lowest-priority character)))
 
-(defun org-get-priority (s)
-  "Find priority cookie and return priority.
-S is a string against which you can match `org-priority-regexp'.
-If `org-priority-get-priority-function' is set to a custom
-function, use it.  Otherwise process S and output the priority
-value, an integer."
-  (save-match-data
-    (if (functionp org-priority-get-priority-function)
-	(funcall org-priority-get-priority-function s)
-      (if (not (string-match org-priority-regexp s))
-	  (* 1000 (- org-priority-lowest org-priority-default))
-	(* 1000 (- org-priority-lowest
-		   (org-priority-to-value (match-string 2 s))))))))
+(defun org-priority-integer-to-char (integer)
+  "Convert priority INTEGER to a character priority."
+  (- org-lowest-priority (/ integer 1000)))
+
+(defun org-get-priority (&optional pos local)
+  "Get integer priority at POS.
+POS defaults to point.  If LOCAL is non-nil priority inheritance
+is ignored regardless of the value of
+`org-use-priority-inheritance'.  Returns nil if no priority can be
+determined at POS."
+  (save-excursion
+    (save-restriction
+      (widen)
+      (goto-char (or pos (point)))
+      (beginning-of-line)
+      (if (not (looking-at org-heading-regexp))
+	  (return nil)
+	(save-match-data
+	  (cl-loop
+	   (if (functionp org-get-priority-function)
+	       (let ((priority (funcall org-get-priority-function)))
+		 (unless (eq priority t)
+		   (return priority)))
+	     (when (looking-at org-priority-regexp)
+	       (return (org-priority-char-to-integer
+			(string-to-char (match-string-no-properties 2))))))
+	   (unless (and (not local)
+			org-use-priority-inheritance
+			(org-up-heading-safe))
+
+	     (return (org-priority-char-to-integer org-default-priority)))))))))
 
 
 (defun org-scan-tags (action matcher todo-only &optional start-level)
@@ -109,6 +151,7 @@ headlines matching this string."
 			       (or (buffer-file-name (buffer-base-buffer))
 				   (buffer-name (buffer-base-buffer)))))))
 	 (org-map-continue-from nil)
+	 priority
          lspos tags tags-list
 	 (tags-alist (list (cons 0 org-file-tags)))
 	 (llast 0) rtn rtn1 level category i txt
@@ -196,6 +239,7 @@ headlines matching this string."
 		    (match-beginning 1) (match-end 1)))
 	      (org-show-context 'tags-tree))
 	     ((eq action 'agenda)
+	      (setq priority (org-get-priority))
 	      (setq txt (org-agenda-format-item
 			 ""
 			 (concat
@@ -204,8 +248,8 @@ headlines matching this string."
 			  (org-get-heading))
 			 (make-string level ?\s)
 			 category
-			 tags-list)
-		    priority (org-get-priority txt))
+			 priority
+			 tags-list))
 	      (goto-char lspos)
 	      (setq marker (org-agenda-new-marker))
 	      (org-add-props txt props
@@ -294,9 +338,8 @@ strings."
 	      (when specific (throw 'exit props)))
 	    (when (or (not specific) (string= specific "PRIORITY"))
 	      (push (cons "PRIORITY"
-			  (if (looking-at org-priority-regexp)
-			      (match-string-no-properties 2)
-			    (char-to-string org-priority-default)))
+			  (char-to-string
+			   (org-priority-integer-to-char (org-get-priority))))
 		    props)
 	      (when specific (throw 'exit props)))
 	    (when (or (not specific) (string= specific "FILE"))
