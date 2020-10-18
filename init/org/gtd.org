@@ -299,6 +299,11 @@
 	       (search . "%12:c%b "))
 	     )
      #+end_src
+**** Limits
+     Limit the number of results in the agenda. 
+#+begin_src emacs-lisp
+  (setq org-agenda-max-entries 100)
+#+end_src
 *** Agenda Files List
     Store the list of agenda files in ...
     #+BEGIN_SRC emacs-lisp
