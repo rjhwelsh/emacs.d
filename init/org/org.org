@@ -40,6 +40,21 @@ The base configuration for org-mode.
       '(org-load-modules-maybe t))
   #+END_SRC
 
+** =Contrib/= packages
+*** org-checklist 
+    Org-checklist resets check-boxes for entries that have the property =RESET_CHECK_BOXES= set to =t.
+    Org-checklist requires =a2ps= installed on your system of choice for exporting as postscript.
+   #+begin_src emacs-lisp
+     (require 'org-checklist)
+     (defun org-toggle-reset-check-boxes-property ()
+	(interactive)
+	(let* ((prop "RESET_CHECK_BOXES")
+	      (value (org-entry-get nil prop)))	      
+	  (if value 
+	      (org-delete-property prop)
+	      (org-entry-put nil "RESET_CHECK_BOXES" "t"))))
+     (define-key org-mode-map (kbd "C-c C-x r") 'org-toggle-reset-check-boxes-property)
+   #+end_src
 ** Use private variables
 #+begin_src emacs-lisp
   (rjh/use "org/org:private")
