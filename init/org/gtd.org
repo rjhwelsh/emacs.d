@@ -383,6 +383,64 @@ A function that skips entries based on the location of the file.
       (if (match-p) (point-max)))))
 #+end_src
 
+**** Sub-tree skipping functions 
+     These sub-tree skipping functions are derived from =org-agenda-list-stuck-projects=.
+***** Skip sub-tree based on regexp match
+#+begin_src emacs-lisp
+    (defun org-agenda-skip-subtree-if-regexp (skip-re)
+      "Skip subtree if regexp matches anywhere inside subtree"
+      ;; Skip entry if `org-agenda-skip-regexp' matches anywhere
+      ;; in the subtree.
+      (and (save-excursion
+	     (let ((case-fold-search nil))
+	       (re-search-forward
+		,skip-re (save-excursion (org-end-of-subtree t)) t)))
+	   (progn (outline-next-heading) (point))))
+  #+end_src
+***** Skip sub-tree based on tags present
+#+begin_src emacs-lisp
+  (defun org-agenda-skip-subtree-if-tags (tags)
+    "Skip subtree if any of the tags match.
+  Tags is a list of tags"
+    (let* ((tags-re (cond ((null tags) nil)
+			  ((member "*" tags) org-tag-line-re)
+			  (tags
+			   (let ((other-tags (format "\\(?:%s:\\)*" org-tag-re)))
+			     (concat org-outline-regexp-bol
+				     ".*?[ \t]:"
+				     other-tags
+				     (regexp-opt tags t)
+				     ":" other-tags "[ \t]*$")))
+			  (t nil)))
+	   (re-list (delq nil (list tags-re)))
+	   (skip-re
+	    (if (null re-list)
+		(error "Missing information to identify unstuck projects")
+	      (mapconcat #'identity re-list "\\|"))))
+      (org-agenda-skip-subtree-if-regexp skip-re)
+      ))
+  #+end_src
+***** Skip sub-tree based on todo keywords present
+#+begin_src emacs-lisp
+  (defun org-agenda-skip-subtree-if-todo (todo)
+    "Skip subtree if any of the todo keywords match.
+  todo is a list of todo keywords"
+    (let* ((todo-wds
+	    (if (not (member "*" todo)) todo
+	      (org-agenda-prepare-buffers (org-agenda-files nil 'ifmode))
+	      (org-delete-all org-done-keywords-for-agenda
+			      (copy-sequence org-todo-keywords-for-agenda))))
+	   (todo-re (and todo
+			 (format "^\\*+[ \t]+\\(%s\\)\\>"
+				 (mapconcat #'identity todo-wds "\\|"))))
+	   (re-list (delq nil (list todo-re)))
+	   (skip-re
+	    (if (null re-list)
+		(error "Missing information to identify unstuck projects")
+	      (mapconcat #'identity re-list "\\|"))))
+      (org-agenda-skip-subtree-if-regexp skip-re)
+      ))
+  #+end_src
 *** Global skip function
     #+begin_src emacs-lisp
       (setq org-agenda-skip-function-global 
