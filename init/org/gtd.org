@@ -380,7 +380,7 @@ A function that skips entries based on the location of the file.
     ;; Reverse match ?
     (if inverse
 	(if (not match-p) (point-max))
-      (if (match-p) (point-max)))))
+      (if match-p (point-max)))))
 #+end_src
 
 **** Sub-tree skipping functions 
