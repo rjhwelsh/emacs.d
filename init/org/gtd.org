@@ -598,7 +598,6 @@ A function that skips entries based on the location of the file.
 		   (org-tags-match-list-sublevels nil))
 		  ))
  #+end_src
-
 *** Tag search views
 **** Persistent Tags View Generator
      This function generates a list of =org-agenda-custom-commands= for each tag in =org-tag-persistent-alist=.
@@ -693,11 +692,16 @@ A function that skips entries based on the location of the file.
 *** Export views
 The custom agenda views are explicitly for exporting data to other applications. 
 Their actual functionality is covered by default views, or other existing views. 
+**** Export view prefix
+     #+begin_src emacs-lisp
+       (add-to-list 'org-agenda-custom-commands '("E" . "Export-only views"))
+     #+end_src
+
 **** Agenda view (EXPORT)
  "Agenda view"
      #+begin_src emacs-lisp
        (add-to-list 'org-agenda-custom-commands
-		    `("A" "Agenda View (EXPORT)" .
+		    `("EA" "Agenda View (EXPORT)" .
 		      (agenda ""
 		       (
 			 (org-agenda-skip-function nil)
@@ -723,14 +727,13 @@ Their actual functionality is covered by default views, or other existing views.
 		       )
 		      ,(org-agenda-filename-to-export-views
 			"agenda/agenda"
-			'("ics"))
-		      ))
+			'("ics"))))
      #+end_src
 **** Stuck projects (EXPORT)
  Stuck projects (EXPORT)
  #+begin_src emacs-lisp
    (add-to-list 'org-agenda-custom-commands
-		  `("S" "Stuck projects (EXPORT)" .
+		  `("ES" "Stuck projects (EXPORT)" .
 		    (stuck ""
 			      '((ps-number-of-columns 1)
 				(ps-left-header (list 'org-agenda-write-buffer-name))
@@ -738,10 +741,8 @@ Their actual functionality is covered by default views, or other existing views.
 				(org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
 			      ,(org-agenda-filename-to-export-views 
 				"agenda/stuck"
-				'("ps" "html"))
-   )))
+				'("ps" "html")))))
  #+end_src
-
 *** Combination view
 **** Full view generator
     #+begin_src emacs-lisp
