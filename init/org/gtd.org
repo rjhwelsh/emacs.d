@@ -576,6 +576,8 @@ A function that skips entries based on the location of the file.
 		       ;; Match sublevels in tag search
 		       (org-tags-match-list-sublevels t)
 		       (org-use-tag-inheritance nil)
+		       ;; Sort by priority, then by category (as in org-agenda-files)
+		       (org-agenda-sorting-strategy '((tags priority-down category-keep)))
 		       ;; Other options
 		       (org-agenda-tags-todo-honor-ignore-options nil)
 		       )))
