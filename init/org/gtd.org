@@ -387,12 +387,16 @@ A function that skips entries based on the location of the file.
      These sub-tree skipping functions are derived from =org-agenda-list-stuck-projects=.
 ***** Skip sub-tree based on regexp match
 #+begin_src emacs-lisp
-  (defun org-agenda-skip-subtree-if-regexp (skip-re &optional invert)
-    "Skip subtree if regexp matches anywhere inside subtree, not including current headline."
+  (defun org-agenda-skip-subtree-if-regexp (skip-re &optional invert immediate-children)
+    "Skip subtree if regexp matches anywhere inside subtree, not including current headline.
+     INVERT, if t inverts the match
+     IMMEDIATE-CHILDREN, if t only matches the headline content of immediate children
+    "
     ;; Skip entry if `org-agenda-skip-regexp' matches anywhere
     ;; in the subtree.
     (let* ((next-headline (save-excursion (or (outline-next-heading) (point-max))))
 	   (subtree-end (save-excursion (org-end-of-subtree t)))
+	   (current-level (outline-level)) 
 	   (match-p 
 	    (save-restriction
 	      (widen)
@@ -401,10 +405,24 @@ A function that skips entries based on the location of the file.
 		  (progn
 		    ;; skip over current headline
 		    (move-end-of-line nil)
-		    (if (< (point) subtree-end)
-			(re-search-forward
-			 skip-re subtree-end t)))))))
-	   )
+		    (if (not immediate-children)
+			(if (< (point) subtree-end)
+			    (re-search-forward
+			     skip-re subtree-end t))
+		      ;; Only match immediate children headlines with regexp
+		      (let ((retval nil))
+			(cl-loop 
+			 (if 
+			     (or retval 
+				 (>= (point) subtree-end)) 
+			     (return retval))
+			 (outline-next-heading)
+			 ;; Skip unless exactly 1 level deeper than current headline
+			 (if (= (outline-level) (1+ current-level))
+			     (setq retval
+				   (let ((eol (save-excursion (move-end-of-line nil) (point))))
+				     (re-search-forward 
+				      skip-re eol t)))))))))))))
       (if 
 	  (or 
 	   (and invert (not match-p))
@@ -414,7 +432,7 @@ A function that skips entries based on the location of the file.
   #+end_src
 ***** Skip sub-tree based on tags present
 #+begin_src emacs-lisp
-  (defun org-agenda-skip-subtree-if-tags (tags &optional invert)
+  (defun org-agenda-skip-subtree-if-tags (tags &optional invert immediate-children)
     "Skip subtree if any of the tags match.
   Tags is a list of tags"
     (let* ((tags-re (cond ((null tags) nil)
@@ -432,12 +450,11 @@ A function that skips entries based on the location of the file.
 	    (if (null re-list)
 		(error "Missing information to identify unstuck projects")
 	      (mapconcat #'identity re-list "\\|"))))
-      (org-agenda-skip-subtree-if-regexp skip-re invert)
-      ))
+      (org-agenda-skip-subtree-if-regexp skip-re invert immediate-children)))
   #+end_src
 ***** Skip sub-tree based on todo keywords present
 #+begin_src emacs-lisp
-  (defun org-agenda-skip-subtree-if-todo (todo &optional invert)
+  (defun org-agenda-skip-subtree-if-todo (todo &optional invert immediate-children)
     "Skip subtree if any of the todo keywords match.
   todo is a list of todo keywords"
     (let* ((todo-wds
@@ -453,8 +470,7 @@ A function that skips entries based on the location of the file.
 	    (if (null re-list)
 		(error "Missing information to identify unstuck projects")
 	      (mapconcat #'identity re-list "\\|"))))
-      (org-agenda-skip-subtree-if-regexp skip-re invert)
-      ))
+      (org-agenda-skip-subtree-if-regexp skip-re invert immediate-children)))
   #+end_src
 *** Global skip function
     #+begin_src emacs-lisp
