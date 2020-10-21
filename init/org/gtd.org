@@ -569,7 +569,8 @@ A function that skips entries based on the location of the file.
 		       (org-agenda-skip-function 
 			;; Skip entry if it does not contain todo keywords that define a project
 			'(org-agenda-skip-subtree-if-todo 		       
-			 (nth 1 org-stuck-projects) 
+			 ;; (nth 1 org-stuck-projects) 
+			 org-todo-keywords-1
 			 t  ;; invert
 			 t  ;; immediate-children 
 			 ))
