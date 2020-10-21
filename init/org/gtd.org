@@ -579,6 +579,8 @@ A function that skips entries based on the location of the file.
 		       (org-use-tag-inheritance nil)
 		       ;; Sort by priority, then by category (as in org-agenda-files)
 		       (org-agenda-sorting-strategy '((tags priority-down category-keep)))
+		       ;; Show full breadcrumbs for each project
+		       (org-agenda-prefix-format '((tags . "%12:c %b")))
 		       ;; Other options
 		       (org-agenda-tags-todo-honor-ignore-options nil)
 		       )))
