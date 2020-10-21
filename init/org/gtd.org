@@ -570,14 +570,15 @@ A function that skips entries based on the location of the file.
 			;; Skip entry if it does not contain todo keywords that define a project
 			'(org-agenda-skip-subtree-if-todo 		       
 			 (nth 1 org-stuck-projects) 
-			 t))
+			 t  ;; invert
+			 t  ;; immediate-children 
+			 ))
 		       ;; Match sublevels in tag search
 		       (org-tags-match-list-sublevels t)
 		       (org-use-tag-inheritance nil)
 		       ;; Other options
 		       (org-agenda-tags-todo-honor-ignore-options nil)
-		       )
-		      ))
+		       )))
      #+end_src  
 
 **** Match any todo item which can be archived
