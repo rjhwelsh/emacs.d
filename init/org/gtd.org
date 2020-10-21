@@ -472,6 +472,27 @@ A function that skips entries based on the location of the file.
 	      (mapconcat #'identity re-list "\\|"))))
       (org-agenda-skip-subtree-if-regexp skip-re invert immediate-children)))
   #+end_src
+
+**** Org element API skipping functions
+***** Skip element based on regexp match of property
+     #+begin_src emacs-lisp
+       (defun org-agenda-skip-element-if-property-regexp (prop skip-re &optional invert)
+	 "Skip headline if regexp matches with the specified property; property must reference a string-value.
+	INVERT; if t, inverts the match"
+	 (let* ((next-headline (save-excursion (or (outline-next-heading) (point-max))))
+		(match-p 
+		 (let ((case-fold-search nil))
+		   (string-match 
+		    skip-re
+		    (org-element-property prop (org-element-at-point)))))
+		)
+	   (if 
+	       (or 
+		(and invert (not match-p))
+		(and (not invert) match-p))
+	       next-headline
+	     )))
+     #+end_src
 *** Global skip function
     #+begin_src emacs-lisp
       (setq org-agenda-skip-function-global 
