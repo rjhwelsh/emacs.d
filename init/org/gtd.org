@@ -543,18 +543,23 @@ A function that skips entries based on the location of the file.
 	    )
     #+end_src
 *** Todo search views
-
 **** Make a list of all projects
      #+begin_src emacs-lisp
        (add-to-list 'org-agenda-custom-commands
-		    '("l" "List of projects" tags (nth 0 org-stuck-projects)
+		    '("l" "List of projects" tags 
+		      ;; (nth 0 org-stuck-projects)
+		      "+LEVEL>=1"
 		      ((org-agenda-overriding-header "List of projects")
 		       (org-agenda-skip-function 
 			;; Skip entry if it does not contain todo keywords that define a project
 			'(org-agenda-skip-subtree-if-todo 		       
 			 (nth 1 org-stuck-projects) 
 			 t))
-		       (org-tags-match-list-sublevels nil)
+		       ;; Match sublevels in tag search
+		       (org-tags-match-list-sublevels t)
+		       (org-use-tag-inheritance nil)
+		       ;; Other options
+		       (org-agenda-tags-todo-honor-ignore-options nil)
 		       )
 		      ))
      #+end_src  
