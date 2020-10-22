@@ -744,8 +744,9 @@ Their actual functionality is covered by default views, or other existing views.
 		       (org-agenda-remove-tags t)
 		       (ps-number-of-columns 1)
 		       (org-agenda-prefix-format "[ ] %?-12t%?-12s%:c")
-		       (org-agenda-skip-function nil)
-		       )
+		       ;; Exclude actual calendar for export
+		       (org-agenda-skip-function '(org-agenda-skip-entry-if-file-path "calendar.org")) 
+		       ) 
 		      ,(org-agenda-filename-to-export-views
 			"agenda/agenda"
 			'("ics"))))
