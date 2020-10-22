@@ -124,7 +124,10 @@ The base configuration for org-mode.
       (defun rjh/org-add-ids-to-headlines-in-agenda-files ()
 	"Add ID properties to all headlines across agenda buffers which do not already have one."
 	(interactive)
-	(org-map-entries 'org-id-get-create nil 'agenda))
+	(condition-case-unless-debug  buffer-read-only
+	    (org-map-entries 'org-id-get-create nil 'agenda)
+	  (error nil))
+	)
     #+end_src
 
     Add hook to agenda-mode.
@@ -138,9 +141,11 @@ The base configuration for org-mode.
     #+begin_src emacs-lisp
       (defun rjh/remove-schedule ()
 	(interactive)
-	(let ((current-prefix-arg '(4)))
-	  (call-interactively 'org-schedule))
-	)
+	(condition-case-unless-debug buffer-read-only
+	    (let ((current-prefix-arg '(4)))
+	      (call-interactively 'org-schedule))
+       (error nil)
+	  ))
     #+end_src
 
     Function to remove schedule from all agenda entries.
