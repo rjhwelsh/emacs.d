@@ -814,7 +814,7 @@ Their actual functionality is covered by default views, or other existing views.
 			 (ps-paper-type 'collinsorg3colA4)
 			 (ps-number-of-columns 3)
 			 (ps-print-background-image 
-			  ((,summary-border-file ,(- 0 summary-side-margin) ,(- 0 ps-bottom-margin))))
+			  '((,summary-border-file ,(- 0 summary-side-margin) ,(- 0 ps-bottom-margin))))
 			 (ps-landscape-mode t)
 			 (ps-left-margin ,summary-side-margin)
 			 (ps-right-margin ,summary-side-margin)
