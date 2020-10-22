@@ -756,13 +756,13 @@ Their actual functionality is covered by default views, or other existing views.
    (add-to-list 'org-agenda-custom-commands
 		  `("ES" "Stuck projects (EXPORT)" .
 		    (stuck ""
-			      '((ps-number-of-columns 1)
-				(ps-left-header (list 'org-agenda-write-buffer-name))
-				(ps-print-color-p nil)
-				(org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
-			      ,(org-agenda-filename-to-export-views 
-				"agenda/stuck"
-				'("ps" "html")))))
+			   ((ps-number-of-columns 1)
+			    (ps-left-header (list 'org-agenda-write-buffer-name))
+			    (ps-print-color-p nil)
+			    (org-agenda-prefix-format "[ ] %?-12t%?-12s%:c"))
+			   ,(org-agenda-filename-to-export-views 
+			     "agenda/stuck"
+			     '("ps" "html")))))
  #+end_src
 *** Combination view
 **** Full view generator
