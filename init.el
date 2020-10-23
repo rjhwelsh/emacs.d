@@ -57,8 +57,27 @@
   (load (expand-file-name "rjh.el" repo))
   )
 
-;; Load customizations from file
-(setq custom-file "~/.emacs.d/custom.el")
+;; Ensure customization directory exists
+(setq custom-file-directory "~/.emacs.d/custom/")
+(unless
+    (file-exists-p custom-file-directory)
+  (make-directory custom-file-directory)
+  )
+
+;; Load customizations from file (in `custom-file-directory')
+;; File can be specified on the command-line via environment variable
+;; E.g.
+;; /usr/bin/env EMACS_CUSTOM="custom.el" /usr/bin/emacs
+;; Should start emacs with default custom.el file
+;; Otherwise default is used
+(setq custom-file
+      (expand-file-name
+       (or 
+	(getenv "EMACS_CUSTOM")
+	"custom.el")
+       custom-file-directory))
+
+;; Ensure file exists before loading
 (if (file-exists-p custom-file)
     (load custom-file))
 
