@@ -79,7 +79,7 @@
 
 ;; Ensure file exists before loading
 (if (file-exists-p custom-file)
-    (load custom-file))
+    (load custom-file nil nil nil t))
 
 ;; Loads configuration based on environment variables
 (rjh/load-env)
