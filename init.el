@@ -74,7 +74,7 @@
       (expand-file-name
        (or 
 	(getenv "EMACS_CUSTOM")
-	"custom.el")
+	"default.el")
        custom-file-directory))
 
 ;; Ensure file exists before loading
