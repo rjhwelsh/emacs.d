@@ -5,13 +5,27 @@ Capture command line arguments used.
    #+begin_src emacs-lisp
 (setq session-state-cli (apply 'concat command-line-args-left command-line-args))
    #+end_src
+** Session state rjh config variables
+Concatenate =EMACS_CUSTOM=, =EMACS_CONFIG=, =EMACS_CONFIG_PRIVATE= environment variables.
+#+begin_src emacs-lisp
+  (setq session-state-rjh-config-env 
+	(apply 'concat 
+	       (mapcar 'getenv 
+		       '("EMACS_CUSTOM" 
+			 "EMACS_CONFIG" 
+			 "EMACS_CONFIG_PRIVATE"))))
+#+end_src
 
 ** Identify current session
 Uses an md5 hash to identify the current session, based on command-line-args.
 This variable is used in workgroups, desktop.el and others to identify the current session.
    #+begin_src emacs-lisp
      (setq session-state-id 
-	   (secure-hash 'md5 session-state-cli))
+	   (secure-hash 'md5 
+			(apply 'concat 
+			       (list
+				session-state-cli 
+				session-state-rjh-config-env))))
      (message "Session-state-id: %s" session-state-id)
    #+end_src
 
