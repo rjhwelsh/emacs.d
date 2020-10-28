@@ -17,6 +17,7 @@
   - Refiled on [2020-10-14 Wed 22:47]
   :END:
 ** Keywords
+*** Todo item workflow
    Workflow states have been taken from gjstein/sachachua.
    See gjstein [[http://cachestocaches.com/2016/9/my-workflow-org-agenda/#][here]].
    See sachachua [[https://sachachua.com/blog/2007/12/emacs-getting-things-done-with-org-basic/][here]].
@@ -50,6 +51,31 @@
    #+BEGIN_EXAMPLE
    #+TYP_TODO: @MYNAME(m) @NAME1(1) @NAME2(2) | DONE(d)
    #+END_EXAMPLE
+*** GTD workflow 
+These keywords capture the GTD state of "projects".
+#+begin_src emacs-lisp
+  (setq org-gtd-workflow
+      ;; The next stage for this project is ... 
+	'(sequence
+	  "COLLECT(1!)" ;; Thoughts need to be collected for this project (synonym: brainstorm)
+	  "CLARIFY(2!)" ;; Current thoughts need to clarified into what things mean, and what to do.
+	  "ORGANIZE(3!)" ;; The results need to be organized, shifted into the right bucket
+	;; Scheduled/deadline/timed actions
+	;; NEXT actions
+	;; Waiting actions
+	;; Project plans, REFILE to alternative project?
+	;; Reference material
+	;; Someday/Maybe, hold for review
+	;; Trash
+	  "REVIEW(4!)"  ;; Gather, and process stuff, review system, update your lists, get clean/clear/current complete
+	;; Everything is organized here, but not prioritized/reviewed
+	;; Review is the final check before committing a project to action
+	  "DO(5!)"      ;; Stuff ready for action
+	;; Everything is stream-lined and ready to go for this task
+	  "|"
+	  ))
+  (setq org-todo-keywords (append org-todo-keywords (list org-gtd-workflow)))
+#+end_src
 
 ** Stuck Projects
    1. Match projects as
