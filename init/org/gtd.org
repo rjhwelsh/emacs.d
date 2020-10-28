@@ -847,3 +847,58 @@ Their actual functionality is covered by default views, or other existing views.
 		     ))
     #+end_src
 
+
+* Hooks
+Auto-actions linked to opening the agenda buffer.
+** org-id
+   Hooks to ensure each org-mode entry has an associated org-id property.
+
+   Create id upon capture.
+   #+begin_src emacs-lisp
+     (add-hook 'org-capture-prepare-finalize-hook 'org-id-get-create)
+   #+end_src
+
+   Create a function to add ids to all headlines in a file, but only if they are an
+   agenda buffer.
+   #+begin_src emacs-lisp
+     (defun rjh/org-add-ids-to-headlines-in-agenda-files ()
+       "Add ID properties to all headlines across agenda buffers which do not already have one."
+       (interactive)
+       (condition-case-unless-debug  buffer-read-only
+	   (org-map-entries 'org-id-get-create nil 'agenda)
+	 (error nil))
+       )
+   #+end_src
+
+   Add hook to agenda-mode.
+   #+begin_src emacs-lisp
+     (add-hook 'org-agenda-mode-hook 'rjh/org-add-ids-to-headlines-in-agenda-files)
+   #+end_src
+** remove schedule from completed tasks
+   Hook to remove schedule timestamps from any completed tasks.
+
+   Function to remove schedule.
+   #+begin_src emacs-lisp
+     (defun rjh/remove-schedule ()
+       (interactive)
+       (condition-case-unless-debug buffer-read-only
+	   (let ((current-prefix-arg '(4)))
+	     (call-interactively 'org-schedule))
+      (error nil)
+	 ))
+   #+end_src
+
+   Function to remove schedule from all agenda entries.
+   #+begin_src emacs-lisp
+     (defun rjh/remove-schedule-from-completed-tasks ()
+       "Remove schedule from completed tasks in agenda buffers"
+       (interactive)
+       (org-map-entries 'rjh/remove-schedule "TODO=\"DONE\"+SCHEDULED<\"<today>\"" 'agenda
+			))
+   #+end_src
+
+   Add hook to agenda-mode.
+   #+begin_src emacs-lisp
+     (add-hook 'org-agenda-mode-hook 'rjh/remove-schedule-from-completed-tasks)
+   #+end_src
+
