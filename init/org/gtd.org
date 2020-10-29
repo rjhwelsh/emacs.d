@@ -422,7 +422,7 @@ A function that skips entries based on the location of the file.
     ;; in the subtree.
     (let* ((next-headline (save-excursion (or (outline-next-heading) (point-max))))
 	   (subtree-end (save-excursion (org-end-of-subtree t)))
-	   (current-level (outline-level)) 
+	   (current-level (org-current-level)) 
 	   (match-p 
 	    (save-restriction
 	      (widen)
@@ -444,7 +444,7 @@ A function that skips entries based on the location of the file.
 			     (return retval))
 			 (outline-next-heading)
 			 ;; Skip unless exactly 1 level deeper than current headline
-			 (if (= (outline-level) (1+ current-level))
+			 (if (= (org-current-level) (1+ current-level))
 			     (setq retval
 				   (let ((eol (save-excursion (move-end-of-line nil) (point))))
 				     (re-search-forward 
