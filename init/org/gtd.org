@@ -874,6 +874,22 @@ Their actual functionality is covered by default views, or other existing views.
 
 * Hooks
 Auto-actions linked to opening the agenda buffer.
+** revert any read-only buffers 
+   Workaround to undo any changes to read-only files that might happen as a result of the following hooks.
+   #+begin_src emacs-lisp
+     (defun rjh/org-agenda-revert-read-only-org-buffers ()
+       "Reverts all read-only org-buffers"
+       (mapcar 
+	(lambda (buffer) 
+	  (with-current-buffer buffer 
+	    (when buffer-read-only (revert-buffer t t t))))
+	  (org-buffer-list 'files))
+       )
+   #+end_src
+
+   #+begin_src emacs-lisp
+   (add-hook 'org-agenda-mode-hook 'rjh/org-agenda-revert-read-only-org-buffers)
+   #+end_src
 ** org-id
    Hooks to ensure each org-mode entry has an associated org-id property.
 
