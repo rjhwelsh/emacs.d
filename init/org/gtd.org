@@ -422,7 +422,7 @@ A function that skips entries based on the location of the file.
 		    (save-excursion
 		      (progn
 			;; skip over current headline
-			(move-end-of-line nil)
+			(org-end-of-line nil)
 			;; Only match immediate children headlines with skip-function
 			(let ((retval nil))
 			  (cl-loop
@@ -468,7 +468,7 @@ A function that skips entries based on the location of the file.
 		(let ((case-fold-search nil))
 		  (progn
 		    ;; skip over current headline
-		    (move-end-of-line nil)
+		    (org-end-of-line nil)
 		    (if (not immediate-children)
 			(if (< (point) subtree-end)
 			    (re-search-forward
@@ -484,7 +484,7 @@ A function that skips entries based on the location of the file.
 			 ;; Skip unless exactly 1 level deeper than current headline
 			 (if (= (org-current-level) (1+ current-level))
 			     (setq retval
-				   (let ((eol (save-excursion (move-end-of-line nil) (point))))
+				   (let ((eol (save-excursion (org-end-of-line nil) (point))))
 				     (re-search-forward 
 				      skip-re eol t)))))))))))))
       (if 
