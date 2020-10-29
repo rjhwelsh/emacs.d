@@ -904,9 +904,12 @@ Auto-actions linked to opening the agenda buffer.
      (defun rjh/org-add-ids-to-headlines-in-agenda-files ()
        "Add ID properties to all headlines across agenda buffers which do not already have one."
        (interactive)
-       (condition-case-unless-debug  buffer-read-only
-	   (org-map-entries 'org-id-get-create nil 'agenda)
-	 (error nil))
+       (org-map-entries 
+	(lambda () 
+	  (condition-case-unless-debug  buffer-read-only
+	      (org-id-get-create)
+	    (error nil)))
+	nil 'agenda)
        )
    #+end_src
 
