@@ -266,8 +266,8 @@ Moved mostly to =gtd.org=.
      ;; Refiling targets
      (setq org-refile-targets
 	   '((nil :maxlevel . 9 ) ;; This file
-	     (org-agenda-files :maxlevel . 2) ;; Any agenda file
-	     (ixp/org-buffer-files :level . 1))) ;; Any open org-buffer
+	     ;; (org-agenda-files :maxlevel . 2) ;; Any agenda file
+	     (ixp/org-buffer-files :maxlevel . 2))) ;; Any open org-buffer
    #+end_src
 *** Options
 https://blog.aaronbieber.com/2017/03/19/organizing-notes-with-refile.html
