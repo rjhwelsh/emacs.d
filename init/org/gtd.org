@@ -84,7 +84,11 @@ These keywords capture the GTD state of "projects".
       anywhere.
    #+BEGIN_SRC emacs-lisp
      (setq org-stuck-projects
-	   '("-DOC-NOARCHIVE+LEVEL=1/-DONE" ("NEXT") nil "\\<IGNORE\\>"))
+	   '("-DOC-NOARCHIVE+LEVEL>=1/-DONE" 
+	     ("NEXT")
+	     nil 
+	     "\\<IGNORE\\>"
+	     ))
    #+END_SRC
 
 ** Priorities
