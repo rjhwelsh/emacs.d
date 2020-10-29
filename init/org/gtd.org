@@ -10,12 +10,6 @@
 
 
 * Agenda
-  :PROPERTIES:
-  :PPID:
-  :END:
-  :LOGBOOK:
-  - Refiled on [2020-10-14 Wed 22:47]
-  :END:
 ** Keywords
 *** Todo item workflow
    Workflow states have been taken from gjstein/sachachua.
