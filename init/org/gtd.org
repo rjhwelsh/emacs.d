@@ -487,6 +487,22 @@ A function that skips entries based on the location of the file.
 		 (match-p (apply skip-function skip-func-args)))
 	    (if (not match-p) next-headline)))
       #+end_src
+***** Skip headline if it matches a regexp
+      #+begin_src emacs-lisp
+	(defun org-agenda-skip-if-regexp (skip-re)
+	  "Skip headline if regexp matches the headline"
+	  (let* ((next-headline (save-excursion (or (outline-next-heading) (point-max))))
+		 (subtree-end (save-excursion (org-end-of-subtree t)))
+		 (current-level (org-current-level)) 
+		 (match-p 
+		  (save-excursion
+		    (let ((case-fold-search nil)
+			  (eol (save-excursion (org-end-of-line nil) (point))))
+		      (re-search-forward 
+		       skip-re eol t)))))
+	    (if match-p next-headline)))
+      #+end_src
+
 ***** Skip sub-tree based on regexp match
 #+begin_src emacs-lisp
   (defun org-agenda-skip-subtree-if-regexp (skip-re &optional invert immediate-children)
