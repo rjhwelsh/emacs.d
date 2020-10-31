@@ -691,11 +691,17 @@ A function that skips entries based on the location of the file.
 		       ;; Skip functions
 		       (org-agenda-skip-function-global nil) 
 		       ;; DO NOT skip entry unless it has no todo children
+		       ;; Or SKIP if it is a todo item, LEVEL>1
 		       (org-agenda-skip-function 
-			'(org-agenda-skip-invert
+			'(or 
+			  (org-agenda-skip-invert
 			  'org-agenda-skip-if-children 
 			  'org-agenda-skip-entry-if
-			  'todo 'todo))
+			  'todo 'todo)
+			  (and 
+			   (> (org-current-level) 1)
+			   (org-agenda-skip-entry-if 'nottodo org-gtd-workflow-1)
+			   )))
 		       ;; Match sublevels in tag search
 		       (org-tags-match-list-sublevels t)
 		       (org-use-tag-inheritance nil)
