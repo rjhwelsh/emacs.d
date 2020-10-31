@@ -11,6 +11,18 @@
 
 * Agenda
 ** Keywords
+*** Function to extract todo keywords from variable
+    #+begin_src emacs-lisp
+      (defun org-todo-keywords-extract (&optional todo-keywords) 
+	"Extract todo keywords from the `org-todo-keywords' variable."
+	(mapcar 
+	 (lambda (sequence)
+	   (let* ((keywords (cdr sequence)))
+	     (org-remove-keyword-keys keywords)
+	     ))
+	 (or todo-keywords org-todo-keywords)))
+    #+end_src
+
 *** Todo item workflow
    Workflow states have been taken from gjstein/sachachua.
    See gjstein [[http://cachestocaches.com/2016/9/my-workflow-org-agenda/#][here]].
