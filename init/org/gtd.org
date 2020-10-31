@@ -457,6 +457,28 @@ A function that skips entries based on the location of the file.
 			   )))))))
 	    (if match-p next-headline)))
       #+end_src
+***** Skip headline if immediate parent would be skipped
+      #+begin_src emacs-lisp
+	(defun org-agenda-skip-if-parent (skip-function &rest skip-func-args)
+	  "Skip headline if any immediate parents match the SKIP-FUNCTION and SKIP-FUNC-ARGS"
+	  (let* ((prev-headline (save-excursion (or (outline-previous-heading) (point-min))))
+		 (next-headline (save-excursion (or (outline-next-heading) (point-max))))
+		 (subtree-end (save-excursion (org-end-of-subtree t)))
+		 (current-level (org-current-level)) 
+		 (match-p 
+		  (save-restriction
+		    (widen)
+		    (save-excursion
+		      (progn
+			;; Return nil if no parents
+			(when (> (org-current-level) 1)
+			  ;; Move to parent heading
+			  (outline-up-heading 1)
+			  ;; Apply skip function to immediate parent only
+			  (apply skip-function skip-func-args))
+			)))))
+	    (if match-p next-headline)))
+      #+end_src
 ***** Invert skip function
       #+begin_src emacs-lisp
 	(defun org-agenda-skip-invert (skip-function &rest skip-func-args)
