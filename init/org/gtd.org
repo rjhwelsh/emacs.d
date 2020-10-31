@@ -415,12 +415,10 @@ A function that skips entries based on the location of the file.
 #+begin_src emacs-lisp
   (defun org-agenda-skip-entry-if-file-path (regexp &optional inverse)
     "Skip entry if it is in a file on path."
-  (let* ((path (buffer-file-name))
-	 (match-p (string-match regexp path)))
-    ;; Reverse match ?
-    (if inverse
-	(if (not match-p) (point-max))
-      (if match-p (point-max)))))
+    (let* ((path (buffer-file-name))
+	   (match-p (string-match regexp path)))
+      (if match-p (point-max))
+      ))
 #+end_src
 
 **** Sub-tree skipping functions 
@@ -505,11 +503,8 @@ A function that skips entries based on the location of the file.
 
 ***** Skip sub-tree based on regexp match
 #+begin_src emacs-lisp
-  (defun org-agenda-skip-subtree-if-regexp (skip-re &optional invert immediate-children)
-    "Skip subtree if regexp matches anywhere inside subtree, not including current headline.
-     INVERT, if t inverts the match
-     IMMEDIATE-CHILDREN, if t only matches the headline content of immediate children
-    "
+  (defun org-agenda-skip-subtree-if-regexp (skip-re)
+    "Skip subtree if regexp matches anywhere inside subtree, not including current headline."
     ;; Skip entry if `org-agenda-skip-regexp' matches anywhere
     ;; in the subtree.
     (let* ((next-headline (save-excursion (or (outline-next-heading) (point-max))))
@@ -523,24 +518,10 @@ A function that skips entries based on the location of the file.
 		  (progn
 		    ;; skip over current headline
 		    (org-end-of-line nil)
-		    (if (not immediate-children)
-			(if (< (point) subtree-end)
+		    (if (< (point) subtree-end)
 			    (re-search-forward
 			     skip-re subtree-end t))
-		      ;; Only match immediate children headlines with regexp
-		      (let ((retval nil))
-			(cl-loop 
-			 (if 
-			     (or retval 
-				 (>= (point) subtree-end)) 
-			     (return retval))
-			 (outline-next-heading)
-			 ;; Skip unless exactly 1 level deeper than current headline
-			 (if (= (org-current-level) (1+ current-level))
-			     (setq retval
-				   (let ((eol (save-excursion (org-end-of-line nil) (point))))
-				     (re-search-forward 
-				      skip-re eol t)))))))))))))
+		    ))))))
       (if 
 	  (or 
 	   (and invert (not match-p))
@@ -550,7 +531,7 @@ A function that skips entries based on the location of the file.
   #+end_src
 ***** Skip sub-tree based on tags present
 #+begin_src emacs-lisp
-  (defun org-agenda-skip-subtree-if-tags (tags &optional invert immediate-children)
+  (defun org-agenda-skip-subtree-if-tags (tags)
     "Skip subtree if any of the tags match.
   Tags is a list of tags"
     (let* ((tags-re (cond ((null tags) nil)
@@ -568,11 +549,11 @@ A function that skips entries based on the location of the file.
 	    (if (null re-list)
 		(error "Missing information to identify unstuck projects")
 	      (mapconcat #'identity re-list "\\|"))))
-      (org-agenda-skip-subtree-if-regexp skip-re invert immediate-children)))
+      (org-agenda-skip-subtree-if-regexp skip-re)))
   #+end_src
 ***** Skip sub-tree based on todo keywords present
 #+begin_src emacs-lisp
-  (defun org-agenda-skip-subtree-if-todo (todo &optional invert immediate-children)
+  (defun org-agenda-skip-subtree-if-todo (todo)
     "Skip subtree if any of the todo keywords match.
   todo is a list of todo keywords"
     (let* ((todo-wds
@@ -588,7 +569,7 @@ A function that skips entries based on the location of the file.
 	    (if (null re-list)
 		(error "Missing information to identify unstuck projects")
 	      (mapconcat #'identity re-list "\\|"))))
-      (org-agenda-skip-subtree-if-regexp skip-re invert immediate-children)))
+      (org-agenda-skip-subtree-if-regexp skip-re)))
   #+end_src
 
 **** Org element API skipping functions
@@ -620,7 +601,8 @@ A function that skips entries based on the location of the file.
 	      ;; Skip BLOCKED tasks
 	      (org-agenda-skip-entry-if-blocked)
 	      ;; Skip file PATHs
-	      (org-agenda-skip-entry-if-file-path "1action" t)
+	      (org-agenda-skip-invert
+	       'org-agenda-skip-entry-if-file-path "1action")
 	      ))
     #+end_src
 
