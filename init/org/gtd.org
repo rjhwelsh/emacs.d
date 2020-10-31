@@ -80,9 +80,13 @@ These keywords capture the GTD state of "projects".
 	;; Everything is stream-lined and ready to go for this task
 	  "|"
 	  ))
-  (setq org-todo-keywords (append org-todo-keywords (list org-gtd-workflow)))
-#+end_src
 
+  ;; Append to org-todo-keywords
+  (setq org-todo-keywords (append org-todo-keywords (list org-gtd-workflow)))
+
+  ;; Plain keywords for agenda view construction
+  (setq org-gtd-workflow-1 (car (org-todo-keywords-extract (list (remove "|" org-gtd-workflow)))))
+#+end_src
 ** Stuck Projects
    1. Match projects as
       1. Any LEVEL 1 headline
