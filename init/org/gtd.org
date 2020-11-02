@@ -512,11 +512,18 @@ A function that skips entries based on the location of the file.
 **** Skip if immediate parent/child nodes match
 ***** Skip headline if immediate children would be skipped
       #+begin_src emacs-lisp
-	(defun org-agenda-skip-if-children (skip-function &rest skip-func-args )
-	  "Skip headline if any immediate children match the SKIP-FUNCTION and SKIP-FUNC-ARGS"
+	(defun org-agenda-skip-if-children (depth skip-function &rest skip-func-args )
+	  "Skip headline if any children match the SKIP-FUNCTION and SKIP-FUNC-ARGS
+	   Any children below the DEPTH relative to the root node are ignored.
+	   DEPTH = nil, will recursively search entire subtree
+	   "
 	  (let* ((next-headline (save-excursion (or (outline-next-heading) (point-max))))
 		 (subtree-end (save-excursion (org-end-of-subtree t)))
-		 (current-level (org-current-level)) 
+		 (current-level (org-current-level))
+		 (maximum-level 
+		  (and 
+		   depth
+		   (+ current-level depth)))
 		 (match-p 
 		  (save-restriction
 		    (widen)
@@ -535,7 +542,13 @@ A function that skips entries based on the location of the file.
 			   (if 
 			       (outline-next-heading)
 			       ;; Skip unless exactly 1 level deeper than current headline
-			       (if (= (org-current-level) (1+ current-level))
+			       (if 
+				   (or 
+				    (not maximum-level) ;; Accept any node if depth is nil
+				    (and
+				     (> (org-current-level) current-level) ;; deeper than subtree root
+				     (<= (org-current-level) maximum-level) ;; not as deep as maximum level
+				     ))
 				   (setq retval (apply skip-function skip-func-args)))
 			     ;; No more headings.. return
 			     (return retval))
@@ -698,8 +711,8 @@ Skips each item unless it qualifies as a project.
 	(setq org-agenda-project-skip-function 
 	      '(or
 		(org-agenda-skip-invert                  ;; (Do not ... )
-		 'org-agenda-skip-if-children            ;; (skip if any children are ... )       
-		 'org-agenda-skip-entry-if 'todo '("*")) ;; (... any todo item)
+		 'org-agenda-skip-if-children 1            ;; (skip if any children are ... )       
+		 'org-agenda-skip-entry-if 'todo 'any) ;; (... any todo item)
 		;; BUT ... Skip if ..
 		(and 
 		 (> (org-current-level) 1)                              ;; LEVEL > 1 ... AND ...
@@ -713,7 +726,7 @@ A skip function for finding all projects yet to be completed.
   (setq org-agenda-project-skip-function-todo
 	'(or
 	  (org-agenda-skip-invert                  ;; (Do not ... )
-	   'org-agenda-skip-if-children            ;; (skip if any children are ... )       
+	   'org-agenda-skip-if-children 1            ;; (skip if any children are ... )       
 	   'org-agenda-skip-entry-if 'todo 'todo) ;; (... any YET TO BE DONE todo item)
 	  ;; BUT ... Skip if ..
 	  (and 
@@ -731,11 +744,11 @@ A skip function for finding all completed projects.
 		(or 
 		 ;; Check sub-items exists
 		 (org-agenda-skip-invert                ;; Do not
-		  'org-agenda-skip-if-children          ;; skip if any children are ...
+		  'org-agenda-skip-if-children 1          ;; skip if any children are ...
 		  'org-agenda-skip-entry-if 'todo 'any) ;; ... any todo keyword
 		 ;; OR ...
 		 ;; all sub-items are complete
-		 (org-agenda-skip-if-children            ;; skip if any children are ... 
+		 (org-agenda-skip-if-children nil            ;; skip if any children are ... 
 		  'org-agenda-skip-entry-if 'todo 'todo) ;; ... any ACTIVE todo item
 		 )
 		;; OR ... 
