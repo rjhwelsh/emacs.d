@@ -831,6 +831,15 @@ A function that skips entries based on the location of the file.
 		      tags-tree ,org-agenda-deselect-persistent-tags)
 		    )
      #+end_src
+***** Sparse tree of any TIMESTAMP-ed items
+      Including actively scheduled or deadline activities.
+      #+begin_src emacs-lisp
+	(add-to-list 'org-agenda-custom-commands
+		     `(,(concat org-agenda-sparse-prefix "t")
+		       "Any timestamp items"
+		       occur-tree org-ts-regexp
+		      ))
+      #+end_src
 
 **** Todo-tree
 ***** All NEXT actions
