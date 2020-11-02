@@ -764,12 +764,9 @@ A skip function for finding all completed projects.
 		       ,(append 
 			 org-agenda-project-common-options
 			 '((org-agenda-overriding-header "Active Projects")
-			   ;; DO NOT skip entry unless it has no todo children
-			   ;; Or SKIP if it is a todo item, LEVEL>1
 			   (org-agenda-skip-function org-agenda-project-skip-function-todo)
 			   ))))
       #+end_src  
-
 ***** Completed projects
   #+begin_src emacs-lisp
     (add-to-list 'org-agenda-custom-commands
@@ -782,6 +779,19 @@ A skip function for finding all completed projects.
 		       (org-agenda-skip-function org-agenda-project-skip-function-done)
 		       ))))
   #+end_src
+
+***** All projects
+      #+begin_src emacs-lisp
+	(add-to-list 'org-agenda-custom-commands
+		     `(,(concat org-agenda-project-prefix "a") 
+		       "All projects" tags 
+		       "+LEVEL>=1"
+		       ,(append 
+			 org-agenda-project-common-options
+			 '((org-agenda-overriding-header "All Projects")
+			   (org-agenda-skip-function org-agenda-project-skip-function)
+			   ))))
+      #+end_src  
 
 *** Tag search views
 **** Tag search prefix
