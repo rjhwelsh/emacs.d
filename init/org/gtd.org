@@ -680,9 +680,15 @@ A function that skips entries based on the location of the file.
 	    )
     #+end_src
 *** Todo search views
-
 **** Project views
-***** Project skip function
+***** Project view prefix
+      #+begin_src emacs-lisp
+	(setq org-agenda-project-prefix "p")
+	(add-to-list 'org-agenda-custom-commands
+		     `(,org-agenda-project-prefix . "Project views"))
+      #+end_src
+
+***** Project skip functions
 Skips each item unless it qualifies as a project.
       #+begin_src emacs-lisp
 	;; N.B. switch "and"/"or" around
@@ -702,41 +708,95 @@ Skips each item unless it qualifies as a project.
 	      )
       #+end_src
 
-***** Make a list of all projects
+A skip function for finding all projects yet to be completed. 
+#+begin_src emacs-lisp
+  (setq org-agenda-project-skip-function-todo
+	'(or
+	  (org-agenda-skip-invert                  ;; (Do not ... )
+	   'org-agenda-skip-if-children            ;; (skip if any children are ... )       
+	   'org-agenda-skip-entry-if 'todo 'todo) ;; (... any YET TO BE DONE todo item)
+	  ;; BUT ... Skip if ..
+	  (and 
+	   (> (org-current-level) 1)                              ;; LEVEL > 1 ... AND ...
+	   (org-agenda-skip-entry-if 'nottodo org-gtd-workflow-1) ;; if not todo keyword of a gtd workflow
+	   )
+	  )
+	)
+#+end_src
+
+A skip function for finding all completed projects.
+      #+begin_src emacs-lisp
+	(setq org-agenda-project-skip-function-done
+	      '(or
+		(or 
+		 ;; Check sub-items exists
+		 (org-agenda-skip-invert                ;; Do not
+		  'org-agenda-skip-if-children          ;; skip if any children are ...
+		  'org-agenda-skip-entry-if 'todo 'any) ;; ... any todo keyword
+		 ;; OR ...
+		 ;; all sub-items are complete
+		 (org-agenda-skip-if-children            ;; skip if any children are ... 
+		  'org-agenda-skip-entry-if 'todo 'todo) ;; ... any ACTIVE todo item
+		 )
+		;; OR ... 
+		(and 
+		 (> (org-current-level) 1)                              ;; LEVEL > 1 ... AND ...
+		 (org-agenda-skip-entry-if 'nottodo org-gtd-workflow-1) ;; if not todo keyword of a gtd workflow
+		 )
+		;; OR ...
+		(and 
+		 (= (org-current-level) 1)               ;; LEVEL = 1 ... AND ....
+		 (org-agenda-skip-entry-if 'todo 'todo)  ;; entry has an ACTIVE todo keyword 
+		 )
+		)
+	      )
+      #+end_src
+
+***** Common Options
+      #+begin_src emacs-lisp
+	(setq org-agenda-project-common-options 
+	      '(
+		;; Skip functions
+		(org-agenda-skip-function-global nil) 
+		;; Match sublevels in tag search
+		(org-tags-match-list-sublevels t)
+		(org-use-tag-inheritance nil)
+		;; Sort by priority, then by category (as in org-agenda-files)
+		(org-agenda-sorting-strategy '((tags priority-down category-keep)))
+		;; Show full breadcrumbs for each project
+		(org-agenda-prefix-format '((tags . "%12:c %b")))
+		;; Other options
+		(org-agenda-tags-todo-honor-ignore-options nil)
+		(org-agenda-dim-blocked-tasks nil)		
+		))
+      #+end_src
+
+***** Active projects
       #+begin_src emacs-lisp
 	(add-to-list 'org-agenda-custom-commands
-		     '("A" "List of Active Projects" tags 
+		     `(,(concat org-agenda-project-prefix "t") 
+		       "Active projects" tags 
 		       "+LEVEL>=1"
-		       ((org-agenda-overriding-header "List of projects")
-			;; Skip functions
-			(org-agenda-skip-function-global nil) 
-			;; DO NOT skip entry unless it has no todo children
-			;; Or SKIP if it is a todo item, LEVEL>1
-			(org-agenda-skip-function org-agenda-project-skip-function)
-			;; Match sublevels in tag search
-			(org-tags-match-list-sublevels t)
-			(org-use-tag-inheritance nil)
-			;; Sort by priority, then by category (as in org-agenda-files)
-			(org-agenda-sorting-strategy '((tags priority-down category-keep)))
-			;; Show full breadcrumbs for each project
-			(org-agenda-prefix-format '((tags . "%12:c %b")))
-			;; Other options
-			(org-agenda-tags-todo-honor-ignore-options nil)
-			(org-agenda-dim-blocked-tasks nil)
-			)))
+		       ,(append 
+			 org-agenda-project-common-options
+			 '((org-agenda-overriding-header "Active Projects")
+			   ;; DO NOT skip entry unless it has no todo children
+			   ;; Or SKIP if it is a todo item, LEVEL>1
+			   (org-agenda-skip-function org-agenda-project-skip-function-todo)
+			   ))))
       #+end_src  
 
-***** Match project which can be archived
-  Projects to archive.
-  This relies on the ='bh/skip-non-archivable-tasks= skip function.
+***** Completed projects
   #+begin_src emacs-lisp
     (add-to-list 'org-agenda-custom-commands
-		 '("X" "Tasks to Archive" todo ""
-		   ;; tags ,deselect-persistent-tags
-		   ((org-agenda-overriding-header "Tasks to Archive")
-		    (org-agenda-skip-function 'bh/skip-non-archivable-tasks)
-		    (org-tags-match-list-sublevels nil))
-		   ))
+		 `(,(concat org-agenda-project-prefix "x")
+		   "Completed projects" tags 
+		   "+LEVEL>=1"
+		   ,(append
+		     org-agenda-project-common-options
+		     '((org-agenda-overriding-header "Completed Projects")
+		       (org-agenda-skip-function org-agenda-project-skip-function-done)
+		       ))))
   #+end_src
 
 *** Tag search views
