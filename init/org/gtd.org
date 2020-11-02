@@ -107,45 +107,6 @@ These keywords capture the GTD state of "projects".
 	     ))
    #+END_SRC
 
-** Priorities
-*** Keys
-    Use "C-c ," to quickly set priorities.
-    Only "," is required in agenda.
-
-*** Default Priority Values
-    Priorities are assigned A,B,C,D (E,F). B being the default.
-    I'm particularly inspired by the Eisenhower Matrix and Must/Should/Nice todos.
-    For reference, see the table below. Typically, one should attempt to accomplish
-    as many B's in a day as possible; while also taking regular breaks.
-    If you have nothing left todo, D's are pleasant enough.
-
-    | PRIORITY   | NOT IMPORTANT | IMPORTANT  |
-    |------------+---------------+------------|
-    | NOT URGENT | D - PLEASANT  | B - SHOULD |
-    |------------+---------------+------------|
-    | URGENT     | C - NICE      | A - MUST   |
-    |------------+---------------+------------|
-
-    So.. one way to describe my priorities, would be...
-    #+BEGIN_EXAMPLE
-    #+PRIORITIES: C A F .
-    #+END_EXAMPLE
-
-    #+BEGIN_SRC emacs-lisp
-      (setq org-default-priority ?D)
-      (setq org-highest-priority ?A)
-      (setq org-lowest-priority ?F)
-    #+END_SRC
-
-** Dependencies
-   Dependency settings.
-   This allows for task blocking/etc.
-   #+BEGIN_SRC emacs-lisp
-     (setq org-enforce-todo-dependencies t)
-     (setq org-agenda-dim-blocked-tasks t)
-     (setq org-enforce-todo-checkbox-dependencies nil)
-   #+END_SRC
-
 ** Tags
    Tags represent environmental conditions before a task can be undertaken.
    Tasks should be organized by a hierarchy of projects and sub-projects.
@@ -311,6 +272,44 @@ These keywords capture the GTD state of "projects".
     #+begin_src emacs-lisp
       (setq org-agenda-tags-column -80)
     #+end_src
+** Priorities
+*** Keys
+    Use "C-c ," to quickly set priorities.
+    Only "," is required in agenda.
+
+*** Default Priority Values
+    Priorities are assigned A,B,C,D (E,F). B being the default.
+    I'm particularly inspired by the Eisenhower Matrix and Must/Should/Nice todos.
+    For reference, see the table below. Typically, one should attempt to accomplish
+    as many B's in a day as possible; while also taking regular breaks.
+    If you have nothing left todo, D's are pleasant enough.
+
+    | PRIORITY   | NOT IMPORTANT | IMPORTANT  |
+    |------------+---------------+------------|
+    | NOT URGENT | D - PLEASANT  | B - SHOULD |
+    |------------+---------------+------------|
+    | URGENT     | C - NICE      | A - MUST   |
+    |------------+---------------+------------|
+
+    So.. one way to describe my priorities, would be...
+    #+BEGIN_EXAMPLE
+    #+PRIORITIES: C A F .
+    #+END_EXAMPLE
+
+    #+BEGIN_SRC emacs-lisp
+      (setq org-default-priority ?D)
+      (setq org-highest-priority ?A)
+      (setq org-lowest-priority ?F)
+    #+END_SRC
+
+** Dependencies
+   Dependency settings.
+   This allows for task blocking/etc.
+   #+BEGIN_SRC emacs-lisp
+     (setq org-enforce-todo-dependencies t)
+     (setq org-agenda-dim-blocked-tasks t)
+     (setq org-enforce-todo-checkbox-dependencies nil)
+   #+END_SRC
 
 ** Views
 *** Agenda settings
@@ -685,7 +684,6 @@ A function that skips entries based on the location of the file.
      #+begin_src emacs-lisp
        (add-to-list 'org-agenda-custom-commands
 		    '("A" "List of Active Projects" tags 
-		      ;; (nth 0 org-stuck-projects)
 		      "+LEVEL>=1"
 		      ((org-agenda-overriding-header "List of projects")
 		       ;; Skip functions
