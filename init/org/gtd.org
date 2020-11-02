@@ -341,7 +341,7 @@ These keywords capture the GTD state of "projects".
 **** Limits
      Limit the number of results in the agenda. 
 #+begin_src emacs-lisp
-  (setq org-agenda-max-entries 100)
+  (setq org-agenda-max-entries 1000)
 #+end_src
 *** Agenda Files List
     Store the list of agenda files in ...
