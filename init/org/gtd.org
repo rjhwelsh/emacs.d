@@ -831,6 +831,16 @@ A function that skips entries based on the location of the file.
 		      tags-tree ,org-agenda-deselect-persistent-tags)
 		    )
      #+end_src
+
+**** Todo-tree
+***** All NEXT actions
+      #+begin_src emacs-lisp
+	(add-to-list 'org-agenda-custom-commands
+		     `(,(concat org-agenda-sparse-prefix "n")
+		       "Todo items tagged with NEXT"
+		       todo-tree "NEXT"))
+      #+end_src
+
 *** Export views
 The custom agenda views are explicitly for exporting data to other applications. 
 Their actual functionality is covered by default views, or other existing views. 
