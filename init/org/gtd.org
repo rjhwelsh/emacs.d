@@ -798,33 +798,39 @@ A function that skips entries based on the location of the file.
 		      ,(org-agenda-filename-to-export-views "agenda/tag/OTHER" '("ps" "html"))
 		      )))
     #+end_src
-*** Tag-Tree (sparse) search buffers
-**** Tag-tree prefix
+*** Sparse search of current buffer
+    The manual way to create a sparse tree of the current buffer is to use the =org-sparse-tree= command. 
+    The default keys are =C-c /= to manually create a sparse tree. 
+    Possible tree types include =occur-tree=, =tags-tree=, or =todo-tree=.
+
+**** Sparse-tree prefix
      #+begin_src emacs-lisp
-       (setq org-agenda-tag-tree-prefix "b") ;; b for buffer search
+       (setq org-agenda-sparse-prefix "\\") ;; \ for creating a sparse tree in the current Buffer
        (add-to-list 'org-agenda-custom-commands
-		    `(,org-agenda-tag-tree-prefix . "Tag-tree search of current buffer"))
+		    `(,org-agenda-sparse-prefix . "Sparse-tree search of current buffer"))
      #+end_src
-**** Sparse tree of *any persistent tags* in current buffer 
-    #+begin_src emacs-lisp
-      ;; Tags tree
-      (add-to-list 'org-agenda-custom-commands
-		   `(,(concat org-agenda-tag-tree-prefix "p") 
-		     "Todo items with persistent tags"
-		     tags-tree ,org-agenda-select-persistent-tags)
-		   )
-    #+end_src
-**** Sparse tree of anything *without* a persistent tag
-    Select todo items without any persistent tags. *u*
-    #+begin_src emacs-lisp
-      ;; Tags-tree 
-      (add-to-list 'org-agenda-custom-commands 
-		   `(
-		     ,(concat org-agenda-tag-tree-prefix "u") 
-		     "Todo items without persistent tags"
-		     tags-tree ,org-agenda-deselect-persistent-tags)
-		   )
-    #+end_src
+
+**** Tags-tree
+***** Sparse tree of *any persistent tags* 
+     #+begin_src emacs-lisp
+       ;; Tags tree
+       (add-to-list 'org-agenda-custom-commands
+		    `(,(concat org-agenda-sparse-prefix "p") 
+		      "Todo items with persistent tags"
+		      tags-tree ,org-agenda-select-persistent-tags)
+		    )
+     #+end_src
+***** Sparse tree of anything *without* a persistent tag
+     Select todo items without any persistent tags. *u*
+     #+begin_src emacs-lisp
+       ;; Tags-tree 
+       (add-to-list 'org-agenda-custom-commands 
+		    `(
+		      ,(concat org-agenda-sparse-prefix "u") 
+		      "Todo items without persistent tags"
+		      tags-tree ,org-agenda-deselect-persistent-tags)
+		    )
+     #+end_src
 *** Export views
 The custom agenda views are explicitly for exporting data to other applications. 
 Their actual functionality is covered by default views, or other existing views. 
