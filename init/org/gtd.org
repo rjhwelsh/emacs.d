@@ -793,6 +793,36 @@ A skip function for finding all completed projects.
 			   ))))
       #+end_src  
 
+***** View all projects with unassigned GTD workflow
+      #+begin_src emacs-lisp
+	(add-to-list 'org-agenda-custom-commands
+		     `(,(concat org-agenda-project-prefix "u") 
+		       "Projects without GTD keyword" tags
+		       ,(concat "/" (mapconcat (lambda (s) (concat "-" s)) org-gtd-workflow-1 ""))
+		       ,(append 
+			 org-agenda-project-common-options
+			 '((org-agenda-overriding-header "Projects without GTD keyword")
+			   (org-agenda-skip-function org-agenda-project-skip-function)
+			   ))))
+      #+end_src
+
+***** View all projects with specific GTD stages
+      #+begin_src emacs-lisp
+	(let ((count 0))	
+	  (dolist (keyword org-gtd-workflow-1)
+	    (add-to-list 'org-agenda-custom-commands
+			 `(,(concat org-agenda-project-prefix 
+				    (number-to-string (setq count (1+ count))))
+			   "Projects with GTD keyword" todo
+			   ,keyword
+			   ,(append 
+			     org-agenda-project-common-options
+			     '(
+			       (org-agenda-overriding-header "Projects with GTD workflow")
+			       (org-agenda-skip-function org-agenda-project-skip-function)
+			       ))))))
+      #+end_src
+
 *** Tag search views
 **** Tag search prefix
      #+begin_src emacs-lisp
