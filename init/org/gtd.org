@@ -854,7 +854,7 @@ Their actual functionality is covered by default views, or other existing views.
  "Year Agenda View (ICS)"
      #+begin_src emacs-lisp
        (add-to-list 'org-agenda-custom-commands
-		    `("Y" "Year Agenda View (EXPORT)" agenda ""
+		    `("EY" "Year Agenda View (EXPORT)" agenda ""
 		      ((org-agenda-span 366)
 		       (org-agenda-remove-tags t)
 		       (ps-number-of-columns 1)
@@ -903,7 +903,7 @@ Their actual functionality is covered by default views, or other existing views.
     #+begin_src emacs-lisp
       ;; Active view
       (add-to-list 'org-agenda-custom-commands
-		   `("n" "Active View"
+		   `("En" "Active View"
 		     ,(org-agenda-full-view)
 		     ((ps-number-of-columns 1)
 		      (ps-left-header (list 'org-agenda-write-buffer-name))
@@ -919,7 +919,7 @@ Their actual functionality is covered by default views, or other existing views.
 		   (let ((summary-side-margin (* (/ 1 2.54) 72))
 			 (summary-border-file "~/.emacs.d/ps/summary_border.ps")
 			 )
-		     `("s" "Summary View"
+		     `("Es" "Summary View"
 		       ,(org-agenda-full-view)
 		       ((org-agenda-start-day "+1d")
 			 (org-agenda-span 3)
@@ -945,7 +945,7 @@ Their actual functionality is covered by default views, or other existing views.
     #+begin_src emacs-lisp
       ;; Organiser view
       (add-to-list 'org-agenda-custom-commands
-		   `("o" "Organiser View"
+		   `("Eo" "Organiser View"
 		     ,(org-agenda-full-view)
 		     ((org-agenda-start-day "+1d")
 		      (org-agenda-span 3)
