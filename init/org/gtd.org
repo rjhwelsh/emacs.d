@@ -372,6 +372,20 @@ These keywords capture the GTD state of "projects".
 	      )))
       #+end_src
 
+***** Basic sort function that relies on *non-existent* /org-agenda-score-entry-at-point/  
+      #+begin_src emacs-lisp
+	(defun org-agenda-user-defined-sort (a b)
+	  "Sorting strategy for agenda items."
+	  (let* ((ma (or (get-text-property 1 'org-marker a)
+			 (get-text-property 1 'org-hd-marker a)))
+		 (mb (or (get-text-property 1 'org-marker b)
+			 (get-text-property 1 'org-hd-marker b)))
+		 (sa (org-agenda-score-entry-at-point ma))
+		 (sb (org-agenda-score-entry-at-point mb)))
+	    (cond ((< sa sb) -1)
+		  ((< sb sa) +1)
+		  (t nil))))
+      #+end_src
 **** Clear org-agenda-sorting-strategy list
      
     #+begin_src emacs-lisp
