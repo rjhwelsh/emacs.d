@@ -349,6 +349,29 @@ These keywords capture the GTD state of "projects".
       (setq org-agenda-files "~/.emacs.d/agenda-files" )
     #+END_SRC
 *** Agenda sort strategy
+**** Functions
+***** Calculate the number of seconds between *now* and the *closest timestamp* in entry
+      #+begin_src emacs-lisp
+	(defun org-agenda-get-seconds-to-now (pom)
+	  "Returns the difference between closest timestamp item to now in seconds"
+	  (let* ((now (float-time))
+		 (time-props '("DEADLINE" "SCHEDULED" "TIMESTAMP"))
+		 (time-sec-or-nil 
+		  (mapcar 
+		   (lambda (prop)
+		     (let* ((ts (org-entry-get pom prop))
+			    (secs (when ts (org-time-string-to-seconds ts)))
+			    (dt (when secs (- now secs)))
+			    (dta (when dt (abs dt))))
+		       dta))
+		   time-props))
+		 (time-sec (remove nil time-sec-or-nil))
+		 )
+	    (when time-sec
+	      (apply 'min time-sec)
+	      )))
+      #+end_src
+
 **** Clear org-agenda-sorting-strategy list
      
     #+begin_src emacs-lisp
