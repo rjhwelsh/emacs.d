@@ -348,15 +348,58 @@ These keywords capture the GTD state of "projects".
     #+BEGIN_SRC emacs-lisp
       (setq org-agenda-files "~/.emacs.d/agenda-files" )
     #+END_SRC
-*** Sorting Strategy
-    Sorting strategy.
-    #+BEGIN_SRC emacs-lisp
-      (setq org-agenda-sorting-strategy
-	    '((agenda time-up deadline-up scheduled-up todo-state-down category-keep              priority-down effort-up tag-up)
-	      (todo           todo-state-down          priority-down   effort-up                  deadline-up category-keep tag-up)
-	      (tags                                    todo-state-down category-keep              deadline-up priority-down effort-up tag-up)
-	      (search         deadline-up              todo-state-down category-keep              priority-down effort-up tag-up)))
-    #+END_SRC
+*** Agenda sort strategy
+**** Clear org-agenda-sorting-strategy list
+     
+    #+begin_src emacs-lisp
+      (setq org-agenda-sorting-strategy '())
+    #+end_src
+**** Agenda
+     #+begin_src emacs-lisp
+       (add-to-list 'org-agenda-sorting-strategy
+		    '(agenda 
+
+		      time-up 
+		      deadline-up 
+		      scheduled-up 
+		      todo-state-down
+		      priority-down
+
+		      ))
+     #+end_src
+**** Todo
+     #+begin_src emacs-lisp
+(add-to-list 'org-agenda-sorting-strategy
+		    '(todo
+
+		      priority-down
+		      todo-state-down
+		      effort-up
+
+		      ))
+     #+end_src
+**** Tags
+     #+begin_src emacs-lisp
+(add-to-list 'org-agenda-sorting-strategy
+		    '(tags
+
+		      priority-down
+		      todo-state-down
+		      effort-up
+
+		      ))
+     #+end_src
+**** Search
+     #+begin_src emacs-lisp
+(add-to-list 'org-agenda-sorting-strategy
+		    '(search
+
+		      priority-down
+		      todo-state-down
+		      effort-up
+
+		      ))
+     #+end_src
 *** Agenda Skip Functions
 **** Org-agenda-skip-function
      Use =org-agenda-skip-function= option to define a function to skip entries. 
