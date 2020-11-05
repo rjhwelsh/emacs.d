@@ -25,6 +25,10 @@ Variables
   (defvar rjh/theme-schedule-default nil
     "Default theme to load, if no theme matches current schedule."
     )
+
+  (defvar rjh/theme-schedule-current nil
+    "The currently set theme, if this is the same as the new theme, theme-loading is skipped."
+    )
 #+end_src
 
 Function
@@ -61,7 +65,11 @@ Function
 		  )
 		 ) theme))) ;; Return theme
      (lambda (theme)
-       (when theme
+       (when 
+	   (and 
+	    theme
+	    (not (equal theme rjh/theme-schedule-current))
+	    (setq rjh/theme-schedule-current theme))
 	 (cond
 	  ((listp theme)
 	    (dolist (th theme)
