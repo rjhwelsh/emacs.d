@@ -39,7 +39,7 @@ Prevent warnings in the byte compiler
        (require 'cal-dst) ;; ;TODO: Add dst zone relative to current time / date
        (let* ((time (or time (current-time)))
 	      (zone (or zone (current-time-zone)))
-	      (dtime (decode-time time zone))
+	      (dtime (decode-time time (cadr zone)))
 	      (sec (car dtime))
 	      (min (cadr dtime))
 	      (hour (caddr dtime)))
