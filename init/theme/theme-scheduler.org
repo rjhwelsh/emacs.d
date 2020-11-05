@@ -34,53 +34,57 @@ Variables
 Function
 #+begin_src emacs-lisp
   (require 'async)
-  (defun rjh/theme-scheduler (&optional repeat)
-    "Changes theme according to the time."
-    (async-start
-     ;; Select theme asynchronously
-     `(lambda ()
-	(progn
-	  ,(async-inject-variables "\\`rjh/theme-schedule-")
-	  (let* (
-		 (hour
-		  (decoded-time-hour
-		   (decode-time (current-time))))
-		 (theme-alist ;;rjh/theme-schedule-alist)
-		  (sort
-		   ;; Warning ! sort is destructive,
-		   ;;    weird bug causes list to be truncated if not copied
-		   ;;    reverse also copies the list here ...
-		   (reverse rjh/theme-schedule-alist)
-		   (lambda (a b) (> (car a) (car b))))
-		  )
-		 (theme-default rjh/theme-schedule-default)
 
-		 ;; Finds first theme alist-pair greater than or equal to the hour
-		 (theme
-		  (alist-get hour
-			     theme-alist
-			     theme-default ;; Default if no theme matches
-			     nil
-			     '<=)
-		  )
-		 ) theme))) ;; Return theme
-     (lambda (theme)
-       (when 
-	   (and 
-	    theme
-	    (not (equal theme rjh/theme-schedule-current))
-	    (setq rjh/theme-schedule-current theme))
-	 (cond
-	  ((listp theme)
-	    (dolist (th theme)
-	    (message "Changing theme to %s" (symbol-name th))
-	    (load-theme th t)))
-	  ((symbolp theme)
-	   (message "Changing theme to %s" (symbol-name theme))
-	   (load-theme theme t))
-	 ))) ;; Load theme if a switch is detected
-     )
-    (when repeat
-      (run-with-timer (* 1 60 60) nil 'rjh/theme-scheduler t) ;; Change theme every hour
-      ))
+  (defun rjh/theme-scheduler (&optional repeat)
+    "Changes theme according to the hour."
+    (progn
+      (when (version< emacs-version "26.3")
+	(error "rjh/theme-scheduler requires at least GNU Emacs 26.3"))
+      (async-start
+       ;; Select theme asynchronously
+       `(lambda ()
+	  (progn
+	    ,(async-inject-variables "\\`rjh/theme-schedule-")
+	    (let* (
+		   (hour
+		    (nth 2 ;; decoded-time-hour
+			 (decode-time (current-time))))
+		   (theme-alist ;;rjh/theme-schedule-alist)
+		    (sort
+		     ;; Warning ! sort is destructive,
+		     ;;    weird bug causes list to be truncated if not copied
+		     ;;    reverse also copies the list here ...
+		     (reverse rjh/theme-schedule-alist)
+		     (lambda (a b) (> (car a) (car b))))
+		    )
+		   (theme-default rjh/theme-schedule-default)
+
+		   ;; Finds first theme alist-pair greater than or equal to the hour
+		   (theme
+		    (alist-get hour
+			       theme-alist
+			       theme-default ;; Default if no theme matches
+			       nil
+			       '<=)
+		    )
+		   ) theme))) ;; Return theme
+       (lambda (theme)
+	 (when 
+	     (and 
+	      theme
+	      (not (equal theme rjh/theme-schedule-current))
+	      (setq rjh/theme-schedule-current theme))
+	   (cond
+	    ((listp theme)
+	     (dolist (th theme)
+	       (message "Changing theme to %s" (symbol-name th))
+	       (load-theme th t)))
+	    ((symbolp theme)
+	     (message "Changing theme to %s" (symbol-name theme))
+	     (load-theme theme t))
+	    ))) ;; Load theme if a switch is detected
+       )
+      (when repeat
+	(run-with-timer (* 1 60 60) nil 'rjh/theme-scheduler t) ;; Change theme every hour
+	)))
 #+end_src
