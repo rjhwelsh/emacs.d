@@ -403,24 +403,18 @@ These keywords capture the GTD state of "projects".
 		   (done-stage 1.0)
 		   (t nil))))
 	      (org-todo-keywords-extract org-todo-keywords)))))
-	(org-agenda-get-todo-state-number (point))
       #+end_src
 
 ***** Obtain the character marker for the parent entry
       #+begin_src emacs-lisp
-	(defun org-score-get-parent-point (pom)
+	(defun org-score-get-parent-pom (pom)
 	  "Gets the value of the score for FUNC evaluated on the parent headline of the current entry at POM."
-	  (save-excursion 
-	    (when pom
-	      (goto-char pom) 
-	      (when 
-		  (and 
-		   (org-current-level)
-		   (> (org-current-level) 1))
-		(outline-up-heading 1)
-		))
-	    (point)
-	    ))
+	  (if pom
+	      (org-with-point-at pom
+		;; (when (and (org-current-level) (> (org-current-level) 1)))
+		(org-up-heading-or-point-min)
+		(point-marker))
+	    pom))
       #+end_src
 
 ***** A variable that provides tuning co-efficients for scoring function
@@ -428,8 +422,9 @@ These keywords capture the GTD state of "projects".
     (defvar org-score-vector nil
       "A list of functions and polynomial score coefficients used to calculate the score of an org entry at-point.
 
-    Each list element consists of a FUNCTION SYMBOL and a series of FLOATs like '('org-agenda-get-todo-state-number 1.0 2.0).
-    If the function returns nil at point, the score returned will be 0, disregarding any coefficients for that element.
+    Each list element consists of a FUNCTION SYMBOL and a series of FLOATs like '('org-score-get-todo-state-number 1.0 2.0).
+    If the function returns nil at POM, the score returned will be 0, disregarding any coefficients for that element.
+    Each function must take a single POM (point-marker) argument.
 
     For a single element, n:
     Let '(F k0 k1); the score, Sn is calculated as follows:
@@ -449,10 +444,10 @@ These keywords capture the GTD state of "projects".
 	  )
   #+end_src
 
-***** A scoring function, /org-agenda-score-entry-at-point/
+***** A scoring function, /org-score-score-at-marker/
       #+begin_src emacs-lisp
-	(defun org-score-entry-at-point (pom) 
-	  "Returns the score of org entry-at-point POM based on the `org-score-vector' values."
+	(defun org-score-score-at-marker (pom) 
+	  "Returns the score of org-entry at marker POM based on the `org-score-vector' values."
 	  (if org-score-vector
 	      (apply '+ 
 		     (mapcar 
@@ -482,8 +477,8 @@ These keywords capture the GTD state of "projects".
 			 (get-text-property 1 'org-hd-marker a)))
 		 (mb (or (get-text-property 1 'org-marker b)
 			 (get-text-property 1 'org-hd-marker b)))
-		 (sa (org-score-entry-at-point ma))
-		 (sb (org-score-entry-at-point mb)))
+		 (sa (org-score-score-at-marker ma))
+		 (sb (org-score-score-at-marker mb)))
 	    (cond ((< sa sb) -1)
 		  ((< sb sa) +1)
 		  (t nil))))
