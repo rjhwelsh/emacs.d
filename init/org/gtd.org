@@ -436,7 +436,10 @@ These keywords capture the GTD state of "projects".
     ")
 
     (setq org-score-vector 
-	  '((org-score-get-todo-state-number 1 2))
+	  `((org-score-get-todo-state-number 1000 1000)
+	    ((lambda (pom) (org-score-get-todo-state-number (org-score-get-parent-point pom))) 2000 2000)
+            ((lambda (pom) (/ (org-score-get-seconds-to-now pom) 60.0 60.0 24.0)) 7000 -1000)
+	    )
 	  )
   #+end_src
 
