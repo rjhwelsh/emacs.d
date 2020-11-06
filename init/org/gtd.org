@@ -353,7 +353,8 @@ These keywords capture the GTD state of "projects".
 ***** Calculate the number of seconds between *now* and the *closest timestamp* in entry
       #+begin_src emacs-lisp
 	(defun org-agenda-get-seconds-to-now (pom)
-	  "Returns the difference between closest timestamp item to now in seconds"
+	  "Returns the difference between closest timestamp item to now in seconds.
+		Returns nil if there are no available timestamps to score."
 	  (let* ((now (float-time))
 		 (time-props '("DEADLINE" "SCHEDULED" "TIMESTAMP"))
 		 (time-sec-or-nil 
