@@ -377,7 +377,7 @@ These keywords capture the GTD state of "projects".
       #+begin_src emacs-lisp
 	(defun org-score-get-todo-state-number (pom) 	
 	  "Gets the current todo state as a float.
-		The float represents 1.0 as complete and 0.0 as incomplete"
+		The float represents 1.0 as complete and 0.0 as incomplete/unstarted"
 	  (let ((todostate (org-entry-get pom "TODO"))) ;; Get todo keyword at point	   
 	    (apply 
 	     ;; Returns nil if there is no todo keyword
@@ -411,10 +411,14 @@ These keywords capture the GTD state of "projects".
 	(defun org-score-get-parent-point (pom)
 	  "Gets the value of the score for FUNC evaluated on the parent headline of the current entry at POM."
 	  (save-excursion 
-	    (goto-char pom) 
-	    (when (> (org-current-level) 1)
-	      (outline-up-heading 1)
-	      )
+	    (when pom
+	      (goto-char pom) 
+	      (when 
+		  (and 
+		   (org-current-level)
+		   (> (org-current-level) 1))
+		(outline-up-heading 1)
+		))
 	    (point)
 	    ))
       #+end_src
@@ -438,7 +442,9 @@ These keywords capture the GTD state of "projects".
     (setq org-score-vector 
 	  `((org-score-get-todo-state-number 1000 1000)
 	    ((lambda (pom) (org-score-get-todo-state-number (org-score-get-parent-point pom))) 2000 2000)
-            ((lambda (pom) (/ (org-score-get-seconds-to-now pom) 60.0 60.0 24.0)) 7000 -1000)
+	    ((lambda (pom) 
+	       (let ((score (org-score-get-seconds-to-now pom))) 
+		 (when score (/ score 60.0 60.0 24.0)))) 7000 -1000)
 	    )
 	  )
   #+end_src
@@ -476,11 +482,15 @@ These keywords capture the GTD state of "projects".
 			 (get-text-property 1 'org-hd-marker a)))
 		 (mb (or (get-text-property 1 'org-marker b)
 			 (get-text-property 1 'org-hd-marker b)))
-		 (sa (org-agenda-score-entry-at-point ma))
-		 (sb (org-agenda-score-entry-at-point mb)))
+		 (sa (org-score-entry-at-point ma))
+		 (sb (org-score-entry-at-point mb)))
 	    (cond ((< sa sb) -1)
 		  ((< sb sa) +1)
 		  (t nil))))
+      #+end_src
+***** Enable user-defined score sort for org-agenda
+      #+begin_src emacs-lisp
+	(setq org-agenda-cmp-user-defined 'org-score-user-defined-sort)
       #+end_src
 **** Clear org-agenda-sorting-strategy list
      
@@ -492,6 +502,7 @@ These keywords capture the GTD state of "projects".
        (add-to-list 'org-agenda-sorting-strategy
 		    '(agenda 
 
+                      user-defined-down
 		      time-up 
 		      deadline-up 
 		      scheduled-up 
