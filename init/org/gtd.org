@@ -352,7 +352,7 @@ These keywords capture the GTD state of "projects".
 **** Functions
 ***** Calculate the number of seconds between *now* and the *closest timestamp* in entry
       #+begin_src emacs-lisp
-	(defun org-agenda-get-seconds-to-now (pom)
+	(defun org-score-get-seconds-to-now (pom)
 	  "Returns the difference between closest timestamp item to now in seconds.
 		Returns nil if there are no available timestamps to score."
 	  (let* ((now (float-time))
@@ -375,7 +375,7 @@ These keywords capture the GTD state of "projects".
 
 ***** Obtain a numerical representation of the stage of the current workflow in the current entry
       #+begin_src emacs-lisp
-	(defun org-agenda-get-todo-state-number (pom) 	
+	(defun org-score-get-todo-state-number (pom) 	
 	  "Gets the current todo state as a float.
 		The float represents 1.0 as complete and 0.0 as incomplete"
 	  (let ((todostate (org-entry-get pom "TODO"))) ;; Get todo keyword at point	   
