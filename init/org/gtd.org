@@ -406,6 +406,19 @@ These keywords capture the GTD state of "projects".
 	(org-agenda-get-todo-state-number (point))
       #+end_src
 
+***** Obtain the character marker for the parent entry
+      #+begin_src emacs-lisp
+	(defun org-score-get-parent-point (pom)
+	  "Gets the value of the score for FUNC evaluated on the parent headline of the current entry at POM."
+	  (save-excursion 
+	    (goto-char pom) 
+	    (when (> (org-current-level) 1)
+	      (outline-up-heading 1)
+	      )
+	    (point)
+	    ))
+      #+end_src
+
 ***** Basic sort function that relies on *non-existent* /org-agenda-score-entry-at-point/  
       #+begin_src emacs-lisp
 	(defun org-agenda-user-defined-sort (a b)
