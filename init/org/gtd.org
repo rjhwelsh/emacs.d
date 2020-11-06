@@ -372,6 +372,39 @@ These keywords capture the GTD state of "projects".
 	      )))
       #+end_src
 
+***** Obtain a numerical representation of the stage of the current workflow in the current entry
+      #+begin_src emacs-lisp
+	(defun org-agenda-get-todo-state-number (pom) 	
+	  "Gets the current todo state as a float.
+		The float represents 1.0 as complete and 0.0 as incomplete"
+	  (let ((todostate (org-entry-get pom "TODO"))) ;; Get todo keyword at point	   
+	    (apply 
+	     ;; Returns nil if there is no todo keyword
+	     (lambda (&rest number-or-nil-list) 
+	       (let ((number-list (remove nil number-or-nil-list)))
+		 (if number-list
+		     (apply 'min (remove nil number-list)))))
+	     (mapcar 
+	      (lambda (keywords) 
+		(let* ((done-keywords (member "|" keywords))
+		       (todo-keywords (cdr (member "|" (reverse keywords))))
+		       (todo-stage (member todostate todo-keywords))
+		       (done-stage (member todostate done-keywords)))
+		  (cond 
+		   (todo-stage
+		    ;; Divide result by total length
+		    (/
+		     (float (length todo-stage)) ;; Get distance from end of workflow
+		     (float (- 
+			     (1+ (length keywords))                       ;; Total length
+			     (if done-keywords (length done-keywords) 1)  ;; Length of done keywords incl "|"
+			     ))))
+		   (done-stage 1.0)
+		   (t nil))))
+	      (org-todo-keywords-extract org-todo-keywords)))))
+	(org-agenda-get-todo-state-number (point))
+      #+end_src
+
 ***** Basic sort function that relies on *non-existent* /org-agenda-score-entry-at-point/  
       #+begin_src emacs-lisp
 	(defun org-agenda-user-defined-sort (a b)
