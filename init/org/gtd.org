@@ -420,20 +420,19 @@ These keywords capture the GTD state of "projects".
       #+end_src
 
 ***** A variable that provides tuning co-efficients for scoring function
-Something like; 
-  - pairs of floats/integers and functions
-  - functions should take (pom) and ALWAYS return a float
-  - the float will be multiplied by the corresponding integer
-  - the values will be added together
-  - k1*x1 + k2*x2 + k3*x3 = score
   #+begin_src emacs-lisp
     (defvar org-score-vector nil
-      "A list of functions and score coefficients used to calculate the score of an org entry at-point.
-    Each pair consists of a FUNCTION SYMBOL and a series of FLOATs like '('org-agenda-get-todo-state-number 1.0).
-    If the function returns nil, the score returned will be 0, disregarding any coefficients.
-    Let '(F k0 k1); the value returned by F will be added to k0 and multiplied by k1.
-    S = k0 + k1*F + k2*F^2 ...
-    Each of these scores, S1, S2, S3 are added together to form the final score. 
+      "A list of functions and polynomial score coefficients used to calculate the score of an org entry at-point.
+
+    Each list element consists of a FUNCTION SYMBOL and a series of FLOATs like '('org-agenda-get-todo-state-number 1.0 2.0).
+    If the function returns nil at point, the score returned will be 0, disregarding any coefficients for that element.
+
+    For a single element, n:
+    Let '(F k0 k1); the score, Sn is calculated as follows:
+    Sn = k0 + k1*F + k2*F^2 ...
+
+    The scores for all the elements in org-score-vector are added together to form the final score. 
+    Stotal = S0 + S1 + S2 + S3 + .... 
     ")
 
     (setq org-score-vector 
@@ -456,11 +455,12 @@ Something like;
 			      (n 0) 
 			      (result 0)
 			      )
-			  (dolist (k klist result)
-			    (setq result (+ result (* k (expt value-n n))))
-			    (setq n (1+ n))
-			    )
-			  ))
+			  (if value-n
+			      (dolist (k klist result)
+				(setq result (+ result (* k (expt value-n n))))
+				(setq n (1+ n)))
+			    0
+			    )))
 		      org-score-vector
 		      ))
 	    0))
