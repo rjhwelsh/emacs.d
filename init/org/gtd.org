@@ -419,6 +419,52 @@ These keywords capture the GTD state of "projects".
 	    ))
       #+end_src
 
+***** A variable that provides tuning co-efficients for scoring function
+Something like; 
+  - pairs of floats/integers and functions
+  - functions should take (pom) and ALWAYS return a float
+  - the float will be multiplied by the corresponding integer
+  - the values will be added together
+  - k1*x1 + k2*x2 + k3*x3 = score
+  #+begin_src emacs-lisp
+    (defvar org-score-vector nil
+      "A list of functions and score coefficients used to calculate the score of an org entry at-point.
+    Each pair consists of a FUNCTION SYMBOL and a series of FLOATs like '('org-agenda-get-todo-state-number 1.0).
+    If the function returns nil, the score returned will be 0, disregarding any coefficients.
+    Let '(F k0 k1); the value returned by F will be added to k0 and multiplied by k1.
+    S = k0 + k1*F + k2*F^2 ...
+    Each of these scores, S1, S2, S3 are added together to form the final score. 
+    ")
+
+    (setq org-score-vector 
+	  '((org-score-get-todo-state-number 1 2))
+	  )
+  #+end_src
+
+***** A scoring function, /org-agenda-score-entry-at-point/
+      #+begin_src emacs-lisp
+	(defun org-score-entry-at-point (pom) 
+	  "Returns the score of org entry-at-point POM based on the `org-score-vector' values."
+	  (if org-score-vector
+	      (apply '+ 
+		     (mapcar 
+		      (lambda (score-vec) 
+			(let ((value-n 
+			       (funcall (car score-vec) pom)) ;; Each function should be able to be called with pom only
+			      (klist (cdr score-vec))         ;; List of coeffs, k0, k1, k2 ...			  
+
+			      (n 0) 
+			      (result 0)
+			      )
+			  (dolist (k klist result)
+			    (setq result (+ result (* k (expt value-n n))))
+			    (setq n (1+ n))
+			    )
+			  ))
+		      org-score-vector
+		      ))
+	    0))
+      #+end_src
 ***** Basic sort function that relies on *non-existent* /org-agenda-score-entry-at-point/  
       #+begin_src emacs-lisp
 	(defun org-agenda-user-defined-sort (a b)
