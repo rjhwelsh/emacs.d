@@ -433,15 +433,6 @@ These keywords capture the GTD state of "projects".
     The scores for all the elements in org-score-vector are added together to form the final score. 
     Stotal = S0 + S1 + S2 + S3 + .... 
     ")
-
-    (setq org-score-vector 
-	  `((org-score-get-todo-state-number 1000 1000)
-	    ((lambda (pom) (org-score-get-todo-state-number (org-score-get-parent-point pom))) 2000 2000)
-	    ((lambda (pom) 
-	       (let ((score (org-score-get-seconds-to-now pom))) 
-		 (when score (/ score 60.0 60.0 24.0)))) 7000 -1000)
-	    )
-	  )
   #+end_src
 
 ***** A scoring function, /org-score-score-at-marker/
@@ -487,6 +478,18 @@ These keywords capture the GTD state of "projects".
       #+begin_src emacs-lisp
 	(setq org-agenda-cmp-user-defined 'org-score-user-defined-sort)
       #+end_src
+**** Org-score-vector
+See Functions above for a detailed reference to this variable.
+     #+begin_src emacs-lisp
+    (setq org-score-vector 
+	  `((org-score-get-todo-state-number 1000 1000)
+	    ((lambda (pom) (org-score-get-todo-state-number (org-score-get-parent-point pom))) 2000 2000)
+	    ((lambda (pom) 
+	       (let ((score (org-score-get-seconds-to-now pom))) 
+		 (when score (/ score 60.0 60.0 24.0)))) 7000 -1000)
+	    )
+	  )
+     #+end_src
 **** Clear org-agenda-sorting-strategy list
      
     #+begin_src emacs-lisp
