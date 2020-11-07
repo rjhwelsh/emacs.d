@@ -481,14 +481,27 @@ These keywords capture the GTD state of "projects".
 **** Org-score-vector
 See Functions above for a detailed reference to this variable.
      #+begin_src emacs-lisp
-    (setq org-score-vector 
-	  `((org-score-get-todo-state-number 1000 1000)
-	    ((lambda (pom) (org-score-get-todo-state-number (org-score-get-parent-point pom))) 2000 2000)
-	    ((lambda (pom) 
-	       (let ((score (org-score-get-seconds-to-now pom))) 
-		 (when score (/ score 60.0 60.0 24.0)))) 7000 -1000)
-	    )
-	  )
+       (setq org-score-vector 
+	     `(;; Todo-state scoring
+	       (org-score-get-todo-state-number 1000 1000)
+	       ((lambda (pom) (org-score-get-todo-state-number (org-score-get-parent-point pom))) 2000 2000)
+	       ;; Distance from now (timestamp) scoring
+	       ((lambda (pom) 
+		  (let ((score (org-score-get-seconds-to-now pom))) 
+		    (when score (/ score 60.0 60.0 24.0)))) 7000 -1000)
+	       ;; Priority scoring
+	       ((lambda (pom)
+		  (let* ((S (org-entry-get pom "PRIORITY"))
+			 (pri (when S (org-priority-to-value S))))
+		    (when pri (- (- pri org-priority-default))))) 
+		0 2000)
+	       ((lambda (pom)
+		  (let* ((pom (org-score-get-parent-point pom))
+			 (S (org-entry-get pom "PRIORITY"))
+			 (pri (when S (org-priority-to-value S))))
+		    (when pri (- (- pri org-priority-default))))) 0 4000)
+	       )
+	     )
      #+end_src
 **** Clear org-agenda-sorting-strategy list
      
