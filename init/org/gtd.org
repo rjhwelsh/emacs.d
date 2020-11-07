@@ -499,47 +499,32 @@ See Functions above for a detailed reference to this variable.
      #+begin_src emacs-lisp
        (add-to-list 'org-agenda-sorting-strategy
 		    '(agenda 
-
-                      user-defined-down
+		      user-defined-down
 		      time-up 
 		      deadline-up 
 		      scheduled-up 
 		      todo-state-down
-		      priority-down
-
 		      ))
      #+end_src
 **** Todo
      #+begin_src emacs-lisp
-(add-to-list 'org-agenda-sorting-strategy
+       (add-to-list 'org-agenda-sorting-strategy
 		    '(todo
-
-		      priority-down
-		      todo-state-down
-		      effort-up
-
+		      user-defined-down
 		      ))
      #+end_src
 **** Tags
      #+begin_src emacs-lisp
-(add-to-list 'org-agenda-sorting-strategy
+       (add-to-list 'org-agenda-sorting-strategy
 		    '(tags
-
-		      priority-down
-		      todo-state-down
-		      effort-up
-
+		      user-defined-down
 		      ))
      #+end_src
 **** Search
      #+begin_src emacs-lisp
-(add-to-list 'org-agenda-sorting-strategy
+       (add-to-list 'org-agenda-sorting-strategy
 		    '(search
-
-		      priority-down
-		      todo-state-down
-		      effort-up
-
+		      user-defined-down
 		      ))
      #+end_src
 *** Agenda Skip Functions
@@ -946,8 +931,6 @@ A skip function for finding all completed projects.
 		;; Match sublevels in tag search
 		(org-tags-match-list-sublevels t)
 		(org-use-tag-inheritance nil)
-		;; Sort by priority, then by category (as in org-agenda-files)
-		(org-agenda-sorting-strategy '((tags user-defined-down)))
 		;; Show full breadcrumbs for each project
 		(org-agenda-prefix-format '((tags . "%12:c %b")))
 		;; Other options
