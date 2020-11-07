@@ -944,7 +944,7 @@ A skip function for finding all completed projects.
 		(org-tags-match-list-sublevels t)
 		(org-use-tag-inheritance nil)
 		;; Sort by priority, then by category (as in org-agenda-files)
-		(org-agenda-sorting-strategy '((tags priority-down category-keep)))
+		(org-agenda-sorting-strategy '((tags user-defined-down)))
 		;; Show full breadcrumbs for each project
 		(org-agenda-prefix-format '((tags . "%12:c %b")))
 		;; Other options
