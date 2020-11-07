@@ -890,6 +890,22 @@ A skip function for finding all projects yet to be completed.
 	)
 #+end_src
 
+A skip function for finding projects with a NEXT task
+#+begin_src emacs-lisp
+  (setq org-agenda-project-skip-function-todo-next
+	'(or
+	  (org-agenda-skip-invert                  ;; (Do not ... )
+	   'org-agenda-skip-if-children 1            ;; (skip if any children are ... )       
+	   'org-agenda-skip-entry-if 'todo '("NEXT")) ;; (... any NEXT todo item)
+	  ;; BUT ... Skip if ..
+	  (and 
+	   (> (org-current-level) 1)                              ;; LEVEL > 1 ... AND ...
+	   (org-agenda-skip-entry-if 'nottodo org-gtd-workflow-1) ;; if not todo keyword of a gtd workflow
+	   )
+	  )
+	)
+#+end_src
+
 A skip function for finding all completed projects.
       #+begin_src emacs-lisp
 	(setq org-agenda-project-skip-function-done
@@ -949,6 +965,19 @@ A skip function for finding all completed projects.
 			   (org-agenda-skip-function org-agenda-project-skip-function-todo)
 			   ))))
       #+end_src  
+      
+***** Next projects view
+      #+begin_src emacs-lisp
+	(add-to-list 'org-agenda-custom-commands
+		     `(,(concat org-agenda-project-prefix "n") 
+		       "Next projects" tags 
+		       "+LEVEL>=1"
+		       ,(append 
+			 org-agenda-project-common-options
+			 '((org-agenda-overriding-header "Next Projects")
+			   (org-agenda-skip-function org-agenda-project-skip-function-todo-next)
+			   ))))
+      #+end_src
 ***** Completed projects view
   #+begin_src emacs-lisp
     (add-to-list 'org-agenda-custom-commands
