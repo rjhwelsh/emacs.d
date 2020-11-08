@@ -407,7 +407,7 @@ These keywords capture the GTD state of "projects".
 
 ***** Obtain the character marker for the parent entry
       #+begin_src emacs-lisp
-	(defun org-score-get-parent-pom (pom)
+	(defun org-score-get-parent-marker (pom)
 	  "Gets the value of the score for FUNC evaluated on the parent headline of the current entry at POM."
 	  (if pom
 	      (org-with-point-at pom
@@ -484,7 +484,7 @@ See Functions above for a detailed reference to this variable.
        (setq org-score-vector 
 	     `(;; Todo-state scoring
 	       (org-score-get-todo-state-number 1000 1000)
-	       ((lambda (pom) (org-score-get-todo-state-number (org-score-get-parent-point pom))) 2000 2000)
+	       ((lambda (pom) (org-score-get-todo-state-number (org-score-get-parent-marker pom))) 2000 2000)
 	       ;; Distance from now (timestamp) scoring
 	       ((lambda (pom) 
 		  (let ((score (org-score-get-seconds-to-now pom))) 
@@ -496,7 +496,7 @@ See Functions above for a detailed reference to this variable.
 		    (when pri (- (- pri org-priority-default))))) 
 		0 2000)
 	       ((lambda (pom)
-		  (let* ((pom (org-score-get-parent-point pom))
+		  (let* ((pom (org-score-get-parent-marker pom))
 			 (S (org-entry-get pom "PRIORITY"))
 			 (pri (when S (org-priority-to-value S))))
 		    (when pri (- (- pri org-priority-default))))) 0 4000)
