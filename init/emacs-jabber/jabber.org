@@ -24,7 +24,11 @@ https://www.emacswiki.org/emacs/JabberEl
     :bind-keymap ("C-x C-j" . jabber-global-keymap)
     )
 
+
   (use-package "jabber"
+    :ensure t
+    :init 
+    (require 'jabber-chatbuffer)
     :bind (:map jabber-chat-mode-map
 		("RET" . newline)
 		("<C-return>" . jabber-chat-buffer-send))
