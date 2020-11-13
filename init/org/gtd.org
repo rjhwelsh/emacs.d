@@ -8,6 +8,11 @@
   (rjh/use "org/org:private")
 #+end_src
 
+* Capture
+Change default capture file.
+   #+begin_src emacs-lisp
+ (setq org-default-notes-file (expand-file-name "0inbox.org" (expand-file-name "gtd" org-directory)))
+   #+end_src
 
 * Agenda
 ** Keywords
