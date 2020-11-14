@@ -240,11 +240,11 @@ Moved mostly to =gtd.org=.
    #+BEGIN_SRC emacs-lisp
      (setq org-capture-templates
 	   (append
-	    '(("t" "Todo" entry (file org-default-notes-file)
+	    '(("t" "Todo" entry (file+headline org-default-notes-file "Capture")
 	       "* TODO %? :NEW:\n%i\n" :clock-in t :clock-resume t :empty-lines 1)
-	      ("n" "Next Task" entry (file org-default-notes-file)
+	      ("n" "Next Task" entry (file+headline org-default-notes-file "Capture")
 	       "* NEXT %? \nDEADLINE: %t")
-	      ("m" "Meeting" entry (file org-default-notes-file)
+	      ("m" "Meeting" entry (file+headline org-default-notes-file "Meetings")
 	       "* MEETING with %? :MEETING:\n\t%t" :clock-in t :clock-resume t :empty-lines 1)
 	      )
 	   org-capture-templates))
