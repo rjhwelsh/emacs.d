@@ -1,0 +1,22 @@
+#+TITLE: Mu4e-conversation
+#+AUTHOR: Roger J. H. Welsh
+#+EMAIL: rjhwelsh@posteo.net
+
+* Mu4e-conversation :mu4e:email:view:
+https://gitlab.com/ambrevar/mu4e-conversation
+Adds a view for mu4e that shows a complete thread in a single buffer.
+** Quelpa
+ #+begin_src emacs-lisp
+ (rjh/use "quelpa/quelpa:init")
+ #+end_src
+** Use-package
+   #+begin_src emacs-lisp
+     (use-package "mu4e-conversation"
+       :quelpa (:fetcher git :url "https://gitlab.com/ambrevar/mu4e-conversation.git" :upgrade nil :autoremove t)
+       :defer t
+       :init 
+       (with-eval-after-load 'mu4e (require 'mu4e-conversation))
+       :config
+       (global-mu4e-conversation-mode 1)
+     )
+   #+end_src
