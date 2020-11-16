@@ -85,3 +85,10 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Org_002dmode-links.html
  (define-key mu4e-headers-mode-map (kbd "C-c c") 'mu4e-org-store-and-capture)
  (define-key mu4e-view-mode-map    (kbd "C-c c") 'mu4e-org-store-and-capture)
    #+end_src
+** Lazy indexing
+https://www.djcbsoftware.nl/code/mu/mu4e/Retrieval-and-indexing.html#Speeding-up-indexing
+   #+begin_src emacs-lisp
+     (setq
+      mu4e-index-cleanup nil      ;; don't do a full cleanup check
+      mu4e-index-lazy-check t)    ;; don't consider up-to-date dirs
+   #+end_src
