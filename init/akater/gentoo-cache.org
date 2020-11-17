@@ -5,4 +5,4 @@ https://gitlab.com/akater/emacs-gentoo-cache
 (use-package gentoo-cache :ensure nil
   :load-path "/usr/share/emacs/site-lisp/gentoo-cache"
   :commands (gentoo-cache-get-package-names))
-#+end_src>
+#+end_src

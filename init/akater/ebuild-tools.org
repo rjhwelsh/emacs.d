@@ -6,7 +6,7 @@ Runtime-dependency.
 (rjh/use "akater/akater-misc:init")
 (rjh/use "akater/file-tree:init")
 (rjh/use "akater/akater-conf:init")
-(rjh/use "rolandwalker/anaphora:init")
+(rjh/use "rolandwalker/anaphora-conf:init")
 (rjh/use "akater/gentoo-cache:init")
 #+end_src
 

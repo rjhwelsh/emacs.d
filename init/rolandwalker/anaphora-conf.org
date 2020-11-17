@@ -6,4 +6,5 @@ https://github.com/rolandwalker/anaphora
     :ensure nil
     :load-path "/usr/share/emacs/site-lisp/anaphora"
     )
-#+end_src>
+#+end_src
+
