@@ -6,3 +6,29 @@ https://gitlab.com/akater/emacs-gentoo-cache
   :load-path "/usr/share/emacs/site-lisp/gentoo-cache"
   :commands (gentoo-cache-get-package-names))
 #+end_src
+
+** Function to query eix
+Define function to query eix.
+#+begin_src emacs-lisp
+    (defun gentoo-cache-get-packages (&rest eix-args)
+      "Returns a list packages (category/name) returned by querying eix with EIX-ARGS."
+      (let (result)
+	(with-temp-buffer
+	  (save-excursion
+	    (insert ?\()
+	    (shell-command (eval `(sh-wrap
+				       ((:eix-limit 0)
+				    ,(append
+				      (list 'eix :pure-packages :format "'\"<category>/<name>\"\\n'")
+				      eix-args))))
+	    (current-buffer))
+
+	    (goto-char (point-max))
+	    (insert ?\))
+	    (goto-char (point-min)))
+	  (setq result (read (current-buffer))))
+	result))
+#+end_src
+
+
+
