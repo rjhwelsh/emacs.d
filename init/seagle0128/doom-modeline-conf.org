@@ -1,10 +1,18 @@
 * Doom Emacs Modeline
 https://github.com/seagle0128/doom-modeline
+https://github.com/seagle0128/doom-modeline/issues/375
 
     #+begin_src emacs-lisp
       (use-package doom-modeline
 	:ensure t
-	:init (doom-modeline-mode 1))
+	:init
+	(make-variable-buffer-local 'doom-modeline-icon)
+	:hook ((after-init . doom-modeline-mode)
+	       (server-after-make-frame . 
+					(lambda () 
+					  (setq doom-modeline-icon (display-graphic-p)) 
+					  ))
+	       ))
     #+end_src
 
 The doom-modeline was designed for minimalism, and offers:
