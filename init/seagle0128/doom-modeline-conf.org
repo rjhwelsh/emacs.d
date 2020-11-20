@@ -6,7 +6,7 @@ https://github.com/seagle0128/doom-modeline/issues/375
       (use-package doom-modeline
 	:ensure t
 	:init
-	(make-variable-buffer-local 'doom-modeline-icon)
+	;; (make-variable-buffer-local 'doom-modeline-icon)
 	:hook ((after-init . doom-modeline-mode)
 	       (server-after-make-frame . 
 					(lambda () 
