@@ -395,6 +395,11 @@ Set hook to call =my/post-refile-function=.
    #+BEGIN_SRC emacs-lisp
      (setq org-archive-mark-done nil)
    #+END_SRC
+** Links
+   Capture links as an =org-id=; and create ids as required.  
+#+begin_src emacs-lisp
+  (setq org-id-link-to-org-use-id t) 
+#+end_src
 * Source
 ** Languages
    Allow =babel= to evaluate
