@@ -1,0 +1,39 @@
+* Org-cv
+
+  #+begin_src emacs-lisp
+    (rjh/use "quelpa/quelpa:init")
+    (rjh/use "kaushalmodi/ox-hugo:init")
+  #+end_src
+
+Original
+  #+begin_src emacs-lisp
+    (use-package org-cv-utils
+      :quelpa 
+      (org-cv 
+       :fetcher git 
+       :url "https://gitlab.com/Titan-C/org-cv.git" 
+       :upgrade t)
+      :config
+      (require 'ox-moderncv)
+      (require 'ox-altacv)
+      ;; (require 'ox-hugocv)
+      )
+  #+end_src
+
+Awesome-cv pull request.
+  #+begin_src emacs-lisp
+    (use-package ox-awesomecv 
+      :quelpa 
+      (
+       ox-awesomecv
+       :fetcher git
+       :branch "awesomecv"
+       :url "https://gitlab.com/zzamboni/org-cv.git"
+       :upgrade t
+       )
+      :config
+      (require 'ox-awesomecv)
+      (require 'ox-hugo))
+  #+end_src
+
+

@@ -1,0 +1,12 @@
+* Ox-hugo
+https://github.com/kaushalmodi/ox-hugo
+
+#+begin_src emacs-lisp
+  (use-package ox-hugo
+    :ensure t
+    :init
+    (with-eval-after-load 'ox
+      (require 'ox-hugo)))
+#+end_src
+
+
