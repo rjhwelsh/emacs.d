@@ -196,6 +196,11 @@ The base configuration for org-mode.
    #+end_src
 * Agenda
 Moved mostly to =gtd.org=.
+** Log
+   #+begin_src emacs-lisp
+     (setq org-log-done 'time)   ;; Record when a task moves to the DONE state
+     (setq org-log-refile 'time) ;; Record when an item is refiled.
+   #+end_src
 ** Clocking
    #+begin_src emacs-lisp
      (require 'org-clock)
@@ -276,7 +281,6 @@ https://blog.aaronbieber.com/2017/03/19/organizing-notes-with-refile.html
      (setq org-outline-path-complete-in-steps nil) ;; Useful for autocompletion
      (setq org-refile-use-outline-path 'file)      ;; Use filenames when refiling
      (setq org-refile-allow-creating-parent-nodes 'confirm) ;; Allow creation of new parents
-     (setq org-log-refile 'time)
    #+END_SRC
 
    Specification is any of:
