@@ -380,7 +380,7 @@ Set hook to call =my/post-refile-function=.
    This archives items under the heading called =* Archive= in the same file.
 
    #+BEGIN_SRC emacs-lisp
-     (setq org-archive-location ".%s_archive::" )
+     (setq org-archive-location "4trash.org::datetree/* %s" )
    #+END_SRC
 
    *Note*
