@@ -14,6 +14,11 @@ Change default capture file.
  (setq org-default-notes-file (expand-file-name "0inbox.org" (expand-file-name "gtd" org-directory)))
    #+end_src
 
+* Archive
+Set default archive location to be 4trash in the current directory.
+  #+begin_src emacs-lisp
+    (setq org-archive-location "4trash.org::datetree/* %s" )
+  #+end_src
 * Agenda
 ** Keywords
 *** Function to extract todo keywords from variable
