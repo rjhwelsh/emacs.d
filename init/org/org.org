@@ -675,9 +675,9 @@ the following lines anywhere in the buffer:
 		   (org-redisplay-inline-images))))
    #+END_SRC
 
-   Startup with all headlines showing. =content=
+   Startup with all headlines folded.
    #+BEGIN_SRC emacs-lisp
-     (setq org-startup-folded 'content)
+     (setq org-startup-folded 'fold)
    #+END_SRC
 
 ** Render checkbox in html
