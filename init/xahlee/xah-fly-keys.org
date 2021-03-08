@@ -15,6 +15,7 @@ Disable control/meta keybindings.
   ;; Define and disable =control=, =meta= keys for xah-fly-keys.
   (setq xah-fly-use-meta-key nil)
   (setq xah-fly-use-control-key nil)
+  (setq xah-fly-use-isearch-arrows nil)
 #+end_src
 
 ** Setup and install package
