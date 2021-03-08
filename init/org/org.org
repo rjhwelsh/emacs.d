@@ -395,9 +395,9 @@ Set hook to call =my/post-refile-function=.
    + =::***header= use asterisks to denote the sub-level of the header.
    + =::datetree/= use =datetree/= to file under a date-tree.
 
-   Do not mark archived tasks as done.
+   Mark archived tasks as done.
    #+BEGIN_SRC emacs-lisp
-     (setq org-archive-mark-done nil)
+     (setq org-archive-mark-done t)
    #+END_SRC
 ** Links
    Capture links as an =org-id=; and create ids as required.  
