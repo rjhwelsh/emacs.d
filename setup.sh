@@ -153,15 +153,13 @@ dep_install() {
 }
 
 new_install() {
-    CPCMD="$1"
-
     # Create and install into directory.
     echo "Preparing to copy files:"
     ls $LOCALREPO/{init.el,agenda-files}
 
     ${CPCMD} \
 	$LOCALREPO/{init.el,agenda-files} \
-	$CONFIGDIR
+	$CONFIGDIR/
 
     # link to repo inside config dir (or set repo location in init.el)
     [[ ! -e "$CONFIGDIR"/"$REPOLINK" ]] && ln -srv "$LOCALREPO" "$CONFIGDIR"/"$REPOLINK"
@@ -171,7 +169,10 @@ new_install() {
 }
 
 main() {
-    [ -z "$1" ] && CPCMD="cp -nv" || CPCMD="$1"
+    CPCMD=${1:-cp -nv}
+
+    echo "Files are being copied with '$CPCMD'." >&2
+    
     mkdir -v ${CONFIGDIR}
 
     echo "LOCALREPO=${LOCALREPO}"
@@ -181,7 +182,7 @@ main() {
     pushd "$LOCALREPO"
     patch_config
     # dep_install "$CONFIGDIR"
-    new_install "$CONFIGDIR" "$CPCMD"
+    new_install
     popd
 }
 
@@ -194,17 +195,18 @@ test_prepare() {
     # ln -srv ~/.authinfo.gpg test/
 
     # Faux home
-    HOME="$LOCALREPO/test"
+    export  HOME="$LOCALREPO/test"
 
     # Cleanup any old tests
     mkdir -v "$HOME"
 
     # Install into faux home directory
 
-    # override CONFIGDIR value
-    CONFIGDIR="$HOME/.emacs.d"
+    # override environment values
+    export CONFIGDIR="$HOME/.emacs.d"
+    export CPCMD="cp -fv"
 
-    main "cp -fv"
+    main
     dep_install all
 }
 
@@ -285,5 +287,5 @@ EOF
 [[ "$1" == "-T" || "$1" == "--test-interactive" ]] && shift && test_interactive "$@" && exit 0
 [[ "$1" == "-c" || "$1" == "--clean" ]] && cleanup && exit 0
 [[ "$1" == "-d" || "$1" == "--install-deps" ]] && shift && dep_install "$@" && exit 0
-[[ "$1" == "-i" || "$1" == "--install" ]] && main && exit 0
+[[ "$1" == "-i" || "$1" == "--install" ]] && shift && main && exit 0
 usage
