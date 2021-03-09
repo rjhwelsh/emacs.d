@@ -3,6 +3,9 @@ https://www.emacswiki.org/emacs/notify.el
 
 #+begin_src emacs-lisp
   (use-package "notify"
-    :load-path (concat user-emacs-directory "/emacswiki/")
+    ;;    :load-path (concat user-emacs-directory "/emacswiki/")
+    :init
+    ;; Workaround for load-path
+    (add-to-list 'load-path (concat user-emacs-directory "/emacswiki/"))
     )
 #+end_src

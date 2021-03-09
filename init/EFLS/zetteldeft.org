@@ -13,7 +13,10 @@ cp -v ~/zetteldeft/zetteldeft.el ~/.emacs.d/zetteldeft/zetteldeft.el
 ** Package setup
 #+BEGIN_SRC emacs-lisp
   (use-package zetteldeft
-    :load-path (concat user-emacs-directory "/zetteldeft")
+    ;;:load-path (concat user-emacs-directory "/zetteldeft")
+    :init
+    ;; Workaround for load-path
+    (add-to-list 'load-path (concat user-emacs-directory "/zetteldeft"))
     :after deft
     :bind (("C-c d d" . deft)
 	   ("C-c d D" . zetteldeft-deft-new-search)

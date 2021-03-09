@@ -12,13 +12,17 @@ Use session_state to identify session.
 
   #+begin_src emacs-lisp
     (use-package "session"
-      :load-path (concat user-emacs-directory "/session/")
+      ;; :load-path (concat user-emacs-directory "/session/")
       :hook ((after-save . session-save-session))
       :if (and
 	   (fboundp 'session-state-save-path)
 	   (boundp 'session-state-id)
 	   )
       :init
+
+      ;; Load-path workaround (for flexibility)
+      (add-to-list 'load-path (concat user-emacs-directory "/session/"))
+
       ;; Use unique id for each session
       (setq session-save-file (session-state-save-path "session"))
 

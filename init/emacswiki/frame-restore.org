@@ -4,8 +4,10 @@ Save/restore frame size & position with desktop-save.
 
 #+begin_src emacs-lisp
   (use-package "frame-restore"
-    :load-path (concat user-emacs-directory "/emacswiki/")
+    ;; :load-path (concat user-emacs-directory "/emacswiki/")
     :init
+    ;; Workaround for load-path
+    (add-to-list 'load-path (concat user-emacs-directory "/emacswiki/"))
     (require 'frame-restore)
     )
 #+end_src
