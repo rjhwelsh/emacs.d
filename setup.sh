@@ -260,14 +260,24 @@ cleanup() {
 }
 
 usage() {
-    echo "$0 [-htic]"
-    echo "Setup/test emacs configuration"
-    echo " -c, --clean      Cleanup Tests"
-    echo " -t, --test [config1 .. configN] Test configuration"
-    echo " -T, --test-interactive [config1 .. configN]"
-    echo " -d, --install-deps Install third-party dependencies"
-    echo " -i, --install    Install (GNU Linux)"
-    echo " -h, --help       Show this help"
+    cat <<EOF
+$0 [-htic]
+Setup/test emacs configuration
+
+ -i, --install          Install (GNU Linux)
+ -d, --install-deps     Install third-party dependencies
+
+ -c, --clean            Cleanup Tests
+
+ -t, --test             [config1 .. configN]
+ -T, --test-interactive [config1 .. configN]
+
+ -h, --help             Show this help
+
+The following environment variables can be used.
+    CONFIGDIR Overrides the default ~/.emacs.d install location
+
+EOF
 }
 
 [[ "$1" == "-h" || "$1" == "--help" ]] && usage && exit 0
