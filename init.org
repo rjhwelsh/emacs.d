@@ -63,7 +63,7 @@ This should be done before evaluating any conf.org files in this repo.
 ** rjh repository bootstrap
 Loads =rjh.el=; if the =repo= does not exist, ask for the location.
    #+begin_src emacs-lisp
-(let* ((repo "~/.emacs.d/rjh")
+(let* ((repo (concat user-emacs-directory "/rjh"))
        ;; Prompt if directory does not exist
        (repo (if (file-exists-p repo)
 		 repo
@@ -80,7 +80,7 @@ Loads customization from file, and sets that file for subsequent customization.
 This keeps =init.el= tidy.
 
 #+begin_src emacs-lisp
-(setq custom-file "~/.emacs.d/custom.el")
+(setq custom-file (concat user-emacs-directory "/custom.el"))
 (if (file-exists-p custom-file)
     (load custom-file))
 #+end_src

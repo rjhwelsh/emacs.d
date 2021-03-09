@@ -17,7 +17,7 @@ The base configuration for org-mode.
   (unless (package-installed-p 'org-plus-contrib)
     (package-install 'org-plus-contrib))
   (require 'org)
-  (org-babel-load-file "~/.emacs.d/configuration.org")
+  (org-babel-load-file (concat user-emacs-directory "/configuration.org"))
   #+END_EXAMPLE
 
   The following load-path is used for org-plus-contrib packages.
@@ -26,7 +26,7 @@ The base configuration for org-mode.
   #+BEGIN_SRC emacs-lisp
     (add-to-list
      'load-path
-     (car (file-expand-wildcards "~/.emacs.d/elpa/org-plus-contrib*" ))
+     (car (file-expand-wildcards (concat user-emacs-directory "/elpa/org-plus-contrib*") ))
      )
   #+END_SRC
 * Setup
@@ -234,7 +234,7 @@ Moved mostly to =gtd.org=.
 
    These are settings for capturing/refiling information.
    #+BEGIN_SRC emacs-lisp
-     ;; (setq org-directory "~/.emacs.d/org")	;; Setup in "personal.org"
+     ;; (setq org-directory (concat user-emacs-directory "/org"))	;; Setup in "personal.org"
      (setq org-default-notes-file (expand-file-name "refile.org" org-directory))
    #+END_SRC
 

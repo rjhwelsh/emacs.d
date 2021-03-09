@@ -170,7 +170,7 @@ Prevent warnings in the byte compiler
 ** org.el
 Loads patched functions from below:
    #+begin_src emacs-lisp
-     (load-file "~/.emacs.d/rjh/patch/solar/org.el")
+     (load-file (concat user-emacs-directory "/rjh/patch/solar/org.el"))
    #+end_src
 *** org-time-from-sexp :NEW:
     Define function to obtain time from sexp expressions.
@@ -213,7 +213,7 @@ Loads patched functions from below:
    Patch org-agenda.el to allow sexp to calculate times.
 
    #+begin_src emacs-lisp
-     (load-file "~/.emacs.d/rjh/patch/solar/org-agenda.el")
+     (load-file (concat user-emacs-directory "/rjh/patch/solar/org-agenda.el"))
    #+end_src
 
 *** org-agenda-get-scheduled
@@ -271,7 +271,7 @@ Loads patched functions from below:
    
    Patch ox-icalendar.el to export 'diary-sexp to ics.
    #+begin_src emacs-lisp
-     (load-file "~/.emacs.d/rjh/patch/solar/ox-icalendar.el")
+     (load-file (concat user-emacs-directory "/rjh/patch/solar/ox-icalendar.el"))
    #+end_src
 
 *** org-icalendar-entry
@@ -331,7 +331,7 @@ A template for vevents.
 ** icalendar.el patches
    
    #+begin_src emacs-lisp
-     (load-file "~/.emacs.d/rjh/patch/solar/icalendar.el")
+     (load-file (concat user-emacs-directory "/rjh/patch/solar/icalendar.el"))
    #+end_src
 *** icalendar-export-region
 **** Patch

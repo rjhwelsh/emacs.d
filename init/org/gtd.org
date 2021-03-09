@@ -356,7 +356,7 @@ These keywords capture the GTD state of "projects".
 *** Agenda Files List
     Store the list of agenda files in ...
     #+BEGIN_SRC emacs-lisp
-      (setq org-agenda-files "~/.emacs.d/agenda-files" )
+      (setq org-agenda-files (concat user-emacs-directory "/agenda-files") )
     #+END_SRC
 *** Agenda sort strategy
 **** Functions
@@ -414,6 +414,8 @@ These keywords capture the GTD state of "projects".
 		   (t nil))))
 	      (org-todo-keywords-extract org-todo-keywords)))))
       #+end_src
+
+***** TODO Obtain a numerical representation of the priority value
 
 ***** Obtain the character marker for the parent entry
       #+begin_src emacs-lisp
@@ -781,6 +783,7 @@ A function that skips entries based on the location of the file.
 	      (org-agenda-skip-invert
 	       'org-agenda-skip-entry-if-file-path "1action")
 	      ))
+      (setq org-agenda-skip-function-global nil)
     #+end_src
 
     Standard function for skipping entries
@@ -1124,6 +1127,9 @@ A skip function for finding all completed projects.
 		      ,(org-agenda-filename-to-export-views "agenda/tag/OTHER" '("ps" "html"))
 		      )))
     #+end_src
+
+**** TODO Create a list of tags with an "@" specifier
+
 *** Sparse search of current buffer
     The manual way to create a sparse tree of the current buffer is to use the =org-sparse-tree= command. 
     The default keys are =C-c /= to manually create a sparse tree. 
@@ -1168,6 +1174,8 @@ A skip function for finding all completed projects.
       #+end_src
 
 **** Todo-tree
+
+***** 
 ***** All NEXT actions
       #+begin_src emacs-lisp
 	(add-to-list 'org-agenda-custom-commands
@@ -1231,7 +1239,7 @@ Their actual functionality is covered by default views, or other existing views.
 			     "agenda/stuck"
 			     '("ps" "html")))))
  #+end_src
-*** Combination view
+*** Combination view :exportview:
 **** Full view generator
     #+begin_src emacs-lisp
       ;; Define full-view compilation
@@ -1268,7 +1276,7 @@ Their actual functionality is covered by default views, or other existing views.
       ;; Summary view
       (add-to-list 'org-agenda-custom-commands
 		   (let ((summary-side-margin (* (/ 1 2.54) 72))
-			 (summary-border-file "~/.emacs.d/ps/summary_border.ps")
+			 (summary-border-file (concat user-emacs-directory "/ps/summary_border.ps"))
 			 )
 		     `("Es" "Summary View"
 		       ,(org-agenda-full-view)
@@ -1312,7 +1320,6 @@ Their actual functionality is covered by default views, or other existing views.
 		     ,(org-agenda-filename-to-export-views "agenda/collins" '("ps"))
 		     ))
     #+end_src
-
 
 * Hooks
 Auto-actions linked to opening the agenda buffer.

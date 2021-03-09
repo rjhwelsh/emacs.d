@@ -46,7 +46,7 @@
 (setq vc-follow-symlinks t)
 
 ;; Add rjh repository elisp
-(let* ((repo "~/.emacs.d/rjh")
+(let* ((repo (concat user-emacs-directory "/rjh"))
        ;; Prompt if directory does not exist
        (repo (if (file-exists-p repo)
 		 repo
@@ -58,7 +58,7 @@
   )
 
 ;; Ensure customization directory exists
-(setq custom-file-directory "~/.emacs.d/custom/")
+(setq custom-file-directory (concat user-emacs-directory "/custom/"))
 (unless
     (file-exists-p custom-file-directory)
   (make-directory custom-file-directory)

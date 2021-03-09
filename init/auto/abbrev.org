@@ -33,7 +33,7 @@ Always enable =abbrev-mode=:
 Define an abbreviation file.
 #+BEGIN_SRC emacs-lisp
  (setq abbrev-file-name             ;; tell emacs where to read abbrev
-        "~/.emacs.d/abbrev_defs")    ;; definitions from...
+        (concat user-emacs-directory "/abbrev_defs"))    ;; definitions from...
 #+END_SRC
 
 Save abbreviations automatically on logout.

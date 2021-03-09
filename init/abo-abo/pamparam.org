@@ -14,7 +14,7 @@ https://github.com/abo-abo/hydra
 	(use-package "pamparam" :defer t
 		:ensure t
 		:init
-		(setq pamparam-path "~/.emacs.d/flashcards.pam")
+		(setq pamparam-path (concat user-emacs-directory "/flashcards.pam"))
 		(global-set-key (kbd "C-c m") 'hydra-pamparam/body)
 		)
 #+END_SRC
@@ -23,7 +23,7 @@ Setup flashcard repos into separate directories.
 This example is no different from the default behaviour.
 #+BEGIN_EXAMPLE emacs-lisp
 (setq pamparam-alist '(
-    ("~/.emacs.d/flashcards.org" . "~/.emacs.d/flashcards.pam")
+    ((concat user-emacs-directory "/flashcards.org") . (concat user-emacs-directory "/flashcards.pam"))
 		))
 #+END_EXAMPLE
 

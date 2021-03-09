@@ -17,7 +17,7 @@ How to install 3rd party elisp, using bash, git.
 
 ** Load org-gantt
  #+BEGIN_SRC emacs-lisp
- (load-file "~/.emacs.d/org-gantt/org-gantt.el")
+ (load-file (concat user-emacs-directory "/org-gantt/org-gantt.el"))
  #+END_SRC
  This depends on org-mode, so ensure org-mode is active before importing.
 

@@ -3,6 +3,6 @@ https://www.emacswiki.org/emacs/notify.el
 
 #+begin_src emacs-lisp
   (use-package "notify"
-    :load-path "~/.emacs.d/emacswiki/"
+    :load-path (concat user-emacs-directory "/emacswiki/")
     )
 #+end_src

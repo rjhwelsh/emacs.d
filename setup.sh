@@ -3,7 +3,7 @@
 # Quick setup on linux.
 
 LOCALREPO=`dirname $(readlink -f $0)`
-CONFIGDIR="${CONFIGDIR:-~/.emacs.d}"
+CONFIGDIR="${CONFIGDIR:-~/.emacs.rjh}"
 REPOLINK="rjh" # Relative to CONFIGDIR
 
 patch_config() {

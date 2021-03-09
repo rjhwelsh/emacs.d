@@ -6,9 +6,9 @@ This patch provides =org-priority= inheritance.
 * Patch
 Override org-mode functions. 
   #+begin_src emacs-lisp
-  (load-file "~/.emacs.d/rjh/patch/org-priority-inheritance/org.el")
-  (load-file "~/.emacs.d/rjh/patch/org-priority-inheritance/org-habit.el")
-  (load-file "~/.emacs.d/rjh/patch/org-priority-inheritance/org-agenda.el")
+  (load-file (concat user-emacs-directory "/rjh/patch/org-priority-inheritance/org.el"))
+  (load-file (concat user-emacs-directory "/rjh/patch/org-priority-inheritance/org-habit.el"))
+  (load-file (concat user-emacs-directory "/rjh/patch/org-priority-inheritance/org-agenda.el"))
   #+end_src
 * Config
 Enable priority inheritance.

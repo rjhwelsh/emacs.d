@@ -51,7 +51,7 @@
   ;; else, ask user to pick a location
   (rjh/prompt-for-directory
    (or (file-name-directory load-file-name)
-       "~/.emacs.d/rjh")
+       (concat user-emacs-directory "/rjh"))
    ;; Prompt if directory does not exist
    "Set location of rjhwelsh/emacs.d repo:"
    )
@@ -62,7 +62,7 @@
 
 (defcustom rjh/local-private-dir
   (rjh/prompt-for-directory
-   "~/.emacs.d/private"
+   (concat user-emacs-directory "/private")
    "Set location of rjh/local-private-dir:"
    )
   "Directory path for private configuration files"

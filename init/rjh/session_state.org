@@ -31,7 +31,7 @@ This variable is used in workgroups, desktop.el and others to identify the curre
 
 ** Set saved session-state directory
    #+begin_src emacs-lisp
-     (setq session-state-dir "~/.emacs.d/.session-state/")
+     (setq session-state-dir (concat user-emacs-directory "/.session-state/"))
    #+end_src
 ** Generate session state file location based on mode name
    #+begin_src emacs-lisp

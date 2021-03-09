@@ -12,7 +12,7 @@ Use session_state to identify session.
 
   #+begin_src emacs-lisp
     (use-package "session"
-      :load-path "~/.emacs.d/session/"
+      :load-path (concat user-emacs-directory "/session/")
       :hook ((after-save . session-save-session))
       :if (and
 	   (fboundp 'session-state-save-path)
