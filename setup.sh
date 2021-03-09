@@ -24,16 +24,16 @@ dep_copy_files() {
 }
 
 dep_git_clone_install() {
-	URL="$1"
-	shift
-	DEST="$1"
-	shift
+    URL="$1"
+    shift
+    DEST="$1"
+    shift
 
-	[ -d "$D"/"$DEST" ] &&\
-		{ pushd "$D"/"$DEST" && git fetch && git merge origin/master; popd; } ||\
-			git clone "$URL" "$D"/"$DEST"
+    [ -d "$D"/"$DEST" ] &&\
+	{ pushd "$D"/"$DEST" && git fetch && git merge origin/master; popd; } ||\
+	    git clone "$URL" "$D"/"$DEST"
 
-	dep_copy_files "$DEST" "$@"
+    dep_copy_files "$DEST" "$@"
 }
 
 dep_wget() {
@@ -128,9 +128,6 @@ dep_options() {
 }
 
 dep_install() {
-    CONFIGDIR="$1"
-    shift
-
     # Create a directory for storing third-party deps
     D="$LOCALREPO/deps"
     mkdir -vp "$D"
@@ -156,8 +153,6 @@ dep_install() {
 }
 
 new_install() {
-    CONFIGDIR="$1"
-    shift
     CPCMD="$1"
 
     # Create and install into directory.
@@ -176,8 +171,6 @@ new_install() {
 }
 
 main() {
-    CONFIGDIR="$1"
-    shift
     [ -z "$1" ] && CPCMD="cp -nv" || CPCMD="$1"
     mkdir -v ${CONFIGDIR}
 
@@ -207,8 +200,12 @@ test_prepare() {
     mkdir -v "$HOME"
 
     # Install into faux home directory
-    main "$HOME/.emacs.d" "cp -fv"
-    dep_install "$HOME/.emacs.d" all
+
+    # override CONFIGDIR value
+    CONFIGDIR="$HOME/.emacs.d"
+
+    main "cp -fv"
+    dep_install all
 }
 
 test() {
@@ -227,8 +224,8 @@ test() {
 	echo "Now testing each emacs config..."
 	[ -n "$@" ] && FILES="$@"
 	[ -z "$@" ]	&& FILES=`find ../init -iname '*.org' -printf "%p "|\
-										sed 's|\.org||g'|\
-										sed 's|\.\./init/||g'`;
+	sed 's|\.org||g'|\
+	sed 's|\.\./init/||g'`;
 
 	for INIT in ${FILES}
 	do
@@ -277,6 +274,6 @@ usage() {
 [[ "$1" == "-t" || "$1" == "--test" ]] && shift && test "$@" && exit 0
 [[ "$1" == "-T" || "$1" == "--test-interactive" ]] && shift && test_interactive "$@" && exit 0
 [[ "$1" == "-c" || "$1" == "--clean" ]] && cleanup && exit 0
-[[ "$1" == "-d" || "$1" == "--install-deps" ]] && shift && dep_install "$CONFIGDIR" "$@" && exit 0
-[[ "$1" == "-i" || "$1" == "--install" ]] && main "$CONFIGDIR" && exit 0
+[[ "$1" == "-d" || "$1" == "--install-deps" ]] && shift && dep_install "$@" && exit 0
+[[ "$1" == "-i" || "$1" == "--install" ]] && main && exit 0
 usage
